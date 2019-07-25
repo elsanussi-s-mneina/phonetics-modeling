@@ -54,7 +54,7 @@ analyzeIPA "n"  = Phonet  Alveolar Voiced Nasal PulmonicEgressive,
 analyzeIPA "ŋ"  = Phonet  Velar Voiced Nasal PulmonicEgressive,
 analyzeIPA "w"  = Phonet  Bilabial Voiced Approximant PulmonicEgressive,
 analyzeIPA "l"  = Phonet  Alveolar Voiced Approximant PulmonicEgressive,
-analyzeIPA "r"  = Phonet  PostAlveolar Voiced Approximant PulmonicEgressive,
+analyzeIPA "ɹ"  = Phonet  PostAlveolar Voiced Approximant PulmonicEgressive,
 analyzeIPA "j"  = Phonet  Palatal Voiced Approximant PulmonicEgressive,
 analyzeIPA "w"  = Phonet  Velar Voiced Approximant PulmonicEgressive
 
