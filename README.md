@@ -8,7 +8,8 @@ and the International Phonetic Alphabet.
 Currently, I am using only the textbook with ISBN: 978-1-4051-9103, The
 second chapter. It is titled The Sounds of Language.
 
-Currently the program does nothing useful.
+Currently the program only determines the place, and manner of articulation,
+for a handful of consonants (typed in IPA (unicode format)).
 
 Suggested future uses once complete:
 Basic Linguistic tasks:
@@ -40,6 +41,17 @@ To start an interactive environment where you will be able to execute the
 code:
 
 `stack -- ghci`
+
+
+You can then type in code like the following:
+
+`*Main Lib> map analyzeIPA ["l", "m", "n"]`
+
+And you get the following in response.
+`[Phonet {place = Alveolar, vocalFolds = Voiced, manner = LateralApproximant, airstream = PulmonicEgressive},`
+`Phonet {place = Bilabial, vocalFolds = Voiced, manner = Nasal, airstream = PulmonicEgressive},`
+`Phonet {place = Alveolar, vocalFolds= Voiced, manner = Nasal, airstream = PulmonicEgressive}]`
+
 
 
 To build (generates an executable file), use the following command:
