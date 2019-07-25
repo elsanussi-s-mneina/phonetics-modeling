@@ -48,9 +48,9 @@ You can then type in code like the following:
 `*Main Lib> map analyzeIPA ["l", "m", "n"]`
 
 And you get the following in response.
-`[Phonet {place = Alveolar, vocalFolds = Voiced, manner = LateralApproximant, airstream = PulmonicEgressive},`
-`Phonet {place = Bilabial, vocalFolds = Voiced, manner = Nasal, airstream = PulmonicEgressive},`
-`Phonet {place = Alveolar, vocalFolds= Voiced, manner = Nasal, airstream = PulmonicEgressive}]`
+`[Consonant {place = Alveolar, vocalFolds = Voiced, manner = LateralApproximant, airstream = PulmonicEgressive},`
+`Consonant {place = Bilabial, vocalFolds = Voiced, manner = Nasal, airstream = PulmonicEgressive},`
+`Consonant {place = Alveolar, vocalFolds= Voiced, manner = Nasal, airstream = PulmonicEgressive}]`
 
 
 
