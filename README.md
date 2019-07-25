@@ -21,18 +21,32 @@ Feel free to use it for educational purposes.
 
 This project was started by Elsanussi S. Mneina on July 25, 2019.
 
-## How to build / generate executables
+## How to execute the code, and write your own.
+
+
+
+## How to use
 You will need Haskell. I suggest getting the Haskell Platform if you are
 new to the language. You will need Haskell Stack.
 
 https://www.haskell.org/platform/
 
-To build you need to use the terminal, make sure you are in this
+
+
+You need to use the terminal, make sure you are in this
 directory (where this README file is)  and type
+
+To start an interactive environment where you will be able to execute the
+code:
+
+`stack -- ghci`
+
+
+To build (generates an executable file), use the following command:
 
 `stack build`
 
-To run type:
+To run the executable type:
 
 `stack run`
 
