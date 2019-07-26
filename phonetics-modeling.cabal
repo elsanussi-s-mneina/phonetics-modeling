@@ -4,15 +4,16 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6fe37abfa384efb4595e7a259fee8bc6d95de077b259866bf355f9858f43bf3a
+-- hash: 10b8f7ffdb95bf33f2a08f4d5513b8d2638bed98b3bf1dd3645464e770a3068e
 
 name:           phonetics-modeling
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/phonetics-modeling#readme>
 homepage:       https://github.com/githubuser/phonetics-modeling#readme
 bug-reports:    https://github.com/githubuser/phonetics-modeling/issues
-author:         Elsanussi S. Mneina
-copyright:      2019 Elsanussi S. Mneina
+author:         Elsanussi Mneina
+maintainer:     elsanussi-s-mneina (on Github)
+copyright:      2019 Elsanussi Mneina
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple

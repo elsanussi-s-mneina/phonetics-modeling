@@ -43,7 +43,7 @@ code:
 `stack -- ghci`
 
 
-You can then type in code like the following:
+You can then type in code like the following (starting after the ">"):
 
 `*Main> map analyzeIPA ["ð", "ə"]
 `
@@ -58,6 +58,21 @@ Then to go the other direction (to IPA symbols):
 `*Main> constructIPA (Consonant  Alveolar  Voiceless LateralApproximant PulmonicEgressive)`
 
 `"l"`
+
+
+
+
+To go from voiceless to voiced (from IPA symbol to IPA symbol):
+
+`*Main> voicedIPA "s"`
+
+`"z"`
+
+
+`*Main> devoicedIPA "z"`
+
+`"s"`
+
 
 
 To build (generates an executable file), use the following command:

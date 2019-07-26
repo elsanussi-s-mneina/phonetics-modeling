@@ -8,6 +8,7 @@ data Phonet = Consonant { place :: Place   -- | Place of articulation
             | Vowel { height :: Height
                     , backness :: Backness
                     , rounding :: Rounding
+                    , vocalFolds :: VocalFolds
                     }
                     deriving (Eq, Show)
 
@@ -130,47 +131,47 @@ analyzeIPA "ʟ"  = Consonant  Velar Voiced LateralApproximant PulmonicEgressive
 
 
 -- Close Vowels:
-analyzeIPA "i"  = Vowel  Close Front Unrounded
-analyzeIPA "y"  = Vowel  Close Front Rounded
-analyzeIPA "ɨ"  = Vowel  Close Central Unrounded
-analyzeIPA "ʉ"  = Vowel  Close Central Rounded
-analyzeIPA "ɯ"  = Vowel  Close Back Unrounded
-analyzeIPA "u"  = Vowel  Close Back Rounded
+analyzeIPA "i"  = Vowel  Close Front   Unrounded Voiced
+analyzeIPA "y"  = Vowel  Close Front   Rounded   Voiced
+analyzeIPA "ɨ"  = Vowel  Close Central Unrounded Voiced
+analyzeIPA "ʉ"  = Vowel  Close Central Rounded   Voiced
+analyzeIPA "ɯ"  = Vowel  Close Back    Unrounded Voiced
+analyzeIPA "u"  = Vowel  Close Back    Rounded   Voiced
 
 -- Near-close Vowels:
-analyzeIPA "ɪ"  = Vowel NearClose Front Unrounded
-analyzeIPA "ʏ"  = Vowel NearClose Front Rounded
-analyzeIPA "ʊ"  = Vowel NearClose Back  Rounded
+analyzeIPA "ɪ"  = Vowel NearClose Front Unrounded Voiced
+analyzeIPA "ʏ"  = Vowel NearClose Front Rounded   Voiced
+analyzeIPA "ʊ"  = Vowel NearClose Back  Rounded   Voiced
 
 -- Close-mid Vowels:
-analyzeIPA "e"  = Vowel  CloseMid Front Unrounded
-analyzeIPA "ø"  = Vowel  CloseMid Front Rounded
-analyzeIPA "ɘ"  = Vowel  CloseMid Central Unrounded
-analyzeIPA "ɵ"  = Vowel  CloseMid Central Rounded
-analyzeIPA "ɤ"  = Vowel  CloseMid Back Unrounded
-analyzeIPA "o"  = Vowel  CloseMid Back Rounded
+analyzeIPA "e"  = Vowel  CloseMid Front   Unrounded Voiced
+analyzeIPA "ø"  = Vowel  CloseMid Front   Rounded   Voiced
+analyzeIPA "ɘ"  = Vowel  CloseMid Central Unrounded Voiced
+analyzeIPA "ɵ"  = Vowel  CloseMid Central Rounded   Voiced
+analyzeIPA "ɤ"  = Vowel  CloseMid Back    Unrounded Voiced
+analyzeIPA "o"  = Vowel  CloseMid Back    Rounded   Voiced
 
 -- Mid Vowels:
-analyzeIPA "ə"  = Vowel Mid Central Unmarked
+analyzeIPA "ə"  = Vowel Mid Central Unmarked Voiced
 
 
 -- Open-mid Vowels:
-analyzeIPA "ɛ"  = Vowel  OpenMid Front Unrounded
-analyzeIPA "œ"  = Vowel  OpenMid Front Rounded
-analyzeIPA "ɜ"  = Vowel  OpenMid Central Unrounded
-analyzeIPA "ɞ"  = Vowel  OpenMid Central Rounded
-analyzeIPA "ʌ"  = Vowel  OpenMid Back Unrounded
-analyzeIPA "ɔ"  = Vowel  OpenMid Back Rounded
+analyzeIPA "ɛ"  = Vowel  OpenMid Front   Unrounded Voiced
+analyzeIPA "œ"  = Vowel  OpenMid Front   Rounded   Voiced
+analyzeIPA "ɜ"  = Vowel  OpenMid Central Unrounded Voiced
+analyzeIPA "ɞ"  = Vowel  OpenMid Central Rounded   Voiced
+analyzeIPA "ʌ"  = Vowel  OpenMid Back    Unrounded Voiced
+analyzeIPA "ɔ"  = Vowel  OpenMid Back    Rounded   Voiced
 
 -- Near-open
-analyzeIPA "æ"  = Vowel  NearOpen Front Unrounded
-analyzeIPA "ɐ"  = Vowel NearOpen Central Unmarked
+analyzeIPA "æ"  = Vowel  NearOpen Front   Unrounded Voiced
+analyzeIPA "ɐ"  = Vowel  NearOpen Central Unmarked  Voiced
 
 -- Open Vowels:
-analyzeIPA "a"  = Vowel  Open Front Unrounded
-analyzeIPA "ɶ"  = Vowel  Open Front Rounded
-analyzeIPA "ɑ"  = Vowel  Open Back Unrounded
-analyzeIPA "ɒ"  = Vowel  Open Back Rounded
+analyzeIPA "a"  = Vowel  Open Front Unrounded Voiced
+analyzeIPA "ɶ"  = Vowel  Open Front Rounded   Voiced
+analyzeIPA "ɑ"  = Vowel  Open Back  Unrounded Voiced
+analyzeIPA "ɒ"  = Vowel  Open Back  Rounded   Voiced
 
 
 -- | given an analysis construct an IPA symbol
@@ -259,47 +260,47 @@ constructIPA (Consonant  Palatal   Voiced LateralApproximant PulmonicEgressive) 
 constructIPA (Consonant  Velar     Voiced LateralApproximant PulmonicEgressive) = "ʟ"
 
 -- Close Vowels:
-constructIPA (Vowel  Close Front   Unrounded) = "i"
-constructIPA (Vowel  Close Front   Rounded  ) = "y"
-constructIPA (Vowel  Close Central Unrounded) = "ɨ"
-constructIPA (Vowel  Close Central Rounded  ) = "ʉ"
-constructIPA (Vowel  Close Back    Unrounded) = "ɯ"
-constructIPA (Vowel  Close Back    Rounded  ) = "u"
+constructIPA (Vowel  Close Front   Unrounded Voiced) = "i"
+constructIPA (Vowel  Close Front   Rounded   Voiced) = "y"
+constructIPA (Vowel  Close Central Unrounded Voiced) = "ɨ"
+constructIPA (Vowel  Close Central Rounded   Voiced) = "ʉ"
+constructIPA (Vowel  Close Back    Unrounded Voiced) = "ɯ"
+constructIPA (Vowel  Close Back    Rounded   Voiced) = "u"
 
 -- Near-close Vowels:
-constructIPA (Vowel NearClose Front Unrounded) = "ɪ"
-constructIPA (Vowel NearClose Front Rounded  ) = "ʏ"
-constructIPA (Vowel NearClose Back  Rounded  ) = "ʊ"
+constructIPA (Vowel NearClose Front Unrounded Voiced) = "ɪ"
+constructIPA (Vowel NearClose Front Rounded   Voiced) = "ʏ"
+constructIPA (Vowel NearClose Back  Rounded   Voiced) = "ʊ"
 
 -- Close-mid Vowels:
-constructIPA (Vowel  CloseMid Front   Unrounded) = "e"
-constructIPA (Vowel  CloseMid Front   Rounded  ) = "ø"
-constructIPA (Vowel  CloseMid Central Unrounded) = "ɘ"
-constructIPA (Vowel  CloseMid Central Rounded  ) = "ɵ"
-constructIPA (Vowel  CloseMid Back    Unrounded) = "ɤ"
-constructIPA (Vowel  CloseMid Back    Rounded  ) = "o"
+constructIPA (Vowel  CloseMid Front   Unrounded Voiced) = "e"
+constructIPA (Vowel  CloseMid Front   Rounded   Voiced) = "ø"
+constructIPA (Vowel  CloseMid Central Unrounded Voiced) = "ɘ"
+constructIPA (Vowel  CloseMid Central Rounded   Voiced) = "ɵ"
+constructIPA (Vowel  CloseMid Back    Unrounded Voiced) = "ɤ"
+constructIPA (Vowel  CloseMid Back    Rounded   Voiced) = "o"
 
 -- Mid Vowels:
-constructIPA (Vowel Mid Central Unmarked) = "ə"
+constructIPA (Vowel Mid Central Unmarked Voiced) = "ə"
 
 
 -- Open-mid Vowels:
-constructIPA (Vowel  OpenMid Front   Unrounded) = "ɛ"
-constructIPA (Vowel  OpenMid Front   Rounded  ) = "œ"
-constructIPA (Vowel  OpenMid Central Unrounded) = "ɜ"
-constructIPA (Vowel  OpenMid Central Rounded  ) = "ɞ"
-constructIPA (Vowel  OpenMid Back    Unrounded) = "ʌ"
-constructIPA (Vowel  OpenMid Back    Rounded  ) = "ɔ"
+constructIPA (Vowel  OpenMid Front   Unrounded Voiced) = "ɛ"
+constructIPA (Vowel  OpenMid Front   Rounded   Voiced) = "œ"
+constructIPA (Vowel  OpenMid Central Unrounded Voiced) = "ɜ"
+constructIPA (Vowel  OpenMid Central Rounded   Voiced) = "ɞ"
+constructIPA (Vowel  OpenMid Back    Unrounded Voiced) = "ʌ"
+constructIPA (Vowel  OpenMid Back    Rounded   Voiced) = "ɔ"
 
 -- Near-open
-constructIPA (Vowel  NearOpen Front   Unrounded) = "æ"
-constructIPA (Vowel  NearOpen Central Unmarked ) = "ɐ"
+constructIPA (Vowel  NearOpen Front   Unrounded Voiced) = "æ"
+constructIPA (Vowel  NearOpen Central Unmarked  Voiced) = "ɐ"
 
 -- Open Vowels:
-constructIPA (Vowel  Open Front Unrounded) = "a"
-constructIPA (Vowel  Open Front Rounded  ) = "ɶ"
-constructIPA (Vowel  Open Back  Unrounded) = "ɑ"
-constructIPA (Vowel  Open Back  Rounded  ) = "ɒ"
+constructIPA (Vowel  Open Front Unrounded Voiced) = "a"
+constructIPA (Vowel  Open Front Rounded   Voiced) = "ɶ"
+constructIPA (Vowel  Open Back  Unrounded Voiced) = "ɑ"
+constructIPA (Vowel  Open Back  Rounded   Voiced) = "ɒ"
 
 -- If there isn't a symbol, and the consonant we want is voiceless,
 -- Just take the symbol for a voiced consonant,
@@ -308,6 +309,8 @@ constructIPA (Vowel  Open Back  Rounded  ) = "ɒ"
 -- a character to mean voiceless. See https://linguistlist.org/unicode/ipa.html
 constructIPA (Consonant  x Voiceless y z) =
   constructIPA (Consonant x Voiced y z) ++ "\805"
+constructIPA (Vowel x y z Voiceless) =
+    constructIPA (Vowel x y z Voiced) ++ "\805"
 
 -- | This is a list of the sounds of English. Just the basic ones.
 -- | It is somewhat more complicated in reality, but for now this will
@@ -342,9 +345,33 @@ englishPhonetInventory = PhonetInventory
   Consonant  PostAlveolar Voiced Approximant PulmonicEgressive,
   Consonant  Palatal Voiced Approximant PulmonicEgressive,
   Consonant  LabialVelar Voiced Approximant PulmonicEgressive
+  -- We need to add the English vowels here.
   ]
 
 
+
+
+voicedPhonet :: Phonet -> Phonet
+-- | A function that given an IPA symbol will convert it to the voiced equivalent.
+voicedPhonet (Consonant x Voiceless y z) = (Consonant x Voiced y z)
+voicedPhonet (Consonant x Voiced y z) = (Consonant x    Voiced y z)
+voicedPhonet (Vowel x y z Voiced) = (Vowel x y z        Voiced)
+voicedPhonet (Vowel x y z Voiceless) = (Vowel x y z     Voiced)
+
+devoicedPhonet :: Phonet -> Phonet
+-- | A function that given an IPA symbol will convert it to the voiceless equivalent.
+devoicedPhonet (Consonant x Voiceless y z) = (Consonant x Voiceless y z)
+devoicedPhonet (Consonant x Voiced y z) = (Consonant x    Voiceless y z)
+devoicedPhonet (Vowel x y z Voiced) = (Vowel x y z        Voiceless)
+devoicedPhonet (Vowel x y z Voiceless) = (Vowel x y z     Voiceless)
+
+
+
+voicedIPA :: IPAText -> IPAText
+voicedIPA = constructIPA . voicedPhonet . analyzeIPA
+
+devoicedIPA :: IPAText -> IPAText
+devoicedIPA = constructIPA . devoicedPhonet . analyzeIPA
 
 
 welcome :: IO ()
