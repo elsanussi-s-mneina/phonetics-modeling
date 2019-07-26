@@ -1,10 +1,10 @@
 name:                phonetics-modeling
 version:             0.1.0.0
 github:              "githubuser/phonetics-modeling"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2019 Author name here"
+license:             MIT
+author:              "Elsanussi S. Mneina"
+maintainer:          ""
+copyright:           "2019 Elsanussi S. Mneina"
 
 extra-source-files:
 - README.md
