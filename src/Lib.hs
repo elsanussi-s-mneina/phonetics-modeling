@@ -8,7 +8,20 @@ data Phonet = Consonant { place :: Place   -- | Place of articulation
                      , manner :: Manner -- | Manner of articulation
                      , airstream :: Airstream
                      }
-                     deriving (Eq, Show)
+           | Vowel { height :: Height
+                   , backness :: Backness
+                   , rounding :: Rounding
+                   }
+                   deriving (Eq, Show)
+
+data Backness = Front | Central | Back
+                deriving (Eq, Show)
+data Height = Close | NearClose | CloseMid | Mid | OpenMid | NearOpen | Open
+              deriving (Eq, Show)
+data TenseLax = Tense | Lax
+                deriving (Eq, Show)
+data Rounding = Rounded | Unrounded | Unmarked
+                deriving (Eq, Show)
 
 data Place = Bilabial | LabioDental | Dental | Alveolar | PostAlveolar
            | Retroflex
@@ -118,6 +131,49 @@ analyzeIPA "ɭ"  = Consonant  Retroflex Voiced LateralApproximant PulmonicEgress
 analyzeIPA "ʎ"  = Consonant  Palatal Voiced LateralApproximant PulmonicEgressive
 analyzeIPA "ʟ"  = Consonant  Velar Voiced LateralApproximant PulmonicEgressive
 
+
+-- Close Vowels:
+analyzeIPA "i"  = Vowel  Close Front Unrounded
+analyzeIPA "y"  = Vowel  Close Front Rounded
+analyzeIPA "ɨ"  = Vowel  Close Central Unrounded
+analyzeIPA "ʉ"  = Vowel  Close Central Rounded
+analyzeIPA "ɯ"  = Vowel  Close Back Unrounded
+analyzeIPA "u"  = Vowel  Close Back Rounded
+
+-- Near-close Vowels:
+analyzeIPA "ɪ"  = Vowel NearClose Front Unrounded
+analyzeIPA "ʏ"  = Vowel NearClose Front Rounded
+analyzeIPA "ʊ"  = Vowel NearClose Back  Rounded
+
+-- Close-mid Vowels:
+analyzeIPA "e"  = Vowel  CloseMid Front Unrounded
+analyzeIPA "ø"  = Vowel  CloseMid Front Rounded
+analyzeIPA "ɘ"  = Vowel  CloseMid Central Unrounded
+analyzeIPA "ɵ"  = Vowel  CloseMid Central Rounded
+analyzeIPA "ɤ"  = Vowel  CloseMid Back Unrounded
+analyzeIPA "o"  = Vowel  CloseMid Back Rounded
+
+-- Mid Vowels:
+analyzeIPA "ə"  = Vowel Mid Central Unmarked
+
+
+-- Open-mid Vowels:
+analyzeIPA "ɛ"  = Vowel  OpenMid Front Unrounded
+analyzeIPA "œ"  = Vowel  OpenMid Front Rounded
+analyzeIPA "ɜ"  = Vowel  OpenMid Central Unrounded
+analyzeIPA "ɞ"  = Vowel  OpenMid Central Rounded
+analyzeIPA "ʌ"  = Vowel  OpenMid Back Unrounded
+analyzeIPA "ɔ"  = Vowel  OpenMid Back Rounded
+
+-- Near-open
+analyzeIPA "æ"  = Vowel  NearOpen Front Unrounded
+analyzeIPA "ɐ"  = Vowel NearOpen Central Unmarked
+
+-- Open Vowels:
+analyzeIPA "a"  = Vowel  Open Front Unrounded
+analyzeIPA "ɶ"  = Vowel  Open Front Rounded
+analyzeIPA "ɑ"  = Vowel  Open Back Unrounded
+analyzeIPA "ɒ"  = Vowel  Open Back Rounded
 
 
 -- | This is a list of the sounds of English. Just the basic ones.

@@ -45,13 +45,12 @@ code:
 
 You can then type in code like the following:
 
-`*Main Lib> map analyzeIPA ["l", "m", "n"]`
-
+`*Main> map analyzeIPA ["ð", "ə"]
+`
 And you get the following in response.
-`[Consonant {place = Alveolar, vocalFolds = Voiced, manner = LateralApproximant, airstream = PulmonicEgressive},`
-`Consonant {place = Bilabial, vocalFolds = Voiced, manner = Nasal, airstream = PulmonicEgressive},`
-`Consonant {place = Alveolar, vocalFolds= Voiced, manner = Nasal, airstream = PulmonicEgressive}]`
 
+`[Consonant {place = Dental, vocalFolds = Voiced, manner = Fricative, airstream = PulmonicEgressive},
+Vowel {height = Mid, backness = Central, rounding = Unmarked}]`
 
 
 To build (generates an executable file), use the following command:
