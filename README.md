@@ -53,6 +53,13 @@ And you get the following in response.
 Vowel {height = Mid, backness = Central, rounding = Unmarked}]`
 
 
+Then to go the other direction (to IPA symbols):
+
+`*Main> constructIPA (Consonant  Alveolar  Voiceless LateralApproximant PulmonicEgressive)`
+
+`"l"`
+
+
 To build (generates an executable file), use the following command:
 
 `stack build`
