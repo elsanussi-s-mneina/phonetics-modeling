@@ -358,6 +358,10 @@ voicedPhonet (Consonant x Voiced y z) = (Consonant x    Voiced y z)
 voicedPhonet (Vowel x y z Voiced) = (Vowel x y z        Voiced)
 voicedPhonet (Vowel x y z Voiceless) = (Vowel x y z     Voiced)
 
+voicedIPA :: IPAText -> IPAText
+voicedIPA = constructIPA . voicedPhonet . analyzeIPA
+
+
 devoicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
 devoicedPhonet (Consonant x Voiceless y z) = (Consonant x Voiceless y z)
@@ -365,13 +369,23 @@ devoicedPhonet (Consonant x Voiced y z) = (Consonant x    Voiceless y z)
 devoicedPhonet (Vowel x y z Voiced) = (Vowel x y z        Voiceless)
 devoicedPhonet (Vowel x y z Voiceless) = (Vowel x y z     Voiceless)
 
-
-
-voicedIPA :: IPAText -> IPAText
-voicedIPA = constructIPA . voicedPhonet . analyzeIPA
-
 devoicedIPA :: IPAText -> IPAText
 devoicedIPA = constructIPA . devoicedPhonet . analyzeIPA
+
+spirantizedPhonet :: Phonet -> Phonet
+spirantizedPhonet (Consonant x y Plosive z) | x /= Alveolar
+  = (Consonant x y Fricative z)
+
+-- The following is inelegant, but there is no other way in the system,
+-- right now.
+spirantizedPhonet (Consonant Alveolar x Plosive z) | otherwise =
+  (Consonant Dental x Fricative z)
+
+
+spirantizedIPA :: IPAText -> IPAText
+spirantizedIPA = constructIPA . spirantizedPhonet . analyzeIPA
+
+
 
 
 welcome :: IO ()
