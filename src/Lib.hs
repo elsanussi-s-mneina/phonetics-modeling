@@ -387,6 +387,15 @@ spirantizedIPA = constructIPA . spirantizedPhonet . analyzeIPA
 
 
 
+-- | Whether a phonet is in an intervocalic environment.
+-- | This means that there is a vowel directly before it,
+-- | and one after it.
+interVocalic :: Phonet  -- Before
+             -> Phonet  -- After
+             -> True
+interVocalic (Vowel _ _ _ _) (Vowel _ _ _ _) = True
+interVocalic _ _ = False
+
 
 welcome :: IO ()
 welcome = putStrLn "Please read README.md file for instructions on how to use."
