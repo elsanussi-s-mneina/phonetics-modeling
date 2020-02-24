@@ -41,6 +41,11 @@ data VocalFolds = Voiced | Voiceless
 
 data PhonetInventory = PhonetInventory [Phonet]
 
+
+instance Show PhonetInventory where
+    show (PhonetInventory phonetes) = foldr (++) "" (map constructIPA phonetes)
+
+
 type IPAText = String
   -- For storing text meant to be interpreted as International phonetic alphabet
 
@@ -247,7 +252,13 @@ constructIPA (Consonant  Alveolar Voiced    LateralFricative PulmonicEgressive) 
 
 -- Approximants:
 constructIPA (Consonant  LabioDental  Voiced Approximant PulmonicEgressive) = "ʋ"
-constructIPA (Consonant  PostAlveolar Voiced Approximant PulmonicEgressive) = "ɹ"
+constructIPA (Consonant  Alveolar Voiced Approximant PulmonicEgressive) = "ɹ"
+constructIPA (Consonant  PostAlveolar Voiced Approximant PulmonicEgressive) = "ɹ̠"
+
+  -- To do: find a way to express, ɹ̠ with multiple functions instead of
+  -- here as a single line, because this will not work for other underbar
+  -- phonemes.
+
 constructIPA (Consonant  Retroflex    Voiced Approximant PulmonicEgressive) = "ɻ"
 constructIPA (Consonant  Palatal      Voiced Approximant PulmonicEgressive) = "j"
 constructIPA (Consonant  LabialVelar  Voiced Approximant PulmonicEgressive) = "w"
@@ -307,8 +318,12 @@ constructIPA (Vowel  Open Back  Rounded   Voiced) = "ɒ"
 -- and then put that diacritic that means voiceless after.
 -- \805 is the code for that small circle diacritic that goes under
 -- a character to mean voiceless. See https://linguistlist.org/unicode/ipa.html
+
+-- Add the small circle diacritic to consonants to make them voiceless.
 constructIPA (Consonant  x Voiceless y z) =
   constructIPA (Consonant x Voiced y z) ++ "\805"
+
+-- Add the small circle diacritic to vowels to make them voiceless.
 constructIPA (Vowel x y z Voiceless) =
     constructIPA (Vowel x y z Voiced) ++ "\805"
 
@@ -341,11 +356,67 @@ englishPhonetInventory = PhonetInventory
   Consonant  Bilabial Voiced Nasal PulmonicEgressive,
   Consonant  Alveolar Voiced Nasal PulmonicEgressive,
   Consonant  Velar Voiced Nasal PulmonicEgressive,
-  Consonant  Alveolar Voiced Approximant PulmonicEgressive,
+  Consonant  Alveolar Voiced Approximant PulmonicEgressive, -- This line should probably be removed.
+  -- The Postalveolar version is technically correct, even though the convention
+  -- is to write it in IPA as if it were alveolar. See
+  -- Wikipedia article titled "Voiced alveolar and postalveolar approximants"
+  -- at the following URL:
+  -- https://en.wikipedia.org/wiki/Voiced_alveolar_and_postalveolar_approximants
   Consonant  PostAlveolar Voiced Approximant PulmonicEgressive,
   Consonant  Palatal Voiced Approximant PulmonicEgressive,
-  Consonant  LabialVelar Voiced Approximant PulmonicEgressive
-  -- We need to add the English vowels here.
+  Consonant  LabialVelar Voiced Approximant PulmonicEgressive,
+
+
+
+  Vowel  Close Front   Unrounded Voiced, -- "i"
+  -- English lacks the following vowel: (Vowel  Close Front   Rounded   Voiced) "y"
+  -- English lacks (Vowel  Close Central Unrounded Voiced) "ɨ"
+  -- constructIPA (Vowel  Close Central Rounded   Voiced) = "ʉ"
+  -- English lacks constructIPA (Vowel  Close Back    Unrounded Voiced) = "ɯ"
+  Vowel  Close Back    Rounded   Voiced, -- "u"
+
+  -- Near-close Vowels:
+  Vowel NearClose Front Unrounded Voiced, -- "ɪ"
+  -- English lacks: constructIPA (Vowel NearClose Front Rounded   Voiced) = "ʏ"
+  Vowel NearClose Back  Rounded   Voiced, --  "ʊ"
+
+  -- Close-mid Vowels:
+  Vowel  CloseMid Front   Unrounded Voiced, -- "e"
+  -- English lacks:  Vowel  CloseMid Front   Rounded   Voiced -- "ø"
+  -- English lacks:  Vowel  CloseMid Central Unrounded Voiced -- "ɘ"
+  -- English lacks: Vowel  CloseMid Central Rounded   Voiced --  "ɵ"
+  -- English lacks:  Vowel  CloseMid Back    Unrounded Voiced --  "ɤ"
+  Vowel  CloseMid Back    Rounded   Voiced, -- "o"
+
+  -- Mid Vowels:
+  Vowel Mid Central Unmarked Voiced, -- "ə"
+
+
+  -- Open-mid Vowels:
+  Vowel  OpenMid Front   Unrounded Voiced, -- "ɛ"
+  -- English lacks: constructIPA (Vowel  OpenMid Front   Rounded   Voiced) = "œ"
+  Vowel  OpenMid Central Unrounded Voiced, -- "ɜ"
+  --  Vowel  OpenMid Central Rounded   Voiced -- "ɞ"
+  Vowel  OpenMid Back    Unrounded Voiced, --  "ʌ"
+  Vowel  OpenMid Back    Rounded   Voiced, -- "ɔ"
+
+  -- Near-open
+  Vowel  NearOpen Front   Unrounded Voiced, -- "æ"
+  Vowel  NearOpen Central Unmarked  Voiced, -- "ɐ"
+
+  -- Open Vowels:
+  -- English lacks: Vowel  Open Front Unrounded Voiced -- "a"
+  -- English lacks: Vowel  Open Front Rounded   Voiced --"ɶ"
+  Vowel  Open Back  Unrounded Voiced, -- "ɑ"
+  Vowel  Open Back  Rounded   Voiced -- "ɒ"
+
+  -- I added some English vowels. I did not choose any specific dialect.
+  -- I got all my information from the Wikipedia page titled
+  -- "English Phonology"
+  -- at the following URL: https://en.wikipedia.org/wiki/English_phonology#Vowels
+  -- on Monday, February 24, 2020.
+  -- To do: Get better information on English vowels from a more reliable source.
+  -- To do: model separate dialects of English or only one.
   ]
 
 
@@ -392,7 +463,7 @@ spirantizedIPA = constructIPA . spirantizedPhonet . analyzeIPA
 -- | and one after it.
 interVocalic :: Phonet  -- Before
              -> Phonet  -- After
-             -> True
+             -> Bool
 interVocalic (Vowel _ _ _ _) (Vowel _ _ _ _) = True
 interVocalic _ _ = False
 

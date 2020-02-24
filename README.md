@@ -74,6 +74,14 @@ To go from voiceless to voiced (from IPA symbol to IPA symbol):
 `"s"`
 
 
+To show the English phoneme inventory:
+
+`*Main Lib> englishPhonetInventory`
+
+`bpdtgkʔvfðθzsʒʃhdʒtʃmnŋɹjwiuɪʊeoəɛɜʌɔæɐɑɒ`
+
+
+
 
 To build (generates an executable file), use the following command:
 
