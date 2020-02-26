@@ -253,7 +253,6 @@ constructIPA (Consonant  Alveolar Voiced    LateralFricative PulmonicEgressive) 
 -- Approximants:
 constructIPA (Consonant  LabioDental  Voiced Approximant PulmonicEgressive) = "ʋ"
 constructIPA (Consonant  Alveolar Voiced Approximant PulmonicEgressive) = "ɹ"
-constructIPA (Consonant  PostAlveolar Voiced Approximant PulmonicEgressive) = "ɹ̠"
 
   -- To do: find a way to express, ɹ̠ with multiple functions instead of
   -- here as a single line, because this will not work for other underbar
@@ -318,7 +317,7 @@ constructIPA (Vowel  Open Back  Rounded   Voiced) = "ɒ"
 -- and then put that diacritic that means voiceless after.
 -- \805 is the code for that small circle diacritic that goes under
 -- a character to mean voiceless. See https://linguistlist.org/unicode/ipa.html
-
+-- (The following two definitions are intended to implmeent that)
 -- Add the small circle diacritic to consonants to make them voiceless.
 constructIPA (Consonant  x Voiceless y z) =
   constructIPA (Consonant x Voiced y z) ++ "\805"
@@ -326,6 +325,11 @@ constructIPA (Consonant  x Voiceless y z) =
 -- Add the small circle diacritic to vowels to make them voiceless.
 constructIPA (Vowel x y z Voiceless) =
     constructIPA (Vowel x y z Voiced) ++ "\805"
+
+
+constructIPA (Consonant  PostAlveolar x y z) =
+    constructIPA (Consonant Alveolar x y z) ++ "̠"
+
 
 -- | This is a list of the sounds of English. Just the basic ones.
 -- | It is somewhat more complicated in reality, but for now this will
