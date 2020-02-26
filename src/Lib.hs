@@ -478,10 +478,8 @@ voicedIPA = constructIPA . voicedPhonet . analyzeIPA
 
 devoicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
-devoicedPhonet (Consonant Voiceless x  y z) = (Consonant Voiceless x  y z)
-devoicedPhonet (Consonant Voiced x y z) = (Consonant Voiceless x y z)
-devoicedPhonet (Vowel x y z Voiced) = (Vowel x y z        Voiceless)
-devoicedPhonet (Vowel x y z Voiceless) = (Vowel x y z     Voiceless)
+devoicedPhonet (Consonant _ x  y z) = (Consonant Voiceless x  y z)
+devoicedPhonet (Vowel x y z _) = (Vowel x y z        Voiceless)
 
 devoicedIPA :: IPAText -> IPAText
 devoicedIPA = constructIPA . devoicedPhonet . analyzeIPA
