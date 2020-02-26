@@ -1,6 +1,6 @@
 module Lib where
 
-data Phonet = Consonant { places :: Place   -- | Place of articulation
+data Phonet = Consonant { place :: Place   -- | Place of articulation
                         , vocalFolds :: VocalFolds
                         , manner :: Manner -- | Manner of articulation
                         , airstream :: Airstream
