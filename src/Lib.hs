@@ -1,6 +1,6 @@
 module Lib where
 
-data Phonet = Consonant { place :: Place   -- | Place of articulation
+data Phonet = Consonant { places :: Place   -- | Place of articulation
                         , vocalFolds :: VocalFolds
                         , manner :: Manner -- | Manner of articulation
                         , airstream :: Airstream
@@ -12,18 +12,24 @@ data Phonet = Consonant { place :: Place   -- | Place of articulation
                     }
                     deriving (Eq, Show)
 
-data Backness = Front | Central | Back
+data Backness = Front | Central | Back | UnmarkedBackness
                 deriving (Eq, Show)
-data Height = Close | NearClose | CloseMid | Mid | OpenMid | NearOpen | Open
+data Height = Close | NearClose | CloseMid | Mid | OpenMid | NearOpen | Open | UnmarkedHeight
               deriving (Eq, Show)
-data TenseLax = Tense | Lax
+data TenseLax = Tense | Lax | UnmarkedTenseness
                 deriving (Eq, Show)
-data Rounding = Rounded | Unrounded | Unmarked
+data Rounding = Rounded | Unrounded | UnmarkedRounding
                 deriving (Eq, Show)
 
 data Place = Bilabial | LabioDental | Dental | Alveolar | PostAlveolar
            | Retroflex
-           | Palatal  | Velar  | Uvular | Pharyngeal | Glottal | LabialVelar
+           | Palatal  | Velar  | Uvular | Pharyngeal | Glottal | Epiglottal
+           -- I am unsure if the following three should be counted
+           -- as 6 different places of articulation, or just 3
+           | LabialVelar | LabialPalatal | AlveoloPalatal
+           | PalatoAlveolar  -- To do: investigate what the difference
+           -- is between alveolopalatal, and palatoalveolar
+           | UnmarkedPlace
            deriving (Eq, Show)
 
 data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
@@ -31,12 +37,15 @@ data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
                            -- want to remove it.
               | LateralFricative
               | LateralApproximant
+              | LateralFlap
+              | Lateral -- we need this one for the lateral click.
+              | UnmarkedManner -- There are very few IPA symbols for lateral flaps
               deriving (Eq, Show)
 
-data Airstream = PulmonicEgressive
+data Airstream = PulmonicEgressive | Click | Implosive | UnmarkedAirstream
                  deriving (Eq, Show)
 
-data VocalFolds = Voiced | Voiceless
+data VocalFolds = Voiced | Voiceless | UnmarkedVocalFolds
                   deriving (Eq, Show)
 
 data PhonetInventory = PhonetInventory [Phonet]
@@ -125,7 +134,6 @@ analyzeIPA "ʋ"  = Consonant  LabioDental Voiced Approximant PulmonicEgressive
 analyzeIPA "ɹ"  = Consonant  PostAlveolar Voiced Approximant PulmonicEgressive
 analyzeIPA "ɻ"  = Consonant  Retroflex Voiced Approximant PulmonicEgressive
 analyzeIPA "j"  = Consonant  Palatal Voiced Approximant PulmonicEgressive
-analyzeIPA "w"  = Consonant  LabialVelar Voiced Approximant PulmonicEgressive
 analyzeIPA "ɰ"  = Consonant  Velar Voiced Approximant PulmonicEgressive
 
 -- Lateral Approximants:
@@ -134,6 +142,37 @@ analyzeIPA "ɭ"  = Consonant  Retroflex Voiced LateralApproximant PulmonicEgress
 analyzeIPA "ʎ"  = Consonant  Palatal Voiced LateralApproximant PulmonicEgressive
 analyzeIPA "ʟ"  = Consonant  Velar Voiced LateralApproximant PulmonicEgressive
 
+
+-- Under the Other Symbols part of the IPA chart:
+
+analyzeIPA "w"  = Consonant  LabialVelar Voiced Approximant PulmonicEgressive
+
+analyzeIPA "ʍ" = Consonant LabialVelar Voiceless Fricative PulmonicEgressive
+analyzeIPA "ɥ" = Consonant LabialPalatal Voiced Approximant PulmonicEgressive
+analyzeIPA "ʜ" = Consonant Epiglottal Voiceless Fricative PulmonicEgressive
+analyzeIPA "ʢ" = Consonant Epiglottal Voiced Fricative PulmonicEgressive
+analyzeIPA "ʡ" = Consonant Epiglottal Voiceless Plosive PulmonicEgressive
+-- Is the epiglottal plosive voiceless? The IPA chart does not specify.
+
+analyzeIPA "ɕ" = Consonant AlveoloPalatal Voiceless Fricative PulmonicEgressive
+analyzeIPA "ʑ" = Consonant AlveoloPalatal Voiced Fricative PulmonicEgressive
+analyzeIPA "ɺ" = Consonant Alveolar Voiced LateralFlap PulmonicEgressive
+
+-- We cannot handle the ɧ (simultaneous ʃ and x) because
+-- we did not define our data types to handle it yet.
+-- analyzeIPA "ɧ" = simultaneous (analyzeIPA "ʃ") (analyzeIPA "x")
+
+-- Other Consonants:
+analyzeIPA "ʘ" = Consonant Bilabial UnmarkedVocalFolds UnmarkedManner Click
+analyzeIPA "ǀ" = Consonant Dental UnmarkedVocalFolds UnmarkedManner  Click
+analyzeIPA "ǃ" = Consonant Alveolar UnmarkedVocalFolds UnmarkedManner Click -- Or it could be PostAlveolar.
+analyzeIPA "ǂ" = Consonant PalatoAlveolar UnmarkedVocalFolds UnmarkedManner Click
+analyzeIPA "ǁ" = Consonant Alveolar UnmarkedVocalFolds Lateral Click
+analyzeIPA "ɓ" = Consonant Bilabial Voiced UnmarkedManner Implosive
+analyzeIPA "ɗ" = Consonant Dental Voiced UnmarkedManner Implosive  -- Or Alveolar
+analyzeIPA "ʄ" = Consonant Palatal Voiced UnmarkedManner Implosive
+analyzeIPA "ɠ" = Consonant Velar Voiced UnmarkedManner Implosive
+analyzeIPA "ʛ" = Consonant Uvular Voiced UnmarkedManner Implosive
 
 -- Close Vowels:
 analyzeIPA "i"  = Vowel  Close Front   Unrounded Voiced
@@ -157,7 +196,7 @@ analyzeIPA "ɤ"  = Vowel  CloseMid Back    Unrounded Voiced
 analyzeIPA "o"  = Vowel  CloseMid Back    Rounded   Voiced
 
 -- Mid Vowels:
-analyzeIPA "ə"  = Vowel Mid Central Unmarked Voiced
+analyzeIPA "ə"  = Vowel Mid Central UnmarkedRounding Voiced
 
 
 -- Open-mid Vowels:
@@ -170,7 +209,7 @@ analyzeIPA "ɔ"  = Vowel  OpenMid Back    Rounded   Voiced
 
 -- Near-open
 analyzeIPA "æ"  = Vowel  NearOpen Front   Unrounded Voiced
-analyzeIPA "ɐ"  = Vowel  NearOpen Central Unmarked  Voiced
+analyzeIPA "ɐ"  = Vowel  NearOpen Central UnmarkedRounding  Voiced
 
 -- Open Vowels:
 analyzeIPA "a"  = Vowel  Open Front Unrounded Voiced
@@ -291,7 +330,7 @@ constructIPA (Vowel  CloseMid Back    Unrounded Voiced) = "ɤ"
 constructIPA (Vowel  CloseMid Back    Rounded   Voiced) = "o"
 
 -- Mid Vowels:
-constructIPA (Vowel Mid Central Unmarked Voiced) = "ə"
+constructIPA (Vowel Mid Central UnmarkedRounding Voiced) = "ə"
 
 
 -- Open-mid Vowels:
@@ -304,7 +343,7 @@ constructIPA (Vowel  OpenMid Back    Rounded   Voiced) = "ɔ"
 
 -- Near-open
 constructIPA (Vowel  NearOpen Front   Unrounded Voiced) = "æ"
-constructIPA (Vowel  NearOpen Central Unmarked  Voiced) = "ɐ"
+constructIPA (Vowel  NearOpen Central UnmarkedRounding  Voiced) = "ɐ"
 
 -- Open Vowels:
 constructIPA (Vowel  Open Front Unrounded Voiced) = "a"
@@ -393,7 +432,7 @@ englishPhonetInventory = PhonetInventory
   Vowel  CloseMid Back    Rounded   Voiced, -- "o"
 
   -- Mid Vowels:
-  Vowel Mid Central Unmarked Voiced, -- "ə"
+  Vowel Mid Central UnmarkedRounding Voiced, -- "ə"
 
 
   -- Open-mid Vowels:
@@ -406,7 +445,7 @@ englishPhonetInventory = PhonetInventory
 
   -- Near-open
   Vowel  NearOpen Front   Unrounded Voiced, -- "æ"
-  Vowel  NearOpen Central Unmarked  Voiced, -- "ɐ"
+  Vowel  NearOpen Central UnmarkedRounding  Voiced, -- "ɐ"
 
   -- Open Vowels:
   -- English lacks: Vowel  Open Front Unrounded Voiced -- "a"
