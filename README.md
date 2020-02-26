@@ -49,14 +49,12 @@ You can then type in code like the following (starting after the ">"):
 `
 And you get the following in response.
 
-`[Consonant {place = Dental, vocalFolds = Voiced, manner = Fricative, airstream = PulmonicEgressive},Vowel {height = Mid, backness = Central, rounding = Unmarked, vocalFolds = Voiced}]`
+`[Consonant {vocalFolds = Voiced, place = Dental, manner = Fricative, airstream = PulmonicEgressive},Vowel {height = Mid, backness = Central, rounding = UnmarkedRounding, vocalFolds = Voiced}]`
 
 
 Then to go the other direction (to IPA symbols):
 
-`*Main> putStrLn $ constructIPA (Consonant  Alveolar  Voiceless LateralApproximant PulmonicEgressive)
-`
-
+`*Main> putStrLn $ constructIPA (Consonant Voiceless Alveolar LateralApproximant PulmonicEgressive)`
 
 `l̥`
 
