@@ -77,9 +77,7 @@ To show the English phoneme inventory:
 
 `*Main Lib> englishPhonetInventory`
 
-`bpdtgkʔvfðθzsʒʃhdʒtʃmnŋɹɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
-
-
+`bpdtgkʔvfðθzsʒʃhdʒtʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
 
 
 To build (generates an executable file), use the following command:

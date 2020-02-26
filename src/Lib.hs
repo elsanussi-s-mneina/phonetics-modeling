@@ -400,7 +400,6 @@ englishPhonetInventory = PhonetInventory
   Consonant  Voiced    Bilabial      Nasal PulmonicEgressive,
   Consonant  Voiced    Alveolar      Nasal PulmonicEgressive,
   Consonant  Voiced    Velar         Nasal PulmonicEgressive,
-  Consonant  Voiced    Alveolar      Approximant PulmonicEgressive, -- This line should probably be removed.
   -- The Postalveolar version is technically correct, even though the convention
   -- is to write it in IPA as if it were alveolar. See
   -- Wikipedia article titled "Voiced alveolar and postalveolar approximants"
