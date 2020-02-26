@@ -54,23 +54,25 @@ And you get the following in response.
 
 Then to go the other direction (to IPA symbols):
 
-`*Main> constructIPA (Consonant  Alveolar  Voiceless LateralApproximant PulmonicEgressive)`
+`*Main> putStrLn $ constructIPA (Consonant  Alveolar  Voiceless LateralApproximant PulmonicEgressive)
+`
 
-`"l\805"`
+
+`l̥`
 
 
 
 
 To go from voiceless to voiced (from IPA symbol to IPA symbol):
 
-`*Main> voicedIPA "s"`
+`*Main> putStrLn $ voicedIPA "s"`
 
-`"z"`
+`z`
 
 
-`*Main> devoicedIPA "z"`
+`*Main> putStrLn $ devoicedIPA "z"`
 
-`"s"`
+`s`
 
 
 To show the English phoneme inventory:
