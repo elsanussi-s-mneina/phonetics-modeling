@@ -49,15 +49,14 @@ You can then type in code like the following (starting after the ">"):
 `
 And you get the following in response.
 
-`[Consonant {place = Dental, vocalFolds = Voiced, manner = Fricative, airstream = PulmonicEgressive},
-Vowel {height = Mid, backness = Central, rounding = Unmarked}]`
+`[Consonant {place = Dental, vocalFolds = Voiced, manner = Fricative, airstream = PulmonicEgressive},Vowel {height = Mid, backness = Central, rounding = Unmarked, vocalFolds = Voiced}]`
 
 
 Then to go the other direction (to IPA symbols):
 
 `*Main> constructIPA (Consonant  Alveolar  Voiceless LateralApproximant PulmonicEgressive)`
 
-`"l"`
+`"l\805"`
 
 
 
@@ -78,7 +77,7 @@ To show the English phoneme inventory:
 
 `*Main Lib> englishPhonetInventory`
 
-`bpdtgkʔvfðθzsʒʃhdʒtʃmnŋɹjwiuɪʊeoəɛɜʌɔæɐɑɒ`
+`bpdtgkʔvfðθzsʒʃhdʒtʃmnŋɹɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
 
 
 
