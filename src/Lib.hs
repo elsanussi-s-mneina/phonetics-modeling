@@ -52,7 +52,7 @@ data PhonetInventory = PhonetInventory [Phonet]
 
 
 instance Show PhonetInventory where
-    show (PhonetInventory phonetes) = foldr (++) "" (map constructIPA phonetes)
+    show (PhonetInventory phonetes) = concatMap constructIPA phonetes
 
 
 type IPAText = String
@@ -121,8 +121,8 @@ analyzeIPA "h"  = Consonant  Voiceless Glottal Fricative PulmonicEgressive
 analyzeIPA "ɦ"  = Consonant  Voiced Glottal Fricative PulmonicEgressive
 
 -- Affricates
-analyzeIPA "tʃ" = Consonant  Voiceless PostAlveolar Affricate PulmonicEgressive
-analyzeIPA "dʒ" = Consonant  Voiced PostAlveolar Affricate PulmonicEgressive
+analyzeIPA "t͡ʃ" = Consonant  Voiceless PostAlveolar Affricate PulmonicEgressive
+analyzeIPA "d͡ʒ" = Consonant  Voiced PostAlveolar Affricate PulmonicEgressive
 -- We should probably enforce use of the tie-bar underneath, otherwise
 -- it would not be deterministic to determine whether two graphemes here
 -- represent affricates or a plosive followed by a fricative.
@@ -282,8 +282,9 @@ constructIPA (Consonant  Voiceless Glottal        Fricative      PulmonicEgressi
 constructIPA (Consonant  Voiced    Glottal        Fricative         PulmonicEgressive) = "ɦ"
 
 -- Affricates
-constructIPA (Consonant  Voiceless PostAlveolar  Affricate PulmonicEgressive) = "tʃ"
-constructIPA (Consonant  Voiced    PostAlveolar  Affricate PulmonicEgressive) = "dʒ"
+constructIPA (Consonant  Voiceless PostAlveolar  Affricate PulmonicEgressive) = "t͡ʃ"
+constructIPA (Consonant  Voiced    PostAlveolar  Affricate PulmonicEgressive) = "d͡ʒ"
+
 
 -- Lateral Fricatives:
 constructIPA (Consonant  Voiceless Alveolar LateralFricative PulmonicEgressive) = "ɬ"
