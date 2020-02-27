@@ -499,6 +499,29 @@ spirantizedIPA :: IPAText -> IPAText
 spirantizedIPA = constructIPA . spirantizedPhonet . analyzeIPA
 
 
+unmarkDifferences :: Phonet -> Phonet -> Phonet
+unmarkDifferences (Consonant voice1 place1 manner1 airstream1) (Consonant voice2 place2 manner2 airstream2)= 
+  let voice'     = if voice1     == voice2     then voice1     else UnmarkedVocalFolds
+      place'     = if place1     == place2     then place1     else UnmarkedPlace
+      manner'    = if manner1    == manner2    then manner1    else UnmarkedManner
+      airstream' = if airstream1 == airstream2 then airstream1 else UnmarkedAirstream
+  in Consonant voice' place' manner' airstream'
+
+unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 backness2 rounding2 voice2) = 
+  let voice'    = if voice1    == voice2    then voice1    else UnmarkedVocalFolds
+      height'   = if height1   == height2   then height1   else UnmarkedHeight
+      backness' = if backness1 == backness2 then backness1 else UnmarkedBackness
+      rounding' = if rounding1 == rounding2 then rounding1 else UnmarkedRounding
+  in Vowel height' backness' rounding' voice'
+
+unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) = 
+  let voice' = if voice1 == voice2 then voice1 else UnmarkedVocalFolds
+  in (Vowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice')
+
+
+unmarkDifferences (Consonant voice2 place2 manner2 airstream2) (Vowel height1 backness1 rounding1 voice1) =
+  unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) 
+
 
 -- | Whether a phonet is in an intervocalic environment.
 -- | This means that there is a vowel directly before it,

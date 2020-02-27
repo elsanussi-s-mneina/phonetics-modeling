@@ -80,6 +80,14 @@ To show the English phoneme inventory:
 `bpdtgkʔvfðθzsʒʃhdʒtʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
 
 
+To show where two consonants differ in their properties (not SPE features, because are not implemented yet):
+
+`unmarkDifferences (Consonant Voiced Alveolar Fricative PulmonicEgressive) (Consonant Voiced Palatal Fricative PulmonicEgressive)`
+
+`Consonant {vocalFolds = Voiced, place = UnmarkedPlace, manner = Fricative, airstream = PulmonicEgressive}`
+
+
+
 To build (generates an executable file), use the following command:
 
 `stack build`
