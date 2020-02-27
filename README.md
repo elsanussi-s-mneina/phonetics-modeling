@@ -72,8 +72,12 @@ To go from voiceless to voiced (from IPA symbol to IPA symbol):
 
 `s`
 
+`*Main> putStrLn $ voicedIPA "ʔ"`
 
-To show the English phoneme inventory:
+`ʔ̼`
+
+
+`To show the English phoneme inventory:`
 
 `*Main Lib> englishPhonetInventory`
 
