@@ -4,16 +4,15 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 10b8f7ffdb95bf33f2a08f4d5513b8d2638bed98b3bf1dd3645464e770a3068e
+-- hash: cdf1d573da70bb3b3af76472998df013ee93c485f6cfe920046387a3781f7905
 
 name:           phonetics-modeling
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/phonetics-modeling#readme>
 homepage:       https://github.com/githubuser/phonetics-modeling#readme
 bug-reports:    https://github.com/githubuser/phonetics-modeling/issues
-author:         Elsanussi Mneina
-maintainer:     elsanussi-s-mneina (on Github)
-copyright:      2019 Elsanussi Mneina
+author:         Elsanussi S. Mneina
+copyright:      2019 Elsanussi S. Mneina
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple
@@ -55,8 +54,9 @@ test-suite phonetics-modeling-test
       Paths_phonetics_modeling
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Spec
   build-depends:
       base >=4.7 && <5
+    , hspec
     , phonetics-modeling
   default-language: Haskell2010
