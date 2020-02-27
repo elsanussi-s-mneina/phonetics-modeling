@@ -43,7 +43,7 @@ code:
 `stack -- ghci`
 
 
-You can then type in code like the following (starting after the ">"):
+You can then type in code like the following (starting after the ">", you do not have to type the part before the first ">" symbol on each line.):
 
 `*Main> map analyzeIPA ["ð", "ə"]
 `
@@ -87,6 +87,23 @@ To show where two consonants differ in their properties (not SPE features, becau
 `Consonant {vocalFolds = Voiced, place = UnmarkedPlace, manner = Fricative, airstream = PulmonicEgressive}`
 
 
+To list all the fricatives in IPA:
+
+Type the following line to define the fricatives:
+
+`*Main Lib> fricatives = generateFromUnmarked (Consonant UnmarkedVocalFolds UnmarkedPlace Fricative PulmonicEgressive)`
+
+Type the following to print out the fricatives together:
+
+`*Main Lib> putStrLn $ concatMap constructIPA fricatives`
+
+
+`ɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦ0̥00̥00̥00̥00̥0`
+
+Note: that the strange zero like symbols at the end represent phones 
+that do not have IPA graphemes for the purposes of this program until I can
+fix it to provide more useful output. This is not a conventional use of this symbol
+for Linguistics!
 
 To build (generates an executable file), use the following command:
 

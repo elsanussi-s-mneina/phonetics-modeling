@@ -85,7 +85,7 @@ data VocalFolds = Voiced | Voiceless | UnmarkedVocalFolds
 
 
 vocalFoldStates :: [VocalFolds]
-vocalFoldStates = [Voiced, Voiceless]
+vocalFoldStates = [Voiceless, Voiced]
 
 data PhonetInventory = PhonetInventory [Phonet]
 
@@ -580,7 +580,7 @@ generateFromUnmarked (Consonant voice place manner airstream) =
       place'     = if place     == UnmarkedPlace          then placeStates     else [place]
       manner'    = if manner    == UnmarkedManner         then mannerStates    else [manner]
       airstream' = if airstream == UnmarkedAirstream      then airstreamStates else [airstream]
-  in [Consonant v p m a | v <- voice', p <- place', m <- manner', a <- airstream']
+  in [Consonant v p m a | p <- place', v <- voice',  m <- manner', a <- airstream']
 
 generateFromUnmarked (Vowel height backness rounding voice) = 
   let voice'    = if voice    == UnmarkedVocalFolds    then vocalFoldStates else [voice]
