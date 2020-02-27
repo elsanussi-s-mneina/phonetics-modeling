@@ -16,5 +16,7 @@ glideSpec :: Spec
 glideSpec =
   do
   describe "isGlide" $ do
-    it "should return True when given [j] the voiced alveolar approximant " $
+    it "should return true when given [j] the voiced palatal approximant" $
           isGlide (analyzeIPA "j") `shouldBe` True
+    it "should return false when given [ʝ] the voiced palatal fricative" $
+          isGlide (analyzeIPA "ʝ") `shouldBe` False
