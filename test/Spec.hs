@@ -7,14 +7,12 @@ import Lib(isGlide, analyzeIPA)
 
 main :: IO ()
 main =
-  do
   hspec glideSpec
 
 
 
 glideSpec :: Spec
 glideSpec =
-  do
   describe "isGlide" $ do
     it "should return true when given [j] the voiced palatal approximant" $
           isGlide (analyzeIPA "j") `shouldBe` True
