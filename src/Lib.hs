@@ -400,11 +400,11 @@ constructIPA (Vowel  Open Back  Rounded   Voiced) = "ɒ"
 -- (The following two definitions are intended to implmeent that)
 -- Add the small circle diacritic to consonants to make them voiceless.
 constructIPA (Consonant Voiceless x y z) =
-  constructIPA (Consonant Voiced x y z) ++ "\805" -- add diacritic for voiceless
+  constructIPA (Consonant Voiced x y z) ++ "̥" -- add diacritic for voiceless
 
 -- Add the small circle diacritic to vowels to make them voiceless.
 constructIPA (Vowel x y z Voiceless) =
-    constructIPA (Vowel x y z Voiced) ++ "\805"
+    constructIPA (Vowel x y z Voiced) ++ "̥"
 
 -- If there is no way to express a voiced consonant in a single
 -- grapheme add a diacritic to the grapheme that represents
