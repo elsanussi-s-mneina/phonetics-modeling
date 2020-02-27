@@ -261,23 +261,23 @@ analyzeIPA "ɒ"  = Vowel  Open Back  Rounded   Voiced
 
 
 -- Handle Diacritics:
-analyzeIPA [firstChar, '̥'] = 
+analyzeIPA [firstChar, '̥'] =
   let fullGrapheme = analyzeIPA [firstChar]
-  in case fullGrapheme of 
+  in case fullGrapheme of
           Consonant _ place manner airstream    -> Consonant Voiceless place manner airstream
           Vowel height backness rounding _      -> Vowel height backness rounding Voiceless
 
-analyzeIPA [firstChar, '̼'] = 
+analyzeIPA [firstChar, '̼'] =
   let fullGrapheme = analyzeIPA [firstChar]
-  in case fullGrapheme of 
+  in case fullGrapheme of
           Consonant _ place manner airstream    -> Consonant Voiced place manner airstream
           Vowel height backness rounding _      -> Vowel height backness rounding Voiced
 
 
 constructIPA :: Phonet -> IPAText
-constructIPA phoneDescription = 
+constructIPA phoneDescription =
   -- If it can represent it as a single character it will
-  -- return the single character result (i.e. without diacritics), 
+  -- return the single character result (i.e. without diacritics),
   -- otherwise
   -- it will try to represent it in IPA with more than
   -- one character
@@ -296,7 +296,7 @@ constructIPA phoneDescription =
 -- | given an analysis construct an IPA symbol
 -- | This function will allow us to convert an analyzed form
 -- | to its IPA symbol.
--- | Note this only returns one character without diacritics. 
+-- | Note this only returns one character without diacritics.
 constructIPA1  ::  Phonet -> IPAText
 -- Plosives:
 constructIPA1 (Consonant  Voiced    Bilabial  Plosive PulmonicEgressive) = "b"
@@ -484,7 +484,7 @@ constructIPA2 (Consonant Voiced x y z) =
 
 constructIPA2 (Vowel x y z Voiced) =
   constructIPA1 (Vowel x y z Voiceless) ++ "̼"
- 
+
 
 constructIPA2 (Consonant  x PostAlveolar y z) =
     constructIPA1 (Consonant x Alveolar y z) ++ "̠"  -- Add the diacritic for "retracted"
@@ -626,27 +626,27 @@ spirantizedIPA = constructIPA . spirantizedPhonet . analyzeIPA
 
 
 unmarkDifferences :: Phonet -> Phonet -> Phonet
-unmarkDifferences (Consonant voice1 place1 manner1 airstream1) (Consonant voice2 place2 manner2 airstream2)= 
+unmarkDifferences (Consonant voice1 place1 manner1 airstream1) (Consonant voice2 place2 manner2 airstream2)=
   let voice'     = if voice1     == voice2     then voice1     else UnmarkedVocalFolds
       place'     = if place1     == place2     then place1     else UnmarkedPlace
       manner'    = if manner1    == manner2    then manner1    else UnmarkedManner
       airstream' = if airstream1 == airstream2 then airstream1 else UnmarkedAirstream
   in Consonant voice' place' manner' airstream'
 
-unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 backness2 rounding2 voice2) = 
+unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 backness2 rounding2 voice2) =
   let voice'    = if voice1    == voice2    then voice1    else UnmarkedVocalFolds
       height'   = if height1   == height2   then height1   else UnmarkedHeight
       backness' = if backness1 == backness2 then backness1 else UnmarkedBackness
       rounding' = if rounding1 == rounding2 then rounding1 else UnmarkedRounding
   in Vowel height' backness' rounding' voice'
 
-unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) = 
+unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) =
   let voice' = if voice1 == voice2 then voice1 else UnmarkedVocalFolds
   in Vowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
 
 unmarkDifferences (Consonant voice2 place2 manner2 airstream2) (Vowel height1 backness1 rounding1 voice1) =
-  unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) 
+  unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2)
 
 
 
@@ -654,14 +654,14 @@ unmarkDifferences (Consonant voice2 place2 manner2 airstream2) (Vowel height1 ba
 -- takes any unmarked attributes in the phoneme definition,
 -- and returns a list with all possibilities for that attribute.
 generateFromUnmarked :: Phonet -> [Phonet]
-generateFromUnmarked (Consonant voice place manner airstream) = 
+generateFromUnmarked (Consonant voice place manner airstream) =
   let voice'     = if voice     == UnmarkedVocalFolds     then vocalFoldStates else [voice]
       place'     = if place     == UnmarkedPlace          then placeStates     else [place]
       manner'    = if manner    == UnmarkedManner         then mannerStates    else [manner]
       airstream' = if airstream == UnmarkedAirstream      then airstreamStates else [airstream]
   in [Consonant v p m a | p <- place', v <- voice',  m <- manner', a <- airstream']
 
-generateFromUnmarked (Vowel height backness rounding voice) = 
+generateFromUnmarked (Vowel height backness rounding voice) =
   let voice'    = if voice    == UnmarkedVocalFolds    then vocalFoldStates else [voice]
       height'   = if height   == UnmarkedHeight        then heightStates   else [height]
       backness' = if backness == UnmarkedBackness      then backnessStates else [backness]
@@ -707,7 +707,7 @@ welcome = putStrLn "Please read README.md file for instructions on how to use."
 -- Go to Section 12.2 of the textbook.
 
 data BinaryFeatures = SyllabicFeature | ConsonantalFeature | SonorantFeature | ContinuantFeature | VoiceFeature
-data UnaryFeatures = NasalFeature | LateralFeature | DelayedReleaseFeature | SpreadGlottisFeature | ConstrictedGlottisFeature 
+data UnaryFeatures = NasalFeature | LateralFeature | DelayedReleaseFeature | SpreadGlottisFeature | ConstrictedGlottisFeature
                    | LabialFeature | CoronalFeature | DorsalFeature | PharyngealFeature
 
 syllabic :: Phonet -> Bool
@@ -729,7 +729,7 @@ consonantal (Vowel _ _ _ _) = False
 
 sonorant :: Phonet -> Bool
 -- Vowels are sonorants.
-sonorant (Vowel _ _ _ _) = True 
+sonorant (Vowel _ _ _ _) = True
 -- Nasals are sonorants.
 sonorant (Consonant _ _ Nasal _) = True
 -- Approximants are sonorants.
@@ -747,5 +747,3 @@ sonorant (Consonant _ _ Fricative _) = False
 sonorant (Consonant _ _ LateralFricative _) = False
 -- Affricates are not sonorants.
 sonorant (Consonant _ _ Affricate _) = False
-
-
