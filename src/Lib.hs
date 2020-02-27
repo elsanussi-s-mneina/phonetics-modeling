@@ -348,13 +348,8 @@ constructIPA (Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive) 
 constructIPA (Consonant  Voiced LabioDental   Approximant PulmonicEgressive) = "ʋ"
 constructIPA (Consonant  Voiced Alveolar      Approximant PulmonicEgressive) = "ɹ"
 
-  -- To do: find a way to express, ɹ̠ with multiple functions instead of
-  -- here as a single line, because this will not work for other underbar
-  -- phonemes.
-
 constructIPA (Consonant  Voiced  Retroflex    Approximant PulmonicEgressive) = "ɻ"
 constructIPA (Consonant  Voiced  Palatal      Approximant PulmonicEgressive) = "j"
-constructIPA (Consonant  Voiced  LabialVelar  Approximant PulmonicEgressive) = "w"
 constructIPA (Consonant  Voiced  Velar        Approximant PulmonicEgressive) = "ɰ"
 
 -- Lateral Approximants:
@@ -362,6 +357,38 @@ constructIPA (Consonant  Voiced Alveolar   LateralApproximant PulmonicEgressive)
 constructIPA (Consonant  Voiced Retroflex  LateralApproximant PulmonicEgressive) = "ɭ"
 constructIPA (Consonant  Voiced Palatal    LateralApproximant PulmonicEgressive) = "ʎ"
 constructIPA (Consonant  Voiced Velar      LateralApproximant PulmonicEgressive) = "ʟ"
+
+
+-- Under the Other Symbols part of the IPA chart:
+
+constructIPA (Consonant  Voiced LabialVelar Approximant PulmonicEgressive) = "w"
+constructIPA (Consonant Voiceless LabialVelar Fricative PulmonicEgressive) = "ʍ"
+constructIPA (Consonant Voiced LabialPalatal Approximant PulmonicEgressive) = "ɥ"
+constructIPA (Consonant Voiceless Epiglottal Fricative PulmonicEgressive) = "ʜ"
+constructIPA (Consonant Voiced Epiglottal Fricative PulmonicEgressive) = "ʢ"
+constructIPA (Consonant Voiceless Epiglottal Plosive PulmonicEgressive) = "ʡ"
+-- Is the epiglottal plosive voiceless? The IPA chart does not specify.
+
+constructIPA (Consonant Voiceless AlveoloPalatal Fricative PulmonicEgressive) = "ɕ"
+constructIPA (Consonant Voiced AlveoloPalatal Fricative PulmonicEgressive) = "ʑ"
+constructIPA (Consonant Voiced Alveolar LateralFlap PulmonicEgressive) = "ɺ"
+
+-- We cannot handle the ɧ (simultaneous ʃ and x) because
+-- we did not define our data types to handle it yet.
+-- constructIPA (simultaneous (analyzeIPA "ʃ") (analyzeIPA "x")) = "ɧ"
+
+-- Other Consonants:
+constructIPA (Consonant UnmarkedVocalFolds Bilabial UnmarkedManner Click) = "ʘ"
+constructIPA (Consonant UnmarkedVocalFolds Dental UnmarkedManner  Click) = "ǀ"
+constructIPA (Consonant UnmarkedVocalFolds Alveolar UnmarkedManner Click) = "ǃ" -- Or it could be PostAlveolar.
+constructIPA (Consonant UnmarkedVocalFolds PalatoAlveolar UnmarkedManner Click) = "ǂ"
+constructIPA (Consonant UnmarkedVocalFolds Alveolar Lateral Click) = "ǁ"
+constructIPA (Consonant Voiced Bilabial UnmarkedManner Implosive) = "ɓ"
+constructIPA (Consonant Voiced Dental UnmarkedManner Implosive) = "ɗ"  -- Or Alveolar
+constructIPA (Consonant Voiced Palatal UnmarkedManner Implosive) = "ʄ"
+constructIPA (Consonant Voiced Velar UnmarkedManner Implosive) = "ɠ"
+constructIPA (Consonant Voiced Uvular UnmarkedManner Implosive) = "ʛ"
+
 
 -- Close Vowels:
 constructIPA (Vowel  Close Front   Unrounded Voiced) = "i"
