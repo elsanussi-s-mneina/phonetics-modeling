@@ -260,6 +260,20 @@ analyzeIPA "ɑ"  = Vowel  Open Back  Unrounded Voiced
 analyzeIPA "ɒ"  = Vowel  Open Back  Rounded   Voiced
 
 
+-- Handle Diacritics:
+analyzeIPA [firstChar, '̥'] = 
+  let fullGrapheme = analyzeIPA [firstChar]
+  in case fullGrapheme of 
+          Consonant _ place manner airstream    -> Consonant Voiceless place manner airstream
+          Vowel height backness rounding _      -> Vowel height backness rounding Voiceless
+
+analyzeIPA [firstChar, '̼'] = 
+  let fullGrapheme = analyzeIPA [firstChar]
+  in case fullGrapheme of 
+          Consonant _ place manner airstream    -> Consonant Voiced place manner airstream
+          Vowel height backness rounding _      -> Vowel height backness rounding Voiced
+
+
 -- | given an analysis construct an IPA symbol
 -- | This function will allow us to convert an analyzed form
 -- | to its IPA symbol(s).
