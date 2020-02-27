@@ -456,6 +456,13 @@ constructIPA2 :: Phonet -> IPAText
 -- Affricates
 constructIPA2 (Consonant  Voiceless PostAlveolar  Affricate PulmonicEgressive) = "t͡ʃ"
 constructIPA2 (Consonant  Voiced    PostAlveolar  Affricate PulmonicEgressive) = "d͡ʒ"
+constructIPA2 (Consonant  Voiceless Bilabial Affricate PulmonicEgressive) = "p͡ɸ"
+-- constructIPA2 (Consonant  Voiceless LabialVelar? Affricate PulmonicEgressive) = "k͡p"
+constructIPA2 (Consonant  Voiceless Alveolar Affricate PulmonicEgressive) = "t͜s"
+constructIPA2 (Consonant  Voiced Alveolar Affricate PulmonicEgressive) = "d͡z"
+constructIPA2 (Consonant  Voiceless Velar Affricate PulmonicEgressive) = "k͡x"
+-- constructIPA2 (Consonant  Voiceless Palatal (or AlveolaPalatal?) Affricate PulmonicEgressive) = "c͡ɕ"
+constructIPA2 (Consonant Voiceless Uvular Affricate PulmonicEgressive) = "q͡χ"
 
 -- If there isn't a symbol, and the consonant we want is voiceless,
 -- Just take the symbol for a voiced consonant,
