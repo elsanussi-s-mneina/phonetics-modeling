@@ -408,7 +408,8 @@ constructIPA (Vowel x y z Voiceless) =
 
 
 constructIPA (Consonant  x PostAlveolar y z) =
-    constructIPA (Consonant x Alveolar y z) ++ "̠"
+    constructIPA (Consonant x Alveolar y z) ++ "̠"  -- Add the diacritic for "retracted"
+
 
 constructIPA (Consonant UnmarkedVocalFolds place manner airstream) = 
     constructIPA (Consonant Voiceless place manner airstream) ++ 
@@ -427,13 +428,13 @@ constructIPA _ = "0" -- This return value ( a symbol representing the empty set)
 englishPhonetInventory :: PhonetInventory
 englishPhonetInventory = PhonetInventory
   [
-  Consonant  Voiced    Bilabial      Plosive PulmonicEgressive,
-  Consonant  Voiceless Bilabial      Plosive PulmonicEgressive,
-  Consonant  Voiced    Alveolar      Plosive PulmonicEgressive,
-  Consonant  Voiceless Alveolar      Plosive PulmonicEgressive,
-  Consonant  Voiced    Velar         Plosive PulmonicEgressive,
-  Consonant  Voiceless Velar         Plosive PulmonicEgressive,
-  Consonant  Voiceless Glottal       Plosive PulmonicEgressive,
+  Consonant  Voiced    Bilabial      Plosive   PulmonicEgressive,
+  Consonant  Voiceless Bilabial      Plosive   PulmonicEgressive,
+  Consonant  Voiced    Alveolar      Plosive   PulmonicEgressive,
+  Consonant  Voiceless Alveolar      Plosive   PulmonicEgressive,
+  Consonant  Voiced    Velar         Plosive   PulmonicEgressive,
+  Consonant  Voiceless Velar         Plosive   PulmonicEgressive,
+  Consonant  Voiceless Glottal       Plosive   PulmonicEgressive,
   Consonant  Voiced    LabioDental   Fricative PulmonicEgressive,
   Consonant  Voiceless LabioDental   Fricative PulmonicEgressive,
   Consonant  Voiced    Dental        Fricative PulmonicEgressive,
@@ -515,10 +516,10 @@ englishPhonetInventory = PhonetInventory
 
 voicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiced equivalent.
-voicedPhonet (Consonant Voiceless x  y z) = (Consonant Voiced x y z)
-voicedPhonet (Consonant Voiced    x  y z) = (Consonant Voiced x y z)
-voicedPhonet (Vowel x y z Voiced   ) = (Vowel x y z     Voiced)
-voicedPhonet (Vowel x y z Voiceless) = (Vowel x y z     Voiced)
+voicedPhonet (Consonant Voiceless x  y z) = Consonant Voiced x y z
+voicedPhonet (Consonant Voiced    x  y z) = Consonant Voiced x y z
+voicedPhonet (Vowel x y z Voiced   ) = Vowel x y z     Voiced
+voicedPhonet (Vowel x y z Voiceless) = Vowel x y z     Voiced
 
 voicedIPA :: IPAText -> IPAText
 voicedIPA = constructIPA . voicedPhonet . analyzeIPA
@@ -526,20 +527,23 @@ voicedIPA = constructIPA . voicedPhonet . analyzeIPA
 
 devoicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
-devoicedPhonet (Consonant _ x  y z) = (Consonant Voiceless x  y z)
-devoicedPhonet (Vowel x y z _) = (Vowel x y z        Voiceless)
+devoicedPhonet (Consonant _ x  y z) = Consonant Voiceless x  y z
+devoicedPhonet (Vowel x y z _) = Vowel x y z        Voiceless
 
 devoicedIPA :: IPAText -> IPAText
 devoicedIPA = constructIPA . devoicedPhonet . analyzeIPA
 
 spirantizedPhonet :: Phonet -> Phonet
 spirantizedPhonet (Consonant x place Plosive z) | place /= Alveolar
-  = (Consonant x place Fricative z)
+  = Consonant x place Fricative z
 
 -- The following is inelegant, but there is no other way in the system,
--- right now.
-spirantizedPhonet (Consonant x Alveolar Plosive z) | otherwise =
-  (Consonant x Dental Fricative z)
+-- right now. The part that is inelegant is that,
+-- a t which is considered alveolar, becomes θ which is dental
+-- when spirantized. So the following line implements this
+-- change in place of articulation.
+spirantizedPhonet (Consonant x Alveolar Plosive z) =
+  Consonant x Dental Fricative z
 
 
 spirantizedIPA :: IPAText -> IPAText
@@ -563,7 +567,7 @@ unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 back
 
 unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) = 
   let voice' = if voice1 == voice2 then voice1 else UnmarkedVocalFolds
-  in (Vowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice')
+  in Vowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
 
 unmarkDifferences (Consonant voice2 place2 manner2 airstream2) (Vowel height1 backness1 rounding1 voice1) =
