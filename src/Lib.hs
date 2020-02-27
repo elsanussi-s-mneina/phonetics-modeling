@@ -459,10 +459,6 @@ constructIPA (Consonant  x PostAlveolar y z) =
     constructIPA (Consonant x Alveolar y z) ++ "̠"  -- Add the diacritic for "retracted"
 
 
-constructIPA (Consonant UnmarkedVocalFolds place manner airstream) = 
-    constructIPA (Consonant Voiceless place manner airstream) ++ 
-    constructIPA (Consonant Voiced    place manner airstream)
-
 constructIPA _ = "0" -- This return value ( a symbol representing the empty set)
 -- is not a full answer. It really means we don't have an answer.
 -- We are only using it here so that we can ignore values we have not programmed
