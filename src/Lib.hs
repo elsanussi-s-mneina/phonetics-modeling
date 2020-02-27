@@ -14,12 +14,27 @@ data Phonet = Consonant { vocalFolds :: VocalFolds
 
 data Backness = Front | Central | Back | UnmarkedBackness
                 deriving (Eq, Show)
+
+backnessStates :: [Backness]
+backnessStates = [Front, Central, Back]
+
 data Height = Close | NearClose | CloseMid | Mid | OpenMid | NearOpen | Open | UnmarkedHeight
               deriving (Eq, Show)
+
+heightStates :: [Height]
+heightStates = [Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open]
+
 data TenseLax = Tense | Lax | UnmarkedTenseness
                 deriving (Eq, Show)
+
+tenseStates :: [TenseLax]
+tenseStates = [Tense, Lax]
+
 data Rounding = Rounded | Unrounded | UnmarkedRounding
                 deriving (Eq, Show)
+
+roundingStates :: [Rounding]
+roundingStates = [Rounded, Unrounded]
 
 data Place = Bilabial | LabioDental | Dental | Alveolar | PostAlveolar
            | Retroflex
@@ -32,6 +47,14 @@ data Place = Bilabial | LabioDental | Dental | Alveolar | PostAlveolar
            | UnmarkedPlace
            deriving (Eq, Show)
 
+placeStates :: [Place]
+placeStates = [ Bilabial, LabioDental, Dental, Alveolar, PostAlveolar
+              , Retroflex
+              , Palatal  , Velar  , Uvular , Pharyngeal , Glottal , Epiglottal
+              , LabialVelar , LabialPalatal , AlveoloPalatal
+              , PalatoAlveolar
+              ]
+
 data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
               | Affricate  -- Affricate is not included on the IPA chart, we may
                            -- want to remove it.
@@ -42,11 +65,27 @@ data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
               | UnmarkedManner -- There are very few IPA symbols for lateral flaps
               deriving (Eq, Show)
 
+mannerStates :: [Manner]
+mannerStates = [ Plosive, Nasal, Trill, TapOrFlap, Approximant, Fricative
+               , Affricate
+               , LateralFricative
+               , LateralApproximant
+               , LateralFlap
+               , Lateral
+               ]
+
 data Airstream = PulmonicEgressive | Click | Implosive | UnmarkedAirstream
                  deriving (Eq, Show)
 
+airstreamStates :: [Airstream]
+airstreamStates = [PulmonicEgressive, Click, Implosive]
+
 data VocalFolds = Voiced | Voiceless | UnmarkedVocalFolds
                   deriving (Eq, Show)
+
+
+vocalFoldStates :: [VocalFolds]
+vocalFoldStates = [Voiced, Voiceless]
 
 data PhonetInventory = PhonetInventory [Phonet]
 
@@ -371,6 +410,14 @@ constructIPA (Vowel x y z Voiceless) =
 constructIPA (Consonant  x PostAlveolar y z) =
     constructIPA (Consonant x Alveolar y z) ++ "̠"
 
+constructIPA (Consonant UnmarkedVocalFolds place manner airstream) = 
+    constructIPA (Consonant Voiceless place manner airstream) ++ 
+    constructIPA (Consonant Voiced    place manner airstream)
+
+constructIPA _ = "0" -- This return value ( a symbol representing the empty set)
+-- is not a full answer. It really means we don't have an answer.
+-- We are only using it here so that we can ignore values we have not programmed
+-- yet. We just want it to show that we do not have it.
 
 -- | This is a list of the sounds of English. Just the basic ones.
 -- | It is somewhat more complicated in reality, but for now this will
@@ -523,6 +570,25 @@ unmarkDifferences (Consonant voice2 place2 manner2 airstream2) (Vowel height1 ba
   unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) 
 
 
+
+-- This function (I realize it is poorly named)
+-- takes any unmarked attributes in the phoneme definition,
+-- and returns a list with all possibilities for that attribute.
+generateFromUnmarked :: Phonet -> [Phonet]
+generateFromUnmarked (Consonant voice place manner airstream) = 
+  let voice'     = if voice     == UnmarkedVocalFolds     then vocalFoldStates else [voice]
+      place'     = if place     == UnmarkedPlace          then placeStates     else [place]
+      manner'    = if manner    == UnmarkedManner         then mannerStates    else [manner]
+      airstream' = if airstream == UnmarkedAirstream      then airstreamStates else [airstream]
+  in [Consonant v p m a | v <- voice', p <- place', m <- manner', a <- airstream']
+
+generateFromUnmarked (Vowel height backness rounding voice) = 
+  let voice'    = if voice    == UnmarkedVocalFolds    then vocalFoldStates else [voice]
+      height'   = if height   == UnmarkedHeight        then heightStates   else [height]
+      backness' = if backness == UnmarkedBackness      then backnessStates else [backness]
+      rounding' = if rounding == UnmarkedRounding      then roundingStates else [rounding]
+  in [Vowel h b r v | h <- height', b <- backness', r <- rounding', v <- voice']
+  
 -- | Whether a phonet is in an intervocalic environment.
 -- | This means that there is a vowel directly before it,
 -- | and one after it.
