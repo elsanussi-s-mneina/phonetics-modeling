@@ -436,9 +436,7 @@ constructIPA (Vowel  Open Back  Rounded   Voiced) = "ɒ"
 -- If there isn't a symbol, and the consonant we want is voiceless,
 -- Just take the symbol for a voiced consonant,
 -- and then put that diacritic that means voiceless after.
--- \805 is the code for that small circle diacritic that goes under
--- a character to mean voiceless. See https://linguistlist.org/unicode/ipa.html
--- (The following two definitions are intended to implmeent that)
+-- (The following two definitions are intended to implement that)
 -- Add the small circle diacritic to consonants to make them voiceless.
 constructIPA (Consonant Voiceless x y z) =
   constructIPA (Consonant Voiced x y z) ++ "̥" -- add diacritic for voiceless
