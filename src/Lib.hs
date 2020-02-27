@@ -588,7 +588,27 @@ generateFromUnmarked (Vowel height backness rounding voice) =
       backness' = if backness == UnmarkedBackness      then backnessStates else [backness]
       rounding' = if rounding == UnmarkedRounding      then roundingStates else [rounding]
   in [Vowel h b r v | h <- height', b <- backness', r <- rounding', v <- voice']
-  
+
+
+-- The following function returns whether an articulation is
+-- considered impossible according to the IPA (pulmonic) consonants chart.
+-- Does not work for other values.
+impossible :: Phonet -> Bool
+impossible (Consonant Voiced Pharyngeal Plosive PulmonicEgressive) = True
+impossible (Consonant Voiceless Glottal Plosive PulmonicEgressive) = False -- [ʔ] is not impossible.
+impossible (Consonant _ Glottal Fricative PulmonicEgressive) = False  -- [h] and [ɦ] are not impossible.
+impossible (Consonant _ Glottal _ PulmonicEgressive) = True -- all other pulmonary egressive consonants are impossible..
+impossible (Consonant _ Pharyngeal Nasal PulmonicEgressive) = True
+impossible (Consonant _ Pharyngeal LateralFricative PulmonicEgressive) = True
+impossible (Consonant _ Pharyngeal LateralApproximant PulmonicEgressive) = True
+impossible (Consonant _ Velar Trill PulmonicEgressive) = True
+impossible (Consonant _ Velar TapOrFlap PulmonicEgressive) = True
+impossible (Consonant _ Bilabial LateralFricative PulmonicEgressive) = True
+impossible (Consonant _ Bilabial LateralApproximant PulmonicEgressive) = True
+impossible (Consonant _ LabioDental LateralFricative PulmonicEgressive) = True
+impossible (Consonant _ LabioDental LateralApproximant PulmonicEgressive) = True
+impossible _ = False -- Everything else is assumed to be true.
+
 -- | Whether a phonet is in an intervocalic environment.
 -- | This means that there is a vowel directly before it,
 -- | and one after it.
