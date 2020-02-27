@@ -20,3 +20,5 @@ glideSpec =
           isGlide (analyzeIPA "ʝ") `shouldBe` False
     it "should return true when given [w]" $
           isGlide (analyzeIPA "w") `shouldBe` True
+    it "should return false when given [c]" $
+          isGlide (analyzeIPA "c") `shouldBe` False
