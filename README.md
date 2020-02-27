@@ -101,8 +101,8 @@ Type the following to print out the fricatives together:
 
 `*Main Lib> putStrLn $ concatMap constructIPA fricatives`
 
+`ɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦʜʢʍʍ̼∅̥∅̼ɕʑ∅̥∅̼`
 
-`ɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦ0̥00̥00̥00̥00̥0`
 
 Note: that the strange zero like symbols at the end represent phones 
 that do not have IPA graphemes for the purposes of this program until I can
