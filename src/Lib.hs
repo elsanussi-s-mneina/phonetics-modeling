@@ -56,8 +56,7 @@ placeStates = [ Bilabial, LabioDental, Dental, Alveolar, PostAlveolar
               ]
 
 data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
-              | Affricate  -- Affricate is not included on the IPA chart, we may
-                           -- want to remove it.
+              | Affricate 
               | LateralFricative
               | LateralApproximant
               | LateralFlap
@@ -202,6 +201,7 @@ analyzeIPA "ɺ" = Consonant Voiced Alveolar LateralFlap PulmonicEgressive
 
 -- We cannot handle the ɧ (simultaneous ʃ and x) because
 -- we did not define our data types to handle it yet.
+-- In any case, here is some pseudocode for it:
 -- analyzeIPA "ɧ" = simultaneous (analyzeIPA "ʃ") (analyzeIPA "x")
 
 -- Other Consonants:
@@ -293,7 +293,7 @@ constructIPA phoneDescription =
 -- cases never halt if it could not find a character
 -- to place a diacritic on.
 
--- | given an analysis construct an IPA symbol
+-- | Given an analysis construct an IPA symbol
 -- | This function will allow us to convert an analyzed form
 -- | to its IPA symbol.
 -- | Note this only returns one character without diacritics.
