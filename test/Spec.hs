@@ -38,3 +38,9 @@ analyzeIPASpec =
             analyzeIPA "s" `shouldBe` Consonant Voiceless Alveolar Fricative PulmonicEgressive
       it ("should return that [b] is voiced") $
             vocalFolds (analyzeIPA "b") `shouldBe` Voiced
+      it ("should return that [b] is bilabial") $
+            place (analyzeIPA "b") `shouldBe` Bilabial
+      it ("should return that [b] is a plosive") $
+            manner (analyzeIPA "b") `shouldBe` Plosive
+      it ("should return that [b] is pulmonic egressive") $
+            airstream (analyzeIPA "b") `shouldBe` PulmonicEgressive
