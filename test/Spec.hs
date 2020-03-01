@@ -44,3 +44,35 @@ analyzeIPASpec =
             manner (analyzeIPA "b") `shouldBe` Plosive
       it ("should return that [b] is pulmonic egressive.") $
             airstream (analyzeIPA "b") `shouldBe` PulmonicEgressive
+      it ("should return that [t] is voiceless.") $
+            vocalFolds (analyzeIPA "t") `shouldBe` Voiceless
+      it ("should return that [t] is alveolar.") $
+            place (analyzeIPA "t") `shouldBe` Alveolar
+      it ("should return that [t] is a plosive.") $
+            manner (analyzeIPA "t") `shouldBe` Plosive
+      it ("should return that [t] is plumonic egressive.") $
+            airstream (analyzeIPA "t") `shouldBe` PulmonicEgressive
+      it ("should return that [d] is voiced.") $
+            vocalFolds (analyzeIPA "d") `shouldBe` Voiced
+      it ("should return that [d] is alveolar") $
+            place (analyzeIPA "d") `shouldBe` Alveolar
+      it ("should return that [d] is plosive") $
+            manner (analyzeIPA "d") `shouldBe` Plosive
+      it ("should return that [d] is pulmonic egressive") $
+            airstream (analyzeIPA "d") `shouldBe` PulmonicEgressive
+      it ("should return that [ʈ] is voiceless") $
+            vocalFolds (analyzeIPA "ʈ") `shouldBe` Voiceless
+      it ("should return that [ʈ] is retroflex") $
+            place (analyzeIPA "ʈ") `shouldBe` Retroflex
+      it ("should return that [ʈ] is a plosive") $
+            manner (analyzeIPA "ʈ") `shouldBe` Plosive
+      it ("should return that [ʈ] is pulmonic egressive") $
+            airstream (analyzeIPA "ʈ") `shouldBe` PulmonicEgressive
+      it ("should return that [ɖ] is voiced") $
+            vocalFolds (analyzeIPA "ɖ") `shouldBe` Voiced
+      it ("should return that [ɖ] is retroflex") $
+            place (analyzeIPA "ɖ") `shouldBe` Retroflex
+      it ("should return that [ɖ] is a plosive") $
+            manner (analyzeIPA "ɖ") `shouldBe` Plosive
+      it ("should return that [ɖ] is pulmonic egressive") $
+            airstream (analyzeIPA "ɖ") `shouldBe` PulmonicEgressive
