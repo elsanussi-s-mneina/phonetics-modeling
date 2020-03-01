@@ -36,3 +36,5 @@ analyzeIPASpec =
       it ("should return that s is a voiceless alveolar fricative consonant " ++
           "with pulmonic egressive airstream mechanism") $
             analyzeIPA "s" `shouldBe` Consonant Voiceless Alveolar Fricative PulmonicEgressive
+      it ("should return that [b] is voiced") $
+            vocalFolds (analyzeIPA "b") `shouldBe` Voiced
