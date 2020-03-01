@@ -23,6 +23,8 @@ glideSpec =
           isGlide (analyzeIPA "w") `shouldBe` True
     it "should return false when given [c]" $
           isGlide (analyzeIPA "c") `shouldBe` False
+    it "should return true when given [ɥ]" $
+          isGlide (analyzeIPA "ɥ") `shouldBe` True
 
 
 analyzeIPASpec :: Spec
