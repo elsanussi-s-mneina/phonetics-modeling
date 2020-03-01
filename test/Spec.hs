@@ -30,17 +30,17 @@ glideSpec =
 analyzeIPASpec :: Spec
 analyzeIPASpec = 
     describe "analyzeIPA" $ do
-      it ("should return that p is a voiceless bilabial plosive consonant " ++ 
-          "with pulmonic egressive airstream mechanism") $
+      it ("should return that [p] is a voiceless bilabial plosive consonant." ++ 
+          "with pulmonic egressive airstream mechanism.") $
             analyzeIPA "p" `shouldBe` Consonant Voiceless Bilabial Plosive PulmonicEgressive
-      it ("should return that s is a voiceless alveolar fricative consonant " ++
-          "with pulmonic egressive airstream mechanism") $
+      it ("should return that [s] is a voiceless alveolar fricative consonant." ++
+          "with pulmonic egressive airstream mechanism.") $
             analyzeIPA "s" `shouldBe` Consonant Voiceless Alveolar Fricative PulmonicEgressive
-      it ("should return that [b] is voiced") $
+      it ("should return that [b] is voiced.") $
             vocalFolds (analyzeIPA "b") `shouldBe` Voiced
-      it ("should return that [b] is bilabial") $
+      it ("should return that [b] is bilabial.") $
             place (analyzeIPA "b") `shouldBe` Bilabial
-      it ("should return that [b] is a plosive") $
+      it ("should return that [b] is a plosive.") $
             manner (analyzeIPA "b") `shouldBe` Plosive
-      it ("should return that [b] is pulmonic egressive") $
+      it ("should return that [b] is pulmonic egressive.") $
             airstream (analyzeIPA "b") `shouldBe` PulmonicEgressive
