@@ -10,7 +10,7 @@ main = do
   hspec glideSpec
   hspec analyzeIPASpec
   hspec spirantizedIPASpec
-
+  hspec devoicedIPASpec
 
 
 glideSpec :: Spec
@@ -94,3 +94,5 @@ devoicedIPASpec =
     describe "devoicedIPA" $ do
       it ("should return that [p] is devoiced [b].") $
             devoicedIPA "b" `shouldBe` "p"
+      it ("should return that [n̥] is devoiced [n].") $
+            devoicedIPA "n" `shouldBe` "n̥"
