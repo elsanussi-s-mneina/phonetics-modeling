@@ -9,6 +9,7 @@ main :: IO ()
 main = do
   hspec glideSpec
   hspec analyzeIPASpec
+  hspec spirantizedIPASpec
 
 
 
@@ -76,3 +77,20 @@ analyzeIPASpec =
             manner (analyzeIPA "ɖ") `shouldBe` Plosive
       it ("should return that [ɖ] is pulmonic egressive") $
             airstream (analyzeIPA "ɖ") `shouldBe` PulmonicEgressive
+
+
+spirantizedIPASpec :: Spec
+spirantizedIPASpec = 
+    describe "spirantizedIPA" $ do
+      it ("should return that [β] is spirantized [b].") $
+            spirantizedIPA "b" `shouldBe` "β"
+      it ("should return that [ɸ] is spirantized [p].") $
+            spirantizedIPA "p" `shouldBe` "ɸ"
+      it ("should return that [x] is spirantized [k].") $
+            spirantizedIPA "k" `shouldBe` "x"
+
+devoicedIPASpec :: Spec
+devoicedIPASpec =
+    describe "devoicedIPA" $ do
+      it ("should return that [p] is devoiced [b].") $
+            devoicedIPA "b" `shouldBe` "p"
