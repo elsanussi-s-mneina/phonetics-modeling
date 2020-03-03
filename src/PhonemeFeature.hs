@@ -1,5 +1,6 @@
 module PhonemeFeature where
 
+import InternationalPhoneticAlphabet
 import Lib
 
 -- Part for features:

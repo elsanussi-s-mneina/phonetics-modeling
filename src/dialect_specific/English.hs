@@ -1,5 +1,7 @@
 module English where
 
+import Lib
+
 -- | This is a list of the sounds of English. Just the basic ones.
 -- | It is somewhat more complicated in reality, but for now this will
 -- | suffice.

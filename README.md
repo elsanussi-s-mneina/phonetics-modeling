@@ -79,16 +79,16 @@ To go from voiceless to voiced (from IPA symbol to IPA symbol):
 
 `To show the English phoneme inventory:`
 
-`*Main Lib> englishPhonetInventory`
+`*Main Lib> putStr $ showIPA englishPhonetInventory`
 
-`bpdtgkʔvfðθzsʒʃhdʒtʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
+`bpdtgkʔvfðθzsʒʃhd͡ʒt͡ʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
 
 
 To show where two consonants differ in their properties (not SPE features, because are not implemented yet):
 
 `unmarkDifferences (Consonant Voiced Alveolar Fricative PulmonicEgressive) (Consonant Voiced Palatal Fricative PulmonicEgressive)`
 
-`Consonant {vocalFolds = Voiced, place = UnmarkedPlace, manner = Fricative, airstream = PulmonicEgressive}`
+`Consonant {vocalFolds = Voiced, place = UnmarkedPlace, manner = Fricative, airstream = PulmonicEgressive}`̠
 
 
 To list all the fricatives in IPA:
