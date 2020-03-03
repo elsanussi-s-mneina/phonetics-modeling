@@ -198,7 +198,3 @@ interVocalic :: Phonet  -- Before
 interVocalic (Vowel _ _ _ _) (Vowel _ _ _ _) = True
 interVocalic _ _ = False
 
-
-welcome :: IO ()
-welcome = putStrLn "Please read README.md file for instructions on how to use."
-
