@@ -2,7 +2,7 @@ module Spec (main) where
 
 import Prelude (($), (++), IO, length, Maybe(Just), Bool(True, False))
 import Test.Hspec (describe, hspec, it, shouldBe, Spec)
-    
+import PhonemeFeature
 import Lib
 
 main :: IO ()

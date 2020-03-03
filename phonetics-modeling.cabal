@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.1.
+-- This file has been generated from package.yaml by hpack version 0.31.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cdf1d573da70bb3b3af76472998df013ee93c485f6cfe920046387a3781f7905
+-- hash: fc29b7d5d75114e21b9594bcc69e9d0b1a6453a45534588b1b682a2da56b3c01
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      PhonemeFeature
   other-modules:
       Paths_phonetics_modeling
   hs-source-dirs:
