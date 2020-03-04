@@ -99,10 +99,8 @@ englishDescription x = show x
 
 voicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiced equivalent.
-voicedPhonet (Consonant Voiceless x  y z) = Consonant Voiced x y z
-voicedPhonet (Consonant Voiced    x  y z) = Consonant Voiced x y z
-voicedPhonet (Vowel x y z Voiced   ) = Vowel x y z     Voiced
-voicedPhonet (Vowel x y z Voiceless) = Vowel x y z     Voiced
+voicedPhonet (Consonant _ x  y z) = Consonant Voiced x y z
+voicedPhonet (Vowel x y z _) = Vowel x y z     Voiced
 
 
 devoicedPhonet :: Phonet -> Phonet
