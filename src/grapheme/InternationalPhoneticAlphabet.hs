@@ -14,103 +14,103 @@ showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 -- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
 analyzeIPA  :: IPAText -> Phonet
 -- Plosives:
-analyzeIPA "p"  = Consonant  Voiceless Bilabial Plosive PulmonicEgressive
-analyzeIPA "b"  = Consonant  Voiced Bilabial Plosive PulmonicEgressive
-analyzeIPA "t"  = Consonant  Voiceless Alveolar Plosive PulmonicEgressive
-analyzeIPA "d"  = Consonant  Voiced Alveolar Plosive PulmonicEgressive
+analyzeIPA "p"  = Consonant  Voiceless Bilabial  Plosive PulmonicEgressive
+analyzeIPA "b"  = Consonant  Voiced    Bilabial  Plosive PulmonicEgressive
+analyzeIPA "t"  = Consonant  Voiceless Alveolar  Plosive PulmonicEgressive
+analyzeIPA "d"  = Consonant  Voiced    Alveolar  Plosive PulmonicEgressive
 analyzeIPA "ʈ"  = Consonant  Voiceless Retroflex Plosive PulmonicEgressive
-analyzeIPA "ɖ"  = Consonant  Voiced Retroflex Plosive PulmonicEgressive
-analyzeIPA "c"  = Consonant  Voiceless Palatal Plosive PulmonicEgressive
-analyzeIPA "ɟ"  = Consonant  Voiced Palatal Plosive PulmonicEgressive
-analyzeIPA "k"  = Consonant  Voiceless Velar Plosive PulmonicEgressive
-analyzeIPA "g"  = Consonant  Voiced Velar Plosive PulmonicEgressive
-analyzeIPA "q"  = Consonant  Voiceless Uvular Plosive PulmonicEgressive
-analyzeIPA "ɢ"  = Consonant  Voiced Uvular Plosive PulmonicEgressive
-analyzeIPA "ʔ"  = Consonant  Voiceless Glottal Plosive PulmonicEgressive
+analyzeIPA "ɖ"  = Consonant  Voiced    Retroflex Plosive PulmonicEgressive
+analyzeIPA "c"  = Consonant  Voiceless Palatal   Plosive PulmonicEgressive
+analyzeIPA "ɟ"  = Consonant  Voiced    Palatal   Plosive PulmonicEgressive
+analyzeIPA "k"  = Consonant  Voiceless Velar     Plosive PulmonicEgressive
+analyzeIPA "g"  = Consonant  Voiced    Velar     Plosive PulmonicEgressive
+analyzeIPA "q"  = Consonant  Voiceless Uvular    Plosive PulmonicEgressive
+analyzeIPA "ɢ"  = Consonant  Voiced    Uvular    Plosive PulmonicEgressive
+analyzeIPA "ʔ"  = Consonant  Voiceless Glottal   Plosive PulmonicEgressive
 
 -- Nasals:
-analyzeIPA "m"  = Consonant  Voiced Bilabial Nasal PulmonicEgressive
+analyzeIPA "m"  = Consonant  Voiced Bilabial    Nasal PulmonicEgressive
 analyzeIPA "ɱ"  = Consonant  Voiced LabioDental Nasal PulmonicEgressive
-analyzeIPA "n"  = Consonant  Voiced Alveolar Nasal PulmonicEgressive
-analyzeIPA "ɳ"  = Consonant  Voiced Retroflex Nasal PulmonicEgressive
-analyzeIPA "ɲ"  = Consonant  Voiced Palatal Nasal PulmonicEgressive
-analyzeIPA "ŋ"  = Consonant  Voiced Velar Nasal PulmonicEgressive
-analyzeIPA "ɴ"  = Consonant  Voiced Uvular Nasal PulmonicEgressive
+analyzeIPA "n"  = Consonant  Voiced Alveolar    Nasal PulmonicEgressive
+analyzeIPA "ɳ"  = Consonant  Voiced Retroflex   Nasal PulmonicEgressive
+analyzeIPA "ɲ"  = Consonant  Voiced Palatal     Nasal PulmonicEgressive
+analyzeIPA "ŋ"  = Consonant  Voiced Velar       Nasal PulmonicEgressive
+analyzeIPA "ɴ"  = Consonant  Voiced Uvular      Nasal PulmonicEgressive
 
 -- Trills:
 analyzeIPA "ʙ"  = Consonant  Voiced Bilabial Trill PulmonicEgressive
 analyzeIPA "r"  = Consonant  Voiced Alveolar Trill PulmonicEgressive
-analyzeIPA "ʀ"  = Consonant  Voiced Uvular Trill PulmonicEgressive
+analyzeIPA "ʀ"  = Consonant  Voiced Uvular   Trill PulmonicEgressive
 
 -- Taps or flaps:
 analyzeIPA "ⱱ"  = Consonant  Voiced LabioDental TapOrFlap PulmonicEgressive
-analyzeIPA "ɾ"  = Consonant  Voiced Alveolar TapOrFlap PulmonicEgressive
-analyzeIPA "ɽ"  = Consonant  Voiced Retroflex TapOrFlap PulmonicEgressive
+analyzeIPA "ɾ"  = Consonant  Voiced Alveolar    TapOrFlap PulmonicEgressive
+analyzeIPA "ɽ"  = Consonant  Voiced Retroflex   TapOrFlap PulmonicEgressive
 
 -- Fricatives:
-analyzeIPA "ɸ"  = Consonant  Voiceless Bilabial Fricative PulmonicEgressive
-analyzeIPA "β"  = Consonant  Voiced Bilabial Fricative PulmonicEgressive
-analyzeIPA "f"  = Consonant  Voiceless LabioDental Fricative PulmonicEgressive
-analyzeIPA "v"  = Consonant  Voiced LabioDental Fricative PulmonicEgressive
-analyzeIPA "θ"  = Consonant  Voiceless Dental Fricative PulmonicEgressive
-analyzeIPA "ð"  = Consonant  Voiced Dental Fricative PulmonicEgressive
-analyzeIPA "s"  = Consonant  Voiceless Alveolar Fricative PulmonicEgressive
-analyzeIPA "z"  = Consonant  Voiced Alveolar Fricative PulmonicEgressive
+analyzeIPA "ɸ"  = Consonant  Voiceless Bilabial     Fricative PulmonicEgressive
+analyzeIPA "β"  = Consonant  Voiced    Bilabial     Fricative PulmonicEgressive
+analyzeIPA "f"  = Consonant  Voiceless LabioDental  Fricative PulmonicEgressive
+analyzeIPA "v"  = Consonant  Voiced    LabioDental  Fricative PulmonicEgressive
+analyzeIPA "θ"  = Consonant  Voiceless Dental       Fricative PulmonicEgressive
+analyzeIPA "ð"  = Consonant  Voiced    Dental       Fricative PulmonicEgressive
+analyzeIPA "s"  = Consonant  Voiceless Alveolar     Fricative PulmonicEgressive
+analyzeIPA "z"  = Consonant  Voiced    Alveolar     Fricative PulmonicEgressive
 analyzeIPA "ʃ"  = Consonant  Voiceless PostAlveolar Fricative PulmonicEgressive
-analyzeIPA "ʒ"  = Consonant  Voiced PostAlveolar Fricative PulmonicEgressive
-analyzeIPA "ʂ"  = Consonant  Voiceless Retroflex Fricative PulmonicEgressive
-analyzeIPA "ʐ"  = Consonant  Voiced Retroflex Fricative PulmonicEgressive
-analyzeIPA "ç"  = Consonant  Voiceless Palatal Fricative PulmonicEgressive
-analyzeIPA "ʝ"  = Consonant  Voiced Palatal Fricative PulmonicEgressive
-analyzeIPA "x"  = Consonant  Voiceless Velar Fricative PulmonicEgressive
-analyzeIPA "ɣ"  = Consonant  Voiced Velar Fricative PulmonicEgressive
-analyzeIPA "χ"  = Consonant  Voiceless Uvular Fricative PulmonicEgressive
-analyzeIPA "ʁ"  = Consonant  Voiced Uvular Fricative PulmonicEgressive
-analyzeIPA "ħ"  = Consonant  Voiceless Pharyngeal Fricative PulmonicEgressive
-analyzeIPA "ʕ"  = Consonant  Voiced Pharyngeal Fricative PulmonicEgressive
-analyzeIPA "h"  = Consonant  Voiceless Glottal Fricative PulmonicEgressive
-analyzeIPA "ɦ"  = Consonant  Voiced Glottal Fricative PulmonicEgressive
+analyzeIPA "ʒ"  = Consonant  Voiced    PostAlveolar Fricative PulmonicEgressive
+analyzeIPA "ʂ"  = Consonant  Voiceless Retroflex    Fricative PulmonicEgressive
+analyzeIPA "ʐ"  = Consonant  Voiced    Retroflex    Fricative PulmonicEgressive
+analyzeIPA "ç"  = Consonant  Voiceless Palatal      Fricative PulmonicEgressive
+analyzeIPA "ʝ"  = Consonant  Voiced    Palatal      Fricative PulmonicEgressive
+analyzeIPA "x"  = Consonant  Voiceless Velar        Fricative PulmonicEgressive
+analyzeIPA "ɣ"  = Consonant  Voiced    Velar        Fricative PulmonicEgressive
+analyzeIPA "χ"  = Consonant  Voiceless Uvular       Fricative PulmonicEgressive
+analyzeIPA "ʁ"  = Consonant  Voiced    Uvular       Fricative PulmonicEgressive
+analyzeIPA "ħ"  = Consonant  Voiceless Pharyngeal   Fricative PulmonicEgressive
+analyzeIPA "ʕ"  = Consonant  Voiced    Pharyngeal   Fricative PulmonicEgressive
+analyzeIPA "h"  = Consonant  Voiceless Glottal      Fricative PulmonicEgressive
+analyzeIPA "ɦ"  = Consonant  Voiced    Glottal      Fricative PulmonicEgressive
 
 -- Affricates
 analyzeIPA "t͡ʃ" = Consonant  Voiceless PostAlveolar Affricate PulmonicEgressive
-analyzeIPA "d͡ʒ" = Consonant  Voiced PostAlveolar Affricate PulmonicEgressive
+analyzeIPA "d͡ʒ" = Consonant  Voiced    PostAlveolar Affricate PulmonicEgressive
 -- We should probably enforce use of the tie-bar underneath, otherwise
 -- it would not be deterministic to determine whether two graphemes here
 -- represent affricates or a plosive followed by a fricative.
 
 -- Lateral Fricatives:
-analyzeIPA "ɬ" = Consonant Voiceless Alveolar LateralFricative PulmonicEgressive
-analyzeIPA "ɮ" = Consonant  Voiced Alveolar LateralFricative PulmonicEgressive
+analyzeIPA "ɬ" = Consonant  Voiceless Alveolar LateralFricative PulmonicEgressive
+analyzeIPA "ɮ" = Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive
 
 
 -- Approximants:
-analyzeIPA "ʋ"  = Consonant  Voiced LabioDental Approximant PulmonicEgressive
+analyzeIPA "ʋ"  = Consonant  Voiced LabioDental  Approximant PulmonicEgressive
 analyzeIPA "ɹ"  = Consonant  Voiced PostAlveolar Approximant PulmonicEgressive
-analyzeIPA "ɻ"  = Consonant  Voiced Retroflex Approximant PulmonicEgressive
-analyzeIPA "j"  = Consonant  Voiced Palatal Approximant PulmonicEgressive
-analyzeIPA "ɰ"  = Consonant  Voiced Velar Approximant PulmonicEgressive
+analyzeIPA "ɻ"  = Consonant  Voiced Retroflex    Approximant PulmonicEgressive
+analyzeIPA "j"  = Consonant  Voiced Palatal      Approximant PulmonicEgressive
+analyzeIPA "ɰ"  = Consonant  Voiced Velar        Approximant PulmonicEgressive
 
 -- Lateral Approximants:
-analyzeIPA "l"  = Consonant  Voiced Alveolar LateralApproximant PulmonicEgressive
+analyzeIPA "l"  = Consonant  Voiced Alveolar  LateralApproximant PulmonicEgressive
 analyzeIPA "ɭ"  = Consonant  Voiced Retroflex LateralApproximant PulmonicEgressive
-analyzeIPA "ʎ"  = Consonant  Voiced Palatal LateralApproximant PulmonicEgressive
-analyzeIPA "ʟ"  = Consonant  Voiced Velar LateralApproximant PulmonicEgressive
+analyzeIPA "ʎ"  = Consonant  Voiced Palatal   LateralApproximant PulmonicEgressive
+analyzeIPA "ʟ"  = Consonant  Voiced Velar     LateralApproximant PulmonicEgressive
 
 
 -- Under the Other Symbols part of the IPA chart:
 
-analyzeIPA "w"  = Consonant  Voiced LabialVelar Approximant PulmonicEgressive
+analyzeIPA "w" = Consonant Voiced    LabialVelar Approximant PulmonicEgressive
 
-analyzeIPA "ʍ" = Consonant Voiceless LabialVelar Fricative PulmonicEgressive
-analyzeIPA "ɥ" = Consonant Voiced LabialPalatal Approximant PulmonicEgressive
-analyzeIPA "ʜ" = Consonant Voiceless Epiglottal Fricative PulmonicEgressive
-analyzeIPA "ʢ" = Consonant Voiced Epiglottal Fricative PulmonicEgressive
-analyzeIPA "ʡ" = Consonant Voiceless Epiglottal Plosive PulmonicEgressive
+analyzeIPA "ʍ" = Consonant Voiceless LabialVelar   Fricative   PulmonicEgressive
+analyzeIPA "ɥ" = Consonant Voiced    LabialPalatal Approximant PulmonicEgressive
+analyzeIPA "ʜ" = Consonant Voiceless Epiglottal    Fricative   PulmonicEgressive
+analyzeIPA "ʢ" = Consonant Voiced    Epiglottal    Fricative   PulmonicEgressive
+analyzeIPA "ʡ" = Consonant Voiceless Epiglottal    Plosive    PulmonicEgressive
 -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
 
-analyzeIPA "ɕ" = Consonant Voiceless AlveoloPalatal Fricative PulmonicEgressive
-analyzeIPA "ʑ" = Consonant Voiced AlveoloPalatal Fricative PulmonicEgressive
-analyzeIPA "ɺ" = Consonant Voiced Alveolar LateralFlap PulmonicEgressive
+analyzeIPA "ɕ" = Consonant Voiceless AlveoloPalatal Fricative   PulmonicEgressive
+analyzeIPA "ʑ" = Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive
+analyzeIPA "ɺ" = Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive
 
 -- We cannot handle the ɧ (simultaneous ʃ and x) because
 -- we did not define our data types to handle it yet.
@@ -118,16 +118,16 @@ analyzeIPA "ɺ" = Consonant Voiced Alveolar LateralFlap PulmonicEgressive
 -- analyzeIPA "ɧ" = simultaneous (analyzeIPA "ʃ") (analyzeIPA "x")
 
 -- Other Consonants:
-analyzeIPA "ʘ" = Consonant UnmarkedVocalFolds Bilabial UnmarkedManner Click
-analyzeIPA "ǀ" = Consonant UnmarkedVocalFolds Dental UnmarkedManner  Click
-analyzeIPA "ǃ" = Consonant UnmarkedVocalFolds Alveolar UnmarkedManner Click -- Or it could be PostAlveolar.
+analyzeIPA "ʘ" = Consonant UnmarkedVocalFolds Bilabial       UnmarkedManner Click
+analyzeIPA "ǀ" = Consonant UnmarkedVocalFolds Dental         UnmarkedManner Click
+analyzeIPA "ǃ" = Consonant UnmarkedVocalFolds Alveolar       UnmarkedManner Click -- Or it could be PostAlveolar.
 analyzeIPA "ǂ" = Consonant UnmarkedVocalFolds PalatoAlveolar UnmarkedManner Click
-analyzeIPA "ǁ" = Consonant UnmarkedVocalFolds Alveolar Lateral Click
-analyzeIPA "ɓ" = Consonant Voiced Bilabial UnmarkedManner Implosive
-analyzeIPA "ɗ" = Consonant Voiced Dental UnmarkedManner Implosive  -- Or Alveolar
-analyzeIPA "ʄ" = Consonant Voiced Palatal UnmarkedManner Implosive
-analyzeIPA "ɠ" = Consonant Voiced Velar UnmarkedManner Implosive
-analyzeIPA "ʛ" = Consonant Voiced Uvular UnmarkedManner Implosive
+analyzeIPA "ǁ" = Consonant UnmarkedVocalFolds Alveolar       Lateral        Click
+analyzeIPA "ɓ" = Consonant Voiced             Bilabial       UnmarkedManner Implosive
+analyzeIPA "ɗ" = Consonant Voiced             Dental         UnmarkedManner Implosive  -- Or Alveolar
+analyzeIPA "ʄ" = Consonant Voiced             Palatal        UnmarkedManner Implosive
+analyzeIPA "ɠ" = Consonant Voiced             Velar          UnmarkedManner Implosive
+analyzeIPA "ʛ" = Consonant Voiced             Uvular         UnmarkedManner Implosive
 
 -- Close Vowels:
 analyzeIPA "i"  = Vowel  Close Front   Unrounded Voiced
@@ -236,36 +236,36 @@ constructIPA1 (Consonant  Voiced    Velar       Nasal PulmonicEgressive) = "ŋ"
 constructIPA1 (Consonant  Voiced    Uvular      Nasal PulmonicEgressive) = "ɴ"
 
 -- Trills:
-constructIPA1 (Consonant  Voiced   Bilabial    Trill PulmonicEgressive) = "ʙ"
-constructIPA1 (Consonant  Voiced   Alveolar    Trill PulmonicEgressive) = "r"
-constructIPA1 (Consonant  Voiced   Uvular      Trill PulmonicEgressive) = "ʀ" -- Taps or flaps:
+constructIPA1 (Consonant  Voiced   Bilabial    Trill     PulmonicEgressive) = "ʙ"
+constructIPA1 (Consonant  Voiced   Alveolar    Trill     PulmonicEgressive) = "r"
+constructIPA1 (Consonant  Voiced   Uvular      Trill     PulmonicEgressive) = "ʀ" -- Taps or flaps:
 constructIPA1 (Consonant  Voiced   LabioDental TapOrFlap PulmonicEgressive) = "ⱱ"
 constructIPA1 (Consonant  Voiced   Alveolar    TapOrFlap PulmonicEgressive) = "ɾ"
 constructIPA1 (Consonant  Voiced   Retroflex   TapOrFlap PulmonicEgressive) = "ɽ"
 
 -- Fricatives:
-constructIPA1 (Consonant  Voiceless Bilabial       Fricative     PulmonicEgressive) = "ɸ"
-constructIPA1 (Consonant  Voiced    Bilabial       Fricative        PulmonicEgressive) = "β"
+constructIPA1 (Consonant  Voiceless Bilabial       Fricative  PulmonicEgressive) = "ɸ"
+constructIPA1 (Consonant  Voiced    Bilabial       Fricative  PulmonicEgressive) = "β"
 constructIPA1 (Consonant  Voiceless LabioDental    Fricative  PulmonicEgressive) = "f"
-constructIPA1 (Consonant  Voiced    LabioDental    Fricative     PulmonicEgressive) = "v"
-constructIPA1 (Consonant  Voiceless Dental         Fricative       PulmonicEgressive) = "θ"
-constructIPA1 (Consonant  Voiced    Dental         Fricative          PulmonicEgressive) = "ð"
-constructIPA1 (Consonant  Voiceless Alveolar       Fricative     PulmonicEgressive) = "s"
-constructIPA1 (Consonant  Voiced    Alveolar       Fricative        PulmonicEgressive) = "z"
-constructIPA1 (Consonant  Voiceless PostAlveolar   Fricative PulmonicEgressive) = "ʃ"
-constructIPA1 (Consonant  Voiced    PostAlveolar   Fricative    PulmonicEgressive) = "ʒ"
-constructIPA1 (Consonant  Voiceless Retroflex      Fricative    PulmonicEgressive) = "ʂ"
-constructIPA1 (Consonant  Voiced    Retroflex      Fricative       PulmonicEgressive) = "ʐ"
-constructIPA1 (Consonant  Voiceless Palatal        Fricative      PulmonicEgressive) = "ç"
-constructIPA1 (Consonant  Voiced    Palatal        Fricative         PulmonicEgressive) = "ʝ"
-constructIPA1 (Consonant  Voiceless Velar          Fricative        PulmonicEgressive) = "x"
-constructIPA1 (Consonant  Voiced    Velar          Fricative           PulmonicEgressive) = "ɣ"
-constructIPA1 (Consonant  Voiceless Uvular         Fricative       PulmonicEgressive) = "χ"
-constructIPA1 (Consonant  Voiced    Uvular         Fricative          PulmonicEgressive) = "ʁ"
-constructIPA1 (Consonant  Voiceless Pharyngeal     Fricative   PulmonicEgressive) = "ħ"
-constructIPA1 (Consonant  Voiced    Pharyngeal     Fricative      PulmonicEgressive) = "ʕ"
-constructIPA1 (Consonant  Voiceless Glottal        Fricative      PulmonicEgressive) = "h"
-constructIPA1 (Consonant  Voiced    Glottal        Fricative         PulmonicEgressive) = "ɦ"
+constructIPA1 (Consonant  Voiced    LabioDental    Fricative  PulmonicEgressive) = "v"
+constructIPA1 (Consonant  Voiceless Dental         Fricative  PulmonicEgressive) = "θ"
+constructIPA1 (Consonant  Voiced    Dental         Fricative  PulmonicEgressive) = "ð"
+constructIPA1 (Consonant  Voiceless Alveolar       Fricative  PulmonicEgressive) = "s"
+constructIPA1 (Consonant  Voiced    Alveolar       Fricative  PulmonicEgressive) = "z"
+constructIPA1 (Consonant  Voiceless PostAlveolar   Fricative  PulmonicEgressive) = "ʃ"
+constructIPA1 (Consonant  Voiced    PostAlveolar   Fricative  PulmonicEgressive) = "ʒ"
+constructIPA1 (Consonant  Voiceless Retroflex      Fricative  PulmonicEgressive) = "ʂ"
+constructIPA1 (Consonant  Voiced    Retroflex      Fricative  PulmonicEgressive) = "ʐ"
+constructIPA1 (Consonant  Voiceless Palatal        Fricative  PulmonicEgressive) = "ç"
+constructIPA1 (Consonant  Voiced    Palatal        Fricative  PulmonicEgressive) = "ʝ"
+constructIPA1 (Consonant  Voiceless Velar          Fricative  PulmonicEgressive) = "x"
+constructIPA1 (Consonant  Voiced    Velar          Fricative  PulmonicEgressive) = "ɣ"
+constructIPA1 (Consonant  Voiceless Uvular         Fricative  PulmonicEgressive) = "χ"
+constructIPA1 (Consonant  Voiced    Uvular         Fricative  PulmonicEgressive) = "ʁ"
+constructIPA1 (Consonant  Voiceless Pharyngeal     Fricative  PulmonicEgressive) = "ħ"
+constructIPA1 (Consonant  Voiced    Pharyngeal     Fricative  PulmonicEgressive) = "ʕ"
+constructIPA1 (Consonant  Voiceless Glottal        Fricative  PulmonicEgressive) = "h"
+constructIPA1 (Consonant  Voiced    Glottal        Fricative  PulmonicEgressive) = "ɦ"
 
 
 
@@ -275,8 +275,8 @@ constructIPA1 (Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive)
 
 
 -- Approximants:
-constructIPA1 (Consonant  Voiced LabioDental   Approximant PulmonicEgressive) = "ʋ"
-constructIPA1 (Consonant  Voiced Alveolar      Approximant PulmonicEgressive) = "ɹ"
+constructIPA1 (Consonant  Voiced  LabioDental  Approximant PulmonicEgressive) = "ʋ"
+constructIPA1 (Consonant  Voiced  Alveolar     Approximant PulmonicEgressive) = "ɹ"
 
 constructIPA1 (Consonant  Voiced  Retroflex    Approximant PulmonicEgressive) = "ɻ"
 constructIPA1 (Consonant  Voiced  Palatal      Approximant PulmonicEgressive) = "j"
@@ -299,9 +299,9 @@ constructIPA1 (Consonant Voiced Epiglottal Fricative PulmonicEgressive) = "ʢ"
 constructIPA1 (Consonant Voiceless Epiglottal Plosive PulmonicEgressive) = "ʡ"
 -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
 
-constructIPA1 (Consonant Voiceless AlveoloPalatal Fricative PulmonicEgressive) = "ɕ"
-constructIPA1 (Consonant Voiced AlveoloPalatal Fricative PulmonicEgressive) = "ʑ"
-constructIPA1 (Consonant Voiced Alveolar LateralFlap PulmonicEgressive) = "ɺ"
+constructIPA1 (Consonant Voiceless AlveoloPalatal Fricative   PulmonicEgressive) = "ɕ"
+constructIPA1 (Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive) = "ʑ"
+constructIPA1 (Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive) = "ɺ"
 
 -- We cannot handle the ɧ (simultaneous ʃ and x) because
 -- we did not define our data types to handle it yet.
