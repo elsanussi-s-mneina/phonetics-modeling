@@ -18,17 +18,24 @@ welcome = do
     case selection of
                    "1" -> putStrLn $ showIPA englishPhonetInventory
                    "2" -> promptForPhonemeToVoice
-                   "3" -> putStrLn $ devoicedIPA "b"
+                   "3" -> promptForPhonemeToDevoice
                    otherwise -> putStrLn $ "Unrecognized selection. No action taken."
     putStrLn "\nProgram terminated normally.\n\n"
 
-
-promptForPhonemeToVoice :: IO ()
-promptForPhonemeToVoice =  do
-    putStrLn "Enter the phoneme you would like to voice:"
+promptForPhonemeAndApply :: (String -> String) -> String -> IO ()
+promptForPhonemeAndApply func instructions= do
+    putStrLn instructions
     putPrompt
     phoneme <- getLine
-    putStrLn $ voicedIPA phoneme
+    putStrLn $ func phoneme
+
+promptForPhonemeToDevoice :: IO ()
+promptForPhonemeToDevoice = 
+  promptForPhonemeAndApply devoicedIPA "Enter the phoneme you would like to devoice:"
+
+promptForPhonemeToVoice :: IO ()
+promptForPhonemeToVoice =  
+  promptForPhonemeAndApply voicedIPA "Enter the phoneme you would like to voice:"
 
 putPrompt :: IO ()
 putPrompt = do
