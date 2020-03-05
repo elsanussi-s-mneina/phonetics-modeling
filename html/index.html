@@ -16,45 +16,171 @@
       }
     }
     </script>
+    <style>
+    table
+    {
+      border-collapse: collapse;
+    }
+
+    table, th, td
+    {
+      border: 2px solid black;
+    }
+    </style>
   </head>
   <body onload="wireActionsToButtons();">
 
     <b>Press buttons below to write text here:</b><textarea id="screen"></textarea>
     <h1>International Phonetic Alphabet</h1>
     <h2>Consonants (Pulmonic)</h2>
-      <button>p</button>, <button>b</button>,                     <button>t</button>, <button>d</button>,           <button>ʈ</button>, <button>ɖ</button>, <button>c</button>, <button>ɟ</button>, <button>k</button>, <button>g</button>, <button>q</button>, <button>ɢ</button>, <button>ʔ</button>                -- Plosive
-    <br>
-      ,      <button>m</button>,      <button>ɱ</button>,                <button>n</button>,                <button>ɳ</button>,      <button>ɲ</button>,      <button>ɴ</button>                               -- Nasal
-    <br>
-      ,      <button>ʙ</button>,                          <button>r</button>,                          <button>ʀ</button>                                         -- Trill
-    <br>
-      ,                <button>ⱱ</button>,                <button>ɾ</button>,                <button>ɽ</button>                                                   -- Tap or Flap
-    <br>
-      , <button>ɸ</button>, <button>β</button>, <button>f</button>, <button>v</button>, <button>θ</button>, <button>ð</button>, <button>s</button>, <button>z</button>, <button>ʃ</button>, <button>ʒ</button>, <button>ʂ</button>, <button>ʐ</button>, <button>ç</button>, <button>ʝ</button>, <button>x</button>, <button>ɣ</button>, <button>χ</button>, <button>ʁ</button>, <button>ħ</button>, <button>ʕ</button>, <button>h</button>, <button>ɦ</button>   -- Fricative
-    <br>
-      ,                     <button>ɬ</button>, <button>ɮ</button>                                                                                 -- Lateral fricative
-    <br>
-      ,                <button>ʋ</button>,      <button>ɹ</button>,      <button>ɻ</button>,     <button>j</button>,       <button>ɰ</button>                                                   -- Approximant
-    <br>
-      ,                          <button>l</button>,      <button>ɭ</button>,     <button>ʎ</button>,                     <button>ʟ</button>                                     -- Lateral approximant
-    <br>
-      
+    <table style="border: 1px solid black">
+      <tr>
+        <th></th>
+        <th>
+          Bilabial
+        </th>
+        <th>
+          Labio-dental
+        </th>
+        <th>
+          Dental
+        </th>
+        <th>
+          Alveolar
+        </th>
+        <th>
+          Post-alveolar
+        </th>
+        <th>
+          Retroflex
+        </th>
+        <th>
+          Palatal
+        </th>
+        <th>
+          Velar
+        </th>
+        <th>
+          Uvular
+        </th>
+        <th>
+          Pharyngeal
+        </th>
+        <th> 
+          Glottal
+        </th>
 
+      </tr>
+      <tr>
+         <th>
+           Plosive
+         </th>
+         <td>
+            <button>p</button> <button>b</button>
+         </td>
+         <td></td>
+         <td></td>
+         <td>   <button>t</button> <button>d</button></td> 
+         <td></td>         
+         <td><button>ʈ</button> <button>ɖ</button></td>
+         <td> <button>c</button> <button>ɟ</button></td>
+           <td>  <button>k</button> <button>g</button></td>
+           <td>  <button>q</button> <button>ɢ</button></td>
+          <td></td>
+           <td>  <button>ʔ</button>               </td>
+      </tr>
+      <tr>
+           <th>Nasal</th>
+           <td> <button style="visibility: hidden;"> </button> <button>m</button></td>      
+           <td> <button style="visibility: hidden;"> </button> <button>ɱ</button></td>
+           <td></td>
+           <td> <button style="visibility: hidden;"> </button> <button>n</button></td>
+           <td></td>               
+           <td> <button style="visibility: hidden;"> </button> <button>ɳ</button></td>      
+           <td> <button style="visibility: hidden;"> </button> <button>ɲ</button></td>      
+           <td> <button style="visibility: hidden;"> </button> <button>ɴ</button></td>                 
+        </tr>
+        <tr>
+          <th>Trill</th>
+          <td><button style="visibility: hidden;"> </button><button>ʙ</button></td>
+          <td></td>
+          <td></td>
+          <td><button style="visibility: hidden;"> </button><button>r</button></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><button style="visibility: hidden;"> </button><button>ʀ</button></td>                                        
+        </tr>
+        <tr>
+          <th>Tap or Flap</th>
+          <td></td>
+          <td><button style="visibility: hidden;"> </button><button>ⱱ</button></td> 
+          <td></td>               
+          <td><button style="visibility: hidden;"> </button><button>ɾ</button></td>             
+          <td></td>               
+          <td><button style="visibility: hidden;"> </button><button>ɽ</button></td>
+        </tr>
+        <tr>
+           <th>Fricative</th>
+           <td><button>ɸ</button>, <button>β</button></td>  
+           <td><button>f</button>, <button>v</button></td>  
+           <td><button>θ</button>, <button>ð</button></td>  
+           <td><button>s</button>, <button>z</button></td>  
+           <td><button>ʃ</button>, <button>ʒ</button></td>  
+           <td><button>ʂ</button>, <button>ʐ</button></td>  
+           <td><button>ç</button>, <button>ʝ</button></td>  
+           <td><button>x</button>, <button>ɣ</button></td>  
+           <td><button>χ</button>, <button>ʁ</button></td>  
+           <td><button>ħ</button>, <button>ʕ</button></td>  
+           <td><button>h</button>, <button>ɦ</button></td>  
+       </tr>
+       <tr>
+         <th>Lateral Fricative</th>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td><button>ɬ</button>, <button>ɮ</button></td>                                                                             
+      </tr>
+      <tr> 
+        <th>Approximant</th>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button>ʋ</button></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button>ɹ</button></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button>ɻ</button></td>
+        <td><button style="visibility: hidden;"> </button><button>j</button></td>
+        <td><button style="visibility: hidden;"> </button><button>ɰ</button></td>                                                   
+        </td>
+      </tr>
+      <tr>
+        <th>Lateral Approximant</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button>l</button></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button>ɭ</button></td>
+        <td><button style="visibility: hidden;"> </button><button>ʎ</button></td>
+        <td><button style="visibility: hidden;"> </button><button>ʟ</button></td>                                
+        </td>
+      </tr>      
+    </table>
 
     <h2>Consonants (Non-Pulmonic)</h2>
     -- Clicks   Voiced implosives
-    <br> <button>ʘ</button>,     <button>ɓ</button> -- Bilabial
-    <br>, <button>ǀ</button>, {- Dental -}    <button>ɗ</button> -- Dental/alveolar
-    <br>, <button>ǃ</button>, {-  (Post)alveolar -}  <button>ʄ</button>
-    <br>, <button>ǂ</button>,  <button>ɠ</button>
-    <br>, <button>ǁ</button>,  <button>ʛ</button>
+    <br> <button>ʘ</button>     <button>ɓ</button> -- Bilabial
+    <br> <button>ǀ</button> {- Dental -}    <button>ɗ</button> -- Dental/alveolar
+    <br> <button>ǃ</button> {-  (Post)alveolar -}  <button>ʄ</button>
+    <br> <button>ǂ</button>  <button>ɠ</button>
+    <br> <button>ǁ</button>  <button>ʛ</button>
       
 
     <h2>Other Symbols</h2>
-    <br> <button>ʍ</button>,  <button>ɕ</button>
-    <br> <button>w</button>,  <button>ʑ</button>
-    <br> <button>ɥ</button>,  <button>ɺ</button>
-    <br> <button>ʜ</button>,  <button>ɧ</button>
+    <br> <button>ʍ</button>  <button>ɕ</button>
+    <br> <button>w</button>  <button>ʑ</button>
+    <br> <button>ɥ</button>  <button>ɺ</button>
+    <br> <button>ʜ</button>  <button>ɧ</button>
     <br> <button>ʢ</button>
     <br> <button>ʡ</button>
 
@@ -70,16 +196,16 @@
           
 
     <h2>Suprasegmentals</h2>
-      <br> <button>ˈ</button>   -- Primary stress
-      <br> <button>ˌ</button>   -- Secondary stress
-      <br> <button>ː</button>   -- Long
-      <br> <button>ˑ</button>   -- Half long
+      <br> <button>ˈ</button>    Primary stress
+      <br> <button>ˌ</button>    Secondary stress
+      <br> <button>ː</button>    Long
+      <br> <button>ˑ</button>    Half long
 
-      <br> <button>̆</button>    -- Extra short
-      <br> <button>|</button>   -- Minor (foot) group 
-      <br> <button>‖</button>   -- Major (intonation) group
-      <br> <button>.</button>   -- Syllable break
-      <br> <button>‿</button>   -- Linking (absence of a break
+      <br> <button>̆</button>     Extra short
+      <br> <button>|</button>    Minor (foot) group 
+      <br> <button>‖</button>    Major (intonation) group
+      <br> <button>.</button>    Syllable break
+      <br> <button>‿</button>    Linking (absence of a break
       
 
 
