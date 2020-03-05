@@ -5,8 +5,21 @@
     <title>
       Phonetics-Modeling Main Page
     </title>
+    <script>
+    function wireActionsToButtons()
+    {
+      let buttons = document.getElementsByTagName("button");
+      for (let i = 0; i < buttons.length; i++)
+      {
+        let button = buttons[i];
+        button.onclick = () => document.getElementById("screen").value += button.innerText;
+      }
+    }
+    </script>
   </head>
-  <body>
+  <body onload="wireActionsToButtons();">
+
+    <b>Press buttons below to write text here:</b><textarea id="screen"></textarea>
     <h1>International Phonetic Alphabet</h1>
     <h2>Consonants (Pulmonic)</h2>
       <button>p</button>, <button>b</button>,                     <button>t</button>, <button>d</button>,           <button>ʈ</button>, <button>ɖ</button>, <button>c</button>, <button>ɟ</button>, <button>k</button>, <button>g</button>, <button>q</button>, <button>ɢ</button>, <button>ʔ</button>                -- Plosive
