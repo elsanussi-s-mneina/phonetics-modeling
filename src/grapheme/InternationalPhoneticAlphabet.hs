@@ -397,10 +397,12 @@ constructIPA2 (Vowel x y z Voiceless) =
 -- grapheme add a diacritic to the grapheme that represents
 -- the voiceless counterpart.
 constructIPA2 (Consonant Voiced x y z) =
-   constructIPA1 (Consonant Voiceless x y z) ++ "̼"
+   constructIPA1 (Consonant Voiceless x y z) ++ "̬"
 
 constructIPA2 (Vowel x y z Voiced) =
-  constructIPA1 (Vowel x y z Voiceless) ++ "̼"
+  constructIPA1 (Vowel x y z Voiceless) ++ "̬"
+
+
 
 
 
