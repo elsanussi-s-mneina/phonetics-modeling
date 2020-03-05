@@ -17,14 +17,23 @@
     }
     </script>
     <style>
+
     table
     {
       border-collapse: collapse;
     }
 
-    table, th, td
+    th
     {
-      border: 2px solid black;
+      border: 4px black;
+      background: lightblue;
+      border: 1px solid aliceblue;
+    }
+
+    table, td
+    {
+      border: 1px solid gray;
+      background: aliceblue
     }
     
     button
@@ -33,6 +42,28 @@
        margin: 0px;
        width: 50px;
        height: 50px;
+       background-color: whitesmoke;
+    }
+
+    button.voiced
+    {
+      border-radius: 0% 0% 40% 0%;
+    }
+
+    button.voiceless
+    {
+      border-radius: 20% 0% 0% 20%;
+    }
+
+    button.vowel
+    {
+      border-radius: 10%;
+      border-style: dotted;
+    }
+
+    button.rounded
+    {
+      border-radius: 50%;
     }
 
     td
@@ -41,7 +72,7 @@
        height: 50px;
        margin: auto;
     }
-    </style>
+        </style>
   </head>
   <body onload="wireActionsToButtons();">
 
@@ -88,42 +119,42 @@
       </tr>
       <tr>
          <th>Plosive</th>
-         <td><button>p</button><button>b</button></td>
+         <td><button class="voiceless">p</button><button class="voiced">b</button></td>
          <td></td>
          <td></td>
-         <td><button>t</button><button>d</button></td> 
+         <td><button class="voiceless">t</button><button class="voiced">d</button></td> 
          <td></td>         
-         <td><button>ʈ</button><button>ɖ</button></td>
-         <td><button>c</button><button>ɟ</button></td>
-         <td><button>k</button><button>g</button></td>
-         <td><button>q</button><button>ɢ</button></td>
+         <td><button class="voiceless">ʈ</button><button class="voiced">ɖ</button></td>
+         <td><button class="voiceless">c</button><button class="voiced">ɟ</button></td>
+         <td><button class="voiceless">k</button><button class="voiced">g</button></td>
+         <td><button class="voiceless">q</button><button class="voiced">ɢ</button></td>
          <td></td>
-         <td><button>ʔ</button><button style="visibility: hidden;"></button></td>
+         <td><button class="voiceless">ʔ</button><button style="visibility: hidden;"></button></td>
       </tr>
       <tr>
            <th>Nasal</th>
-           <td><button style="visibility: hidden;"> </button> <button>m</button></td>      
-           <td><button style="visibility: hidden;"> </button> <button>ɱ</button></td>
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">m</button></td>      
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɱ</button></td>
            <td></td>
-           <td><button style="visibility: hidden;"> </button> <button>n</button></td>
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">n</button></td>
            <td></td>               
-           <td><button style="visibility: hidden;"> </button> <button>ɳ</button></td>      
-           <td><button style="visibility: hidden;"> </button> <button>ɲ</button></td>      
-           <td><button style="visibility: hidden;"> </button> <button>ɴ</button></td>                 
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɳ</button></td>      
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɲ</button></td>      
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɴ</button></td>                 
            <td></td>
            <td></td>
            <td></td>
         </tr>
         <tr>
           <th>Trill</th>
-          <td><button style="visibility: hidden;"> </button><button>ʙ</button></td>
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ʙ</button></td>
           <td></td>
           <td></td>
-          <td><button style="visibility: hidden;"> </button><button>r</button></td>
+          <td><button style="visibility: hidden;"> </button><button class="voiced">r</button></td>
           <td></td>
           <td></td>
           <td></td>
-          <td><button style="visibility: hidden;"> </button><button>ʀ</button></td>                                        
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ʀ</button></td>                                        
           <td></td>
           <td></td>
           <td></td>
@@ -131,11 +162,11 @@
         <tr>
           <th>Tap or Flap</th>
           <td></td>
-          <td><button style="visibility: hidden;"> </button><button>ⱱ</button></td> 
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ⱱ</button></td> 
           <td></td>               
-          <td><button style="visibility: hidden;"> </button><button>ɾ</button></td>             
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ɾ</button></td>             
           <td></td>               
-          <td><button style="visibility: hidden;"> </button><button>ɽ</button></td>
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ɽ</button></td>
           <td></td>
           <td></td>
           <td></td>
@@ -144,24 +175,24 @@
         </tr>
         <tr>
            <th>Fricative</th>
-           <td><button>ɸ</button><button>β</button></td>  
-           <td><button>f</button><button>v</button></td>  
-           <td><button>θ</button><button>ð</button></td>  
-           <td><button>s</button><button>z</button></td>  
-           <td><button>ʃ</button><button>ʒ</button></td>  
-           <td><button>ʂ</button><button>ʐ</button></td>  
-           <td><button>ç</button><button>ʝ</button></td>  
-           <td><button>x</button><button>ɣ</button></td>  
-           <td><button>χ</button><button>ʁ</button></td>  
-           <td><button>ħ</button><button>ʕ</button></td>  
-           <td><button>h</button><button>ɦ</button></td>  
+           <td><button class="voiceless">ɸ</button><button class="voiced">β</button></td>  
+           <td><button class="voiceless">f</button><button class="voiced">v</button></td>  
+           <td><button class="voiceless">θ</button><button class="voiced">ð</button></td>  
+           <td><button class="voiceless">s</button><button class="voiced">z</button></td>  
+           <td><button class="voiceless">ʃ</button><button class="voiced">ʒ</button></td>  
+           <td><button class="voiceless">ʂ</button><button class="voiced">ʐ</button></td>  
+           <td><button class="voiceless">ç</button><button class="voiced">ʝ</button></td>  
+           <td><button class="voiceless">x</button><button class="voiced">ɣ</button></td>  
+           <td><button class="voiceless">χ</button><button class="voiced">ʁ</button></td>  
+           <td><button class="voiceless">ħ</button><button class="voiced">ʕ</button></td>  
+           <td><button class="voiceless">h</button><button class="voiced">ɦ</button></td>  
        </tr>
        <tr>
          <th>Lateral Fricative</th>
          <td></td>
          <td></td>
          <td></td>
-         <td><button>ɬ</button><button style="align-self:right">ɮ</button></td>                                                                             
+         <td><button class="voiceless">ɬ</button><button style="align-self:right">ɮ</button></td>                                                                             
          <td></td>
          <td></td>
          <td></td>
@@ -173,13 +204,13 @@
       <tr> 
         <th>Approximant</th>
         <td></td>
-        <td><button style="visibility: hidden;"> </button><button>ʋ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ʋ</button></td>
         <td></td>
-        <td><button style="visibility: hidden;"> </button><button>ɹ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɹ</button></td>
         <td></td>
-        <td><button style="visibility: hidden;"> </button><button>ɻ</button></td>
-        <td><button style="visibility: hidden;"> </button><button>j</button></td>
-        <td><button style="visibility: hidden;"> </button><button>ɰ</button></td>                                                   
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɻ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">j</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɰ</button></td>                                                   
         <td></td>
         <td></td>
         <td></td>
@@ -189,111 +220,127 @@
         <td></td>
         <td></td>
         <td></td>
-        <td><button style="visibility: hidden;"> </button><button>l</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">l</button></td>
         <td></td>
-        <td><button style="visibility: hidden;"> </button><button>ɭ</button></td>
-        <td><button style="visibility: hidden;"> </button><button>ʎ</button></td>
-        <td><button style="visibility: hidden;"> </button><button>ʟ</button></td>                                
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɭ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ʎ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ʟ</button></td>                                
         <td></td>
         <td></td>
         <td></td>
       </tr>      
     </table>
+    <table>
+      <tr>
+        <td style="width: 70%">
+          <h2>Consonants (Non-Pulmonic)</h2>
+          -- Clicks   Voiced implosives
+          <br> <button>ʘ</button>     <button>ɓ</button> -- Bilabial
+          <br> <button>ǀ</button> {- Dental -}    <button>ɗ</button> -- Dental/alveolar
+          <br> <button>ǃ</button> {-  (Post)alveolar -}  <button>ʄ</button>
+          <br> <button>ǂ</button>  <button>ɠ</button>
+          <br> <button>ǁ</button>  <button>ʛ</button>
 
-    <h2>Consonants (Non-Pulmonic)</h2>
-    -- Clicks   Voiced implosives
-    <br> <button>ʘ</button>     <button>ɓ</button> -- Bilabial
-    <br> <button>ǀ</button> {- Dental -}    <button>ɗ</button> -- Dental/alveolar
-    <br> <button>ǃ</button> {-  (Post)alveolar -}  <button>ʄ</button>
-    <br> <button>ǂ</button>  <button>ɠ</button>
-    <br> <button>ǁ</button>  <button>ʛ</button>
-      
+          <h2>Other Symbols</h2>
+          <br> <button class="voiceless">ʍ</button>  <button>ɕ</button>
+          <br> <button class="voiced">w</button>  <button class="voiced">ʑ</button>
+          <br> <button class="voiced">ɥ</button>  <button class="voiced">ɺ</button>
+          <br> <button class="voiceless">ʜ</button>  <button>ɧ</button>
+          <br> <button class="voiced">ʢ</button>
+          <br> <button>ʡ</button>
 
-    <h2>Other Symbols</h2>
-    <br> <button>ʍ</button>  <button>ɕ</button>
-    <br> <button>w</button>  <button>ʑ</button>
-    <br> <button>ɥ</button>  <button>ɺ</button>
-    <br> <button>ʜ</button>  <button>ɧ</button>
-    <br> <button>ʢ</button>
-    <br> <button>ʡ</button>
+            <th>Diacritics and Supersegmentals</th>
+
+          <table>
+            
+              <tr> <td><button>̥</button>   -- Voiceless</td><td><button>̤</button>   -- Breathy voiced</td><td><button>̪</button>   -- Dental</td></tr>
+
+              <tr> <td><button>ʰ</button>  -- Aspirated </td><td><button>̼</button>   -- Linguolabial</td><td><button>̻</button>   -- Laminal</td></tr>
+
+              <tr><td><button>ʷ</button>  -- Labialised </td></tr>
+              <tr><td><button>ʲ</button>  -- Palatalised</td></tr>
+              <tr>, <button>ˠ</button>  -- Velarised </tr>
+              <tr>, <button>ˤ</button>  -- Pharyngealised </tr>
+              <tr>, <button>ⁿ</button>  -- Pre/post nasalised </tr>
+              <tr>, <button>ˡ</button>  -- Lateral release </tr>
+            <br>
+              <tr>, <button>˞</button>  -- Rhoticity </tr>
+              <br>, <button>ʼ</button>  -- Ejective
+              <br>, <button>̚</button>   -- No audible release
+            <br>
+              <br>, <button>̩</button>   -- Syllabic
+              <br>, <button>̯</button>   -- Non-syllabic
+              <br>, <button>̰</button>   -- Creaky voiced
+              <br>, 
+              <br>, <button>̬</button>   -- Voiced
+              <br>, 
+              <br>, <button>̊</button>   -- Voiceless (diacritic placed above symbol with descender)
+              <br>, <button>̍</button>   -- Syllabic (diacritic placed above)
+              <br>, 
+              <br>, <button>̺</button>   -- Apical
+              <br>, 
+              <br>, 
+              <br>, <button>.</button>  -- Closer variety/Fricative
+              <br>, <button>̃</button>   -- Nasalised
+              <br>, <button>̈</button>   -- Centralised
+              <br>, <button>̽</button>   -- Mid centralised
+              <br>, <button>̆</button>   -- Extra short
+              <br>, <button>̇</button>   -- Palatalization/Centralization
+              <br>
+            <br>
+        </table>
+        </td>
+        <td style="width: 30%">
+          <h2>Vowels</h2>
+            <br><button class="vowel">i</button>, <button class="vowel rounded">y</button>,   <button class="vowel">ɨ</button>, <button class="vowel rounded">ʉ</button>,   <button class="vowel">ɯ</button>, <button class="vowel rounded">u</button>   -- Close
+            <br><button class="vowel">ɪ</button>, <button class="vowel rounded">ʏ</button>,            <button class="vowel rounded">ʊ</button>
+            <br><button class="vowel">e</button>, <button class="vowel rounded">ø</button>,   <button class="vowel">ɘ</button>, <button class="vowel rounded">ɵ</button>,   <button class="vowel">ɤ</button>, <button class="vowel rounded">o</button>   -- Close-mid
+            <br>               <button class="vowel">ə</button>
+            <br><button class="vowel">ɛ</button>, <button class="vowel rounded">œ</button>,   <button class="vowel">ɜ</button>, <button class="vowel rounded">ɞ</button>,   <button class="vowel">ʌ</button>, <button class="vowel rounded">ɔ</button>   -- Open-mid
+            <br> <button class="vowel">æ</button>,           <button class="vowel">ɐ</button>
+            <br> <button class="vowel">a</button>, <button class="vowel rounded">ɶ</button>,              <button class="vowel">ɑ</button>, <button class="vowel rounded">ɒ</button>  -- Open
 
 
-    <h2>Vowels</h2>
-      <br><button>i</button>, <button>y</button>,   <button>ɨ</button>, <button>ʉ</button>,   <button>ɯ</button>, <button>u</button>   -- Close
-      <br><button>ɪ</button>, <button>ʏ</button>,            <button>ʊ</button>
-      <br><button>e</button>, <button>ø</button>,   <button>ɘ</button>, <button>ɵ</button>,   <button>ɤ</button>, <button>o</button>   -- Close-mid
-      <br>               <button>ə</button>
-      <br><button>ɛ</button>, <button>œ</button>,   <button>ɜ</button>, <button>ɞ</button>,   <button>ʌ</button>, <button>ɔ</button>   -- Open-mid
-      <br> <button>æ</button>,           <button>ɐ</button>
-      <br> <button>a</button>, <button>ɶ</button>,              <button>ɑ</button>, <button>ɒ</button>  -- Open
-          
 
-    <h2>Suprasegmentals</h2>
-      <br> <button>ˈ</button>    Primary stress
-      <br> <button>ˌ</button>    Secondary stress
-      <br> <button>ː</button>    Long
-      <br> <button>ˑ</button>    Half long
+          <h2>Suprasegmentals</h2>
+            <br> <button>ˈ</button>    Primary stress
+            <br> <button>ˌ</button>    Secondary stress
+            <br> <button>ː</button>    Long
+            <br> <button>ˑ</button>    Half long
 
-      <br> <button>̆</button>     Extra short
-      <br> <button>|</button>    Minor (foot) group 
-      <br> <button>‖</button>    Major (intonation) group
-      <br> <button>.</button>    Syllable break
-      <br> <button>‿</button>    Linking (absence of a break
-      
+            <br> <button>̆</button>     Extra short
+            <br> <button>|</button>    Minor (foot) group 
+            <br> <button>‖</button>    Major (intonation) group
+            <br> <button>.</button>    Syllable break
+            <br> <button>‿</button>    Linking (absence of a break
+            
 
 
-    <h2>Tones and Word Accents</h2>
-    <h3>Level</h3>
-      <br> <button>˥</button>, <button>̋</button>  -- Extra high
-      <br>, <button>˦</button>, <button>́</button>  -- High
-      <br>, <button>˧</button>, <button>̄</button>  -- Mid
-      <br>, <button>˨</button>, <button>̀</button>  -- Low
-      <br>, <button>˩</button>, <button>̏</button>  -- Extra low
-      <br>,      <button>ꜜ</button>  -- Downstep
-      <br>,      <button>ꜛ</button>  -- Upstep
+          <h2>Tones and Word Accents</h2>
+          <h3>Level</h3>
+            <br> <button>˥</button>, <button>̋</button>  -- Extra high
+            <br>, <button>˦</button>, <button>́</button>  -- High
+            <br>, <button>˧</button>, <button>̄</button>  -- Mid
+            <br>, <button>˨</button>, <button>̀</button>  -- Low
+            <br>, <button>˩</button>, <button>̏</button>  -- Extra low
+            <br>,      <button>ꜜ</button>  -- Downstep
+            <br>,      <button>ꜛ</button>  -- Upstep
 
-    <h3>Contour</h3>
-    <br> , <button>̌</button> -- Rising
-    <br> , <button>̂</button> -- Falling
-    <br> , <button>᷄</button> -- High rising
-    <br> , <button>᷅</button> -- Low rising
-    <br> , <button>᷈</button> -- Rising-falling
-    <br> , <button>↗</button> -- Global rise
-    <br> , <button>↘</button> -- Global fall
+          <h3>Contour</h3>
+          <br> , <button>̌</button> -- Rising
+          <br> , <button>̂</button> -- Falling
+          <br> , <button>᷄</button> -- High rising
+          <br> , <button>᷅</button> -- Low rising
+          <br> , <button>᷈</button> -- Rising-falling
+          <br> , <button>↗</button> -- Global rise
+          <br> , <button>↘</button> -- Global fall
 
-    <h3>Diacritics and Supersegmentals</h3>
-      <br> <button>ʰ</button>  -- Aspirated
-      <br>, <button>ʷ</button>  -- Labialised
-      <br>, <button>ʲ</button>  -- Palatalised
-      <br>, <button>ˠ</button>  -- Velarised
-      <br>, <button>ˤ</button>  -- Pharyngealised
-      <br>, <button>ⁿ</button>  -- Pre/post nasalised
-      <br>, <button>ˡ</button>  -- Lateral release
-    <br>
-      <br>, <button>˞</button>  -- Rhoticity
-      <br>, <button>ʼ</button>  -- Ejective
-      <br>, <button>̚</button>   -- No audible release
-    <br>
-      <br>, <button>̩</button>   -- Syllabic
-      <br>, <button>̯</button>   -- Non-syllabic
-      <br>, <button>̰</button>   -- Creaky voiced
-      <br>, <button>̥</button>   -- Voiceless
-      <br>, <button>̬</button>   -- Voiced
-      <br>, <button>̤</button>   -- Breathy voiced
-      <br>, <button>̊</button>   -- Voiceless (diacritic placed above symbol with descender)
-      <br>, <button>̍</button>   -- Syllabic (diacritic placed above)
-      <br>, <button>̪</button>   -- Dental
-      <br>, <button>̺</button>   -- Apical
-      <br>, <button>̻</button>   -- Laminal
-      <br>, <button>̼</button>   -- Linguolabial
-      <br>, <button>.</button>  -- Closer variety/Fricative
-      <br>, <button>̃</button>   -- Nasalised
-      <br>, <button>̈</button>   -- Centralised
-      <br>, <button>̽</button>   -- Mid centralised
-      <br>, <button>̆</button>   -- Extra short
-      <br>, <button>̇</button>   -- Palatalization/Centralization
-      <br>
-    <br>
+
+        </td>
+      </tr>
+    </table>
+
+
 
    <a href="https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf">Source of information: IPA Phonetic Alphabet Chart 2015</a>
    <!-- <a href="https://github.com/elsanussi-s-mneina">Source code repository</a> -->
