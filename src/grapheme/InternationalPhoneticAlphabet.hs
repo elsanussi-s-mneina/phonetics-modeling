@@ -6,6 +6,131 @@ type IPAText = String
   -- For storing text meant to be interpreted as International phonetic alphabet
 
 
+graphemesOfIPA :: [Char]
+graphemesOfIPA = consonantsPulmonic 
+  ++ consonantsNonPulmonic
+  ++ otherSymbols
+  ++ vowels
+  ++ suprasegmentals 
+  ++ toneAndWordAccents
+  ++ diacriticsAndSupersegmentals
+-- See: https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
+-- For the source of this information..
+
+-- CONSONANTS (PULMONIC)
+consonantsPulmonic :: [Char]
+consonantsPulmonic = 
+  [ 'p', 'b',                     't', 'd',           'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ', 'ʔ'                -- Plosive
+  ,      'm',      'ɱ',                'n',                'ɳ',      'ɲ',      'ɴ'                               -- Nasal
+  ,      'ʙ',                          'r',                          'ʀ'                                         -- Trill
+  ,                'ⱱ',                'ɾ',                'ɽ'                                                   -- Tap or Flap
+  , 'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ', 'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ'   -- Fricative
+  ,                     'ɬ', 'ɮ'                                                                                 -- Lateral fricative
+  ,                'ʋ',      'ɹ',      'ɻ',     'j',       'ɰ'                                                   -- Approximant
+  ,                          'l',      'ɭ',     'ʎ',                     'ʟ'                                     -- Lateral approximant
+  ]
+
+
+consonantsNonPulmonic :: [Char]
+consonantsNonPulmonic =
+-- Clicks   Voiced implosives
+ [ 'ʘ',     'ɓ' -- Bilabial
+ , 'ǀ', {- Dental -}    'ɗ' -- Dental/alveolar
+ , 'ǃ', {-  (Post)alveolar -}  'ʄ'
+ , 'ǂ',  'ɠ'
+ , 'ǁ',  'ʛ'
+ ] 
+
+otherSymbols :: [Char]
+otherSymbols =
+  ['ʍ',  'ɕ'
+  ,'w',  'ʑ'
+  ,'ɥ',  'ɺ'
+  ,'ʜ',  'ɧ'
+  ,'ʢ'
+  ,'ʡ'
+  ]
+
+vowels =
+  ['i', 'y',   'ɨ', 'ʉ',   'ɯ', 'u'   -- Close
+  ,'ɪ', 'ʏ',            'ʊ'
+  ,'e', 'ø',   'ɘ', 'ɵ',   'ɤ', 'o'   -- Close-mid
+  ,               'ə'
+  ,'ɛ', 'œ',   'ɜ', 'ɞ',   'ʌ', 'ɔ'   -- Open-mid
+  , 'æ',           'ɐ'
+  , 'a', 'ɶ',              'ɑ', 'ɒ'  -- Open
+  ]     
+
+suprasegmentals :: [Char]
+suprasegmentals =
+  [ 'ˈ'   -- Primary stress
+  , 'ˌ'   -- Secondary stress
+  , 'ː'   -- Long
+  , 'ˑ'   -- Half long
+
+  , '̆'    -- Extra short
+  , '|'   -- Minor (foot) group 
+  , '‖'   -- Major (intonation) group
+  , '.'   -- Syllable break
+  , '‿'   -- Linking (absence of a break
+  ]
+
+
+toneAndWordAccents :: [Char]
+toneAndWordAccents =
+{- Level -}
+  [ '˥', '̋'  -- Extra high
+  , '˦', '́'  -- High
+  , '˧', '̄'  -- Mid
+  , '˨', '̀'  -- Low
+  , '˩', '̏'  -- Extra low
+  ,      'ꜜ'  -- Downstep
+  ,      'ꜛ'  -- Upstep
+
+{- Countour -}
+  , '̌' -- Rising
+  , '̂' -- Falling
+  , '᷄' -- High rising
+  , '᷅' -- Low rising
+  , '᷈' -- Rising-falling
+  , '↗' -- Global rise
+  , '↘' -- Global fall
+  ]
+
+diacriticsAndSupersegmentals :: [Char]
+diacriticsAndSupersegmentals = 
+  [ 'ʰ'  -- Aspirated
+  , 'ʷ'  -- Labialised
+  , 'ʲ'  -- Palatalised
+  , 'ˠ'  -- Velarised
+  , 'ˤ'  -- Pharyngealised
+  , 'ⁿ'  -- Pre/post nasalised
+  , 'ˡ'  -- Lateral release
+
+  , '˞'  -- Rhoticity
+  , 'ʼ'  -- Ejective
+  , '̚'   -- No audible release
+
+  , '̩'   -- Syllabic
+  , '̯'   -- Non-syllabic
+  , '̰'   -- Creaky voiced
+  , '̥'   -- Voiceless
+  , '̬'   -- Voiced
+  , '̤'   -- Breathy voiced
+  , '̊'   -- Voiceless (diacritic placed above symbol with descender)
+  , '̍'   -- Syllabic (diacritic placed above)
+  , '̪'   -- Dental
+  , '̺'   -- Apical
+  , '̻'   -- Laminal
+  , '̼'   -- Linguolabial
+  , '.'  -- Closer variety/Fricative
+  , '̃'   -- Nasalised
+  , '̈'   -- Centralised
+  , '̽'   -- Mid centralised
+  , '̆'   -- Extra short
+  , '̇'    -- Palatalization/Centralization
+  ]
+
 showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 
 
