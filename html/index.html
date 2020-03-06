@@ -65,13 +65,7 @@
     {
       border-radius: 50%;
     }
-
-    td
-    {
-       width: 130px;
-       height: 50px;
-       margin: auto;
-    }
+ 
         </style>
   </head>
   <body onload="wireActionsToButtons();">
@@ -230,6 +224,9 @@
         <td></td>
       </tr>      
     </table>
+    <table>
+      <tr>
+        <td style="width: 600px;">
           <h2>Consonants (Non-Pulmonic)</h2>
           <table>
             <tr><th>Clicks</th><th>Voiced implosives</th><th>Ejective</th></tr>
@@ -239,9 +236,23 @@
             <tr><td><button>ǂ</button> Palatoalveolar</td><td><button>ɠ</button> Velar</td></tr>
             <tr><td><button>ǁ</button> Alveolar lateral</td><td><button>ʛ</button> Uvular</td></tr>
           </table>
-
+          <br>
+        </td>
+        <td style="width: 600px;">
+          <h2>Vowels</h2>
+            <br><button class="vowel">i</button> <button class="vowel rounded">y</button>   <button class="vowel">ɨ</button> <button class="vowel rounded">ʉ</button>   <button class="vowel">ɯ</button> <button class="vowel rounded">u</button>    Close
+            <br><button class="vowel">ɪ</button> <button class="vowel rounded">ʏ</button>            <button class="vowel rounded">ʊ</button>
+            <br><button class="vowel">e</button> <button class="vowel rounded">ø</button>   <button class="vowel">ɘ</button> <button class="vowel rounded">ɵ</button>   <button class="vowel">ɤ</button> <button class="vowel rounded">o</button>    Close-mid
+            <br>               <button class="vowel">ə</button>
+            <br><button class="vowel">ɛ</button> <button class="vowel rounded">œ</button>   <button class="vowel">ɜ</button> <button class="vowel rounded">ɞ</button>   <button class="vowel">ʌ</button> <button class="vowel rounded">ɔ</button>    Open-mid
+            <br> <button class="vowel">æ</button>           <button class="vowel">ɐ</button>
+            <br> <button class="vowel">a</button> <button class="vowel rounded">ɶ</button>              <button class="vowel">ɑ</button> <button class="vowel rounded">ɒ</button>   Open
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h2>Other Symbols</h2>
           <table>
-          <tr><th>Other Symbols</th></tr>
           <tr><td><button class="voiceless">ʍ</button> Voiceless labial-velar fricative</td><td><button>ɕ</button> <button class="voiced">ʑ</button> Alveolo-palatal fricatives</td></tr>
           <tr><td><button class="voiced">w</button> Voiced labial-velar approximant</td><td><button class="voiced">ɺ</button> Voiced alveolar lateral flap</td></tr>
           <tr><td><button class="voiced">ɥ</button> Voiced labial-palatal approximant</td><td><button>ɧ</button> Simultaneous ʃ and x</td></tr>
@@ -249,9 +260,9 @@
           <tr><td><button class="voiced">ʢ</button> Voiced epiglottal fricative</td></tr>
           <tr><td><button>ʡ</button> Epiglottal plosive</td><td><button>͡</button> <button>͜</button> Double articulatoion/ affricate</td></tr>
           </table>
-          
+          <br>
+          <h2>Diacritics</h2>
           <table>
-            <tr><th>Diacritics</th><td></td><td></td></tr>
             <tr><td><button>̥</button>   Voiceless <button>̊</button>    Voiceless (diacritic placed above symbol with descender)</td><td><button>̤</button>    Breathy voiced</td><td><button>̪</button>    Dental</td></tr>
             <tr><td><button>̬</button>    Voiced</td><td><button>̰</button>    Creaky voiced</td><td><button>̺</button>    Apical</td></tr>
             <tr><td><button>ʰ</button>   Aspirated</td><td><button>̼</button>    Linguolabial</td><td><button>̻</button>    Laminal</td></tr>
@@ -265,31 +276,9 @@
             <tr><td><button>̯</button>    Non-syllabic</td><td><button>̘</button> Advanced tongue root</td></tr>
             <tr><td><button>˞</button>   Rhoticity</td><td><button>̙</button> Retracted tongue root</td></tr>
           </table>
-             and Supersegmentals
-
-              <br> 
-
-              <br> 
-              <br> <button>.</button>   Closer variety/Fricative
-              <br> 
-              <br> 
-              <br> 
-              <br> <button>̆</button>    Extra short
-              <br> <button>̇</button>    Palatalization/Centralization
-              <br>
-            <br>
-          </table>
-          <h2>Vowels</h2>
-            <br><button class="vowel">i</button> <button class="vowel rounded">y</button>   <button class="vowel">ɨ</button> <button class="vowel rounded">ʉ</button>   <button class="vowel">ɯ</button> <button class="vowel rounded">u</button>    Close
-            <br><button class="vowel">ɪ</button> <button class="vowel rounded">ʏ</button>            <button class="vowel rounded">ʊ</button>
-            <br><button class="vowel">e</button> <button class="vowel rounded">ø</button>   <button class="vowel">ɘ</button> <button class="vowel rounded">ɵ</button>   <button class="vowel">ɤ</button> <button class="vowel rounded">o</button>    Close-mid
-            <br>               <button class="vowel">ə</button>
-            <br><button class="vowel">ɛ</button> <button class="vowel rounded">œ</button>   <button class="vowel">ɜ</button> <button class="vowel rounded">ɞ</button>   <button class="vowel">ʌ</button> <button class="vowel rounded">ɔ</button>    Open-mid
-            <br> <button class="vowel">æ</button>           <button class="vowel">ɐ</button>
-            <br> <button class="vowel">a</button> <button class="vowel rounded">ɶ</button>              <button class="vowel">ɑ</button> <button class="vowel rounded">ɒ</button>   Open
-
-
-
+ 
+        </td>
+        <td>
           <h2>Suprasegmentals</h2>
             <br> <button>ˈ</button>    Primary stress
             <br> <button>ˌ</button>    Secondary stress
@@ -323,9 +312,13 @@
           <br>  <button>↗</button>  Global rise
           <br>  <button>↘</button>  Global fall
 
+  
+        </td>
+      </tr>
+    </table>
 
 
-   <a href="https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf">Source of information: IPA Phonetic Alphabet Chart 2015</a>
+   <div><a href="https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf">Source of information: IPA Phonetic Alphabet Chart 2015</a></div>
    <!-- <a href="https://github.com/elsanussi-s-mneina">Source code repository</a> -->
   </body>
 </html>
