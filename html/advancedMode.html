@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>
+      Phonetics-Modeling Main Page
+    </title>
+    <script>
+    function wireActionsToButtons()
+    {
+      let buttons = document.getElementsByTagName("button");
+      for (let i = 0; i < buttons.length; i++)
+      {
+        let button = buttons[i];
+        button.onclick = () => document.getElementById("screen").value += button.innerText;
+      }
+    }
+    </script>
+    <style>
+
+    table
+    {
+      border-collapse: collapse;
+    }
+
+    th
+    {
+      border: 4px black;
+      background: lightblue;
+      border: 1px solid aliceblue;
+    }
+
+    table, td
+    {
+      border: 1px solid gray;
+      background: aliceblue
+    }
+    
+    button
+    {
+       font-size: 20px;
+       margin: 0px;
+       width: 50px;
+       height: 50px;
+       background-color: whitesmoke;
+    }
+
+    button.voiced
+    {
+      border-radius: 0% 0% 40% 0%;
+    }
+
+    button.voiceless
+    {
+      border-radius: 20% 0% 0% 20%;
+    }
+
+    button.vowel
+    {
+      border-radius: 10%;
+    }
+
+    button.rounded
+    {
+      border-radius: 50%;
+    }
+    
+    #screen
+    {
+      font-size: 30px;
+      width: 800px;
+      height: 300px;
+    }
+        </style>
+  </head>
+  <body onload="wireActionsToButtons();">
+
+     <textarea id="screen"></textarea>
+    <b>Press buttons below to write text here.</b>
+    <h1>International Phonetic Alphabet</h1>
+    <h2> <button>̯</button></h2>
+    <table style="border: 1px solid black;">
+      <tr>
+        <th><button>̥</button><button>̊</button><button>̬</button></th>
+        <th>
+          <button>ʷ</button>
+          <button>̘</button>
+        </th>
+        <th>
+           <button>̼</button><button>̟</button>
+        </th>
+        <th>
+           <button>̪</button>
+        </th>
+        <th>
+         <button>̺</button> 
+         <button>̻</button> 
+        </th>
+        <th>
+         <button>͡</button> <button>͜</button>
+        </th>
+        <th>
+           <button>̠</button>
+        </th>
+        <th>
+           <button>ʲ</button>
+        </th>
+        <th>
+           <button>ˠ</button>
+        </th>
+        <th>
+          <button>̙</button> 
+        </th>
+        <th>
+           <button>ˤ</button> <button>̰</button>
+        </th>
+        <th> 
+           <button>ʰ</button> <button>̤</button> 
+        </th>
+
+      </tr>
+      <tr>
+         <th> <button>̚</button></th>
+         <td><button class="voiceless">p</button><button class="voiced">b</button></td>
+         <td></td>
+         <td></td>
+         <td><button class="voiceless">t</button><button class="voiced">d</button></td> 
+         <td></td>         
+         <td><button class="voiceless">ʈ</button><button class="voiced">ɖ</button></td>
+         <td><button class="voiceless">c</button><button class="voiced">ɟ</button></td>
+         <td><button class="voiceless">k</button><button class="voiced">g</button></td>
+         <td><button class="voiceless">q</button><button class="voiced">ɢ</button></td>
+         <td></td>
+         <td><button class="voiceless">ʔ</button><button style="visibility: hidden;"></button></td>
+      </tr>
+      <tr>
+           <th> <button>ⁿ</button> <button>̃</button></th>
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">m</button></td>      
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɱ</button></td>
+           <td></td>
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">n</button></td>
+           <td></td>               
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɳ</button></td>      
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɲ</button></td>      
+           <td><button style="visibility: hidden;"> </button> <button class="voiced">ɴ</button></td>                 
+           <td></td>
+           <td  style="background: yellow;"><button>ʼ</button></td>
+           <td style="background: yellow;"><button>ǃ</button><button>ʄ</button></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ʙ</button></td>
+          <td></td>
+          <td></td>
+          <td><button style="visibility: hidden;"> </button><button class="voiced">r</button></td>
+          <td></td>
+          <td></td>
+          <td style="background-color: yellow;"><button>ʘ</button><button>ɓ</button></td>
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ʀ</button></td>                                        
+          <td></td>
+          <td><td style="background-color: yellow;"><button>ǂ</button><button>ɠ</button></td></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td></td>
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ⱱ</button></td> 
+          <td></td>               
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ɾ</button></td>             
+          <td></td>               
+          <td><button style="visibility: hidden;"> </button><button class="voiced">ɽ</button></td>
+          <td style="background-color: yellow;"><button>ǀ</button><button>ɗ</button></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="background-color: yellow;"><button>ǁ</button><button>ʛ</button></td>
+        </tr>
+        <tr>
+           <th><button>̝</button></th>
+           <td><button class="voiceless">ɸ</button><button class="voiced">β</button></td>  
+           <td><button class="voiceless">f</button><button class="voiced">v</button></td>  
+           <td><button class="voiceless">θ</button><button class="voiced">ð</button></td>  
+           <td><button class="voiceless">s</button><button class="voiced">z</button></td>  
+           <td><button class="voiceless">ʃ</button><button class="voiced">ʒ</button></td>  
+           <td><button class="voiceless">ʂ</button><button class="voiced">ʐ</button></td>  
+           <td><button class="voiceless">ç</button><button class="voiced">ʝ</button></td>  
+           <td><button class="voiceless">x</button><button class="voiced">ɣ</button></td>  
+           <td><button class="voiceless">χ</button><button class="voiced">ʁ</button></td>  
+           <td><button class="voiceless">ħ</button><button class="voiced">ʕ</button></td>  
+           <td><button class="voiceless">h</button><button class="voiced">ɦ</button></td>  
+       </tr>
+       <tr>
+         <th></th>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td><button class="voiceless">ɬ</button><button style="align-self:right">ɮ</button></td>                                                                             
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td style="background-color: lightyellow;"><button class="voiceless">ʍ</button><button>ʡ</button> </td>
+         <td style="background-color: lightyellow;"><button class="voiceless">ʜ</button><button class="voiced">ʢ</button></td>
+      </tr>
+      <tr> 
+        <th><button>̞</button> <button>˞</button></th>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ʋ</button></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɹ</button></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɻ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">j</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɰ</button></td>                                                   
+        <td></td>
+        <td></td>
+        <td style="background-color: lightyellow;"><button class="voiced">w</button><button class="voiced">ɥ</button></td>
+      </tr>
+      <tr>
+        <th> <button>ˡ</button></th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">l</button></td>
+        <td></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ɭ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ʎ</button></td>
+        <td><button style="visibility: hidden;"> </button><button class="voiced">ʟ</button></td>                                
+        <td></td>
+        <td style="background-color: lightyellow;"><button class="voiceless">ɕ</button> <button class="voiced">ʑ</button></td>
+        <td style="background-color: lightyellow;"><button class="voiceless">ɧ</button><button class="voiced">ɺ</button></td>
+      </tr>      
+    </table>
+    <table>
+      <tr>
+        <td style="width: 800px;">
+          <h2> <button>̩</button><button>̍</button> <button>̜</button> <button>̹</button></h2>
+            <br><span style="margin-left:30px"></span>  <span style="margin-left:170px"> <button>̈</button> <button>̽</button></span>   <span style="margin-left:100px"></span> 
+            <br><button class="vowel">i</button> <button class="vowel rounded">y</button>   <button class="vowel" style="margin-left:100px">ɨ</button> <button class="vowel rounded">ʉ</button>   <button class="vowel" style="margin-left:100px">ɯ</button> <button class="vowel rounded">u</button>   <button>˥</button> <button>̋</button>   <button>̌</button>  
+            <br><button class="vowel" style="margin-left:100px">ɪ</button> <button class="vowel rounded">ʏ</button>            <button class="vowel rounded" style="margin-left:150px">ʊ</button>  <button style="margin-left:110px">˦</button> <button>́</button>   <button>̂</button>
+            <br><button class="vowel" style="margin-left:50px">e</button> <button class="vowel rounded">ø</button>   <button class="vowel" style="margin-left:50px">ɘ</button> <button class="vowel rounded">ɵ</button>   <button class="vowel" style="margin-left:100px">ɤ</button> <button class="vowel rounded">o</button>  <button>˧</button> <button>̄</button>    <button>᷄</button>    
+            <br><button class="vowel" style="margin-left:230px">ə</button>   <button style="margin-left: 240px">˨</button> <button>̀</button>   <button>᷅</button>
+            <br><button class="vowel" style="margin-left:80px">ɛ</button> <button class="vowel rounded">œ</button>   <button class="vowel" style="margin-left:20px">ɜ</button> <button class="vowel rounded">ɞ</button>   <button class="vowel" style="margin-left:100px">ʌ</button> <button class="vowel rounded">ɔ</button>   <button>˩</button> <button>̏</button>   <button>᷈</button>  
+            <br> <button class="vowel" style="margin-left:120px">æ</button>           <button class="vowel" style="margin-left:60px">ɐ</button>  <button style="margin-left: 240px">ꜜ</button>   <button>↗</button>  
+            <br> <button class="vowel" style="margin-left:110px">a</button> <button class="vowel rounded">ɶ</button>              <button class="vowel" style="margin-left:200px">ɑ</button> <button class="vowel rounded">ɒ</button>    <button>ꜛ</button>   <button>↘</button> 
+
+
+        </td>
+        <td>
+            <br> <button>ˈ</button>    Primary stress
+            <br> <button>ˌ</button>    Secondary stress
+            <br> <button>ː</button>    Long
+            <br> <button>ˑ</button>    Half long
+
+            <br> <button>̆</button>     Extra short
+            <br> <button>|</button>    Minor (foot) group 
+            <br> <button>‖</button>    Major (intonation) group
+            <br> <button>.</button>    Syllable break
+            <br> <button>‿</button>    Linking (absence of a break
+            
+
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+
+
+
+
+  
+        </td>
+      </tr>
+    </table>
+
+
+   <div><a href="https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf">Source of information: IPA Phonetic Alphabet Chart 2015</a></div>
+   <!-- <a href="https://github.com/elsanussi-s-mneina">Source code repository</a> -->
+  </body>
+</html>
