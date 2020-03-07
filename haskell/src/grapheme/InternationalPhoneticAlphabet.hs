@@ -54,8 +54,8 @@ graphemesOfIPA = consonantsPulmonic
 -- CONSONANTS (PULMONIC)
 consonantsPulmonic :: [Char]
 consonantsPulmonic = 
-  [ 'p', 'b',                     't', 'd',           'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ', 'ʔ'                -- Plosive
-  ,      'm',      'ɱ',                'n',                'ɳ',      'ɲ',      'ɴ'                               -- Nasal
+  [ 'p', 'b',                     't', 'd',           'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ',           'ʔ'      -- Plosive
+  ,      'm',      'ɱ',                'n',                'ɳ',      'ɲ',      'ŋ',      'ɴ'                     -- Nasal
   ,      'ʙ',                          'r',                          'ʀ'                                         -- Trill
   ,                'ⱱ',                'ɾ',                'ɽ'                                                   -- Tap or Flap
   , 'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ', 'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ'   -- Fricative
