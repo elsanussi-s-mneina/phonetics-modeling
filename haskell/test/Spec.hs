@@ -81,11 +81,13 @@ analyzeIPASpec =
       it ("should be that: [ɖ] is pulmonic egressive.") $
             airstream (analyzeIPA "ɖ") `shouldBe` PulmonicEgressive
       it ("should be that: [b] is a voiceless bilabial plosive consonant with " ++
-          "pulmonic egressive airstream mechanism") $
+          "pulmonic egressive airstream mechanism") $ do
             analyzeIPA "b" `shouldBe` Consonant  Voiced    Bilabial  Plosive PulmonicEgressive
+            constructIPA             (Consonant  Voiced    Bilabial  Plosive PulmonicEgressive) `shouldBe` "b"
       it ("should be that: [t] is a voiceless alveloar plosive consonant with " ++
-          "pulmonic egressive airstream mechanism") $
+          "pulmonic egressive airstream mechanism") $ do
             analyzeIPA "t" `shouldBe` Consonant  Voiceless Alveolar  Plosive PulmonicEgressive
+            constructIPA             (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive) `shouldBe` "t"
 -- Plosives:
       it ("should be that: [p] is a voiceless bilabial plosive consonant with " ++ 
           "pulmonic egressive airstream mechanism") $ 
@@ -93,14 +95,17 @@ analyzeIPASpec =
            analyzeIPA "p"  `shouldBe` Consonant  Voiceless Bilabial  Plosive PulmonicEgressive
            constructIPA (Consonant Voiceless Bilabial Plosive PulmonicEgressive) `shouldBe` "p"
       it ("should be that: [t] is a voiceless alveolar plosive with " ++ 
-          "pulmonic egressive airstream mechanism") $ 
+          "pulmonic egressive airstream mechanism") $ do 
           analyzeIPA "t"  `shouldBe` Consonant  Voiceless Alveolar  Plosive PulmonicEgressive
+          constructIPA              (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive) `shouldBe` "t"
       it ("should be that: [d] is a voiced alveolar plosive with " ++ 
-          "pulmonic egressive airstream mechanism") $
+          "pulmonic egressive airstream mechanism") $ do
           analyzeIPA "d"  `shouldBe` Consonant  Voiced    Alveolar  Plosive PulmonicEgressive
+          constructIPA              (Consonant  Voiced    Alveolar  Plosive PulmonicEgressive) `shouldBe` "d"
       it ("should be that: [ʈ] is a voiceless retroflex plosive with " ++ 
-          "pulmonic egressive airstream mechanism") $
+          "pulmonic egressive airstream mechanism") $ do
           analyzeIPA "ʈ"  `shouldBe` Consonant  Voiceless Retroflex Plosive PulmonicEgressive
+          constructIPA              (Consonant  Voiceless Retroflex Plosive PulmonicEgressive) `shouldBe` "ʈ"
       it ("should be that: [ɖ] is a voiced retroflex plosive with " ++ 
           "pulmonic egressive airstream mechanism") $
           analyzeIPA "ɖ"  `shouldBe` Consonant  Voiced    Retroflex Plosive PulmonicEgressive
@@ -155,8 +160,9 @@ analyzeIPASpec =
           "pulmonic egressive airstream mechanism") $
           analyzeIPA "r"  `shouldBe` Consonant  Voiced Alveolar Trill PulmonicEgressive
       it ("should be that: [ʀ] is a voiced uvular trill with " ++ 
-          "pulmonic egressive airstream mechanism") $
+          "pulmonic egressive airstream mechanism") $ do
           analyzeIPA "ʀ"  `shouldBe` Consonant  Voiced Uvular   Trill PulmonicEgressive
+          constructIPA              (Consonant  Voiced Uvular   Trill PulmonicEgressive) `shouldBe` "ʀ"
      -- Taps or flaps:
       it ("should be that: [ⱱ] is a voiced labio-dental tap or flap with " ++ 
           "pulmonic egressive airstream mechanism") $

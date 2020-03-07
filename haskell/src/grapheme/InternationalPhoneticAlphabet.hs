@@ -208,15 +208,30 @@ analyzePlaceIPA colIndex =
   let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
   in colNames !! (colIndex `div` 2)
 
+placeToHalfColIndex place = 
+  let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
+  in indexOf colNames 0 place
 
 analyzeIPAv2 x =
   let (manner, rowIndex) = analyzeMannerIPA x 
       colIndex = indexOf (consonantsPulmonicTable !! rowIndex) 0 x
-      voicing  = if colIndex `mod` 2 == 0 then Voiceless else Voiced
+      voicing  = colIndexToVoicing colIndex 
       place    = analyzePlaceIPA colIndex 
   in Consonant voicing place manner PulmonicEgressive
 
+colIndexToVoicing colIndex = 
+  if colIndex `mod` 2 == 0 then Voiceless else Voiced
 
+voicingToColIndexOffset Voiceless = 0
+voicingToColIndexOffset Voiced    = 1
+
+mannerToRowIndex manner = 
+  let rowNames = [Plosive, Nasal, Trill, TapOrFlap, Fricative, LateralFricative, Approximant, LateralApproximant]
+  in indexOf rowNames 0 manner
+
+voicingAndPlaceToColIndex voicing place = 
+      (2 * placeToHalfColIndex place) + voicingToColIndexOffset voicing
+  
 
 -- Affricates
 analyzeIPA "t͡ʃ" = Consonant  Voiceless PostAlveolar Affricate PulmonicEgressive
@@ -322,7 +337,7 @@ analyzeIPA [firstChar, '̼'] =
           Vowel height backness rounding _      -> Vowel height backness rounding Voiced
 
 
-constructIPA :: Phonet -> IPAText
+
 constructIPA phoneDescription =
   -- If it can represent it as a single character it will
   -- return the single character result (i.e. without diacritics),
@@ -330,9 +345,11 @@ constructIPA phoneDescription =
   -- it will try to represent it in IPA with more than
   -- one character
   let simpleResult = constructIPA1 phoneDescription
-  in if simpleResult == "∅"
+  in if simpleResult == " "
        then constructIPA2 phoneDescription
        else simpleResult
+
+
 
 -- Note to Software Developer: the reason there are three
 -- functions for constructing the IPA is to prevent
@@ -346,83 +363,6 @@ constructIPA phoneDescription =
 -- | to its IPA symbol.
 -- | Note this only returns one character without diacritics.
 constructIPA1  ::  Phonet -> IPAText
--- Plosives:
-constructIPA1 (Consonant  Voiced    Bilabial  Plosive PulmonicEgressive) = "b"
-constructIPA1 (Consonant  Voiceless Bilabial  Plosive PulmonicEgressive) = "p"
-constructIPA1 (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive) = "t"
-constructIPA1 (Consonant  Voiced    Alveolar  Plosive PulmonicEgressive) = "d"
-constructIPA1 (Consonant  Voiceless Retroflex Plosive PulmonicEgressive) = "ʈ"
-constructIPA1 (Consonant  Voiced    Retroflex Plosive PulmonicEgressive) = "ɖ"
-constructIPA1 (Consonant  Voiceless Palatal   Plosive PulmonicEgressive) = "c"
-constructIPA1 (Consonant  Voiced    Palatal   Plosive PulmonicEgressive) = "ɟ"
-constructIPA1 (Consonant  Voiceless Velar     Plosive PulmonicEgressive) = "k"
-constructIPA1 (Consonant  Voiced    Velar     Plosive PulmonicEgressive) = "g"
-constructIPA1 (Consonant  Voiceless Uvular    Plosive PulmonicEgressive) = "q"
-constructIPA1 (Consonant  Voiced    Uvular    Plosive PulmonicEgressive) = "ɢ"
-constructIPA1 (Consonant  Voiceless Glottal   Plosive PulmonicEgressive) = "ʔ"
-
--- Nasals:
-constructIPA1 (Consonant  Voiced    Bilabial    Nasal PulmonicEgressive) = "m"
-constructIPA1 (Consonant  Voiced    LabioDental Nasal PulmonicEgressive) = "ɱ"
-constructIPA1 (Consonant  Voiced    Alveolar    Nasal PulmonicEgressive) = "n"
-constructIPA1 (Consonant  Voiced    Retroflex   Nasal PulmonicEgressive) = "ɳ"
-constructIPA1 (Consonant  Voiced    Palatal     Nasal PulmonicEgressive) = "ɲ"
-constructIPA1 (Consonant  Voiced    Velar       Nasal PulmonicEgressive) = "ŋ"
-constructIPA1 (Consonant  Voiced    Uvular      Nasal PulmonicEgressive) = "ɴ"
-
--- Trills:
-constructIPA1 (Consonant  Voiced   Bilabial    Trill     PulmonicEgressive) = "ʙ"
-constructIPA1 (Consonant  Voiced   Alveolar    Trill     PulmonicEgressive) = "r"
-constructIPA1 (Consonant  Voiced   Uvular      Trill     PulmonicEgressive) = "ʀ" -- Taps or flaps:
-constructIPA1 (Consonant  Voiced   LabioDental TapOrFlap PulmonicEgressive) = "ⱱ"
-constructIPA1 (Consonant  Voiced   Alveolar    TapOrFlap PulmonicEgressive) = "ɾ"
-constructIPA1 (Consonant  Voiced   Retroflex   TapOrFlap PulmonicEgressive) = "ɽ"
-
--- Fricatives:
-constructIPA1 (Consonant  Voiceless Bilabial       Fricative  PulmonicEgressive) = "ɸ"
-constructIPA1 (Consonant  Voiced    Bilabial       Fricative  PulmonicEgressive) = "β"
-constructIPA1 (Consonant  Voiceless LabioDental    Fricative  PulmonicEgressive) = "f"
-constructIPA1 (Consonant  Voiced    LabioDental    Fricative  PulmonicEgressive) = "v"
-constructIPA1 (Consonant  Voiceless Dental         Fricative  PulmonicEgressive) = "θ"
-constructIPA1 (Consonant  Voiced    Dental         Fricative  PulmonicEgressive) = "ð"
-constructIPA1 (Consonant  Voiceless Alveolar       Fricative  PulmonicEgressive) = "s"
-constructIPA1 (Consonant  Voiced    Alveolar       Fricative  PulmonicEgressive) = "z"
-constructIPA1 (Consonant  Voiceless PostAlveolar   Fricative  PulmonicEgressive) = "ʃ"
-constructIPA1 (Consonant  Voiced    PostAlveolar   Fricative  PulmonicEgressive) = "ʒ"
-constructIPA1 (Consonant  Voiceless Retroflex      Fricative  PulmonicEgressive) = "ʂ"
-constructIPA1 (Consonant  Voiced    Retroflex      Fricative  PulmonicEgressive) = "ʐ"
-constructIPA1 (Consonant  Voiceless Palatal        Fricative  PulmonicEgressive) = "ç"
-constructIPA1 (Consonant  Voiced    Palatal        Fricative  PulmonicEgressive) = "ʝ"
-constructIPA1 (Consonant  Voiceless Velar          Fricative  PulmonicEgressive) = "x"
-constructIPA1 (Consonant  Voiced    Velar          Fricative  PulmonicEgressive) = "ɣ"
-constructIPA1 (Consonant  Voiceless Uvular         Fricative  PulmonicEgressive) = "χ"
-constructIPA1 (Consonant  Voiced    Uvular         Fricative  PulmonicEgressive) = "ʁ"
-constructIPA1 (Consonant  Voiceless Pharyngeal     Fricative  PulmonicEgressive) = "ħ"
-constructIPA1 (Consonant  Voiced    Pharyngeal     Fricative  PulmonicEgressive) = "ʕ"
-constructIPA1 (Consonant  Voiceless Glottal        Fricative  PulmonicEgressive) = "h"
-constructIPA1 (Consonant  Voiced    Glottal        Fricative  PulmonicEgressive) = "ɦ"
-
-
-
--- Lateral Fricatives:
-constructIPA1 (Consonant  Voiceless Alveolar LateralFricative PulmonicEgressive) = "ɬ"
-constructIPA1 (Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive) = "ɮ"
-
-
--- Approximants:
-constructIPA1 (Consonant  Voiced  LabioDental  Approximant PulmonicEgressive) = "ʋ"
-constructIPA1 (Consonant  Voiced  Alveolar     Approximant PulmonicEgressive) = "ɹ"
-
-constructIPA1 (Consonant  Voiced  Retroflex    Approximant PulmonicEgressive) = "ɻ"
-constructIPA1 (Consonant  Voiced  Palatal      Approximant PulmonicEgressive) = "j"
-constructIPA1 (Consonant  Voiced  Velar        Approximant PulmonicEgressive) = "ɰ"
-
--- Lateral Approximants:
-constructIPA1 (Consonant  Voiced Alveolar   LateralApproximant PulmonicEgressive) = "l"
-constructIPA1 (Consonant  Voiced Retroflex  LateralApproximant PulmonicEgressive) = "ɭ"
-constructIPA1 (Consonant  Voiced Palatal    LateralApproximant PulmonicEgressive) = "ʎ"
-constructIPA1 (Consonant  Voiced Velar      LateralApproximant PulmonicEgressive) = "ʟ"
-
 
 -- Under the Other Symbols part of the IPA chart:
 
@@ -453,6 +393,14 @@ constructIPA1 (Consonant Voiced Dental UnmarkedManner Implosive) = "ɗ"  -- Or A
 constructIPA1 (Consonant Voiced Palatal UnmarkedManner Implosive) = "ʄ"
 constructIPA1 (Consonant Voiced Velar UnmarkedManner Implosive) = "ɠ"
 constructIPA1 (Consonant Voiced Uvular UnmarkedManner Implosive) = "ʛ"
+
+
+constructIPA1 (Consonant voicing place manner PulmonicEgressive) = 
+   let rowIndex = mannerToRowIndex manner
+       colIndex = voicingAndPlaceToColIndex voicing place
+   in  [(consonantsPulmonicTable !! rowIndex) !! colIndex]
+
+
 
 
 -- Close Vowels:
@@ -497,7 +445,9 @@ constructIPA1 (Vowel  Open Front Unrounded Voiced) = "a"
 constructIPA1 (Vowel  Open Front Rounded   Voiced) = "ɶ"
 constructIPA1 (Vowel  Open Back  Unrounded Voiced) = "ɑ"
 constructIPA1 (Vowel  Open Back  Rounded   Voiced) = "ɒ"
-constructIPA1 _ = "∅"
+constructIPA1 _ = " "
+
+
 
 
 constructIPA2 :: Phonet -> IPAText
