@@ -253,7 +253,7 @@ analyzeIPASpec =
           analyzeIPA "ʋ"  `shouldBe` Consonant  Voiced LabioDental  Approximant PulmonicEgressive
       it ("should be that: [ɹ] is a voiced alveolar approximant with " ++ 
           "pulmonic egressive airstream mechanism") $
-          analyzeIPA "ɹ"  `shouldBe` Consonant  Voiced Alveolar Approximant PulmonicEgressive -- TODO: fix this
+          analyzeIPA "ɹ"  `shouldBe` Consonant  Voiced Alveolar Approximant PulmonicEgressive
       it ("should be that: [ɻ] is a voiced retroflex approximant with " ++ 
           "pulmonic egressive airstream mechanism") $
           analyzeIPA "ɻ"  `shouldBe` Consonant  Voiced Retroflex    Approximant PulmonicEgressive
