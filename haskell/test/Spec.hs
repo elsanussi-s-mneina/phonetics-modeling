@@ -33,11 +33,13 @@ analyzeIPASpec :: Spec
 analyzeIPASpec = 
     describe "analyzing place, voicing, manner, and airstream mechanism of sound represented by IPA symbols" $ do
       it ("should be that: [p] is a voiceless bilabial plosive consonant" ++ 
-          "with pulmonic egressive airstream mechanism.") $
+          "with pulmonic egressive airstream mechanism.") $ do
             analyzeIPA "p" `shouldBe` Consonant Voiceless Bilabial Plosive PulmonicEgressive
+            constructIPA             (Consonant Voiceless Bilabial Plosive PulmonicEgressive) `shouldBe` "p"
       it ("should be that: [s] is a voiceless alveolar fricative consonant" ++
-          "with pulmonic egressive airstream mechanism.") $
+          "with pulmonic egressive airstream mechanism.") $ do
             analyzeIPA "s" `shouldBe` Consonant Voiceless Alveolar Fricative PulmonicEgressive
+            constructIPA             (Consonant Voiceless Alveolar Fricative PulmonicEgressive) `shouldBe` "s"
       it ("should be that: [b] is voiced.") $
             vocalFolds (analyzeIPA "b") `shouldBe` Voiced
       it ("should be that: [b] is bilabial.") $
@@ -87,7 +89,9 @@ analyzeIPASpec =
 -- Plosives:
       it ("should be that: [p] is a voiceless bilabial plosive consonant with " ++ 
           "pulmonic egressive airstream mechanism") $ 
+           do
            analyzeIPA "p"  `shouldBe` Consonant  Voiceless Bilabial  Plosive PulmonicEgressive
+           constructIPA (Consonant Voiceless Bilabial Plosive PulmonicEgressive) `shouldBe` "p"
       it ("should be that: [t] is a voiceless alveolar plosive with " ++ 
           "pulmonic egressive airstream mechanism") $ 
           analyzeIPA "t"  `shouldBe` Consonant  Voiceless Alveolar  Plosive PulmonicEgressive
