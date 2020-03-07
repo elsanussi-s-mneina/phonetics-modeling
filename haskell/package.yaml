@@ -50,4 +50,3 @@ tests:
     - -main-is Spec
     dependencies:
     - phonetics-modeling
-    - hspec
