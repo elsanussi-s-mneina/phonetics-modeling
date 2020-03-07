@@ -184,6 +184,39 @@ showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 -- | to its analyzed form (its phonetic features)
 -- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
 analyzeIPA  :: IPAText -> Phonet
+
+
+
+indexOf [] index target = -1
+indexOf (elem:rest) index target = 
+  if elem == target
+    then index
+    else indexOf rest (index + 1) target
+
+analyzeMannerIPA x
+  | elem x (consonantsPulmonicTable !! 0) = (Plosive, 0)
+  | elem x (consonantsPulmonicTable !! 1) = (Nasal, 1)
+  | elem x (consonantsPulmonicTable !! 2) = (Trill, 2)
+  | elem x (consonantsPulmonicTable !! 3) = (TapOrFlap, 3)
+  | elem x (consonantsPulmonicTable !! 4) = (Fricative, 4)
+  | elem x (consonantsPulmonicTable !! 5) = (LateralFricative, 5)
+  | elem x (consonantsPulmonicTable !! 6) = (Approximant, 6)
+  | elem x (consonantsPulmonicTable !! 7) = (LateralApproximant, 7)
+  | otherwise = (LateralApproximant, 7) -- Not right, but will have to work for now. -- TODO: Fix this.
+
+analyzePlaceIPA colIndex = 
+  let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
+  in colNames !! (colIndex `div` 2)
+
+
+analyzeIPAv2 x =
+  let (manner, rowIndex) = analyzeMannerIPA x 
+      colIndex = indexOf (consonantsPulmonicTable !! rowIndex) 0 x
+      voicing  = if colIndex `mod` 2 == 0 then Voiceless else Voiced
+      place    = analyzePlaceIPA colIndex 
+  in Consonant voicing place manner PulmonicEgressive
+
+
 -- Plosives:
 analyzeIPA "p"  = Consonant  Voiceless Bilabial  Plosive PulmonicEgressive
 analyzeIPA "b"  = Consonant  Voiced    Bilabial  Plosive PulmonicEgressive
