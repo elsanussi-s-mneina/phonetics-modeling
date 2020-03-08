@@ -154,12 +154,13 @@ low _ = Nothing
 
 toTextFeatures :: Phonet -> String
 toTextFeatures phonete =
-  let anteriorString = toTextAnteriorFeature phonete
-      distributedString = toTextDistributedFeature phonete
-      stridentString = toTextStridentFeature phonete
-      highString = toTextHighFeature phonete
-      lowString = toTextLowFeature phonete
-  in concatIgnoringNothing "; " [anteriorString, distributedString, stridentString, highString, lowString]
+  let allString = mapf [toTextAnteriorFeature, toTextDistributedFeature,
+                        toTextStridentFeature, toTextHighFeature, toTextLowFeature, toTextNasalFeature, toTextLabialFeature, toTextCoronalFeature, toTextDorsalFeature, 
+                        toTextPharyngealFeature, toTextLaryngealFeature] phonete
+  in "[" ++ concatIgnoringNothing "; " allString ++ "]"
+
+mapf :: [Phonet -> Maybe String] -> Phonet -> [Maybe String]
+mapf functions phonete = map (\f -> f phonete) functions
 
 concatIgnoringNothing :: String -> [Maybe String] -> String
 concatIgnoringNothing _ [] = ""
@@ -190,6 +191,43 @@ toTextLowFeature phonete =
   toTextGenericFeature low "low" phonete
 
 
+toTextNasalFeature :: Phonet -> Maybe String
+toTextNasalFeature phonete =
+  toTextUnaryFeature nasal "nasal" phonete
+
+toTextLateralFeature :: Phonet -> Maybe String
+toTextLateralFeature phonete =
+  toTextUnaryFeature lateral "lateral" phonete
+
+
+toTextLabialFeature :: Phonet -> Maybe String
+toTextLabialFeature phonete =
+  toTextUnaryFeature labial "labial" phonete
+
+toTextCoronalFeature :: Phonet -> Maybe String
+toTextCoronalFeature phonete =
+  toTextUnaryFeature coronal "coronal" phonete
+
+toTextDorsalFeature :: Phonet -> Maybe String
+toTextDorsalFeature phonete =
+  toTextUnaryFeature dorsal "dorsal" phonete
+
+toTextPharyngealFeature :: Phonet -> Maybe String
+toTextPharyngealFeature phonete =
+  toTextUnaryFeature pharyngeal "pharyngeal" phonete
+
+toTextLaryngealFeature :: Phonet -> Maybe String
+toTextLaryngealFeature phonete =
+  toTextUnaryFeature laryngeal "laryngeal" phonete
+
+
+
+toTextUnaryFeature :: (Phonet -> Bool) -> String -> Phonet -> Maybe String
+toTextUnaryFeature featureFunction featureName phonete =
+  let featureValue = featureFunction phonete
+  in if featureValue
+       then Just featureName
+       else Nothing
 
 toTextGenericFeature :: (Phonet -> Maybe Bool) -> String -> Phonet -> Maybe String
 toTextGenericFeature featureFunction featureName phonete =
