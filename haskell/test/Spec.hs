@@ -314,6 +314,8 @@ showEnglishPhonemeInventorySpec = do
 
 speFeaturesSpec :: IO ()
 speFeaturesSpec = do
+  putStrLn sectionDivider
+  putStrLn "SPE Features"
   runTest "The low feature value is nothing for [β]." 
     (toTextLowFeature (Consonant Voiced Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The low feature value for [χ] is [+ low]."
