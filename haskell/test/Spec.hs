@@ -7,7 +7,8 @@ import PhonemeFeature (isGlide, toTextLowFeature, toTextAnteriorFeature,
                        toTextLowFeature, toTextNasalFeature, 
                        toTextLabialFeature, toTextCoronalFeature, 
                        toTextDorsalFeature, 
-                       toTextPharyngealFeature, toTextLaryngealFeature)
+                       toTextPharyngealFeature, toTextLaryngealFeature,
+                       toTextRoundFeature, toTextATRFeature, toTextBackFeature)
 import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
 import Tester (printLegend, runTest)
@@ -680,5 +681,189 @@ speFeaturesSpec = do
   runTest "The laryngeal feature is nothing for [ɴ]"
     (toTextLaryngealFeature (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
 
+
+  -- Go to page 270
+
+  runTest "The back feature is - for [i]."
+    (toTextBackFeature (analyzeIPA "i") == Just "- back")
+  runTest "The high feature is + for [i]."
+    (toTextHighFeature (analyzeIPA "i") == Just "+ high")
+  runTest "The low feature is - for [i]."
+    (toTextLowFeature (analyzeIPA "i") == Just "- low")
+  runTest "The ATR feature is + for [i]."
+    (toTextATRFeature (analyzeIPA "i") == Just "+ ATR")
+  runTest "The round feature is - for [i]."
+    (toTextRoundFeature (analyzeIPA "i") == Just "- round")
+
+
+  runTest "The back feature is - for [ɪ]."
+    (toTextBackFeature (analyzeIPA "ɪ") == Just "- back")
+  runTest "The high feature is + for [ɪ]."
+    (toTextHighFeature (analyzeIPA "ɪ") == Just "+ high")
+  runTest "The low feature is - for [ɪ]."
+    (toTextLowFeature (analyzeIPA "ɪ") == Just "- low")
+  runTest "The ATR feature is - for [ɪ]."
+    (toTextATRFeature (analyzeIPA "ɪ") == Just "- ATR")
+  runTest "The round feature is - for [ɪ]."
+    (toTextRoundFeature (analyzeIPA "ɪ") == Just "- round")
+
+
+  runTest "The back feature is - for [e]."
+    (toTextBackFeature (analyzeIPA "e") == Just "- back")
+  runTest "The high feature is - for [e]."
+    (toTextHighFeature (analyzeIPA "e") == Just "- high")
+  runTest "The low feature is - for [e]."
+    (toTextLowFeature (analyzeIPA "e") == Just "- low")
+  runTest "The ATR feature is + for [e]."
+    (toTextATRFeature (analyzeIPA "e") == Just "+ ATR")
+  runTest "The round feature is - for [e]."
+    (toTextRoundFeature (analyzeIPA "e") == Just "- round")
+
+
+
+
+  runTest "The back feature is - for [ɛ]."
+    (toTextBackFeature (analyzeIPA "ɛ") == Just "- back")
+  runTest "The high feature is - for [ɛ]."
+    (toTextHighFeature (analyzeIPA "ɛ") == Just "- high")
+  runTest "The low feature is - for [ɛ]."
+    (toTextLowFeature (analyzeIPA "ɛ") == Just "- low")
+  runTest "The ATR feature is - for [ɛ]."
+    (toTextATRFeature (analyzeIPA "ɛ") == Just "- ATR")
+  runTest "The round feature is - for [ɛ]."
+    (toTextRoundFeature (analyzeIPA "ɛ") == Just "- round")
+    
+    
+
+  runTest "The back feature is - for [æ]."
+    (toTextBackFeature (analyzeIPA "æ") == Just "- back")
+  runTest "The high feature is - for [æ]."
+    (toTextHighFeature (analyzeIPA "æ") == Just "- high")
+  runTest "The low feature is + for [æ]."
+    (toTextLowFeature (analyzeIPA "æ") == Just "+ low")
+  runTest "The ATR feature is - for [æ]." -- It has a parentheses
+    (toTextATRFeature (analyzeIPA "æ") == Just "- ATR")
+  runTest "The round feature is - for [æ]."
+    (toTextRoundFeature (analyzeIPA "æ") == Just "- round")
+    
+ 
+  runTest "The back feature is + for [u]."
+    (toTextBackFeature (analyzeIPA "u") == Just "+ back")
+  runTest "The high feature is + for [u]."
+    (toTextHighFeature (analyzeIPA "u") == Just "+ high")
+  runTest "The low feature is - for [u]."
+    (toTextLowFeature (analyzeIPA "u") == Just "- low")
+  runTest "The ATR feature is + for [u]."
+    (toTextATRFeature (analyzeIPA "u") == Just "+ ATR")
+  runTest "The round feature is + for [u]."
+    (toTextRoundFeature (analyzeIPA "u") == Just "+ round")
+
+
+
+
+
+  runTest "The back feature is + for [ʊ]."
+    (toTextBackFeature (analyzeIPA "ʊ") == Just "+ back")
+  runTest "The high feature is + for [ʊ]."
+    (toTextHighFeature (analyzeIPA "ʊ") == Just "+ high")
+  runTest "The low feature is - for [ʊ]."
+    (toTextLowFeature (analyzeIPA "ʊ") == Just "- low")
+  runTest "The ATR feature is - for [ʊ]."
+    (toTextATRFeature (analyzeIPA "ʊ") == Just "- ATR")
+  runTest "The round feature is + for [ʊ]."
+    (toTextRoundFeature (analyzeIPA "ʊ") == Just "+ round")
+
+
+
+  runTest "The back feature is + for [o]."
+    (toTextBackFeature (analyzeIPA "o") == Just "+ back")
+  runTest "The high feature is - for [o]."
+    (toTextHighFeature (analyzeIPA "o") == Just "- high")
+  runTest "The low feature is - for [o]."
+    (toTextLowFeature (analyzeIPA "o") == Just "- low")
+  runTest "The ATR feature is + for [o]."
+    (toTextATRFeature (analyzeIPA "o") == Just "+ ATR")
+  runTest "The round feature is + for [o]."
+    (toTextRoundFeature (analyzeIPA "o") == Just "+ round")
+
+
+
+  runTest "The back feature is + for [ɔ]."
+    (toTextBackFeature (analyzeIPA "ɔ") == Just "+ back")
+  runTest "The high feature is - for [ɔ]."
+    (toTextHighFeature (analyzeIPA "ɔ") == Just "- high")
+  runTest "The low feature is - for [ɔ]."
+    (toTextLowFeature (analyzeIPA "ɔ") == Just "- low")
+  runTest "The ATR feature is - for [ɔ]."
+    (toTextATRFeature (analyzeIPA "ɔ") == Just "- ATR")
+  runTest "The round feature is + for [ɔ]."
+    (toTextRoundFeature (analyzeIPA "ɔ") == Just "+ round")
+
+
+
+
+  runTest "The back feature is + for [ɑ]."
+    (toTextBackFeature (analyzeIPA "ɑ") == Just "+ back")
+  runTest "The high feature is - for [ɑ]."
+    (toTextHighFeature (analyzeIPA "ɑ") == Just "- high")
+  runTest "The low feature is + for [ɑ]."
+    (toTextLowFeature (analyzeIPA "ɑ") == Just "+ low")
+  runTest "The ATR feature is - for [ɑ]."
+    (toTextATRFeature (analyzeIPA "ɑ") == Just "- ATR") -- In brackets
+  runTest "The round feature is - for [ɑ]."
+    (toTextRoundFeature (analyzeIPA "ɑ") == Just "- round")
+
+
+
+
+  runTest "The back feature is - for [y]."
+    (toTextBackFeature (analyzeIPA "y") == Just "- back")
+  runTest "The high feature is + for [y]."
+    (toTextHighFeature (analyzeIPA "y") == Just "+ high")
+  runTest "The low feature is - for [y]."
+    (toTextLowFeature (analyzeIPA "y") == Just "- low")
+  runTest "The ATR feature is + for [y]."
+    (toTextATRFeature (analyzeIPA "y") == Just "+ ATR")
+  runTest "The round feature is + for [y]."
+    (toTextRoundFeature (analyzeIPA "y") == Just "+ round")
+
+
+
+  runTest "The back feature is - for [ø]."
+    (toTextBackFeature (analyzeIPA "ø") == Just "- back")
+  runTest "The high feature is - for [ø]."
+    (toTextHighFeature (analyzeIPA "ø") == Just "- high")
+  runTest "The low feature is - for [ø]."
+    (toTextLowFeature (analyzeIPA "ø") == Just "- low")
+  runTest "The ATR feature is + for [ø]."
+    (toTextATRFeature (analyzeIPA "ø") == Just "+ ATR")
+  runTest "The round feature is + for [ø]."
+    (toTextRoundFeature (analyzeIPA "ø") == Just "+ round")
+
+
+
+  runTest "The back feature is + for [ɨ]."
+    (toTextBackFeature (analyzeIPA "ɨ") == Just "+ back")
+  runTest "The high feature is + for [ɨ]."
+    (toTextHighFeature (analyzeIPA "ɨ") == Just "+ high")
+  runTest "The low feature is - for [ɨ]."
+    (toTextLowFeature (analyzeIPA "ɨ") == Just "- low")
+  runTest "The ATR feature is - for [ɨ]."  -- In parentheses
+    (toTextATRFeature (analyzeIPA "ɨ") == Just "- ATR")
+  runTest "The round feature is - for [ɨ]."
+    (toTextRoundFeature (analyzeIPA "ɨ") == Just "- round")
+    
+    
+ 
+  runTest "The back feature is + for [ʌ]."
+    (toTextBackFeature (analyzeIPA "ʌ") == Just "+ back")
+  runTest "The high feature is - for [ʌ]."
+    (toTextHighFeature (analyzeIPA "ʌ") == Just "- high")
+  runTest "The low feature is - for [ʌ]."
+    (toTextLowFeature (analyzeIPA "ʌ") == Just "- low")
+  runTest "The ATR feature is - for [ʌ]."
+    (toTextATRFeature (analyzeIPA "ʌ") == Just "- ATR") -- in parentheses
+  runTest "The round feature is - for [ʌ]."
+    (toTextRoundFeature (analyzeIPA "ʌ") == Just "- round")
 
 

@@ -124,21 +124,42 @@ high (Consonant _ AlveoloPalatal _ _) = Just True
 high (Consonant _ Velar _ _) = Just True
 high (Consonant _ Uvular _ _) = Just False
 high (Consonant _ _ _ _) = Nothing
+high (Vowel height _ _ _ ) = Just (height == Close || height == NearClose)
 high _ = Nothing
 
 low (Consonant _ Uvular _ _) = Just True
 low (Consonant _ Pharyngeal _ _) = Just True
 low (Consonant _ Glottal _ _) = Just True
 low (Consonant _ _ _ _) = Nothing
+low (Vowel height _ _ _ ) = Just (height == Open || height == NearOpen)
 low _ = Nothing
 
 
+back (Vowel _ Back _ _) = Just True
+back (Vowel _ Central _ _) = Just True
+back (Vowel _ Front _ _) = Just False
+back _ = Nothing
+
+round (Vowel _ _ rounding _) = Just (rounding == Rounded)
+round _ = Just False
+
+
+atr vowel = Just (vowel == analyzeIPA("i") || vowel == analyzeIPA("e") ||
+            vowel == analyzeIPA("u") || vowel == analyzeIPA("ø") || 
+            vowel == analyzeIPA("o") || vowel == analyzeIPA("y"))
+atr (Vowel NearClose Front Unrounded Voiced) = Just False
+atr (Vowel NearClose Back  Rounded   Voiced) = Just False
+atr (Vowel  OpenMid Front   Unrounded Voiced) = Just False
+atr (Vowel  OpenMid Back    Rounded   Voiced) = Just False
+atr _ = Nothing
 
 toTextFeatures :: Phonet -> String
 toTextFeatures phonete =
   let allString = mapf [toTextAnteriorFeature, toTextDistributedFeature,
                         toTextStridentFeature, toTextHighFeature, toTextLowFeature, toTextNasalFeature, toTextLabialFeature, toTextCoronalFeature, toTextDorsalFeature, 
-                        toTextPharyngealFeature, toTextLaryngealFeature] phonete
+                        toTextPharyngealFeature, toTextLaryngealFeature,
+                        toTextBackFeature, toTextRoundFeature,
+                        toTextATRFeature] phonete
   in "[" ++ concatIgnoringNothing "; " allString ++ "]"
 
 mapf :: [Phonet -> Maybe String] -> Phonet -> [Maybe String]
@@ -148,6 +169,22 @@ concatIgnoringNothing :: String -> [Maybe String] -> String
 concatIgnoringNothing _ [] = ""
 concatIgnoringNothing joiner (Nothing:xs) = concatIgnoringNothing joiner xs
 concatIgnoringNothing joiner ((Just x):xs) = x ++ joiner ++ concatIgnoringNothing joiner xs
+
+
+toTextBackFeature :: Phonet -> Maybe String
+toTextBackFeature phonete = 
+  toTextGenericFeature back "back" phonete
+
+
+toTextRoundFeature :: Phonet -> Maybe String
+toTextRoundFeature phonete = 
+  toTextGenericFeature PhonemeFeature.round "round" phonete
+
+toTextATRFeature :: Phonet -> Maybe String
+toTextATRFeature phonete = 
+  toTextGenericFeature atr "ATR" phonete
+
+
 
 
 toTextAnteriorFeature :: Phonet -> Maybe String
