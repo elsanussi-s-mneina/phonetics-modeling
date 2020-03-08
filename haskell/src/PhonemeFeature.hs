@@ -144,7 +144,7 @@ round (Vowel _ _ rounding _) = Just (rounding == Rounded)
 round _ = Just False
 
 
-atr vowel = Just (vowel == analyzeIPA("i") || vowel == analyzeIPA("e") ||
+atr vowel@(Vowel _ _ _ _) = Just (vowel == analyzeIPA("i") || vowel == analyzeIPA("e") ||
             vowel == analyzeIPA("u") || vowel == analyzeIPA("ø") || 
             vowel == analyzeIPA("o") || vowel == analyzeIPA("y"))
 atr (Vowel NearClose Front Unrounded Voiced) = Just False

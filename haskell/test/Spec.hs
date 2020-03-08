@@ -867,3 +867,8 @@ speFeaturesSpec = do
     (toTextRoundFeature (analyzeIPA "ʌ") == Just "- round")
 
 
+  runTest "The ATR feature is nothing for [z]."
+    (toTextATRFeature (analyzeIPA "z") == Nothing)
+  runTest "The ATR feature is nothing for [p]."
+    (toTextATRFeature (analyzeIPA "p") == Nothing)
+
