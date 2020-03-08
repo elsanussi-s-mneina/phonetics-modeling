@@ -1,7 +1,7 @@
 module Spec (main) where
 
-import Prelude (($), (++), IO, length, Bool(True, False), putStrLn, putStr, (==), (&&), String)
-import PhonemeFeature (isGlide)
+import Prelude ((++), IO, length, Bool(True, False), putStrLn, putStr, (==), (&&), String, Maybe(Just, Nothing))
+import PhonemeFeature (isGlide, toTextLowFeature)
 import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
 import Tester (printLegend, runTest)
@@ -17,6 +17,7 @@ main = do
   devoicedIPASpec
   spirantizedIPASpec
   showEnglishPhonemeInventorySpec
+  speFeaturesSpec
   putStrLn "\n\nProgram (Test suite) terminated normally."
   -- We need at least one PutStrLn so that all output makes it to the console before the program terminates.
 
@@ -310,3 +311,21 @@ showEnglishPhonemeInventorySpec = do
   runTest "Should show all English phonemes."
     (showIPA englishPhonetInventory == 
      "bpdtgkʔvfðθzsʒʃhd͡ʒt͡ʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ")
+
+speFeaturesSpec :: IO ()
+speFeaturesSpec = do
+  runTest "The low feature value is nothing for [β]." 
+    (toTextLowFeature (Consonant Voiced Bilabial Fricative PulmonicEgressive) == Nothing)
+  runTest "The low feature value for [χ] is [+ low]."
+    (toTextLowFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just "+ low")
+  runTest "The low feature value for [ɣ] is [+ low]."
+    (toTextLowFeature (Consonant Voiced Uvular Fricative PulmonicEgressive) == Just "+ low")
+  runTest "The low feature value for [ħ] is [+ low]."
+    (toTextLowFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Just "+ low")
+  runTest "The low feature value for [ʕ] is [+ low]."
+    (toTextLowFeature (Consonant Voiced Pharyngeal Fricative PulmonicEgressive) == Just "+ low")
+  runTest "The low feature value for [ʔ] is [+ low]."
+    (toTextLowFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Just "+ low")
+  runTest "The low feature value is nothing for [k]."
+    (toTextLowFeature (Consonant Voiceless Velar Plosive PulmonicEgressive) == Nothing)
+
