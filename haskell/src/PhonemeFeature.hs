@@ -9,6 +9,110 @@ data BinaryFeature = SyllabicFeature | ConsonantalFeature | SonorantFeature | Co
 data UnaryFeature = NasalFeature | LateralFeature | DelayedReleaseFeature | SpreadGlottisFeature | ConstrictedGlottisFeature
                    | LabialFeature | CoronalFeature | DorsalFeature | PharyngealFeature | LaryngealFeature
 
+
+boolToInteger :: Bool -> Int
+boolToInteger True = 1
+boolToInteger False = -1
+
+maybeBoolToInteger :: Maybe Bool -> Int
+maybeBoolToInteger (Just True) = 1
+maybeBoolToInteger (Just False) = -1
+maybeBoolToInteger Nothing = 0
+
+integerToBool :: Int -> Bool
+integerToBool 1 = True
+integerToBool (-1) = False
+
+integerToMaybeBool :: Int -> Maybe Bool
+integerToMaybeBool 0 = Nothing
+integerToMaybeBool x = Just (x > 0)
+
+
+featureDifference :: String -> String -> String
+featureDifference textPhoneme1 textPhoneme2 =
+  let phoneme1 = analyzeIPA textPhoneme1
+      phoneme2 = analyzeIPA textPhoneme2
+  in integerArrayToText 
+      (featuresToIntegerArrayDifference phoneme1 phoneme2)
+
+featuresToIntegerArrayDifference :: Phonet -> Phonet -> [Int]
+featuresToIntegerArrayDifference p1 p2 =
+  map (\(x, y) -> x - y)  
+     (zip (featuresToIntegerArray p1) 
+          (featuresToIntegerArray p2))
+
+
+featuresToIntegerArray :: Phonet -> [Int]
+featuresToIntegerArray phonete =
+  [boolToInteger (syllabic phonete),
+   boolToInteger (consonantal phonete),
+   boolToInteger (sonorant phonete),
+   boolToInteger (continuant phonete),
+   boolToInteger (nasal phonete),
+   boolToInteger (lateral phonete),
+   boolToInteger (delayedRelease phonete),
+   boolToInteger (labial phonete),
+   boolToInteger (coronal phonete),
+   boolToInteger (dorsal phonete),
+   boolToInteger (pharyngeal phonete),
+   boolToInteger (laryngeal phonete),
+   boolToInteger (voice phonete),
+   maybeBoolToInteger (anterior phonete),
+   maybeBoolToInteger (distributed phonete),
+   maybeBoolToInteger (strident phonete),
+   maybeBoolToInteger (high phonete),
+   maybeBoolToInteger (low phonete),
+   maybeBoolToInteger (back phonete),
+   maybeBoolToInteger (PhonemeFeature.round phonete),
+   maybeBoolToInteger (atr phonete)]
+
+
+concatToFeatureString :: [Maybe String] -> String
+concatToFeatureString allString =
+     "[" ++ concatIgnoringNothing "; " allString ++ "]"
+
+integerArrayToText :: [Int] -> String
+integerArrayToText array = 
+   concatToFeatureString
+   (
+     mapZip [fromMBoolToTextFeature "syllabic",
+         fromMBoolToTextFeature "consonantal",
+         fromMBoolToTextFeature "sonorant",
+         fromMBoolToTextFeature "continuant", 
+         fromMBoolToTextFeature "nasal", 
+         fromMBoolToTextFeature "lateral",
+         fromMBoolToTextFeature "DR",
+         fromMBoolToTextFeature "labial",
+         fromMBoolToTextFeature "coronal",
+         fromMBoolToTextFeature "dorsal",
+         fromMBoolToTextFeature "pharyngeal",
+         fromMBoolToTextFeature "laryngeal",
+         fromMBoolToTextFeature "voice",
+         fromMBoolToTextFeature "anterior",
+         fromMBoolToTextFeature "distributed",
+         fromMBoolToTextFeature "strident",
+         fromMBoolToTextFeature "high",
+         fromMBoolToTextFeature "low", 
+         fromMBoolToTextFeature "back",
+         fromMBoolToTextFeature "round",
+         fromMBoolToTextFeature "ATR"] 
+           (map integerToMaybeBool array))
+  
+
+mapZip [] _ = []
+mapZip _ [] = []
+mapZip (f:functions) (a:array) = 
+  (f a):(mapZip functions array)
+
+fromMBoolToTextFeature :: String -> Maybe Bool -> Maybe String
+fromMBoolToTextFeature label mBool =
+  if mBool == Just True
+    then Just ("+ " ++ label)
+    else if mBool == Just False
+      then Just ("- " ++ label)
+      else Nothing
+
+
 syllabic :: Phonet -> Bool
 syllabic (Vowel _ _ _ _ ) = True
 syllabic (Consonant _ _ _ _) = False
@@ -46,6 +150,7 @@ sonorant (Consonant _ _ Fricative _) = False
 sonorant (Consonant _ _ LateralFricative _) = False
 -- Affricates are not sonorants.
 sonorant (Consonant _ _ Affricate _) = False
+sonorant _ = False -- Add more
 
 
 continuant (Consonant _ _ Fricative _) = True
@@ -155,21 +260,57 @@ atr _ = Nothing
 
 toTextFeatures :: Phonet -> String
 toTextFeatures phonete =
-  let allString = mapf [toTextAnteriorFeature, toTextDistributedFeature,
+  let allString = mapf [toTextConsonantalFeature, toTextSyllabicFeature,
+                        toTextContinuantFeature, toTextSonorantFeature,
+                        toTextDelayedReleaseFeature,
+                        toTextAnteriorFeature, toTextDistributedFeature,
                         toTextStridentFeature, toTextHighFeature, toTextLowFeature, toTextNasalFeature, toTextLabialFeature, toTextCoronalFeature, toTextDorsalFeature, 
                         toTextPharyngealFeature, toTextLaryngealFeature,
                         toTextBackFeature, toTextRoundFeature,
                         toTextATRFeature] phonete
   in "[" ++ concatIgnoringNothing "; " allString ++ "]"
 
-mapf :: [Phonet -> Maybe String] -> Phonet -> [Maybe String]
-mapf functions phonete = map (\f -> f phonete) functions
+mapf :: [a -> b] -> a -> [b]
+mapf functions x = map (\f -> f x) functions
 
 concatIgnoringNothing :: String -> [Maybe String] -> String
 concatIgnoringNothing _ [] = ""
 concatIgnoringNothing joiner (Nothing:xs) = concatIgnoringNothing joiner xs
 concatIgnoringNothing joiner ((Just x):xs) = x ++ joiner ++ concatIgnoringNothing joiner xs
 
+-- Convert a function that returns a boolean
+-- into one that returns a Maybe-boolean.
+justify :: (Phonet -> Bool) -> (Phonet -> Maybe Bool)
+justify f =
+  \x -> Just (f x)
+
+toTextConsonantalFeature :: Phonet -> Maybe String
+toTextConsonantalFeature phonete =
+  toTextGenericFeature (justify consonantal) "consonantal" phonete 
+
+
+toTextSyllabicFeature :: Phonet -> Maybe String
+toTextSyllabicFeature phonete =
+  toTextGenericFeature (justify syllabic) "syllabic" phonete 
+
+
+toTextVoiceFeature :: Phonet -> Maybe String
+toTextVoiceFeature phonete =
+  toTextGenericFeature (justify voice) "voice" phonete 
+
+
+toTextContinuantFeature :: Phonet -> Maybe String
+toTextContinuantFeature phonete =
+  toTextGenericFeature (justify continuant) "continuant" phonete 
+
+ 
+toTextSonorantFeature :: Phonet -> Maybe String
+toTextSonorantFeature phonete =
+  toTextGenericFeature (justify sonorant) "sonorant" phonete 
+
+toTextDelayedReleaseFeature :: Phonet -> Maybe String
+toTextDelayedReleaseFeature phonete =
+  toTextGenericFeature (justify delayedRelease) "DR" phonete 
 
 toTextBackFeature :: Phonet -> Maybe String
 toTextBackFeature phonete = 
@@ -183,6 +324,7 @@ toTextRoundFeature phonete =
 toTextATRFeature :: Phonet -> Maybe String
 toTextATRFeature phonete = 
   toTextGenericFeature atr "ATR" phonete
+
 
 
 

@@ -103,6 +103,16 @@ Type the following to print out the fricatives together:
 
 `ɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦʜʢʍʍ̼∅̥∅̼ɕʑ∅̥∅̼`
 
+Type the following to print out the difference in features between two
+phonemes:
+
+
+`*Main English InternationalPhoneticAlphabet Lib PhonemeFeature> featureDifference "z" "s"`
+
+
+`"[+ voice; ]"`
+
+
 
 Note: that the strange zero like symbols at the end represent phones 
 that do not have IPA graphemes for the purposes of this program until I can
