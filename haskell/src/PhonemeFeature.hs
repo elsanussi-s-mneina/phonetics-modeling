@@ -93,6 +93,7 @@ anterior (Consonant _ Alveolar _ _) = Just True
 anterior (Consonant _ PostAlveolar _ _) = Just False
 anterior (Consonant _ Retroflex _ _) = Just False
 anterior (Consonant _ Palatal _ _) = Just False
+anterior (Consonant _ AlveoloPalatal _ _) = Just False
 anterior _ = Nothing
 
 distributed (Consonant _ Dental _ _) = Just True

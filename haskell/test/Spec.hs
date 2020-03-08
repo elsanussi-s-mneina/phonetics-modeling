@@ -1,7 +1,7 @@
 module Spec (main) where
 
 import Prelude ((++), IO, length, Bool(True, False), putStrLn, putStr, (==), (&&), String, Maybe(Just, Nothing))
-import PhonemeFeature (isGlide, toTextLowFeature)
+import PhonemeFeature (isGlide, toTextLowFeature, toTextAnteriorFeature)
 import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
 import Tester (printLegend, runTest)
@@ -316,6 +316,7 @@ speFeaturesSpec :: IO ()
 speFeaturesSpec = do
   putStrLn sectionDivider
   putStrLn "SPE Features"
+  -- Go to page 267 of the textbook.
   runTest "The low feature value is nothing for [β]." 
     (toTextLowFeature (Consonant Voiced Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The low feature value for [χ] is [+ low]."
@@ -331,3 +332,29 @@ speFeaturesSpec = do
   runTest "The low feature value is nothing for [k]."
     (toTextLowFeature (Consonant Voiceless Velar Plosive PulmonicEgressive) == Nothing)
 
+  runTest "The anterior feature is nothing for [b]."
+     (toTextAnteriorFeature (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == Nothing)
+  runTest "The anterior feature is nothing for [f]."
+     (toTextAnteriorFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+  runTest "The anterior feature is + for [θ]."
+     (toTextAnteriorFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just "+ anterior")
+  runTest "The anterior feature is + for [s]."
+     (toTextAnteriorFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just "+ anterior")
+  runTest "The anterior feature is - for [ʃ]."
+     (toTextAnteriorFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just "- anterior")
+  runTest "The anterior feature is - for [ʂ]."
+     (toTextAnteriorFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just "- anterior")
+  runTest "The anterior feature is - for [ɕ]" 
+     (toTextAnteriorFeature (analyzeIPA "ɕ") == Just "- anterior")
+  runTest "The anterior feature is - for [ç]" 
+     (toTextAnteriorFeature (analyzeIPA "ç") == Just "- anterior") -- TODO: Check this, is it true .ccording to the textbook?
+  runTest "The anterior feature is nothing for [x]"
+     (toTextAnteriorFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+  runTest "The anterior feature is nothing for [χ]"
+     (toTextAnteriorFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+  runTest "The anterior feature is nothing for [ħ]"
+     (toTextAnteriorFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+  runTest "The anterior fetaure is nothing for [h]"
+     (toTextAnteriorFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+    
+  
