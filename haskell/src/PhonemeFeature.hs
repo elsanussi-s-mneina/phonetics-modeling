@@ -57,28 +57,6 @@ continuant c@(Consonant _ _ _ _) = isGlide c
 continuant (Vowel _ _ _ _) = True
 
 
-data MajorSoundClass = PlosiveSC | FricativeSC | AffricateSC | NasalSC | ApproximantSC |LateralSC | GlideSC | VowelSC
-
--- Table 12.2
-table12_2_column_labels = [PlosiveSC , FricativeSC, AffricateSC, NasalSC, ApproximantSC, LateralSC, GlideSC, VowelSC]
-table12_2_binary_row_features = [SyllabicFeature, ConsonantalFeature, SonorantFeature, ContinuantFeature]
-
-table_12_2_binary_features :: [[String]]
-table_12_2_binary_features =
-  [[ "-" ,  "-" ,  "-" ,  "-" ,  "-" ,  "-" ,  "-" ,  "+" ]
-  ,[ "+" ,  "+" ,  "+" ,  "+" ,  "+" ,  "+" ,  "-" ,  "-" ]
-  ,[ "-" ,  "-" ,  "-" ,  "+" ,  "+" ,  "+" ,  "+" ,  "+" ]
-  ,[ "-" ,  "+" ,  "-" ,  "-" ,  "+" , "(+)",  "+" ,  "+" ]
-  ]
-
-table12_2_unary_row_features = [NasalFeature, LateralFeature, DelayedReleaseFeature]
-
-table_12_2_unaryFeatures :: [[String]]
-table_12_2_unaryFeatures =
-  [[ ""  ,  ""  ,  ""  ,  "N" ,  ""  , ""   ,  ""  ,  ""  ]
-  ,[ ""  ,  ""  ,  ""  ,  "" ,   ""  , "L"  ,  ""  ,  ""  ]
-  ,[ ""  ,  ""  ,  "DR",  "" ,   ""  , ""   ,  ""  ,  ""  ]
-  ]
 
 nasal (Consonant _ _ Nasal _) = True
 nasal _ = False
