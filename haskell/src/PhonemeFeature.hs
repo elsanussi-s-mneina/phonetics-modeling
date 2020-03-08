@@ -71,10 +71,10 @@ delayedRelease _ = False
 labial (Consonant _ place _ _) = place == Bilabial || place == LabioDental
 labial _ = False
 
-coronal (Consonant _ place _ _) = place `elem` [Dental, Alveolar, PostAlveolar, Retroflex, Palatal]
+coronal (Consonant _ place _ _) = place `elem` [Dental, Alveolar, PostAlveolar, Retroflex, Palatal, AlveoloPalatal]
 coronal _ = False
 
-dorsal (Consonant _ place _ _) = place `elem` [Palatal, Velar, Uvular] -- Palatal is actually in parentheses in the textbook
+dorsal (Consonant _ place _ _) = place `elem` [Palatal, AlveoloPalatal, Velar, Uvular] -- Palatal is actually in parentheses in the textbook
 dorsal _ = False
 
 pharyngeal (Consonant _ Pharyngeal _ _) = True
@@ -101,6 +101,7 @@ distributed (Consonant _ Alveolar _ _) = Just False
 distributed (Consonant _ PostAlveolar _ _) = Just True
 distributed (Consonant _ Retroflex _ _) = Just False
 distributed (Consonant _ Palatal _ _) = Just True
+distributed (Consonant _ AlveoloPalatal _ _) = Just True
 distributed _ = Nothing
 
 
@@ -111,6 +112,7 @@ strident (Consonant _ Alveolar _ _) = Just True
 strident (Consonant _ PostAlveolar _ _) = Just True
 strident (Consonant _ Retroflex _ _) = Just False
 strident (Consonant _ Palatal _ _) = Just False
+strident (Consonant _ AlveoloPalatal _ _) = Just False
 strident (Consonant _ Velar _ _) = Just False
 strident (Consonant _ Uvular _ _) = Just True
 strident (Consonant _ Pharyngeal _ _) = Just False
@@ -118,6 +120,7 @@ strident (Consonant _ Glottal _ _) = Just False
 strident _ = Nothing
 
 high (Consonant _ Palatal _ _) = Just True
+high (Consonant _ AlveoloPalatal _ _) = Just True
 high (Consonant _ Velar _ _) = Just True
 high (Consonant _ Uvular _ _) = Just False
 high (Consonant _ _ _ _) = Nothing
