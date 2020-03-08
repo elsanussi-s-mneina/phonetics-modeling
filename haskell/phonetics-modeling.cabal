@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 77035a164d3f031616db1e69f4caf3da435e7f9897b8e7edf7dbcb6d0a61ca19
+-- hash: 79d111cbf0227188c3b05e6bfdcc3628e47589215de1dd7f3f1a6343ad4d0808
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -56,6 +56,7 @@ test-suite phonetics-modeling-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Tester
       Paths_phonetics_modeling
   hs-source-dirs:
       test

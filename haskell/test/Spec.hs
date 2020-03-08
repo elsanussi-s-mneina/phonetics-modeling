@@ -4,20 +4,14 @@ import Prelude (($), (++), IO, length, Bool(True, False), putStrLn, putStr, (==)
 import PhonemeFeature (isGlide)
 import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, spirantizedIPA, devoicedIPA)
+import Tester (printLegend, runTest)
 
-conciseMode = True
 sectionDivider = "\n\n"
-startRed = "\x1b[31m"
 
-startGreen = "\x1b[32m"
-endColor = "\x1b[0m" 
-concisePass = startGreen ++ "." ++ endColor
-conciseFail = startRed ++ "!" ++ endColor
-legend = "\n\nLegend:\n \t" ++ concisePass ++ "\t passed test\n\t" ++ conciseFail ++ "\t failed test"
 
 main :: IO ()
 main = do
-  putStrLn legend
+  printLegend
   glideSpec
   analyzeIPASpec
   devoicedIPASpec
@@ -34,12 +28,6 @@ glideSpec = do
   runTest "[ʝ] the voiced palatal fricative is not a glide." (isGlide (analyzeIPA "ʝ") == False) 
   runTest "[w] is a glide." (isGlide (analyzeIPA "w") == True) 
   runTest "[c] is not a glide." (isGlide (analyzeIPA "c") == False) 
-
-runTest :: String -> Bool -> IO ()
-runTest description hasPassed = do
-  if hasPassed
-    then putStr (if conciseMode then "\x1b[32m.\x1b[0m" else ("\x1b[32m should be that: \x1b[0m" ++ description ++ "\n"))
-    else putStrLn ("! \x1b[35m SHOULD \x1b[31mBE THAT: \x1b[0m" ++ description ++ " FAILED!!!")
 
 analyzeIPASpec :: IO ()
 analyzeIPASpec = do
