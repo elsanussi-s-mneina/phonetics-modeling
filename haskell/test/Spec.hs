@@ -3,9 +3,9 @@ module Spec (main) where
 import Prelude (($), (++), IO, length, Bool(True, False), putStrLn, putStr, (==), (&&), String)
 import PhonemeFeature (isGlide)
 import Lib
-import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, spirantizedIPA, devoicedIPA)
+import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
 import Tester (printLegend, runTest)
-
+import English (englishPhonetInventory)
 sectionDivider = "\n\n"
 
 
@@ -16,6 +16,7 @@ main = do
   analyzeIPASpec
   devoicedIPASpec
   spirantizedIPASpec
+  showEnglishPhonemeInventorySpec
   putStrLn "\n\nProgram (Test suite) terminated normally."
   -- We need at least one PutStrLn so that all output makes it to the console before the program terminates.
 
@@ -301,3 +302,11 @@ devoicedIPASpec = do
             (devoicedIPA "b" == "p")
       runTest ("should be that: [n̥] is devoiced [n].")
             (devoicedIPA "n" == "n̥")
+
+showEnglishPhonemeInventorySpec :: IO ()
+showEnglishPhonemeInventorySpec = do
+  putStrLn sectionDivider
+  putStrLn "Showing english phoneme inventory"
+  runTest "Should show all English phonemes."
+    (showIPA englishPhonetInventory == 
+     "bpdtgkʔvfðθzsʒʃhd͡ʒt͡ʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ")

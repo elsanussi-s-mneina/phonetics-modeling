@@ -338,6 +338,19 @@ analyzeIPA [firstChar, '̼'] =
 
 
 
+
+-- Affricates
+constructIPA (Consonant  Voiceless PostAlveolar  Affricate PulmonicEgressive) = "t͡ʃ"
+constructIPA (Consonant  Voiced    PostAlveolar  Affricate PulmonicEgressive) = "d͡ʒ"
+constructIPA (Consonant  Voiceless Bilabial Affricate PulmonicEgressive) = "p͡ɸ"
+-- constructIPA (Consonant  Voiceless LabialVelar? Affricate PulmonicEgressive) = "k͡p"
+constructIPA (Consonant  Voiceless Alveolar Affricate PulmonicEgressive) = "t͜s"
+constructIPA (Consonant  Voiced Alveolar Affricate PulmonicEgressive) = "d͡z"
+constructIPA (Consonant  Voiceless Velar Affricate PulmonicEgressive) = "k͡x"
+-- constructIPA (Consonant  Voiceless Palatal (or AlveolaPalatal?) Affricate PulmonicEgressive) = "c͡ɕ"
+constructIPA (Consonant Voiceless Uvular Affricate PulmonicEgressive) = "q͡χ"
+
+
 constructIPA phoneDescription =
   -- If it can represent it as a single character it will
   -- return the single character result (i.e. without diacritics),
@@ -451,16 +464,6 @@ constructIPA1 _ = " "
 
 
 constructIPA2 :: Phonet -> IPAText
--- Affricates
-constructIPA2 (Consonant  Voiceless PostAlveolar  Affricate PulmonicEgressive) = "t͡ʃ"
-constructIPA2 (Consonant  Voiced    PostAlveolar  Affricate PulmonicEgressive) = "d͡ʒ"
-constructIPA2 (Consonant  Voiceless Bilabial Affricate PulmonicEgressive) = "p͡ɸ"
--- constructIPA2 (Consonant  Voiceless LabialVelar? Affricate PulmonicEgressive) = "k͡p"
-constructIPA2 (Consonant  Voiceless Alveolar Affricate PulmonicEgressive) = "t͜s"
-constructIPA2 (Consonant  Voiced Alveolar Affricate PulmonicEgressive) = "d͡z"
-constructIPA2 (Consonant  Voiceless Velar Affricate PulmonicEgressive) = "k͡x"
--- constructIPA2 (Consonant  Voiceless Palatal (or AlveolaPalatal?) Affricate PulmonicEgressive) = "c͡ɕ"
-constructIPA2 (Consonant Voiceless Uvular Affricate PulmonicEgressive) = "q͡χ"
 
 constructIPA2 (Consonant  x PostAlveolar y z) =
     constructIPA1 (Consonant x Alveolar y z) ++ "̠"  -- Add the diacritic for "retracted"
