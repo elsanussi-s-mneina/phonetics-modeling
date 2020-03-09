@@ -55,6 +55,18 @@ placeStates = [ Bilabial, LabioDental, Dental, Alveolar, PostAlveolar
               , PalatoAlveolar
               ]
 
+retractedPlace Bilabial = LabioDental
+retractedPlace LabioDental = Dental
+retractedPlace Dental = Alveolar
+retractedPlace Alveolar = PostAlveolar
+retractedPlace PostAlveolar = Retroflex
+retractedPlace Retroflex = Palatal
+retractedPlace Palatal = Velar
+retractedPlace Velar = Uvular
+retractedPlace Uvular = Pharyngeal
+retractedPlace Pharyngeal = Glottal
+retractedPlace Glottal = Epiglottal
+
 data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
               | Affricate 
               | LateralFricative
@@ -79,7 +91,7 @@ data Airstream = PulmonicEgressive | Click | Implosive | UnmarkedAirstream
 airstreamStates :: [Airstream]
 airstreamStates = [PulmonicEgressive, Click, Implosive]
 
-data VocalFolds = Voiced | Voiceless | UnmarkedVocalFolds
+data VocalFolds = Voiced | Voiceless | VoicedAspirated | VoicelessAspirated | UnmarkedVocalFolds
                   deriving (Eq, Show)
 
 
@@ -99,13 +111,19 @@ englishDescription x = show x
 
 voicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiced equivalent.
-voicedPhonet (Consonant _ x  y z) = Consonant Voiced x y z
+voicedPhonet (Consonant VoicelessAspirated x  y z) = Consonant VoicedAspirated x y z
+voicedPhonet (Consonant Voiceless x  y z) = Consonant Voiced x y z
+voicedPhonet (Consonant Voiced x  y z) = Consonant Voiced x y z
+voicedPhonet (Consonant VoicedAspirated x  y z) = Consonant VoicedAspirated x y z
 voicedPhonet (Vowel x y z _) = Vowel x y z     Voiced
 
 
 devoicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
-devoicedPhonet (Consonant _ x  y z) = Consonant Voiceless x  y z
+devoicedPhonet (Consonant Voiced x  y z) = Consonant Voiceless x  y z
+devoicedPhonet (Consonant Voiceless x  y z) = Consonant Voiceless x  y z
+devoicedPhonet (Consonant VoicedAspirated x  y z) = Consonant VoicelessAspirated x  y z
+devoicedPhonet (Consonant VoicelessAspirated x  y z) = Consonant VoicelessAspirated x  y z
 devoicedPhonet (Vowel x y z _) = Vowel x y z        Voiceless
 
 
@@ -173,6 +191,7 @@ generateFromUnmarked (Vowel height backness rounding voice) =
 -- Does not work for other values.
 impossible :: Phonet -> Bool
 impossible (Consonant Voiced Pharyngeal Plosive PulmonicEgressive) = True
+impossible (Consonant VoicedAspirated Pharyngeal Plosive PulmonicEgressive) = True
 impossible (Consonant Voiceless Glottal Plosive PulmonicEgressive) = False -- [ʔ] is not impossible.
 impossible (Consonant _ Glottal Fricative PulmonicEgressive) = False  -- [h] and [ɦ] are not impossible.
 impossible (Consonant _ Glottal _ PulmonicEgressive) = True -- all other pulmonary egressive consonants are impossible..

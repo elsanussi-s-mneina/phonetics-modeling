@@ -336,6 +336,15 @@ analyzeIPA [firstChar, '̼'] =
           Consonant _ place manner airstream    -> Consonant Voiced place manner airstream
           Vowel height backness rounding _      -> Vowel height backness rounding Voiced
 
+analyzeIPA [firstChar, 'ʰ'] =
+  let fullGrapheme = analyzeIPA [firstChar]
+  in case fullGrapheme of
+          Consonant Voiced place manner airstream    -> Consonant VoicedAspirated place manner airstream
+          Consonant Voiceless place manner airstream    -> Consonant VoicelessAspirated place manner airstream
+          Vowel height backness rounding voice      -> Vowel height backness rounding voice
+          -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
+          -- since we have no way to represent it in the type system. to do: determine
+          -- if the idea of an aspirated vowel makes sense
 
 
 
@@ -408,13 +417,19 @@ constructIPA1 (Consonant Voiced Velar UnmarkedManner Implosive) = "ɠ"
 constructIPA1 (Consonant Voiced Uvular UnmarkedManner Implosive) = "ʛ"
 
 
-constructIPA1 (Consonant voicing place manner PulmonicEgressive) = 
-   let rowIndex = mannerToRowIndex manner
-       colIndex = voicingAndPlaceToColIndex voicing place
-   in  [(consonantsPulmonicTable !! rowIndex) !! colIndex]
+
+constructIPA1 c@(Consonant Voiced place manner PulmonicEgressive) = 
+  constructUnaspiratedPulmonicEgressive c
+
+constructIPA1 c@(Consonant VoicedAspirated place manner PulmonicEgressive) = 
+  constructUnaspiratedPulmonicEgressive (deaspirate c) ++ "ʰ"
 
 
+constructIPA1 c@(Consonant Voiceless place manner PulmonicEgressive) = 
+  constructUnaspiratedPulmonicEgressive c
 
+constructIPA1 c@(Consonant VoicelessAspirated place manner PulmonicEgressive) = 
+  constructUnaspiratedPulmonicEgressive (deaspirate c) ++ "ʰ"
 
 -- Close Vowels:
 constructIPA1 (Vowel  Close Front   Unrounded Voiced) = "i"
@@ -499,6 +514,21 @@ constructIPA2 _ = "∅" -- This return value ( a symbol representing the empty s
 -- is not a full answer. It really means we don't have an answer.
 -- We are only using it here so that we can ignore values we have not programmed
 -- yet. We just want it to show that we do not have it.
+
+
+constructUnaspiratedPulmonicEgressive (Consonant voicing place manner PulmonicEgressive) =
+   let rowIndex = mannerToRowIndex manner
+       colIndex = voicingAndPlaceToColIndex voicing place
+   in  [(consonantsPulmonicTable !! rowIndex) !! colIndex]
+
+
+deaspirate (Consonant VoicedAspirated place manner airstream) =
+  (Consonant Voiced place manner airstream)
+
+deaspirate (Consonant VoicelessAspirated place manner airstream) =
+  (Consonant Voiceless place manner airstream)
+  
+deaspirate x = x
 
 
 voicedIPA :: IPAText -> IPAText

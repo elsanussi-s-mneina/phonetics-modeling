@@ -47,6 +47,11 @@ analyzeIPASpec = do
                 " with pulmonic egressive airstream mechanism.")
                 (analyzeIPA "p" == Consonant Voiceless Bilabial Plosive PulmonicEgressive &&
                 constructIPA     (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == "p") 
+ 
+      runTest ("[pʰ] is a voiceless aspirated bilabial plosive consonant" ++ 
+                " with pulmonic egressive airstream mechanism.")
+                (analyzeIPA "pʰ" == Consonant VoicelessAspirated Bilabial Plosive PulmonicEgressive &&
+                constructIPA     (Consonant VoicelessAspirated Bilabial Plosive PulmonicEgressive) == "pʰ") 
                 
       runTest ("should be that: [s] is a voiceless alveolar fricative consonant" ++
                 "with pulmonic egressive airstream mechanism.") 
