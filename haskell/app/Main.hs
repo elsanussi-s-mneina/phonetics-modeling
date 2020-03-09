@@ -5,12 +5,9 @@ import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA)
 import English (englishPhonetInventory)
 
 main :: IO ()
-main = welcome
-
-
-welcome :: IO ()
-welcome = do
-    putStrLn "Please read README.md file for instructions on how to use."
+main = 
+  do
+    welcome
     putStr menu
     putPrompt
     selection <- getLine
@@ -21,6 +18,10 @@ welcome = do
                    "3" -> promptForPhonemeToDevoice
                    otherwise -> putStrLn $ "Unrecognized selection. No action taken."
     putStrLn "\nProgram terminated normally.\n\n"
+
+welcome :: IO ()
+welcome = do
+    putStrLn "Please read README.md file for instructions on how to use."
 
 promptForPhonemeAndApply :: (String -> String) -> String -> IO ()
 promptForPhonemeAndApply func instructions= do
