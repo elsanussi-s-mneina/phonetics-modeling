@@ -248,10 +248,16 @@ back _ = Nothing
 round (Vowel _ _ rounding _) = Just (rounding == Rounded)
 round _ = Just False
 
-
-atr vowel@(Vowel _ _ _ _) = Just (vowel == analyzeIPA("i") || vowel == analyzeIPA("e") ||
-            vowel == analyzeIPA("u") || vowel == analyzeIPA("ø") || 
-            vowel == analyzeIPA("o") || vowel == analyzeIPA("y"))
+atr (Vowel  Close Front   Unrounded Voiced) = Just True -- [i]
+atr (Vowel  CloseMid Front   Unrounded Voiced) = Just True -- [e]
+atr (Vowel  Close Back    Rounded   Voiced) = Just True -- [u]
+atr (Vowel  CloseMid Front   Rounded   Voiced) = Just True -- [ø]
+atr (Vowel  CloseMid Back    Rounded   Voiced) = Just True -- [o]
+atr (Vowel  Close Front   Rounded   Voiced) = Just True -- [y]
+atr (Vowel  NearOpen Front   Unrounded Voiced) = Just False  -- [æ]
+atr (Vowel  Open Back  Unrounded Voiced) = Just False -- [ɑ]
+atr (Vowel  Close Central Unrounded Voiced) = Just False -- [ɨ]
+atr (Vowel  OpenMid Back    Unrounded Voiced) = Just False -- [ʌ]
 atr (Vowel NearClose Front Unrounded Voiced) = Just False
 atr (Vowel NearClose Back  Rounded   Voiced) = Just False
 atr (Vowel  OpenMid Front   Unrounded Voiced) = Just False
