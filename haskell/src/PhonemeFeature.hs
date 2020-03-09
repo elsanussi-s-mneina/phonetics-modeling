@@ -230,14 +230,12 @@ high (Consonant _ Velar _ _) = Just True
 high (Consonant _ Uvular _ _) = Just False
 high (Consonant _ _ _ _) = Nothing
 high (Vowel height _ _ _ ) = Just (height == Close || height == NearClose)
-high _ = Nothing
 
 low (Consonant _ Uvular _ _) = Just True
 low (Consonant _ Pharyngeal _ _) = Just True
 low (Consonant _ Glottal _ _) = Just True
 low (Consonant _ _ _ _) = Nothing
 low (Vowel height _ _ _ ) = Just (height == Open || height == NearOpen)
-low _ = Nothing
 
 
 back (Vowel _ Back _ _) = Just True
