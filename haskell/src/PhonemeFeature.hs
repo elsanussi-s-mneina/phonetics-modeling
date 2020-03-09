@@ -64,7 +64,9 @@ featuresToIntegerArray phonete =
    maybeBoolToInteger (low phonete),
    maybeBoolToInteger (back phonete),
    maybeBoolToInteger (PhonemeFeature.round phonete),
-   maybeBoolToInteger (atr phonete)]
+   maybeBoolToInteger (atr phonete),
+   maybeBoolToInteger (spreadGlottis phonete),
+   maybeBoolToInteger (constrictedGlottis phonete)]
 
 
 concatToFeatureString :: [Maybe String] -> String
@@ -95,7 +97,9 @@ integerArrayToText array =
          fromMBoolToTextFeature "low", 
          fromMBoolToTextFeature "back",
          fromMBoolToTextFeature "round",
-         fromMBoolToTextFeature "ATR"] 
+         fromMBoolToTextFeature "ATR",
+         fromMBoolToTextFeature "SG",
+         fromMBoolToTextFeature "CG"] 
            (map integerToMaybeBool array))
   
 
@@ -188,9 +192,20 @@ pharyngeal _ = False
 laryngeal (Consonant _ Glottal _ _ ) = True
 laryngeal _ = False
 
-
-voice (Consonant v _ _ _) = v == Voiced
+voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = False -- [ʔ] is [- voice]
+voice (Consonant v _ _ _) = v == Voiced || v == VoicedAspirated
 voice (Vowel _ _ _ v) = v == Voiced
+-- handle creaky voice = True
+
+spreadGlottis :: Phonet -> Maybe Bool
+spreadGlottis (Consonant VoicelessAspirated _ _ _) = Just True
+spreadGlottis (Consonant VoicedAspirated _ _ _) = Just True
+spreadGlottis _ = Nothing
+
+constrictedGlottis :: Phonet -> Maybe Bool
+constrictedGlottis (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just True
+constrictedGlottis _  = Nothing
+-- To do add CreakyVoice here = Just True
 
 
 anterior (Consonant _ Dental _ _) = Just True
@@ -271,7 +286,8 @@ toTextFeatures phonete =
                         toTextStridentFeature, toTextHighFeature, toTextLowFeature, toTextNasalFeature, toTextLabialFeature, toTextCoronalFeature, toTextDorsalFeature, 
                         toTextPharyngealFeature, toTextLaryngealFeature,
                         toTextBackFeature, toTextRoundFeature,
-                        toTextATRFeature] phonete
+                        toTextATRFeature, toTextSpreadGlottisFeature,
+                        toTextConstrictedGlottisFeature] phonete
   in "[" ++ concatIgnoringNothing "; " allString ++ "]"
 
 mapf :: [a -> b] -> a -> [b]
@@ -287,6 +303,13 @@ concatIgnoringNothing joiner ((Just x):xs) = x ++ joiner ++ concatIgnoringNothin
 justify :: (Phonet -> Bool) -> (Phonet -> Maybe Bool)
 justify f =
   \x -> Just (f x)
+  
+dejustify :: (Phonet -> Maybe Bool) -> (Phonet -> Bool)
+dejustify f =
+  \x -> case f x of
+              Just True -> True
+              Just False -> False
+              Nothing ->  False
 
 toTextConsonantalFeature :: Phonet -> Maybe String
 toTextConsonantalFeature phonete =
@@ -329,7 +352,13 @@ toTextATRFeature :: Phonet -> Maybe String
 toTextATRFeature phonete = 
   toTextGenericFeature atr "ATR" phonete
 
+toTextSpreadGlottisFeature :: Phonet -> Maybe String
+toTextSpreadGlottisFeature phonete = 
+  toTextUnaryFeature (dejustify spreadGlottis) "SG" phonete
 
+toTextConstrictedGlottisFeature :: Phonet -> Maybe String
+toTextConstrictedGlottisFeature phonete = 
+  toTextUnaryFeature (dejustify constrictedGlottis) "CG" phonete
 
 
 
