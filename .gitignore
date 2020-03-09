@@ -23,3 +23,5 @@ cabal.project.local~
 stack.yaml.lock
 html/.index.html.swp
 .DS_Store
+haskell/app/.Main.hs.swp
+rust/phon-mod/target/
