@@ -26,11 +26,6 @@ data Height =
 heightStates :: [Height]
 heightStates = [Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open]
 
-data TenseLax = Tense | Lax | UnmarkedTenseness
-                deriving (Eq, Show)
-
-tenseStates :: [TenseLax]
-tenseStates = [Tense, Lax]
 
 data Rounding = Rounded | Unrounded | UnmarkedRounding
                 deriving (Eq, Show)
