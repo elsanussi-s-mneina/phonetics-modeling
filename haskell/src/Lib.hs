@@ -68,6 +68,8 @@ retractedPlace Velar = Uvular
 retractedPlace Uvular = Pharyngeal
 retractedPlace Pharyngeal = Glottal
 retractedPlace Glottal = Epiglottal
+retractedPlace same = same
+
 
 data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
               | Affricate 
