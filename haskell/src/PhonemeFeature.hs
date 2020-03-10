@@ -5,9 +5,13 @@ import Lib
 
 -- Part for features:
 -- Go to Section 12.2 of the textbook.
-data BinaryFeature = SyllabicFeature | ConsonantalFeature | SonorantFeature | ContinuantFeature | VoiceFeature
-data UnaryFeature = NasalFeature | LateralFeature | DelayedReleaseFeature | SpreadGlottisFeature | ConstrictedGlottisFeature
-                   | LabialFeature | CoronalFeature | DorsalFeature | PharyngealFeature | LaryngealFeature
+data BinaryFeature = 
+  SyllabicFeature | ConsonantalFeature | SonorantFeature | 
+  ContinuantFeature | VoiceFeature
+data UnaryFeature = 
+  NasalFeature | LateralFeature | DelayedReleaseFeature | 
+  SpreadGlottisFeature | ConstrictedGlottisFeature | LabialFeature | 
+  CoronalFeature | DorsalFeature | PharyngealFeature | LaryngealFeature
 
 
 boolToInteger :: Bool -> Int
@@ -143,11 +147,15 @@ sonorant (Consonant _ _ Nasal _) = True
 sonorant (Consonant _ _ Approximant _) = True
 -- Laterals are sonorants.
 sonorant (Consonant _ _ LateralApproximant _ ) = True
--- Are Lateral flaps, and Laterals that are not fricatives approximants. Let us just
--- guess that they are:
+-- Are Lateral flaps, and Laterals that are not fricatives approximants. 
+-- Let us just guess that they are:
 -- sonorant (Consonants _ _ Lateral _ ) = True -- unsure
 
--- sonorant (Consonants _ _ LateralFlap _ ) = Flap -- unsure whether this is true
+-- sonorant (Consonants _ _ LateralFlap _ ) = Flap 
+-- I am unsure whether lateral flaps are sonorants. That is
+-- why the previous line of code is commented out.
+
+
 -- Fricatives are not sonorants.
 sonorant (Consonant _ _ Fricative _) = False
 -- Lateral fricatives are not sonorants.
@@ -170,20 +178,33 @@ continuant (Vowel _ _ _ _) = True
 nasal (Consonant _ _ Nasal _) = True
 nasal _ = False
 
-lateral (Consonant _ _ manner _) = manner == Lateral || manner == LateralApproximant || manner == LateralFricative
+lateral (Consonant _ _ manner _) = 
+  manner == Lateral || 
+  manner == LateralApproximant || 
+  manner == LateralFricative
 lateral _ = False
 
 
 delayedRelease (Consonant _ _ Affricate _) = True
 delayedRelease _ = False
 
-labial (Consonant _ place _ _) = place == Bilabial || place == LabioDental
+labial (Consonant _ place _ _) = 
+  place == Bilabial || 
+  place == LabioDental
 labial _ = False
 
-coronal (Consonant _ place _ _) = place `elem` [Dental, Alveolar, PostAlveolar, Retroflex, Palatal, AlveoloPalatal]
+coronal (Consonant _ place _ _) = 
+  place `elem` [Dental, 
+                Alveolar, 
+                PostAlveolar, 
+                Retroflex, 
+                Palatal, 
+                AlveoloPalatal]
 coronal _ = False
 
-dorsal (Consonant _ place _ _) = place `elem` [Palatal, AlveoloPalatal, Velar, Uvular] -- Palatal is actually in parentheses in the textbook
+dorsal (Consonant _ place _ _) = 
+  place `elem` [Palatal, AlveoloPalatal, Velar, Uvular] 
+  -- Palatal is actually in parentheses in the textbook
 dorsal _ = False
 
 pharyngeal (Consonant _ Pharyngeal _ _) = True
@@ -192,51 +213,53 @@ pharyngeal _ = False
 laryngeal (Consonant _ Glottal _ _ ) = True
 laryngeal _ = False
 
-voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = False -- [ʔ] is [- voice]
+voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = False 
+-- [ʔ] is [- voice]
+
 voice (Consonant v _ _ _) = v == Voiced || v == VoicedAspirated
 voice (Vowel _ _ _ v) = v == Voiced
--- handle creaky voice = True
+-- TODO: handle creaky voice = True
 
 spreadGlottis :: Phonet -> Maybe Bool
 spreadGlottis (Consonant VoicelessAspirated _ _ _) = Just True
-spreadGlottis (Consonant VoicedAspirated _ _ _) = Just True
+spreadGlottis (Consonant VoicedAspirated    _ _ _) = Just True
 spreadGlottis _ = Nothing
 
 constrictedGlottis :: Phonet -> Maybe Bool
 constrictedGlottis (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just True
 constrictedGlottis _  = Nothing
--- To do add CreakyVoice here = Just True
+-- TODO: add CreakyVoice here = Just True
 
 
-anterior (Consonant _ Dental _ _) = Just True
-anterior (Consonant _ Alveolar _ _) = Just True
-anterior (Consonant _ PostAlveolar _ _) = Just False
-anterior (Consonant _ Retroflex _ _) = Just False
-anterior (Consonant _ Palatal _ _) = Just False
-anterior (Consonant _ AlveoloPalatal _ _) = Just False
+anterior (Consonant _ Dental            _ _) = Just True
+anterior (Consonant _ Alveolar          _ _) = Just True
+anterior (Consonant _ PostAlveolar      _ _) = Just False
+anterior (Consonant _ Retroflex         _ _) = Just False
+anterior (Consonant _ Palatal           _ _) = Just False
+anterior (Consonant _ AlveoloPalatal    _ _) = Just False
 anterior _ = Nothing
 
-distributed (Consonant _ Dental _ _) = Just True
-distributed (Consonant _ Alveolar _ _) = Just False
-distributed (Consonant _ PostAlveolar _ _) = Just True
-distributed (Consonant _ Retroflex _ _) = Just False
-distributed (Consonant _ Palatal _ _) = Just True
+distributed (Consonant _ Dental         _ _) = Just True
+distributed (Consonant _ Alveolar       _ _) = Just False
+distributed (Consonant _ PostAlveolar   _ _) = Just True
+distributed (Consonant _ Retroflex      _ _) = Just False
+distributed (Consonant _ Palatal        _ _) = Just True
 distributed (Consonant _ AlveoloPalatal _ _) = Just True
 distributed _ = Nothing
 
 
-strident (Consonant _ Bilabial _ _) = Just False
-strident (Consonant _ LabioDental _ _) = Just True
-strident (Consonant _ Dental _ _) = Just False
-strident (Consonant _ Alveolar _ _) = Just True
-strident (Consonant _ PostAlveolar _ _) = Just True
-strident (Consonant _ Retroflex _ _) = Just False
-strident (Consonant _ Palatal _ _) = Just False
+strident (Consonant _ Bilabial       _ _) = Just False
+strident (Consonant _ LabioDental    _ _) = Just True
+strident (Consonant _ Dental         _ _) = Just False
+strident (Consonant _ Alveolar       _ _) = Just True
+strident (Consonant _ PostAlveolar   _ _) = Just True
+strident (Consonant _ Retroflex      _ _) = Just False
+strident (Consonant _ Palatal        _ _) = Just False
 strident (Consonant _ AlveoloPalatal _ _) = Just False
-strident (Consonant _ Velar _ _) = Just False
-strident (Consonant _ Uvular _ _) = Just True
-strident (Consonant _ Pharyngeal _ _) = Just False
-strident (Consonant _ Glottal _ _) = Just False
+strident (Consonant _ Velar          _ _) = Just False
+strident (Consonant _ Uvular         _ _) = Just True
+strident (Consonant _ Pharyngeal     _ _) = Just False
+strident (Consonant _ Glottal        _ _) = Just False
 strident _ = Nothing
 
 high (Consonant _ Palatal _ _) = Just True
@@ -261,20 +284,20 @@ back _ = Nothing
 round (Vowel _ _ rounding _) = Just (rounding == Rounded)
 round _ = Just False
 
-atr (Vowel  Close Front   Unrounded Voiced) = Just True -- [i]
-atr (Vowel  CloseMid Front   Unrounded Voiced) = Just True -- [e]
-atr (Vowel  Close Back    Rounded   Voiced) = Just True -- [u]
-atr (Vowel  CloseMid Front   Rounded   Voiced) = Just True -- [ø]
-atr (Vowel  CloseMid Back    Rounded   Voiced) = Just True -- [o]
-atr (Vowel  Close Front   Rounded   Voiced) = Just True -- [y]
-atr (Vowel  NearOpen Front   Unrounded Voiced) = Just False  -- [æ]
-atr (Vowel  Open Back  Unrounded Voiced) = Just False -- [ɑ]
-atr (Vowel  Close Central Unrounded Voiced) = Just False -- [ɨ]
-atr (Vowel  OpenMid Back    Unrounded Voiced) = Just False -- [ʌ]
-atr (Vowel NearClose Front Unrounded Voiced) = Just False
-atr (Vowel NearClose Back  Rounded   Voiced) = Just False
-atr (Vowel  OpenMid Front   Unrounded Voiced) = Just False
-atr (Vowel  OpenMid Back    Rounded   Voiced) = Just False
+atr (Vowel  Close     Front   Unrounded Voiced) = Just True  -- [i]
+atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just True  -- [e]
+atr (Vowel  Close     Back    Rounded   Voiced) = Just True  -- [u]
+atr (Vowel  CloseMid  Front   Rounded   Voiced) = Just True  -- [ø]
+atr (Vowel  CloseMid  Back    Rounded   Voiced) = Just True  -- [o]
+atr (Vowel  Close     Front   Rounded   Voiced) = Just True  -- [y]
+atr (Vowel  NearOpen  Front   Unrounded Voiced) = Just False -- [æ]
+atr (Vowel  Open      Back    Unrounded Voiced) = Just False -- [ɑ]
+atr (Vowel  Close     Central Unrounded Voiced) = Just False -- [ɨ]
+atr (Vowel  OpenMid   Back    Unrounded Voiced) = Just False -- [ʌ]
+atr (Vowel  NearClose Front   Unrounded Voiced) = Just False
+atr (Vowel  NearClose Back    Rounded   Voiced) = Just False
+atr (Vowel  OpenMid   Front   Unrounded Voiced) = Just False
+atr (Vowel  OpenMid   Back    Rounded   Voiced) = Just False
 atr _ = Nothing
 
 toTextFeatures :: Phonet -> String
@@ -283,7 +306,10 @@ toTextFeatures phonete =
                         toTextContinuantFeature, toTextSonorantFeature,
                         toTextDelayedReleaseFeature,
                         toTextAnteriorFeature, toTextDistributedFeature,
-                        toTextStridentFeature, toTextHighFeature, toTextLowFeature, toTextNasalFeature, toTextLabialFeature, toTextCoronalFeature, toTextDorsalFeature, 
+                        toTextStridentFeature, toTextHighFeature, 
+                        toTextLowFeature, 
+                        toTextNasalFeature, toTextLabialFeature, 
+                        toTextCoronalFeature, toTextDorsalFeature, 
                         toTextPharyngealFeature, toTextLaryngealFeature,
                         toTextBackFeature, toTextRoundFeature,
                         toTextATRFeature, toTextSpreadGlottisFeature,

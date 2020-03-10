@@ -18,7 +18,9 @@ data Backness = Front | Central | Back | UnmarkedBackness
 backnessStates :: [Backness]
 backnessStates = [Front, Central, Back]
 
-data Height = Close | NearClose | CloseMid | Mid | OpenMid | NearOpen | Open | UnmarkedHeight
+data Height = 
+  Close | NearClose | CloseMid |
+  Mid | OpenMid | NearOpen | Open | UnmarkedHeight
               deriving (Eq, Show)
 
 heightStates :: [Height]
