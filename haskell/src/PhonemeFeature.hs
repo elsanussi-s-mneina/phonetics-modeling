@@ -177,74 +177,12 @@ integerToMaybeBool 0 = Nothing
 integerToMaybeBool x = Just (x > 0)
 
 
-featuresToIntegerArrayDifference :: Phonet -> Phonet -> [Int]
-featuresToIntegerArrayDifference p1 p2 =
-  map (\(x, y) -> x - y)  
-     (zip (featuresToIntegerArray p1) 
-          (featuresToIntegerArray p2))
-
-
-featuresToIntegerArray :: Phonet -> [Int]
-featuresToIntegerArray phonete =
-  [maybeBoolToInteger (syllabic phonete),
-   maybeBoolToInteger (consonantal phonete),
-   maybeBoolToInteger (sonorant phonete),
-   maybeBoolToInteger (continuant phonete),
-   maybeBoolToInteger (nasal phonete),
-   maybeBoolToInteger (lateral phonete),
-   maybeBoolToInteger (delayedRelease phonete),
-   maybeBoolToInteger (labial phonete),
-   maybeBoolToInteger (coronal phonete),
-   maybeBoolToInteger (dorsal phonete),
-   maybeBoolToInteger (pharyngeal phonete),
-   maybeBoolToInteger (laryngeal phonete),
-   maybeBoolToInteger (voice phonete),
-   maybeBoolToInteger (anterior phonete),
-   maybeBoolToInteger (distributed phonete),
-   maybeBoolToInteger (strident phonete),
-   maybeBoolToInteger (high phonete),
-   maybeBoolToInteger (low phonete),
-   maybeBoolToInteger (back phonete),
-   maybeBoolToInteger (PhonemeFeature.round phonete),
-   maybeBoolToInteger (atr phonete),
-   maybeBoolToInteger (spreadGlottis phonete),
-   maybeBoolToInteger (constrictedGlottis phonete)]
 
 
 concatToFeatureString :: [Maybe String] -> String
 concatToFeatureString allString =
      "[" ++ concatIgnoringNothing "; " allString ++ "]"
 
-integerArrayToText :: [Int] -> String
-integerArrayToText array =
-  let maybeBoolList = map integerToMaybeBool array
-  in
-   concatToFeatureString
-   
-        [ fromMBoolToTextFeature "syllabic"     (maybeBoolList !! 0)
-        , fromMBoolToTextFeature "consonantal"  (maybeBoolList !! 1)
-        , fromMBoolToTextFeature "sonorant"     (maybeBoolList !! 2)
-        , fromMBoolToTextFeature "continuant"   (maybeBoolList !! 3)
-        , fromMBoolToTextFeature "nasal"        (maybeBoolList !! 4)
-        , fromMBoolToTextFeature "lateral"      (maybeBoolList !! 5)
-        , fromMBoolToTextFeature "DR"           (maybeBoolList !! 6)
-        , fromMBoolToTextFeature "labial"       (maybeBoolList !! 7)
-        , fromMBoolToTextFeature "coronal"      (maybeBoolList !! 8)
-        , fromMBoolToTextFeature "dorsal"       (maybeBoolList !! 9)
-        , fromMBoolToTextFeature "pharyngeal"   (maybeBoolList !! 10)
-        , fromMBoolToTextFeature "laryngeal"    (maybeBoolList !! 11)
-        , fromMBoolToTextFeature "voice"        (maybeBoolList !! 12)
-        , fromMBoolToTextFeature "anterior"     (maybeBoolList !! 13)
-        , fromMBoolToTextFeature "distributed"  (maybeBoolList !! 14)
-        , fromMBoolToTextFeature "strident"     (maybeBoolList !! 15)
-        , fromMBoolToTextFeature "high"         (maybeBoolList !! 16)
-        , fromMBoolToTextFeature "low"          (maybeBoolList !! 17)
-        , fromMBoolToTextFeature "back"         (maybeBoolList !! 18)
-        , fromMBoolToTextFeature "round"        (maybeBoolList !! 19)
-        , fromMBoolToTextFeature "ATR"          (maybeBoolList !! 20)
-        , fromMBoolToTextFeature "SG"           (maybeBoolList !! 21)
-        , fromMBoolToTextFeature "CG"           (maybeBoolList !! 22)
-        ]
 
 fromMBoolToTextFeature :: String -> Maybe Bool -> Maybe String
 fromMBoolToTextFeature label mBool =
