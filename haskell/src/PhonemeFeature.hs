@@ -1,12 +1,12 @@
 module PhonemeFeature where
 
-import InternationalPhoneticAlphabet
 import Lib
 
 import Data.List (intercalate)
 -- Part for features:
 -- Go to Section 12.2 of the textbook.
 data Polarity = Plus | Minus
+                deriving Eq
 
 data PhonemeFeature = 
   SyllabicFeature Polarity | ConsonantalFeature Polarity| SonorantFeature Polarity| 
@@ -20,7 +20,7 @@ data PhonemeFeature =
   DistributedFeature Polarity | 
   StridentFeature Polarity | HighFeature Polarity | 
   LowFeature Polarity |
-  BackFeature Polarity
+  BackFeature Polarity deriving Eq
 
 instance Show Polarity where
   show Plus = "+"
@@ -64,6 +64,71 @@ isUnary PharyngealFeature = True
 isUnary LaryngealFeature = True
 isUnary _ = False
 
+
+analyzeFeatures :: Phonet -> [PhonemeFeature] 
+analyzeFeatures phonete =
+        concat (mapf [syllabicFL, consonantalFL,
+                        sonorantFL, continuantFL,
+                        voiceFL, atrFL,
+                        nasalFL, lateralFL,
+                        delayedReleaseFL,
+                        spreadGlottisFL,
+                        constrictedGlottisFL,
+                        labialFL, coronalFL, dorsalFL,
+                        pharyngealFL, laryngealFL,
+                        roundFL,
+                         anteriorFL, distributedFL,
+                        stridentFL, highFL,
+                        lowFL,
+                        backFL] phonete)
+  
+
+difference :: [PhonemeFeature] -> [PhonemeFeature] -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
+difference list1 list2 = 
+  [ differenceOfBinaryFeature SyllabicFeature list1 list2
+  , differenceOfBinaryFeature ConsonantalFeature list1 list2
+  , differenceOfBinaryFeature SonorantFeature list1 list2
+  , differenceOfBinaryFeature ContinuantFeature list1 list2
+  , differenceOfBinaryFeature VoiceFeature list1 list2
+  , differenceOfBinaryFeature AdvancedTongueRootFeature list1 list2
+  , differenceOfUnaryFeature NasalFeature list1 list2
+  , differenceOfUnaryFeature LateralFeature list1 list2
+  , differenceOfUnaryFeature DelayedReleaseFeature list1 list2
+  , differenceOfUnaryFeature SpreadGlottisFeature list1 list2
+  , differenceOfUnaryFeature ConstrictedGlottisFeature list1 list2
+  , differenceOfUnaryFeature LabialFeature list1 list2
+  , differenceOfUnaryFeature CoronalFeature list1 list2
+  , differenceOfUnaryFeature DorsalFeature list1 list2
+  , differenceOfUnaryFeature PharyngealFeature list1 list2
+  , differenceOfUnaryFeature LaryngealFeature list1 list2
+  , differenceOfBinaryFeature RoundFeature list1 list2
+  , differenceOfBinaryFeature AnteriorFeature list1 list2
+  , differenceOfBinaryFeature DistributedFeature list1 list2
+  , differenceOfBinaryFeature StridentFeature list1 list2
+  , differenceOfBinaryFeature HighFeature list1 list2
+  , differenceOfBinaryFeature LowFeature list1 list2
+  , differenceOfBinaryFeature BackFeature list1 list2
+  ]
+
+differenceOfBinaryFeature :: (Polarity -> PhonemeFeature) -> [PhonemeFeature] -> [PhonemeFeature] -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+differenceOfBinaryFeature feature list1 list2 =
+   let
+   relevant = \x -> x == feature Plus || x == feature Minus
+   list1Relevant = filter relevant list1
+   list2Relevant = filter relevant list2
+   in
+     if (length list1Relevant == 0) && (length list2Relevant == 0)
+       || (length list1Relevant > 0 && length list2Relevant > 0 &&
+           list1Relevant !! 0 == list2Relevant !! 0)
+       then (Nothing, Nothing)
+       else if (length list1Relevant > 0 && length list2Relevant > 0)
+         then (Just (list1Relevant !! 0), Just (list2Relevant !! 0))
+         else if (length list1Relevant > length list2Relevant)
+         then (Just (list1Relevant !! 0), Nothing)
+           else (Nothing, Just (list2Relevant !! 0))
+           
+
+differenceOfUnaryFeature :: PhonemeFeature -> [PhonemeFeature] -> [PhonemeFeature] -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 maybeBoolToInteger :: Maybe Bool -> Int
 maybeBoolToInteger (Just True) = 1
 maybeBoolToInteger (Just False) = -1
@@ -427,7 +492,7 @@ toTextFeaturesVersion2 phonete =
                         pharyngealFL, laryngealFL,
                         backFL, roundFL,
                         atrFL, spreadGlottisFL,
-                        constrictedGlottisFL, constrictedGlottisFL] phonete
+                        constrictedGlottisFL] phonete
   in "[" ++ intercalate "; " (map show (concat allString)) ++ "]"
 
 mapf :: [a -> b] -> a -> [b]
