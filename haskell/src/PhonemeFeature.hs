@@ -452,14 +452,6 @@ toTextFeaturesVersion2 phonete =
                   ]
   in "[" ++ intercalate "; " (map show (concat allString)) ++ "]"
 
-concatIgnoringNothing :: String -> [Maybe String] -> String
-concatIgnoringNothing _ [] = ""
-concatIgnoringNothing joiner (Nothing:xs) = 
-  concatIgnoringNothing joiner xs
-concatIgnoringNothing joiner (Just x:xs) = 
-  x ++ joiner ++ concatIgnoringNothing joiner xs
-
-
 
 toTextConsonantalFeature :: Phonet -> Maybe String
 toTextConsonantalFeature phonete =
