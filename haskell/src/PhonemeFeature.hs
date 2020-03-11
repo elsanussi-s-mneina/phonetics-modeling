@@ -3,29 +3,72 @@ module PhonemeFeature where
 import InternationalPhoneticAlphabet
 import Lib
 
+import Data.List (intercalate)
 -- Part for features:
 -- Go to Section 12.2 of the textbook.
-data BinaryFeature = 
-  SyllabicFeature | ConsonantalFeature | SonorantFeature | 
-  ContinuantFeature | VoiceFeature
-data UnaryFeature = 
+data Polarity = Plus | Minus
+
+data PhonemeFeature = 
+  SyllabicFeature Polarity | ConsonantalFeature Polarity| SonorantFeature Polarity| 
+  ContinuantFeature Polarity| VoiceFeature Polarity | 
+  AdvancedTongueRootFeature Polarity |
   NasalFeature | LateralFeature | DelayedReleaseFeature | 
-  SpreadGlottisFeature | ConstrictedGlottisFeature | LabialFeature | 
-  CoronalFeature | DorsalFeature | PharyngealFeature | LaryngealFeature
+  SpreadGlottisFeature | ConstrictedGlottisFeature |
+   LabialFeature | 
+  CoronalFeature | DorsalFeature | PharyngealFeature | LaryngealFeature 
+  | RoundFeature Polarity | AnteriorFeature Polarity | 
+  DistributedFeature Polarity | 
+  StridentFeature Polarity | HighFeature Polarity | 
+  LowFeature Polarity |
+  BackFeature Polarity
 
+instance Show Polarity where
+  show Plus = "+"
+  show Minus = "-"
 
-boolToInteger :: Bool -> Int
-boolToInteger True = 1
-boolToInteger False = -1
+instance Show PhonemeFeature where
+  show (SyllabicFeature polarity) = show polarity ++ " syllabic"
+  show (ConsonantalFeature polarity) = show polarity ++ " consonantal"
+  show (SonorantFeature polarity) = show polarity ++ " sonorant"
+  show (ContinuantFeature polarity) = show polarity ++ " continuant"
+  show (VoiceFeature polarity) = show polarity ++ " voice"
+  show (AdvancedTongueRootFeature polarity) = show polarity ++ " ATR"
+  show NasalFeature = "nasal"
+  show LateralFeature = "lateral"
+  show DelayedReleaseFeature = "DR"
+  show SpreadGlottisFeature = "SG"
+  show ConstrictedGlottisFeature = "CG"
+  show LabialFeature = "labial"
+  show CoronalFeature = "coronal"
+  show DorsalFeature = "dorsal"
+  show PharyngealFeature = "pharyngeal"
+  show LaryngealFeature = "laryngeal"
+  show (RoundFeature polarity) = show polarity ++ " round"
+  show (AnteriorFeature polarity) = show polarity ++ " anterior"
+  show (DistributedFeature polarity) = show polarity ++ " distributed"
+  show (StridentFeature polarity) = show polarity ++ " strident"
+  show (HighFeature polarity) = show polarity ++ " high"
+  show (LowFeature polarity) = show polarity ++ " low"
+  show (BackFeature polarity) = show polarity ++ " back"
+
+isUnary :: PhonemeFeature -> Bool
+isUnary NasalFeature = True
+isUnary LateralFeature = True
+isUnary DelayedReleaseFeature = True
+isUnary SpreadGlottisFeature = True
+isUnary ConstrictedGlottisFeature = True
+isUnary LabialFeature = True
+isUnary CoronalFeature = True
+isUnary DorsalFeature = True
+isUnary PharyngealFeature = True
+isUnary LaryngealFeature = True
+isUnary _ = False
 
 maybeBoolToInteger :: Maybe Bool -> Int
 maybeBoolToInteger (Just True) = 1
 maybeBoolToInteger (Just False) = -1
 maybeBoolToInteger Nothing = 0
 
-integerToBool :: Int -> Bool
-integerToBool 1 = True
-integerToBool (-1) = False
 
 integerToMaybeBool :: Int -> Maybe Bool
 integerToMaybeBool 0 = Nothing
@@ -48,19 +91,19 @@ featuresToIntegerArrayDifference p1 p2 =
 
 featuresToIntegerArray :: Phonet -> [Int]
 featuresToIntegerArray phonete =
-  [boolToInteger (syllabic phonete),
-   boolToInteger (consonantal phonete),
-   boolToInteger (sonorant phonete),
-   boolToInteger (continuant phonete),
-   boolToInteger (nasal phonete),
-   boolToInteger (lateral phonete),
-   boolToInteger (delayedRelease phonete),
-   boolToInteger (labial phonete),
-   boolToInteger (coronal phonete),
-   boolToInteger (dorsal phonete),
-   boolToInteger (pharyngeal phonete),
-   boolToInteger (laryngeal phonete),
-   boolToInteger (voice phonete),
+  [maybeBoolToInteger (syllabic phonete),
+   maybeBoolToInteger (consonantal phonete),
+   maybeBoolToInteger (sonorant phonete),
+   maybeBoolToInteger (continuant phonete),
+   maybeBoolToInteger (nasal phonete),
+   maybeBoolToInteger (lateral phonete),
+   maybeBoolToInteger (delayedRelease phonete),
+   maybeBoolToInteger (labial phonete),
+   maybeBoolToInteger (coronal phonete),
+   maybeBoolToInteger (dorsal phonete),
+   maybeBoolToInteger (pharyngeal phonete),
+   maybeBoolToInteger (laryngeal phonete),
+   maybeBoolToInteger (voice phonete),
    maybeBoolToInteger (anterior phonete),
    maybeBoolToInteger (distributed phonete),
    maybeBoolToInteger (strident phonete),
@@ -121,9 +164,12 @@ fromMBoolToTextFeature label mBool =
       else Nothing
 
 
-syllabic :: Phonet -> Bool
-syllabic (Vowel _ _ _ _ ) = True
-syllabic (Consonant _ _ _ _) = False
+syllabic :: Phonet -> Maybe Bool
+syllabic (Vowel _ _ _ _ ) = Just True
+syllabic (Consonant _ _ _ _) = Just False
+
+syllabicFL = binaryFeature syllabic SyllabicFeature
+
 
 isGlide :: Phonet -> Bool
 isGlide candidate =
@@ -134,19 +180,30 @@ isGlide candidate =
      firstPart == 'ɰ'
 
 
-consonantal :: Phonet -> Bool
-consonantal consonant@(Consonant v p m a) = not (isGlide consonant)
-consonantal (Vowel _ _ _ _) = False
+consonantal :: Phonet -> Maybe Bool
+consonantal consonant@(Consonant v p m a) = Just (not (isGlide consonant))
+consonantal (Vowel _ _ _ _) = Just False
 
-sonorant :: Phonet -> Bool
+
+    
+binaryFeature featureFunction featureConstructor phonete =
+  case featureFunction phonete of
+    Just True  -> [featureConstructor Plus]
+    Just False -> [featureConstructor Minus]
+    Nothing    -> []
+
+consonantalFL = binaryFeature consonantal ConsonantalFeature
+
+
+sonorant :: Phonet -> Maybe Bool
 -- Vowels are sonorants.
-sonorant (Vowel _ _ _ _) = True
+sonorant (Vowel _ _ _ _) = Just True
 -- Nasals are sonorants.
-sonorant (Consonant _ _ Nasal _) = True
+sonorant (Consonant _ _ Nasal _) = Just True
 -- Approximants are sonorants.
-sonorant (Consonant _ _ Approximant _) = True
+sonorant (Consonant _ _ Approximant _) = Just True
 -- Laterals are sonorants.
-sonorant (Consonant _ _ LateralApproximant _ ) = True
+sonorant (Consonant _ _ LateralApproximant _ ) = Just True
 -- Are Lateral flaps, and Laterals that are not fricatives approximants. 
 -- Let us just guess that they are:
 -- sonorant (Consonants _ _ Lateral _ ) = True -- unsure
@@ -157,79 +214,123 @@ sonorant (Consonant _ _ LateralApproximant _ ) = True
 
 
 -- Fricatives are not sonorants.
-sonorant (Consonant _ _ Fricative _) = False
+sonorant (Consonant _ _ Fricative _) = Just False
 -- Lateral fricatives are not sonorants.
-sonorant (Consonant _ _ LateralFricative _) = False
+sonorant (Consonant _ _ LateralFricative _) = Just False
 -- Affricates are not sonorants.
-sonorant (Consonant _ _ Affricate _) = False
-sonorant _ = False -- Add more
+sonorant (Consonant _ _ Affricate _) = Just False
+sonorant _ = Just False -- Add more
 
 
-continuant (Consonant _ _ Fricative _) = True
-continuant (Consonant _ _ Approximant _ ) = True
-continuant (Consonant _ _ Lateral _) = True
-continuant (Consonant _ _ LateralFricative _) = True
-continuant (Consonant _ _ LateralApproximant _) = True
-continuant c@(Consonant _ _ _ _) = isGlide c
-continuant (Vowel _ _ _ _) = True
+sonorantFL = binaryFeature sonorant SonorantFeature
 
 
+continuant (Consonant _ _ Fricative _) = Just True
+continuant (Consonant _ _ Approximant _ ) = Just True
+continuant (Consonant _ _ Lateral _) = Just True
+continuant (Consonant _ _ LateralFricative _) = Just True
+continuant (Consonant _ _ LateralApproximant _) = Just True
+continuant c@(Consonant _ _ _ _) = Just (isGlide c)
+continuant (Vowel _ _ _ _) = Just True
 
-nasal (Consonant _ _ Nasal _) = True
-nasal _ = False
+continuantFL = binaryFeature continuant ContinuantFeature
 
-lateral (Consonant _ _ manner _) = 
+nasal (Consonant _ _ Nasal _) = Just True
+nasal _ = Just False
+
+nasalFL = unaryFeature nasal NasalFeature
+
+lateral (Consonant _ _ manner _) = Just (
   manner == Lateral || 
   manner == LateralApproximant || 
-  manner == LateralFricative
-lateral _ = False
+  manner == LateralFricative)
+lateral _ = Just False
+
+lateralFL = unaryFeature lateral LateralFeature
+
+delayedRelease (Consonant _ _ Affricate _) = Just True
+delayedRelease _ = Just False
+
+delayedReleaseFL = unaryFeature delayedRelease DelayedReleaseFeature
 
 
-delayedRelease (Consonant _ _ Affricate _) = True
-delayedRelease _ = False
+unaryFeature featurePredicate featureConstructor phoneme = 
+  if featurePredicate phoneme == Just True
+  then [featureConstructor]
+  else []
 
 labial (Consonant _ place _ _) = 
-  place == Bilabial || 
-  place == LabioDental
-labial _ = False
+  Just
+  (
+    place == Bilabial || 
+    place == LabioDental
+  )
+labial _ = Just False
+
+labialFL = unaryFeature labial LabialFeature
 
 coronal (Consonant _ place _ _) = 
+  Just (
   place `elem` [Dental, 
                 Alveolar, 
                 PostAlveolar, 
                 Retroflex, 
                 Palatal, 
                 AlveoloPalatal]
-coronal _ = False
+        )
+coronal _ = Just False
+
+coronalFL = unaryFeature  coronal CoronalFeature
 
 dorsal (Consonant _ place _ _) = 
+  Just
+  (
   place `elem` [Palatal, AlveoloPalatal, Velar, Uvular] 
+  )
   -- Palatal is actually in parentheses in the textbook
-dorsal _ = False
+dorsal _ = Just False
 
-pharyngeal (Consonant _ Pharyngeal _ _) = True
-pharyngeal _ = False
+dorsalFL = unaryFeature dorsal DorsalFeature
 
-laryngeal (Consonant _ Glottal _ _ ) = True
-laryngeal _ = False
+pharyngeal (Consonant _ Pharyngeal _ _) = Just True
+pharyngeal _ = Just False
 
-voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = False 
+pharyngealFL = unaryFeature pharyngeal PharyngealFeature
+
+laryngeal (Consonant _ Glottal _ _ ) = Just True
+laryngeal _ = Just False
+
+laryngealFL = unaryFeature laryngeal LaryngealFeature
+
+voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = 
+  Just False 
 -- [ʔ] is [- voice]
 
-voice (Consonant v _ _ _) = v == Voiced || v == VoicedAspirated
-voice (Vowel _ _ _ v) = v == Voiced
+
+voice (Consonant v _ _ _) = 
+  Just (v == Voiced || v == VoicedAspirated)
+voice (Vowel _ _ _ v) = Just (v == Voiced)
 -- TODO: handle creaky voice = True
+
+voiceFL = binaryFeature voice VoiceFeature
 
 spreadGlottis :: Phonet -> Maybe Bool
 spreadGlottis (Consonant VoicelessAspirated _ _ _) = Just True
 spreadGlottis (Consonant VoicedAspirated    _ _ _) = Just True
-spreadGlottis _ = Nothing
+spreadGlottis _ = Just False
+
+spreadGlottisFL = unaryFeature spreadGlottis SpreadGlottisFeature
 
 constrictedGlottis :: Phonet -> Maybe Bool
-constrictedGlottis (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just True
-constrictedGlottis _  = Nothing
+constrictedGlottis (Consonant Voiceless Glottal Plosive PulmonicEgressive) = 
+  Just True
+constrictedGlottis _  = Just False
 -- TODO: add CreakyVoice here = Just True
 
+constrictedGlottisFL = 
+  unaryFeature
+    constrictedGlottis 
+    ConstrictedGlottisFeature
 
 anterior (Consonant _ Dental            _ _) = Just True
 anterior (Consonant _ Alveolar          _ _) = Just True
@@ -239,6 +340,8 @@ anterior (Consonant _ Palatal           _ _) = Just False
 anterior (Consonant _ AlveoloPalatal    _ _) = Just False
 anterior _ = Nothing
 
+anteriorFL = binaryFeature anterior AnteriorFeature
+
 distributed (Consonant _ Dental         _ _) = Just True
 distributed (Consonant _ Alveolar       _ _) = Just False
 distributed (Consonant _ PostAlveolar   _ _) = Just True
@@ -247,6 +350,7 @@ distributed (Consonant _ Palatal        _ _) = Just True
 distributed (Consonant _ AlveoloPalatal _ _) = Just True
 distributed _ = Nothing
 
+distributedFL = binaryFeature distributed DistributedFeature
 
 strident (Consonant _ Bilabial       _ _) = Just False
 strident (Consonant _ LabioDental    _ _) = Just True
@@ -262,6 +366,8 @@ strident (Consonant _ Pharyngeal     _ _) = Just False
 strident (Consonant _ Glottal        _ _) = Just False
 strident _ = Nothing
 
+stridentFL = binaryFeature strident StridentFeature
+
 high (Consonant _ Palatal _ _) = Just True
 high (Consonant _ AlveoloPalatal _ _) = Just True
 high (Consonant _ Velar _ _) = Just True
@@ -269,20 +375,27 @@ high (Consonant _ Uvular _ _) = Just False
 high (Consonant _ _ _ _) = Nothing
 high (Vowel height _ _ _ ) = Just (height == Close || height == NearClose)
 
+highFL = binaryFeature high HighFeature
+
 low (Consonant _ Uvular _ _) = Just True
 low (Consonant _ Pharyngeal _ _) = Just True
 low (Consonant _ Glottal _ _) = Just True
 low (Consonant _ _ _ _) = Nothing
 low (Vowel height _ _ _ ) = Just (height == Open || height == NearOpen)
 
+lowFL = binaryFeature low LowFeature
 
 back (Vowel _ Back _ _) = Just True
 back (Vowel _ Central _ _) = Just True
 back (Vowel _ Front _ _) = Just False
 back _ = Nothing
 
+backFL = binaryFeature back BackFeature
+
 round (Vowel _ _ rounding _) = Just (rounding == Rounded)
 round _ = Just False
+
+roundFL = binaryFeature PhonemeFeature.round RoundFeature
 
 atr (Vowel  Close     Front   Unrounded Voiced) = Just True  -- [i]
 atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just True  -- [e]
@@ -300,21 +413,22 @@ atr (Vowel  OpenMid   Front   Unrounded Voiced) = Just False
 atr (Vowel  OpenMid   Back    Rounded   Voiced) = Just False
 atr _ = Nothing
 
-toTextFeatures :: Phonet -> String
-toTextFeatures phonete =
-  let allString = mapf [toTextConsonantalFeature, toTextSyllabicFeature,
-                        toTextContinuantFeature, toTextSonorantFeature,
-                        toTextDelayedReleaseFeature,
-                        toTextAnteriorFeature, toTextDistributedFeature,
-                        toTextStridentFeature, toTextHighFeature, 
-                        toTextLowFeature, 
-                        toTextNasalFeature, toTextLabialFeature, 
-                        toTextCoronalFeature, toTextDorsalFeature, 
-                        toTextPharyngealFeature, toTextLaryngealFeature,
-                        toTextBackFeature, toTextRoundFeature,
-                        toTextATRFeature, toTextSpreadGlottisFeature,
-                        toTextConstrictedGlottisFeature] phonete
-  in "[" ++ concatIgnoringNothing "; " allString ++ "]"
+atrFL = binaryFeature atr AdvancedTongueRootFeature
+
+toTextFeaturesVersion2 :: Phonet -> String
+toTextFeaturesVersion2 phonete =
+  let allString = mapf [consonantalFL, syllabicFL,
+                        continuantFL, sonorantFL,
+                        delayedReleaseFL, anteriorFL, distributedFL,
+                        stridentFL, highFL,
+                        lowFL,
+                        nasalFL, labialFL,
+                        coronalFL, dorsalFL,
+                        pharyngealFL, laryngealFL,
+                        backFL, roundFL,
+                        atrFL, spreadGlottisFL,
+                        constrictedGlottisFL, constrictedGlottisFL] phonete
+  in "[" ++ intercalate "; " (map show (concat allString)) ++ "]"
 
 mapf :: [a -> b] -> a -> [b]
 mapf functions x = map (\f -> f x) functions
@@ -324,136 +438,115 @@ concatIgnoringNothing _ [] = ""
 concatIgnoringNothing joiner (Nothing:xs) = concatIgnoringNothing joiner xs
 concatIgnoringNothing joiner ((Just x):xs) = x ++ joiner ++ concatIgnoringNothing joiner xs
 
--- Convert a function that returns a boolean
--- into one that returns a Maybe-boolean.
-justify :: (Phonet -> Bool) -> (Phonet -> Maybe Bool)
-justify f =
-  \x -> Just (f x)
-  
-dejustify :: (Phonet -> Maybe Bool) -> (Phonet -> Bool)
-dejustify f =
-  \x -> case f x of
-              Just True -> True
-              Just False -> False
-              Nothing ->  False
+
 
 toTextConsonantalFeature :: Phonet -> Maybe String
 toTextConsonantalFeature phonete =
-  toTextGenericFeature (justify consonantal) "consonantal" phonete 
+  toTextFeature consonantalFL phonete 
 
 
 toTextSyllabicFeature :: Phonet -> Maybe String
 toTextSyllabicFeature phonete =
-  toTextGenericFeature (justify syllabic) "syllabic" phonete 
+  toTextFeature syllabicFL phonete 
 
 
 toTextVoiceFeature :: Phonet -> Maybe String
 toTextVoiceFeature phonete =
-  toTextGenericFeature (justify voice) "voice" phonete 
+  toTextFeature voiceFL phonete 
 
 
 toTextContinuantFeature :: Phonet -> Maybe String
 toTextContinuantFeature phonete =
-  toTextGenericFeature (justify continuant) "continuant" phonete 
+  toTextFeature continuantFL phonete 
 
  
 toTextSonorantFeature :: Phonet -> Maybe String
 toTextSonorantFeature phonete =
-  toTextGenericFeature (justify sonorant) "sonorant" phonete 
+  toTextFeature sonorantFL phonete 
 
 toTextDelayedReleaseFeature :: Phonet -> Maybe String
 toTextDelayedReleaseFeature phonete =
-  toTextGenericFeature (justify delayedRelease) "DR" phonete 
+  toTextFeature delayedReleaseFL phonete 
 
 toTextBackFeature :: Phonet -> Maybe String
 toTextBackFeature phonete = 
-  toTextGenericFeature back "back" phonete
+  toTextFeature backFL phonete
 
 
 toTextRoundFeature :: Phonet -> Maybe String
 toTextRoundFeature phonete = 
-  toTextGenericFeature PhonemeFeature.round "round" phonete
+  toTextFeature roundFL phonete
 
 toTextATRFeature :: Phonet -> Maybe String
 toTextATRFeature phonete = 
-  toTextGenericFeature atr "ATR" phonete
+  toTextFeature atrFL phonete
 
 toTextSpreadGlottisFeature :: Phonet -> Maybe String
 toTextSpreadGlottisFeature phonete = 
-  toTextUnaryFeature (dejustify spreadGlottis) "SG" phonete
+  toTextFeature spreadGlottisFL phonete
 
 toTextConstrictedGlottisFeature :: Phonet -> Maybe String
 toTextConstrictedGlottisFeature phonete = 
-  toTextUnaryFeature (dejustify constrictedGlottis) "CG" phonete
+  toTextFeature constrictedGlottisFL phonete
 
 
 
 toTextAnteriorFeature :: Phonet -> Maybe String
 toTextAnteriorFeature phonete = 
-  toTextGenericFeature anterior "anterior" phonete
+  toTextFeature anteriorFL phonete
 
 toTextDistributedFeature :: Phonet -> Maybe String
 toTextDistributedFeature phonete = 
-  toTextGenericFeature distributed "distributed" phonete
+  toTextFeature distributedFL phonete
 
 
 toTextStridentFeature :: Phonet -> Maybe String
 toTextStridentFeature phonete = 
-  toTextGenericFeature strident "strident" phonete
+  toTextFeature stridentFL phonete
  
 
 toTextHighFeature :: Phonet -> Maybe String
 toTextHighFeature phonete = 
-  toTextGenericFeature high "high" phonete
+  toTextFeature highFL phonete
 
 toTextLowFeature :: Phonet -> Maybe String
 toTextLowFeature phonete = 
-  toTextGenericFeature low "low" phonete
+  toTextFeature lowFL phonete
 
 
 toTextNasalFeature :: Phonet -> Maybe String
 toTextNasalFeature phonete =
-  toTextUnaryFeature nasal "nasal" phonete
+  toTextFeature nasalFL phonete
 
 toTextLateralFeature :: Phonet -> Maybe String
 toTextLateralFeature phonete =
-  toTextUnaryFeature lateral "lateral" phonete
+  toTextFeature lateralFL phonete
 
 
 toTextLabialFeature :: Phonet -> Maybe String
 toTextLabialFeature phonete =
-  toTextUnaryFeature labial "labial" phonete
+  toTextFeature labialFL phonete
 
 toTextCoronalFeature :: Phonet -> Maybe String
 toTextCoronalFeature phonete =
-  toTextUnaryFeature coronal "coronal" phonete
+  toTextFeature coronalFL phonete
 
 toTextDorsalFeature :: Phonet -> Maybe String
 toTextDorsalFeature phonete =
-  toTextUnaryFeature dorsal "dorsal" phonete
+  toTextFeature dorsalFL phonete
 
 toTextPharyngealFeature :: Phonet -> Maybe String
 toTextPharyngealFeature phonete =
-  toTextUnaryFeature pharyngeal "pharyngeal" phonete
+  toTextFeature pharyngealFL phonete
 
 toTextLaryngealFeature :: Phonet -> Maybe String
-toTextLaryngealFeature phonete =
-  toTextUnaryFeature laryngeal "laryngeal" phonete
+toTextLaryngealFeature phonete = 
+   toTextFeature laryngealFL phonete
 
-
-
-toTextUnaryFeature :: (Phonet -> Bool) -> String -> Phonet -> Maybe String
-toTextUnaryFeature featureFunction featureName phonete =
-  let featureValue = featureFunction phonete
-  in if featureValue
-       then Just featureName
-       else Nothing
-
-toTextGenericFeature :: (Phonet -> Maybe Bool) -> String -> Phonet -> Maybe String
-toTextGenericFeature featureFunction featureName phonete =
-  let featureValue = featureFunction phonete
-  in if featureValue == Just True
-     then Just ("+ " ++ featureName)
-     else if featureValue == Just False
-        then Just ("- " ++ featureName)
+toTextFeature featureListFunction phonete =
+  let result = featureListFunction phonete
+  in if length result > 0
+        then Just (show (result !! 0))
         else Nothing
+    
+

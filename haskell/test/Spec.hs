@@ -8,7 +8,13 @@ import PhonemeFeature (isGlide, toTextLowFeature, toTextAnteriorFeature,
                        toTextLabialFeature, toTextCoronalFeature, 
                        toTextDorsalFeature, 
                        toTextPharyngealFeature, toTextLaryngealFeature,
-                       toTextRoundFeature, toTextATRFeature, toTextBackFeature)
+                       toTextRoundFeature, toTextATRFeature, toTextBackFeature,
+                       PhonemeFeature(NasalFeature, LateralFeature, 
+                       DelayedReleaseFeature,
+                       SpreadGlottisFeature, ConstrictedGlottisFeature,
+                       LabialFeature, CoronalFeature, DorsalFeature,
+                       PharyngealFeature, LaryngealFeature),
+                       isUnary)
 import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
 import Tester (printLegend, runTest)
@@ -877,3 +883,24 @@ speFeaturesSpec = do
   runTest "The ATR feature is nothing for [p]."
     (toTextATRFeature (analyzeIPA "p") == Nothing)
 
+
+  runTest "The nasal feature is unary."
+    (isUnary NasalFeature)
+  runTest "The lateral feature is unary."
+    (isUnary LateralFeature)
+  runTest "The delayed release feature is unary."
+    (isUnary DelayedReleaseFeature)
+  runTest "The spread glottis feature is unary."
+    (isUnary SpreadGlottisFeature)
+  runTest "The constricted glottis feature is unary."
+    (isUnary ConstrictedGlottisFeature)
+  runTest "The labial feature is unary."
+    (isUnary LabialFeature)
+  runTest "The coronal feature is unary."
+    (isUnary CoronalFeature)
+  runTest "The dorsal feature is unary."
+    (isUnary DorsalFeature)
+  runTest "The pharyngeal feature is unary."
+    (isUnary PharyngealFeature)
+  runTest "The LaryngealFeature is unary."
+    (isUnary LaryngealFeature)
