@@ -166,31 +166,6 @@ differenceOfUnaryFeature feature list1 list2 =
             then (Just feature, Nothing)
             else (Nothing, Just feature)
 
-maybeBoolToInteger :: Maybe Bool -> Int
-maybeBoolToInteger (Just True) = 1
-maybeBoolToInteger (Just False) = -1
-maybeBoolToInteger Nothing = 0
-
-
-integerToMaybeBool :: Int -> Maybe Bool
-integerToMaybeBool 0 = Nothing
-integerToMaybeBool x = Just (x > 0)
-
-
-
-
-concatToFeatureString :: [Maybe String] -> String
-concatToFeatureString allString =
-     "[" ++ concatIgnoringNothing "; " allString ++ "]"
-
-
-fromMBoolToTextFeature :: String -> Maybe Bool -> Maybe String
-fromMBoolToTextFeature label mBool =
-  if mBool == Just True
-    then Just ("+ " ++ label)
-    else if mBool == Just False
-      then Just ("- " ++ label)
-      else Nothing
 
 
 syllabic :: Phonet -> Maybe Bool
