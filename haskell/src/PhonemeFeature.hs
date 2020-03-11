@@ -38,29 +38,29 @@ instance Show Polarity where
   show Minus = "-"
 
 instance Show PhonemeFeature where
-  show (SyllabicFeature polarity) = show polarity ++ " syllabic"
-  show (ConsonantalFeature polarity) = show polarity ++ " consonantal"
-  show (SonorantFeature polarity) = show polarity ++ " sonorant"
-  show (ContinuantFeature polarity) = show polarity ++ " continuant"
-  show (VoiceFeature polarity) = show polarity ++ " voice"
+  show (SyllabicFeature polarity)           = show polarity ++ " syllabic"
+  show (ConsonantalFeature polarity)        = show polarity ++ " consonantal"
+  show (SonorantFeature polarity)           = show polarity ++ " sonorant"
+  show (ContinuantFeature polarity)         = show polarity ++ " continuant"
+  show (VoiceFeature polarity)              = show polarity ++ " voice"
   show (AdvancedTongueRootFeature polarity) = show polarity ++ " ATR"
-  show NasalFeature = "nasal"
-  show LateralFeature = "lateral"
-  show DelayedReleaseFeature = "DR"
-  show SpreadGlottisFeature = "SG"
-  show ConstrictedGlottisFeature = "CG"
-  show LabialFeature = "labial"
-  show CoronalFeature = "coronal"
-  show DorsalFeature = "dorsal"
-  show PharyngealFeature = "pharyngeal"
-  show LaryngealFeature = "laryngeal"
-  show (RoundFeature polarity) = show polarity ++ " round"
-  show (AnteriorFeature polarity) = show polarity ++ " anterior"
-  show (DistributedFeature polarity) = show polarity ++ " distributed"
-  show (StridentFeature polarity) = show polarity ++ " strident"
-  show (HighFeature polarity) = show polarity ++ " high"
-  show (LowFeature polarity) = show polarity ++ " low"
-  show (BackFeature polarity) = show polarity ++ " back"
+  show NasalFeature                         = "nasal"
+  show LateralFeature                       = "lateral"
+  show DelayedReleaseFeature                = "DR"
+  show SpreadGlottisFeature                 = "SG"
+  show ConstrictedGlottisFeature            = "CG"
+  show LabialFeature                        = "labial"
+  show CoronalFeature                       = "coronal"
+  show DorsalFeature                        = "dorsal"
+  show PharyngealFeature                    = "pharyngeal"
+  show LaryngealFeature                     = "laryngeal"
+  show (RoundFeature polarity)              = show polarity ++ " round"
+  show (AnteriorFeature polarity)           = show polarity ++ " anterior"
+  show (DistributedFeature polarity)        = show polarity ++ " distributed"
+  show (StridentFeature polarity)           = show polarity ++ " strident"
+  show (HighFeature polarity)               = show polarity ++ " high"
+  show (LowFeature polarity)                = show polarity ++ " low"
+  show (BackFeature polarity)               = show polarity ++ " back"
 
 isUnary :: PhonemeFeature -> Bool
 isUnary NasalFeature = True
@@ -160,8 +160,8 @@ differenceOfUnaryFeature :: PhonemeFeature
                          -> [PhonemeFeature] 
                          -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 differenceOfUnaryFeature feature list1 list2 =
-  if elem feature list1 == elem feature list2 then
-     (Nothing, Nothing)
+  if elem feature list1 == elem feature list2
+     then (Nothing, Nothing)
      else if elem feature list1 && not (elem feature list2)
             then (Just feature, Nothing)
             else (Nothing, Just feature)
