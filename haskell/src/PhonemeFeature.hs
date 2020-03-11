@@ -9,18 +9,30 @@ data Polarity = Plus | Minus
                 deriving Eq
 
 data PhonemeFeature = 
-  SyllabicFeature Polarity | ConsonantalFeature Polarity| SonorantFeature Polarity| 
-  ContinuantFeature Polarity| VoiceFeature Polarity | 
+  SyllabicFeature Polarity | 
+  ConsonantalFeature Polarity | 
+  SonorantFeature Polarity| 
+  ContinuantFeature Polarity| 
+  VoiceFeature Polarity | 
   AdvancedTongueRootFeature Polarity |
-  NasalFeature | LateralFeature | DelayedReleaseFeature | 
-  SpreadGlottisFeature | ConstrictedGlottisFeature |
-   LabialFeature | 
-  CoronalFeature | DorsalFeature | PharyngealFeature | LaryngealFeature 
-  | RoundFeature Polarity | AnteriorFeature Polarity | 
+  NasalFeature | 
+  LateralFeature | 
+  DelayedReleaseFeature | 
+  SpreadGlottisFeature | 
+  ConstrictedGlottisFeature |
+  LabialFeature | 
+  CoronalFeature | 
+  DorsalFeature | 
+  PharyngealFeature | 
+  LaryngealFeature | 
+  RoundFeature Polarity | 
+  AnteriorFeature Polarity | 
   DistributedFeature Polarity | 
-  StridentFeature Polarity | HighFeature Polarity | 
+  StridentFeature Polarity | 
+  HighFeature Polarity | 
   LowFeature Polarity |
-  BackFeature Polarity deriving Eq
+  BackFeature Polarity 
+  deriving Eq
 
 instance Show Polarity where
   show Plus = "+"
@@ -83,7 +95,9 @@ analyzeFeatures phonete =
                         backFL] phonete)
   
 
-difference :: [PhonemeFeature] -> [PhonemeFeature] -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
+difference :: [PhonemeFeature] 
+           -> [PhonemeFeature] 
+           -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
 difference list1 list2 = 
   [ differenceOfBinaryFeature SyllabicFeature list1 list2
   , differenceOfBinaryFeature ConsonantalFeature list1 list2
@@ -110,7 +124,11 @@ difference list1 list2 =
   , differenceOfBinaryFeature BackFeature list1 list2
   ]
 
-differenceOfBinaryFeature :: (Polarity -> PhonemeFeature) -> [PhonemeFeature] -> [PhonemeFeature] -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+differenceOfBinaryFeature :: 
+          (Polarity -> PhonemeFeature) 
+                    -> [PhonemeFeature] 
+                    -> [PhonemeFeature] 
+                    -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 differenceOfBinaryFeature feature list1 list2 =
    let
    relevant = \x -> x == feature Plus || x == feature Minus
@@ -128,7 +146,10 @@ differenceOfBinaryFeature feature list1 list2 =
            else (Nothing, Just (list2Relevant !! 0))
            
 
-differenceOfUnaryFeature :: PhonemeFeature -> [PhonemeFeature] -> [PhonemeFeature] -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+differenceOfUnaryFeature :: PhonemeFeature 
+                         -> [PhonemeFeature] 
+                         -> [PhonemeFeature] 
+                         -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 differenceOfUnaryFeature feature list1 list2 =
   if elem feature list1 == elem feature list2 then
      (Nothing, Nothing)
@@ -249,7 +270,8 @@ isGlide _ = False
 
 
 consonantal :: Phonet -> Maybe Bool
-consonantal consonant@(Consonant v p m a) = Just (not (isGlide consonant))
+consonantal consonant@(Consonant v p m a) = 
+  Just (not (isGlide consonant))
 consonantal (Vowel _ _ _ _) = Just False
 
 
@@ -390,7 +412,11 @@ spreadGlottis _ = Just False
 spreadGlottisFL = unaryFeature spreadGlottis SpreadGlottisFeature
 
 constrictedGlottis :: Phonet -> Maybe Bool
-constrictedGlottis (Consonant Voiceless Glottal Plosive PulmonicEgressive) = 
+constrictedGlottis (Consonant 
+                      Voiceless 
+                      Glottal 
+                      Plosive 
+                      PulmonicEgressive) = 
   Just True
 constrictedGlottis _  = Just False
 -- TODO: add CreakyVoice here = Just True
@@ -441,7 +467,8 @@ high (Consonant _ AlveoloPalatal _ _) = Just True
 high (Consonant _ Velar _ _) = Just True
 high (Consonant _ Uvular _ _) = Just False
 high (Consonant _ _ _ _) = Nothing
-high (Vowel height _ _ _ ) = Just (height == Close || height == NearClose)
+high (Vowel height _ _ _ ) = 
+  Just (height == Close || height == NearClose)
 
 highFL = binaryFeature high HighFeature
 
@@ -503,8 +530,10 @@ mapf functions x = map (\f -> f x) functions
 
 concatIgnoringNothing :: String -> [Maybe String] -> String
 concatIgnoringNothing _ [] = ""
-concatIgnoringNothing joiner (Nothing:xs) = concatIgnoringNothing joiner xs
-concatIgnoringNothing joiner ((Just x):xs) = x ++ joiner ++ concatIgnoringNothing joiner xs
+concatIgnoringNothing joiner (Nothing:xs) = 
+  concatIgnoringNothing joiner xs
+concatIgnoringNothing joiner ((Just x):xs) = 
+  x ++ joiner ++ concatIgnoringNothing joiner xs
 
 
 
