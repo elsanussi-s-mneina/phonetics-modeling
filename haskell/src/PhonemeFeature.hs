@@ -301,12 +301,13 @@ labialFL = unaryFeature labial LabialFeature
 
 coronal (Consonant _ place _ _) = 
   Just (
-  place `elem` [Dental, 
-                Alveolar, 
-                PostAlveolar, 
-                Retroflex, 
-                Palatal, 
-                AlveoloPalatal]
+  place `elem` [ Dental
+               , Alveolar
+               , PostAlveolar
+               , Retroflex
+               , Palatal
+               , AlveoloPalatal
+               ]
         )
 coronal _ = Just False
 
@@ -452,27 +453,28 @@ atrFL = binaryFeature atr AdvancedTongueRootFeature
 
 toTextFeaturesVersion2 :: Phonet -> String
 toTextFeaturesVersion2 phonete =
-  let allString = [consonantalFL phonete,
-                   syllabicFL phonete,
-                   continuantFL phonete,
-                   sonorantFL phonete,
-                   delayedReleaseFL phonete, 
-                   anteriorFL phonete, 
-                   distributedFL phonete,
-                   stridentFL phonete, 
-                   highFL phonete,
-                   lowFL phonete,
-                   nasalFL phonete, 
-                   labialFL phonete,
-                   coronalFL phonete, 
-                   dorsalFL phonete,
-                   pharyngealFL phonete, 
-                   laryngealFL phonete,
-                   backFL phonete, 
-                   roundFL phonete,
-                   atrFL phonete, 
-                   spreadGlottisFL phonete,
-                   constrictedGlottisFL phonete]
+  let allString = [ consonantalFL phonete
+                  , syllabicFL phonete
+                  , continuantFL phonete
+                  , sonorantFL phonete
+                  , delayedReleaseFL phonete
+                  , anteriorFL phonete
+                  , distributedFL phonete
+                  , stridentFL phonete
+                  , highFL phonete
+                  , lowFL phonete
+                  , nasalFL phonete
+                  , labialFL phonete
+                  , coronalFL phonete
+                  , dorsalFL phonete
+                  , pharyngealFL phonete
+                  , laryngealFL phonete
+                  , backFL phonete
+                  , roundFL phonete
+                  , atrFL phonete
+                  , spreadGlottisFL phonete
+                  , constrictedGlottisFL phonete
+                  ]
   in "[" ++ intercalate "; " (map show (concat allString)) ++ "]"
 
 concatIgnoringNothing :: String -> [Maybe String] -> String
