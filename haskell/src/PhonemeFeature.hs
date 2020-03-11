@@ -8,31 +8,30 @@ import Data.List (intercalate)
 data Polarity = Plus | Minus
                 deriving Eq
 
-data PhonemeFeature = 
-  SyllabicFeature Polarity | 
-  ConsonantalFeature Polarity | 
-  SonorantFeature Polarity| 
-  ContinuantFeature Polarity| 
-  VoiceFeature Polarity | 
-  AdvancedTongueRootFeature Polarity |
-  NasalFeature | 
-  LateralFeature | 
-  DelayedReleaseFeature | 
-  SpreadGlottisFeature | 
-  ConstrictedGlottisFeature |
-  LabialFeature | 
-  CoronalFeature | 
-  DorsalFeature | 
-  PharyngealFeature | 
-  LaryngealFeature | 
-  RoundFeature Polarity | 
-  AnteriorFeature Polarity | 
-  DistributedFeature Polarity | 
-  StridentFeature Polarity | 
-  HighFeature Polarity | 
-  LowFeature Polarity |
-  BackFeature Polarity 
-  deriving Eq
+data PhonemeFeature = SyllabicFeature Polarity
+                    | ConsonantalFeature Polarity
+                    | SonorantFeature Polarity
+                    | ContinuantFeature Polarity
+                    | VoiceFeature Polarity
+                    | AdvancedTongueRootFeature Polarity
+                    | NasalFeature
+                    | LateralFeature
+                    | DelayedReleaseFeature
+                    | SpreadGlottisFeature
+                    | ConstrictedGlottisFeature
+                    | LabialFeature
+                    | CoronalFeature
+                    | DorsalFeature
+                    | PharyngealFeature
+                    | LaryngealFeature
+                    | RoundFeature Polarity
+                    | AnteriorFeature Polarity
+                    | DistributedFeature Polarity
+                    | StridentFeature Polarity
+                    | HighFeature Polarity
+                    | LowFeature Polarity
+                    | BackFeature Polarity
+                    deriving Eq
 
 instance Show Polarity where
   show Plus = "+"
@@ -79,29 +78,30 @@ isUnary _ = False
 
 analyzeFeatures :: Phonet -> [PhonemeFeature] 
 analyzeFeatures phonete =
-    concat [syllabicFL phonete, 
-            consonantalFL phonete,
-            sonorantFL phonete, 
-            continuantFL phonete,
-            voiceFL phonete, 
-            atrFL phonete,
-            nasalFL phonete, 
-            lateralFL phonete,
-            delayedReleaseFL phonete,
-            spreadGlottisFL phonete,
-            constrictedGlottisFL phonete,
-            labialFL phonete, 
-            coronalFL phonete, 
-            dorsalFL phonete,
-            pharyngealFL phonete, 
-            laryngealFL phonete,
-            roundFL phonete,
-            anteriorFL phonete, 
-            distributedFL phonete,
-            stridentFL phonete, 
-            highFL phonete,
-            lowFL phonete,
-            backFL phonete]
+    concat [syllabicFL phonete
+           , consonantalFL phonete
+           , sonorantFL phonete
+           , continuantFL phonete
+           , voiceFL phonete
+           , atrFL phonete
+           , nasalFL phonete
+           , lateralFL phonete
+           , delayedReleaseFL phonete
+           , spreadGlottisFL phonete
+           , constrictedGlottisFL phonete
+           , labialFL phonete
+           , coronalFL phonete
+           , dorsalFL phonete
+           , pharyngealFL phonete
+           , laryngealFL phonete
+           , roundFL phonete
+           , anteriorFL phonete
+           , distributedFL phonete
+           , stridentFL phonete
+           , highFL phonete
+           , lowFL phonete
+           , backFL phonete
+           ]
   
 
 difference :: [PhonemeFeature] 
