@@ -12,43 +12,83 @@ data Phonet = Consonant { vocalFolds :: VocalFolds
                     }
                     deriving (Eq, Show)
 
-data Backness = Front | Central | Back | UnmarkedBackness
+data Backness = Front
+              | Central
+              | Back
+              | UnmarkedBackness
                 deriving (Eq, Show)
 
 backnessStates :: [Backness]
 backnessStates = [Front, Central, Back]
 
-data Height = 
-  Close | NearClose | CloseMid |
-  Mid | OpenMid | NearOpen | Open | UnmarkedHeight
+data Height = Close
+            | NearClose
+            | CloseMid
+            | Mid
+            | OpenMid
+            | NearOpen
+            | Open
+            | UnmarkedHeight
               deriving (Eq, Show)
 
 heightStates :: [Height]
-heightStates = [Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open]
+heightStates =
+             [ Close
+             , NearClose
+             , CloseMid
+             , Mid
+             , OpenMid
+             , NearOpen
+             , Open
+             ]
 
 
-data Rounding = Rounded | Unrounded | UnmarkedRounding
+data Rounding = Rounded
+              | Unrounded
+              | UnmarkedRounding
                 deriving (Eq, Show)
 
 roundingStates :: [Rounding]
 roundingStates = [Rounded, Unrounded]
 
-data Place = Bilabial | LabioDental | Dental | Alveolar | PostAlveolar
+data Place = Bilabial
+           | LabioDental
+           | Dental
+           | Alveolar
+           | PostAlveolar
            | Retroflex
-           | Palatal  | Velar  | Uvular | Pharyngeal | Glottal | Epiglottal
+           | Palatal
+           | Velar
+           | Uvular
+           | Pharyngeal
+           | Glottal
+           | Epiglottal
            -- I am unsure if the following three should be counted
            -- as 6 different places of articulation, or just 3
-           | LabialVelar | LabialPalatal | AlveoloPalatal
+           | LabialVelar
+           | LabialPalatal
+           | AlveoloPalatal
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
            | UnmarkedPlace
            deriving (Eq, Show)
 
 placeStates :: [Place]
-placeStates = [ Bilabial, LabioDental, Dental, Alveolar, PostAlveolar
+placeStates = [ Bilabial
+              , LabioDental
+              , Dental
+              , Alveolar
+              , PostAlveolar
               , Retroflex
-              , Palatal  , Velar  , Uvular , Pharyngeal , Glottal , Epiglottal
-              , LabialVelar , LabialPalatal , AlveoloPalatal
+              , Palatal
+              , Velar
+              , Uvular
+              , Pharyngeal
+              , Glottal
+              , Epiglottal
+              , LabialVelar
+              , LabialPalatal
+              , AlveoloPalatal
               , PalatoAlveolar
               ]
 
@@ -66,17 +106,27 @@ retractedPlace Glottal = Epiglottal
 retractedPlace same = same
 
 
-data Manner = Plosive | Nasal | Trill | TapOrFlap | Approximant | Fricative
-              | Affricate 
-              | LateralFricative
-              | LateralApproximant
-              | LateralFlap
-              | Lateral -- we need this one for the lateral click.
-              | UnmarkedManner -- There are very few IPA symbols for lateral flaps
+data Manner = Plosive
+            | Nasal
+            | Trill
+            | TapOrFlap
+            | Approximant
+            | Fricative
+            | Affricate
+            | LateralFricative
+            | LateralApproximant
+            | LateralFlap
+            | Lateral -- we need this one for the lateral click.
+            | UnmarkedManner -- There are very few IPA symbols for lateral flaps
               deriving (Eq, Show)
 
 mannerStates :: [Manner]
-mannerStates = [ Plosive, Nasal, Trill, TapOrFlap, Approximant, Fricative
+mannerStates = [ Plosive
+               , Nasal
+               , Trill
+               , TapOrFlap
+               , Approximant
+               , Fricative
                , Affricate
                , LateralFricative
                , LateralApproximant
@@ -84,13 +134,23 @@ mannerStates = [ Plosive, Nasal, Trill, TapOrFlap, Approximant, Fricative
                , Lateral
                ]
 
-data Airstream = PulmonicEgressive | Click | Implosive | UnmarkedAirstream
+data Airstream = PulmonicEgressive
+               | Click
+               | Implosive
+               | UnmarkedAirstream
                  deriving (Eq, Show)
 
 airstreamStates :: [Airstream]
-airstreamStates = [PulmonicEgressive, Click, Implosive]
+airstreamStates = [ PulmonicEgressive
+                  , Click
+                  , Implosive
+                  ]
 
-data VocalFolds = Voiced | Voiceless | VoicedAspirated | VoicelessAspirated | UnmarkedVocalFolds
+data VocalFolds = Voiced
+                | Voiceless
+                | VoicedAspirated
+                | VoicelessAspirated
+                | UnmarkedVocalFolds
                   deriving (Eq, Show)
 
 
