@@ -19,7 +19,7 @@ printLegend = putStrLn legend
 
 
 runTest :: String -> Bool -> IO ()
-runTest description hasPassed = do
+runTest description hasPassed =
   if hasPassed
-    then putStr (if conciseMode then "\x1b[32m.\x1b[0m" else ("\x1b[32m should be that: \x1b[0m" ++ description ++ "\n"))
+    then putStr (if conciseMode then "\x1b[32m.\x1b[0m" else "\x1b[32m should be that: \x1b[0m" ++ description ++ "\n")
     else putStrLn ("! \x1b[35m SHOULD \x1b[31mBE THAT: \x1b[0m" ++ description ++ " FAILED!!!")

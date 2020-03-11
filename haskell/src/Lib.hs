@@ -157,7 +157,7 @@ data VocalFolds = Voiced
 vocalFoldStates :: [VocalFolds]
 vocalFoldStates = [Voiceless, Voiced]
 
-data PhonetInventory = PhonetInventory [Phonet]
+newtype PhonetInventory = PhonetInventory [Phonet]
 
 
 instance Show PhonetInventory where
