@@ -176,9 +176,6 @@ integerToMaybeBool :: Int -> Maybe Bool
 integerToMaybeBool 0 = Nothing
 integerToMaybeBool x = Just (x > 0)
 
-phonemeFeaturesToIntegerArray :: PhonemeFeature -> Int
-phonemeFeaturesToIntegerArray (SyllabicFeature Plus) = 1
-
 
 featuresToIntegerArrayDifference :: Phonet -> Phonet -> [Int]
 featuresToIntegerArrayDifference p1 p2 =
