@@ -140,19 +140,19 @@ differenceOfBinaryFeature ::
                     -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 differenceOfBinaryFeature feature list1 list2 =
    let
-   relevant = \x -> x == feature Plus || x == feature Minus
+   relevant x = x == feature Plus || x == feature Minus
    list1Relevant = filter relevant list1
    list2Relevant = filter relevant list2
    in
-     if (length list1Relevant == 0) && (length list2Relevant == 0)
-       || (length list1Relevant > 0 && length list2Relevant > 0 &&
-           list1Relevant !! 0 == list2Relevant !! 0)
+     if  null list1Relevant && null list2Relevant
+       || (not (null list1Relevant) && not (null list2Relevant) &&
+           head list1Relevant == head list2Relevant)
        then (Nothing, Nothing)
-       else if (length list1Relevant > 0 && length list2Relevant > 0)
-         then (Just (list1Relevant !! 0), Just (list2Relevant !! 0))
-         else if (length list1Relevant > length list2Relevant)
-         then (Just (list1Relevant !! 0), Nothing)
-           else (Nothing, Just (list2Relevant !! 0))
+       else if not (null list1Relevant) && not (null list2Relevant)
+         then (Just (head list1Relevant), Just (head list2Relevant))
+         else if length list1Relevant > length list2Relevant
+         then (Just (head list1Relevant), Nothing)
+           else (Nothing, Just (head list2Relevant))
            
 
 differenceOfUnaryFeature :: PhonemeFeature 
@@ -479,7 +479,7 @@ concatIgnoringNothing :: String -> [Maybe String] -> String
 concatIgnoringNothing _ [] = ""
 concatIgnoringNothing joiner (Nothing:xs) = 
   concatIgnoringNothing joiner xs
-concatIgnoringNothing joiner ((Just x):xs) = 
+concatIgnoringNothing joiner (Just x:xs) = 
   x ++ joiner ++ concatIgnoringNothing joiner xs
 
 
@@ -589,8 +589,8 @@ toTextLaryngealFeature phonete =
 
 toTextFeature featureListFunction phonete =
   let result = featureListFunction phonete
-  in if length result > 0
-        then Just (show (result !! 0))
+  in if not (null result)
+        then Just (show (head result))
         else Nothing
     
 
