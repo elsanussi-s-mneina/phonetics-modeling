@@ -129,6 +129,13 @@ differenceOfBinaryFeature feature list1 list2 =
            
 
 differenceOfUnaryFeature :: PhonemeFeature -> [PhonemeFeature] -> [PhonemeFeature] -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+differenceOfUnaryFeature feature list1 list2 =
+  if elem feature list1 == elem feature list2 then
+     (Nothing, Nothing)
+     else if elem feature list1 && not (elem feature list2)
+            then (Just feature, Nothing)
+            else (Nothing, Just feature)
+
 maybeBoolToInteger :: Maybe Bool -> Int
 maybeBoolToInteger (Just True) = 1
 maybeBoolToInteger (Just False) = -1
@@ -139,13 +146,9 @@ integerToMaybeBool :: Int -> Maybe Bool
 integerToMaybeBool 0 = Nothing
 integerToMaybeBool x = Just (x > 0)
 
+phonemeFeaturesToIntegerArray :: PhonemeFeature -> Int
+phonemeFeaturesToIntegerArray (SyllabicFeature Plus) = 1
 
-featureDifference :: String -> String -> String
-featureDifference textPhoneme1 textPhoneme2 =
-  let phoneme1 = analyzeIPA textPhoneme1
-      phoneme2 = analyzeIPA textPhoneme2
-  in integerArrayToText 
-      (featuresToIntegerArrayDifference phoneme1 phoneme2)
 
 featuresToIntegerArrayDifference :: Phonet -> Phonet -> [Int]
 featuresToIntegerArrayDifference p1 p2 =
@@ -237,12 +240,12 @@ syllabicFL = binaryFeature syllabic SyllabicFeature
 
 
 isGlide :: Phonet -> Bool
-isGlide candidate =
-  let firstPart = head (constructIPA candidate)  -- So that we ignore any diacritics that come after.
-  in firstPart == 'j' ||
-     firstPart == 'w' ||
-     firstPart == 'ɥ' ||
-     firstPart == 'ɰ'
+isGlide (Consonant _ Palatal Approximant PulmonicEgressive) = True
+isGlide (Consonant _ LabialVelar Approximant PulmonicEgressive) = True
+isGlide (Consonant _ LabialPalatal Approximant PulmonicEgressive) = True
+isGlide (Consonant _ Velar Approximant PulmonicEgressive) = True
+isGlide _ = False
+
 
 
 consonantal :: Phonet -> Maybe Bool
