@@ -194,14 +194,14 @@ indexOf (elem:rest) index target =
     else indexOf rest (index + 1) target
 
 analyzeMannerIPA x
-  | elem x (consonantsPulmonicTable !! 0) = (Plosive, 0)
-  | elem x (consonantsPulmonicTable !! 1) = (Nasal, 1)
-  | elem x (consonantsPulmonicTable !! 2) = (Trill, 2)
-  | elem x (consonantsPulmonicTable !! 3) = (TapOrFlap, 3)
-  | elem x (consonantsPulmonicTable !! 4) = (Fricative, 4)
-  | elem x (consonantsPulmonicTable !! 5) = (LateralFricative, 5)
-  | elem x (consonantsPulmonicTable !! 6) = (Approximant, 6)
-  | elem x (consonantsPulmonicTable !! 7) = (LateralApproximant, 7)
+  | x `elem` (consonantsPulmonicTable !! 0) = (Plosive, 0)
+  | x `elem` (consonantsPulmonicTable !! 1) = (Nasal, 1)
+  | x `elem` (consonantsPulmonicTable !! 2) = (Trill, 2)
+  | x `elem` (consonantsPulmonicTable !! 3) = (TapOrFlap, 3)
+  | x `elem` (consonantsPulmonicTable !! 4) = (Fricative, 4)
+  | x `elem` (consonantsPulmonicTable !! 5) = (LateralFricative, 5)
+  | x `elem` (consonantsPulmonicTable !! 6) = (Approximant, 6)
+  | x `elem` (consonantsPulmonicTable !! 7) = (LateralApproximant, 7)
   | otherwise = (LateralApproximant, 7) -- Not right, but will have to work for now. -- TODO: Fix this.
 
 analyzePlaceIPA colIndex = 
