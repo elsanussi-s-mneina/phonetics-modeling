@@ -137,6 +137,7 @@ instance Show PhonemeFeature where
   show (LowFeature polarity)                = show polarity ++ " low"
   show (BackFeature polarity)               = show polarity ++ " back"
 
+-- | A function for determining if a feature is unary or not.
 isUnary :: PhonemeFeature -> Bool
 isUnary NasalFeature = True
 isUnary LateralFeature = True
@@ -150,10 +151,12 @@ isUnary PharyngealFeature = True
 isUnary LaryngealFeature = True
 isUnary _ = False
 
-
+-- | A function that takes data representing
+-- how a phoneme is pronounced, and returns
+-- a list of phonemic features.
 analyzeFeatures :: Phonet -> [PhonemeFeature] 
 analyzeFeatures phonete =
-    concat [syllabicFL phonete
+    concat [syllabicFL phonete   -- Note the concat function is called here to make the list of lists into a single list.
            , consonantalFL phonete
            , sonorantFL phonete
            , continuantFL phonete
@@ -179,6 +182,12 @@ analyzeFeatures phonete =
            ]
   
 
+-- | This function takes two lists of phoneme features
+-- and returns how they differ. Any phonemic
+-- feature present in one list, and absent in the other
+-- will be represented; and any phonemic
+-- feature that is positive in one list but absent
+-- in the other will be represented.
 difference :: [PhonemeFeature] 
            -> [PhonemeFeature] 
            -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
