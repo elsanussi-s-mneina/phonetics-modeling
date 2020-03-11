@@ -1,13 +1,88 @@
 module PhonemeFeature where
 
+-- Design decisions:
+-- This module should not depend on any module
+-- that is specifically for representing graphemes.
+-- For this reason there should be no import of
+-- a module that represents the International Phonetic
+-- Alphabet. The reason for this design decision, is
+-- that we want to be able to easily add other
+-- alphabets or modifications to the IPA
+-- without editing this module.
+
 import Lib
 
 import Data.List (intercalate)
 -- Part for features:
 -- Go to Section 12.2 of the textbook.
+
+-- TODO: Determine if the "phoneme feature"
+-- is the term used by linguists for the concept
+-- being modeled in this module.
+
+{-
+ Represents the '+' (plus) or '-' (minus)
+ of a binary feature. e.g. [+ sonorant],
+ [- sonorant]
+-}
 data Polarity = Plus | Minus
                 deriving Eq
+{-|
+ According to Linguistics, phonemes can be
+ analyzed as a set of features. One phoneme
+ will have one set of features, and a different
+ phoneme will have a different set of features.
+ 
+ These features are well known in phonology, and
+ are limited in number. There are two kinds of
+ features, unary features, and binary features. The
+ difference is obvious in how they are represented in
+ the notation that linguists use. Unary features,
+ are either present or absent. Binary features
+ can be positve or negative. For example, Nasal
+ is a unary feature. A phoneme is either nasal,
+ or it isn't. i.e. [nasal] or not. For example,
+ Voice is a binary feature, a phoneme can be
+ [+ voice] (can be pronounced: "plus voice")
+ or [- voice] (can be pronounced: "minus voice").
+ 
+ Because linguists represent phonemic features in these
+ two different ways. We represent these as two
+ different kinds of types.
+ 
+ So [nasal] which is a unary feature would be
+ represented by a value `NasalFeature` of type `PhonemeFeature`.
+ And [+ voice] which is a binary feature would
+ be represented by a value `VoiceFeature Plus` of type
+ `PhonemeFeature`.
+ 
+ We represent the plus or minus symbol by
+ the type Polarity.
+ 
+ Notice that: Linguists write a set of features
+ as a 2D matrix with one column, roughly like this:
+ [ + voice    ]
+ [ + sonorant ]
+ [  Nasal     ]
 
+Note that certain sets of features cannot coexist,
+syntactically. For example a phoneme cannot be
+[+ voice] and [- voice].
+
+TODO: implement checking whether a set of phonemes
+contains non-existant pairs (+ and - for the same
+name of feature).
+
+ Note that some analyses
+are language specific, so for some phonemes (not
+the usual case) whether it has feature X (say 'Coronal')
+depends on the language (theoretical example: e.g. Swahili,
+vs French). This is not implemented here.
+
+TODO: model the ability to decide whether certain phonemes
+have certain features based on a language, or let the user
+decide.
+|-}
 data PhonemeFeature = SyllabicFeature Polarity
                     | ConsonantalFeature Polarity
                     | SonorantFeature Polarity
