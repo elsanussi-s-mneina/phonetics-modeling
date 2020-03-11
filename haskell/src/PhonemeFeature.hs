@@ -79,20 +79,29 @@ isUnary _ = False
 
 analyzeFeatures :: Phonet -> [PhonemeFeature] 
 analyzeFeatures phonete =
-        concat (mapf [syllabicFL, consonantalFL,
-                        sonorantFL, continuantFL,
-                        voiceFL, atrFL,
-                        nasalFL, lateralFL,
-                        delayedReleaseFL,
-                        spreadGlottisFL,
-                        constrictedGlottisFL,
-                        labialFL, coronalFL, dorsalFL,
-                        pharyngealFL, laryngealFL,
-                        roundFL,
-                         anteriorFL, distributedFL,
-                        stridentFL, highFL,
-                        lowFL,
-                        backFL] phonete)
+    concat [syllabicFL phonete, 
+            consonantalFL phonete,
+            sonorantFL phonete, 
+            continuantFL phonete,
+            voiceFL phonete, 
+            atrFL phonete,
+            nasalFL phonete, 
+            lateralFL phonete,
+            delayedReleaseFL phonete,
+            spreadGlottisFL phonete,
+            constrictedGlottisFL phonete,
+            labialFL phonete, 
+            coronalFL phonete, 
+            dorsalFL phonete,
+            pharyngealFL phonete, 
+            laryngealFL phonete,
+            roundFL phonete,
+            anteriorFL phonete, 
+            distributedFL phonete,
+            stridentFL phonete, 
+            highFL phonete,
+            lowFL phonete,
+            backFL phonete]
   
 
 difference :: [PhonemeFeature] 
@@ -512,21 +521,28 @@ atrFL = binaryFeature atr AdvancedTongueRootFeature
 
 toTextFeaturesVersion2 :: Phonet -> String
 toTextFeaturesVersion2 phonete =
-  let allString = mapf [consonantalFL, syllabicFL,
-                        continuantFL, sonorantFL,
-                        delayedReleaseFL, anteriorFL, distributedFL,
-                        stridentFL, highFL,
-                        lowFL,
-                        nasalFL, labialFL,
-                        coronalFL, dorsalFL,
-                        pharyngealFL, laryngealFL,
-                        backFL, roundFL,
-                        atrFL, spreadGlottisFL,
-                        constrictedGlottisFL] phonete
+  let allString = [consonantalFL phonete,
+                   syllabicFL phonete,
+                   continuantFL phonete,
+                   sonorantFL phonete,
+                   delayedReleaseFL phonete, 
+                   anteriorFL phonete, 
+                   distributedFL phonete,
+                   stridentFL phonete, 
+                   highFL phonete,
+                   lowFL phonete,
+                   nasalFL phonete, 
+                   labialFL phonete,
+                   coronalFL phonete, 
+                   dorsalFL phonete,
+                   pharyngealFL phonete, 
+                   laryngealFL phonete,
+                   backFL phonete, 
+                   roundFL phonete,
+                   atrFL phonete, 
+                   spreadGlottisFL phonete,
+                   constrictedGlottisFL phonete]
   in "[" ++ intercalate "; " (map show (concat allString)) ++ "]"
-
-mapf :: [a -> b] -> a -> [b]
-mapf functions x = map (\f -> f x) functions
 
 concatIgnoringNothing :: String -> [Maybe String] -> String
 concatIgnoringNothing _ [] = ""
