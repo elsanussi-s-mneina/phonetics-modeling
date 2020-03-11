@@ -219,39 +219,35 @@ concatToFeatureString allString =
      "[" ++ concatIgnoringNothing "; " allString ++ "]"
 
 integerArrayToText :: [Int] -> String
-integerArrayToText array = 
+integerArrayToText array =
+  let maybeBoolList = map integerToMaybeBool array
+  in
    concatToFeatureString
-   (
-     mapZip [fromMBoolToTextFeature "syllabic",
-         fromMBoolToTextFeature "consonantal",
-         fromMBoolToTextFeature "sonorant",
-         fromMBoolToTextFeature "continuant", 
-         fromMBoolToTextFeature "nasal", 
-         fromMBoolToTextFeature "lateral",
-         fromMBoolToTextFeature "DR",
-         fromMBoolToTextFeature "labial",
-         fromMBoolToTextFeature "coronal",
-         fromMBoolToTextFeature "dorsal",
-         fromMBoolToTextFeature "pharyngeal",
-         fromMBoolToTextFeature "laryngeal",
-         fromMBoolToTextFeature "voice",
-         fromMBoolToTextFeature "anterior",
-         fromMBoolToTextFeature "distributed",
-         fromMBoolToTextFeature "strident",
-         fromMBoolToTextFeature "high",
-         fromMBoolToTextFeature "low", 
-         fromMBoolToTextFeature "back",
-         fromMBoolToTextFeature "round",
-         fromMBoolToTextFeature "ATR",
-         fromMBoolToTextFeature "SG",
-         fromMBoolToTextFeature "CG"] 
-           (map integerToMaybeBool array))
-  
-
-mapZip [] _ = []
-mapZip _ [] = []
-mapZip (f:functions) (a:array) = 
-  (f a):(mapZip functions array)
+   
+        [ fromMBoolToTextFeature "syllabic"     (maybeBoolList !! 0)
+        , fromMBoolToTextFeature "consonantal"  (maybeBoolList !! 1)
+        , fromMBoolToTextFeature "sonorant"     (maybeBoolList !! 2)
+        , fromMBoolToTextFeature "continuant"   (maybeBoolList !! 3)
+        , fromMBoolToTextFeature "nasal"        (maybeBoolList !! 4)
+        , fromMBoolToTextFeature "lateral"      (maybeBoolList !! 5)
+        , fromMBoolToTextFeature "DR"           (maybeBoolList !! 6)
+        , fromMBoolToTextFeature "labial"       (maybeBoolList !! 7)
+        , fromMBoolToTextFeature "coronal"      (maybeBoolList !! 8)
+        , fromMBoolToTextFeature "dorsal"       (maybeBoolList !! 9)
+        , fromMBoolToTextFeature "pharyngeal"   (maybeBoolList !! 10)
+        , fromMBoolToTextFeature "laryngeal"    (maybeBoolList !! 11)
+        , fromMBoolToTextFeature "voice"        (maybeBoolList !! 12)
+        , fromMBoolToTextFeature "anterior"     (maybeBoolList !! 13)
+        , fromMBoolToTextFeature "distributed"  (maybeBoolList !! 14)
+        , fromMBoolToTextFeature "strident"     (maybeBoolList !! 15)
+        , fromMBoolToTextFeature "high"         (maybeBoolList !! 16)
+        , fromMBoolToTextFeature "low"          (maybeBoolList !! 17)
+        , fromMBoolToTextFeature "back"         (maybeBoolList !! 18)
+        , fromMBoolToTextFeature "round"        (maybeBoolList !! 19)
+        , fromMBoolToTextFeature "ATR"          (maybeBoolList !! 20)
+        , fromMBoolToTextFeature "SG"           (maybeBoolList !! 21)
+        , fromMBoolToTextFeature "CG"           (maybeBoolList !! 22)
+        ]
 
 fromMBoolToTextFeature :: String -> Maybe Bool -> Maybe String
 fromMBoolToTextFeature label mBool =
