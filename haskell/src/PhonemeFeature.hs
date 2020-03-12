@@ -267,6 +267,10 @@ isGlide (Consonant _ LabialPalatal Approximant PulmonicEgressive) = True
 isGlide (Consonant _ Velar         Approximant PulmonicEgressive) = True
 isGlide _                                                         = False
 
+isNasal :: Phonet -> Bool
+isNasal (Consonant _ _ Nasal _) = True
+isNasal _ = False
+
 {-|
 Vowels are [-consonantal].
 Glides are [-consonantal].
@@ -305,17 +309,32 @@ sonorant consonant@(Consonant _ _ _ _)
   | isGlide consonant = Just (SonorantFeature Plus)
   | otherwise         = Just (SonorantFeature Minus)
 
+{-|
+Oral stops are [-continuant].
+Nasals stops are [-continuant].
+Affricates are [-continuant].
+Fricatives are [+continuant].
+Approximants are [+continuant].
+Vowels are [+continuant].
+Glides are [+continuant].
 
+(Source: page 258)
+|-}
 continuant :: Phonet -> Maybe PhonemeFeature
-continuant (Consonant _ _ Fricative          _) = Just (ContinuantFeature Plus)
+continuant (Consonant _ _ Plosive            _) = Just (ContinuantFeature Minus)
+continuant (Consonant _ _ Nasal            _) = Just (ContinuantFeature Minus)
+continuant (Consonant _ _ Affricate          _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Approximant        _) = Just (ContinuantFeature Plus)
+continuant (Vowel     _ _ _                  _) = Just (ContinuantFeature Plus)
+continuant consonant@(Consonant _ _ _ _)
+  | isGlide consonant = Just (ContinuantFeature Plus)
+  | otherwise         = Nothing
+
+
+continuant (Consonant _ _ Fricative          _) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ Lateral            _) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ LateralFricative   _) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ LateralApproximant _) = Just (ContinuantFeature Plus)
-continuant consonant@(Consonant _ _ _ _)
-  | isGlide consonant = Just (ContinuantFeature Plus)
-  | otherwise         = Just (ContinuantFeature Minus)
-continuant (Vowel _ _ _ _) = Just (ContinuantFeature Plus)
 
 
 nasal :: Phonet -> Maybe PhonemeFeature
