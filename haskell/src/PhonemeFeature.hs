@@ -156,7 +156,7 @@ isUnary _ = False
 -- a list of phonemic features.
 analyzeFeatures :: Phonet -> [PhonemeFeature]
 analyzeFeatures phonete =
-  dejustifyList [ syllabic phonete   -- Note the concat function is called here to make the list of lists into a single list.
+  dejustifyList [ syllabic phonete
                 , consonantal phonete
                 , sonorant phonete
                 , continuant phonete
