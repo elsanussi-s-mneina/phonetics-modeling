@@ -22,8 +22,8 @@ import Data.List (intercalate)
 
 {-|
  Represents the '+' (plus) or '-' (minus)
- of a binary feature. e.g. [+ sonorant],
- [- sonorant]
+ of a binary feature. e.g. [+sonorant],
+ [-sonorant]
 |-}
 data Polarity = Plus | Minus
                 deriving Eq
@@ -43,8 +43,8 @@ data Polarity = Plus | Minus
  is a unary feature. A phoneme is either nasal,
  or it isn't. i.e. [nasal] or not. For example,
  Voice is a binary feature, a phoneme can be
- [+ voice] (can be pronounced: "plus voice")
- or [- voice] (can be pronounced: "minus voice").
+ [+voice] (can be pronounced: "plus voice")
+ or [-voice] (can be pronounced: "minus voice").
  
  Because linguists represent phonemic features in these
  two different ways. We represent these as two
@@ -52,7 +52,7 @@ data Polarity = Plus | Minus
  
  So [nasal] which is a unary feature would be
  represented by a value `NasalFeature` of type `PhonemeFeature`.
- And [+ voice] which is a binary feature would
+ And [+voice] which is a binary feature would
  be represented by a value `VoiceFeature Plus` of type
  `PhonemeFeature`.
  
@@ -61,13 +61,13 @@ data Polarity = Plus | Minus
  
  Notice that: Linguists write a set of features
  as a 2D matrix with one column, roughly like this:
- [ + voice    ]
- [ + sonorant ]
+ [ +voice     ]
+ [ +sonorant  ]
  [  Nasal     ]
 
 Note that certain sets of features cannot coexist,
 syntactically. For example a phoneme cannot be
-[+ voice] and [- voice].
+[+voice] and [-voice].
 
 TODO: implement checking whether a set of phonemes
 contains non-existant pairs (+ and - for the same
@@ -328,8 +328,8 @@ lateral (Consonant _ _ LateralFricative _) = Just LateralFeature
 lateral _ = Nothing
 
 {-|
-Affricates are [+ delayed release].
-All other segments are [- delayed release].
+Affricates are [+delayed release].
+All other segments are [-delayed release].
 
 (Source: page 260)
 |-}
@@ -339,9 +339,9 @@ delayedRelease _ = Nothing
 
 
 {-|
-Bilabial consonants are [Labial].
-Labio-dental consonants are [Labial].
-All other sounds are undefined for [Labial].
+Bilabial consonants are [labial].
+Labio-dental consonants are [labial].
+All other sounds are undefined for [labial].
 
 (Source: page 264)
 |-}
@@ -388,8 +388,8 @@ dorsal _                                = Nothing
 
 
 {-|
-Pharyngeal fricatives are [Pharyngeal].
-All other sounds are undefined for [Pharyngeal].
+Pharyngeal fricatives are [pharyngeal].
+All other sounds are undefined for [pharyngeal].
 
 (Source: page 264)
 |-}
@@ -406,7 +406,7 @@ laryngeal _ = Nothing
 
 voice :: Phonet -> Maybe PhonemeFeature
 voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just (VoiceFeature Minus)
--- The voiceless glottal plosive is [- voice]
+-- The voiceless glottal plosive is [-voice]
 voice (Consonant Voiced                                _ _ _) = Just (VoiceFeature Plus)
 voice (Consonant VoicedAspirated                       _ _ _) = Just (VoiceFeature Plus)
 voice (Vowel _ _ _                                    Voiced) = Just (VoiceFeature Plus)
@@ -451,22 +451,22 @@ distributed _ = Nothing
 
 
 {-|
-Alveolar fricatives are [+ strident].
-Alveolar affricates are [+ strident], also.
-Post-alveolar fricatives are [+ strident], also.
-Post-alveolar affricates are [+ strident], also.
-Labio-dental fricatives are [+ strident] , also.
-Labio-dental affricates are [+ strident] , also.
-Uvular fricatives are [+ strident], also.
-Uvular affricates are [+ strident], also.
+Alveolar fricatives are [+strident].
+Alveolar affricates are [+strident], also.
+Post-alveolar fricatives are [+strident], also.
+Post-alveolar affricates are [+strident], also.
+Labio-dental fricatives are [+strident] , also.
+Labio-dental affricates are [+strident] , also.
+Uvular fricatives are [+strident], also.
+Uvular affricates are [+strident], also.
 
-All other fricatives are [- strident].
-All other affricates are [- strident], also.
+All other fricatives are [-strident].
+All other affricates are [-strident], also.
 
-All other consonants or vowels are undefined for [+/- strident].
+All other consonants or vowels are undefined for [+/-strident].
 
 (For source of facts
- see page 266, under [+/- strident] heading, under the subsection "Natural classes".)
+ see page 266, under [+/-strident] heading, under the subsection "Natural classes".)
 |-}
 strident :: Phonet -> Maybe PhonemeFeature
 strident (Consonant _ Alveolar       Fricative _) = Just (StridentFeature Plus)
@@ -487,15 +487,15 @@ strident _                                        = Nothing
 {-|
 Meaning:
 
-Palatal consonants are [+ high].
-Alveolo-palatal consonants are [+ high].
-Velar consonants are [+ high].
+Palatal consonants are [+high].
+Alveolo-palatal consonants are [+high].
+Velar consonants are [+high].
 
-Uvular consonants are [- high].
+Uvular consonants are [-high].
 Other consonants are neither + or - high.
-Close vowels are [+ high].
-Near-close vowels are [+ high].
-Other vowels are [- high].
+Close vowels are [+high].
+Near-close vowels are [+high].
+Other vowels are [-high].
 |-}
 high :: Phonet -> Maybe PhonemeFeature
 high (Consonant _ Palatal _ _) = Just (HighFeature Plus)
@@ -511,13 +511,13 @@ high (Vowel _ _ _ _) = Just (HighFeature Minus)
 {-|
 Meaning:
 
-Uvular consonants are [+ low].
-Pharyngeal consonants are [+ low].
-Glottal consonants are [+ low].
+Uvular consonants are [+low].
+Pharyngeal consonants are [+low].
+Glottal consonants are [+low].
 Other consonants are neither + or - low.
-Open vowels are [+ low].
-Near open vowels are [+ low].
-All other vowels are [- low].
+Open vowels are [+low].
+Near open vowels are [+low].
+All other vowels are [-low].
 |-}
 low :: Phonet -> Maybe PhonemeFeature
 low (Consonant _ Uvular _ _) = Just (LowFeature Plus)
@@ -532,9 +532,9 @@ low (Vowel _ _ _ _ ) = Just (LowFeature Minus)
 {-|
 
 Meaning:
-Back vowels are [+ back].
-Central vowels are [+ back].
-Front vowels are [- back].
+Back vowels are [+back].
+Central vowels are [+back].
+Front vowels are [-back].
 All other phonemes are neither plus or minus back.
 |-}
 back :: Phonet -> Maybe PhonemeFeature
@@ -547,9 +547,9 @@ back _ = Nothing
 {-|
 
 Meaning of source code:
-Rounded vowels are [+ round], and
-other vowels are [- round].
-All other phonemes are [- round].
+Rounded vowels are [+round], and
+other vowels are [-round].
+All other phonemes are [-round].
 |-}
 round :: Phonet -> Maybe PhonemeFeature
 round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
