@@ -10,15 +10,19 @@ module PhonemeFeature where
 -- alphabets or modifications to the IPA
 -- without editing this module.
 
+
+-- Go to Section 12.2 of the textbook to understand
+-- the concept of phonological features.
+
 import Lib
 
 import Data.List (intercalate)
--- Part for features:
--- Go to Section 12.2 of the textbook.
 
--- TODO: Determine if the "phoneme feature"
--- is the term used by linguists for the concept
--- being modeled in this module.
+dejustifyList :: [Maybe a] -> [a]
+dejustifyList [] = []
+dejustifyList (Just x: xs) = x:(dejustifyList xs)
+dejustifyList (Nothing:xs) = dejustifyList xs
+
 
 {-|
  Represents the '+' (plus) or '-' (minus)
@@ -27,6 +31,19 @@ import Data.List (intercalate)
 |-}
 data Polarity = Plus | Minus
                 deriving Eq
+
+
+instance Show Polarity where
+  show Plus = "+"
+  show Minus = "-"
+
+
+
+-- TODO: Determine if the "phoneme feature"
+-- is the term used by linguists for the concept
+-- being modeled in this module.
+
+
 {-|
  According to Linguistics, phonemes can be
  analyzed as a set of features. One phoneme
@@ -108,9 +125,6 @@ data PhonemeFeature = SyllabicFeature Polarity
                     | BackFeature Polarity
                     deriving Eq
 
-instance Show Polarity where
-  show Plus = "+"
-  show Minus = "-"
 
 instance Show PhonemeFeature where
   show (SyllabicFeature polarity)           = show polarity ++ "syllabic"
@@ -151,76 +165,6 @@ isUnary PharyngealFeature = True
 isUnary LaryngealFeature = True
 isUnary _ = False
 
--- | A function that takes data representing
--- how a phoneme is pronounced, and returns
--- a list of phonemic features.
-analyzeFeatures :: Phonet -> [PhonemeFeature]
-analyzeFeatures phonete =
-  dejustifyList [ syllabic             phonete
-                , consonantal          phonete
-                , sonorant             phonete
-                , continuant           phonete
-                , voice                phonete
-                , atr                  phonete
-                , nasal                phonete
-                , lateral              phonete
-                , delayedRelease       phonete
-                , spreadGlottis        phonete
-                , constrictedGlottis   phonete
-                , labial               phonete
-                , coronal              phonete
-                , dorsal               phonete
-                , pharyngeal           phonete
-                , laryngeal            phonete
-                , PhonemeFeature.round phonete
-                , anterior             phonete
-                , distributed          phonete
-                , strident             phonete
-                , high                 phonete
-                , low                  phonete
-                , back                 phonete
-                ]
-
-
-dejustifyList :: [Maybe a] -> [a]
-dejustifyList [] = []
-dejustifyList (Just x: xs) = x:(dejustifyList xs)
-dejustifyList (Nothing:xs) = dejustifyList xs
-
--- | This function takes two lists of phoneme features
--- and returns how they differ. Any phonemic
--- feature present in one list, and absent in the other
--- will be represented; and any phonemic
--- feature that is positive in one list but absent
--- in the other will be represented.
-difference :: [PhonemeFeature] 
-           -> [PhonemeFeature] 
-           -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
-difference list1 list2 = 
-  [ differenceOfBinaryFeature SyllabicFeature list1 list2
-  , differenceOfBinaryFeature ConsonantalFeature list1 list2
-  , differenceOfBinaryFeature SonorantFeature list1 list2
-  , differenceOfBinaryFeature ContinuantFeature list1 list2
-  , differenceOfBinaryFeature VoiceFeature list1 list2
-  , differenceOfBinaryFeature AdvancedTongueRootFeature list1 list2
-  , differenceOfUnaryFeature NasalFeature list1 list2
-  , differenceOfUnaryFeature LateralFeature list1 list2
-  , differenceOfUnaryFeature DelayedReleaseFeature list1 list2
-  , differenceOfUnaryFeature SpreadGlottisFeature list1 list2
-  , differenceOfUnaryFeature ConstrictedGlottisFeature list1 list2
-  , differenceOfUnaryFeature LabialFeature list1 list2
-  , differenceOfUnaryFeature CoronalFeature list1 list2
-  , differenceOfUnaryFeature DorsalFeature list1 list2
-  , differenceOfUnaryFeature PharyngealFeature list1 list2
-  , differenceOfUnaryFeature LaryngealFeature list1 list2
-  , differenceOfBinaryFeature RoundFeature list1 list2
-  , differenceOfBinaryFeature AnteriorFeature list1 list2
-  , differenceOfBinaryFeature DistributedFeature list1 list2
-  , differenceOfBinaryFeature StridentFeature list1 list2
-  , differenceOfBinaryFeature HighFeature list1 list2
-  , differenceOfBinaryFeature LowFeature list1 list2
-  , differenceOfBinaryFeature BackFeature list1 list2
-  ]
 
 differenceOfBinaryFeature :: 
           (Polarity -> PhonemeFeature) 
@@ -254,6 +198,43 @@ differenceOfUnaryFeature feature list1 list2 =
      else if elem feature list1 && not (elem feature list2)
             then (Just feature, Nothing)
             else (Nothing, Just feature)
+
+
+
+-- | This function takes two lists of phoneme features
+-- and returns how they differ. Any phonemic
+-- feature present in one list, and absent in the other
+-- will be represented; and any phonemic
+-- feature that is positive in one list but absent
+-- in the other will be represented.
+difference :: [PhonemeFeature]
+           -> [PhonemeFeature]
+           -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
+difference list1 list2 =
+  [ differenceOfBinaryFeature SyllabicFeature list1 list2
+  , differenceOfBinaryFeature ConsonantalFeature list1 list2
+  , differenceOfBinaryFeature SonorantFeature list1 list2
+  , differenceOfBinaryFeature ContinuantFeature list1 list2
+  , differenceOfBinaryFeature VoiceFeature list1 list2
+  , differenceOfBinaryFeature AdvancedTongueRootFeature list1 list2
+  , differenceOfUnaryFeature NasalFeature list1 list2
+  , differenceOfUnaryFeature LateralFeature list1 list2
+  , differenceOfUnaryFeature DelayedReleaseFeature list1 list2
+  , differenceOfUnaryFeature SpreadGlottisFeature list1 list2
+  , differenceOfUnaryFeature ConstrictedGlottisFeature list1 list2
+  , differenceOfUnaryFeature LabialFeature list1 list2
+  , differenceOfUnaryFeature CoronalFeature list1 list2
+  , differenceOfUnaryFeature DorsalFeature list1 list2
+  , differenceOfUnaryFeature PharyngealFeature list1 list2
+  , differenceOfUnaryFeature LaryngealFeature list1 list2
+  , differenceOfBinaryFeature RoundFeature list1 list2
+  , differenceOfBinaryFeature AnteriorFeature list1 list2
+  , differenceOfBinaryFeature DistributedFeature list1 list2
+  , differenceOfBinaryFeature StridentFeature list1 list2
+  , differenceOfBinaryFeature HighFeature list1 list2
+  , differenceOfBinaryFeature LowFeature list1 list2
+  , differenceOfBinaryFeature BackFeature list1 list2
+  ]
 
 {-|
 Vowels are [+syllabic]
@@ -324,13 +305,11 @@ Glides are [+continuant].
 
 (Source: page 258)
 
-(
   Aside: we do not define lateral approximants for [+/-continuant] because the
   textbook puts it in parentheses. Usually this means, it depends on the language
   under study or
   it depends on the linguist.
   Lateral approximants may be considered [+continuant]. (arguable) (see chart on page 259))
-)
 
 |-}
 continuant :: Phonet -> Maybe PhonemeFeature
@@ -420,12 +399,13 @@ coronal _                                = Nothing
 
 {-|
 Palatals are [dorsal].
-(
+
   Aside: alveolo-palatals do not seem to be dorsals,
   although the table 12.4 is confusing
   because it uses the IPA symbol for one.
   TODO: find more information on whether
-  alveolo-palatals are [dorsal].)
+  alveolo-palatals are [dorsal].
+
 Velars are [dorsal].
 Uvulars are [dorsal].
 All other segments are undefined for [dorsal].
@@ -515,8 +495,7 @@ All other affricates are [-strident], also.
 
 All other segments are undefined for [+/-strident].
 
-(For source of facts
- see page 266, under [+/-strident] heading, under the subsection "Natural classes".)
+(Source: page 266, under [+/-strident] heading, under the subsection "Natural classes".)
 |-}
 strident :: Phonet -> Maybe PhonemeFeature
 strident (Consonant _ Alveolar       Fricative _) = Just (StridentFeature Plus)
@@ -642,3 +621,35 @@ toTextFeatures phonete =
                   , constrictedGlottis   phonete
                   ]
   in "[" ++ intercalate "; " (map show (dejustifyList features)) ++ "]"
+
+
+
+-- | A function that takes data representing
+-- how a phoneme is pronounced, and returns
+-- a list of phonemic features.
+analyzeFeatures :: Phonet -> [PhonemeFeature]
+analyzeFeatures phonete =
+  dejustifyList [ syllabic             phonete
+                , consonantal          phonete
+                , sonorant             phonete
+                , continuant           phonete
+                , voice                phonete
+                , atr                  phonete
+                , nasal                phonete
+                , lateral              phonete
+                , delayedRelease       phonete
+                , spreadGlottis        phonete
+                , constrictedGlottis   phonete
+                , labial               phonete
+                , coronal              phonete
+                , dorsal               phonete
+                , pharyngeal           phonete
+                , laryngeal            phonete
+                , PhonemeFeature.round phonete
+                , anterior             phonete
+                , distributed          phonete
+                , strident             phonete
+                , high                 phonete
+                , low                  phonete
+                , back                 phonete
+                ]
