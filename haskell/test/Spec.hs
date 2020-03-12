@@ -588,8 +588,8 @@ speFeaturesSpec = do
      (dorsal (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [ʂ]."
      (dorsal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
-  runTest "The dorsal feature is present for [ɕ]"  -- It is actually in parentheses on page 267.
-     (dorsal (analyzeIPA "ɕ") == Just DorsalFeature)
+  runTest "The dorsal feature is nothing for [ɕ]" -- May need to double check this.
+     (dorsal (analyzeIPA "ɕ") == Nothing)
   runTest "The dorsal feature is present for [ç]" 
      (dorsal (analyzeIPA "ç") == Just DorsalFeature)
   runTest "The dorsal feature is present for [x]"
