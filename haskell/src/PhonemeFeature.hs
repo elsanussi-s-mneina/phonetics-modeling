@@ -468,16 +468,16 @@ round (Vowel _ _ rounding _) = Just (RoundFeature (boolToPolarity (rounding == R
 round _ = Just (RoundFeature Minus)
 
 
-atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)  -- [i]
-atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)  -- [e]
-atr (Vowel  Close     Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)  -- [u]
-atr (Vowel  CloseMid  Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)  -- [ø]
-atr (Vowel  CloseMid  Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)  -- [o]
-atr (Vowel  Close     Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)  -- [y]
-atr (Vowel  NearOpen  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus) -- [æ]
-atr (Vowel  Open      Back    Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus) -- [ɑ]
-atr (Vowel  Close     Central Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus) -- [ɨ]
-atr (Vowel  OpenMid   Back    Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus) -- [ʌ]
+atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus) 
+atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus) 
+atr (Vowel  Close     Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
+atr (Vowel  CloseMid  Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
+atr (Vowel  CloseMid  Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
+atr (Vowel  Close     Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
+atr (Vowel  NearOpen  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
+atr (Vowel  Open      Back    Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
+atr (Vowel  Close     Central Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
+atr (Vowel  OpenMid   Back    Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
 atr (Vowel  NearClose Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
 atr (Vowel  NearClose Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Minus)
 atr (Vowel  OpenMid   Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
