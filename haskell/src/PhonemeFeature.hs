@@ -336,6 +336,8 @@ delayedRelease _ = Nothing
 Bilabial consonants are [Labial].
 Labio-dental consonants are [Labial].
 All other sounds are undefined for [Labial].
+
+(Source: page 264)
 |-}
 labial :: Phonet -> Maybe PhonemeFeature
 labial (Consonant _ Bilabial _ _) = Just LabialFeature
@@ -362,9 +364,14 @@ dorsal (Consonant _ Uvular         _ _) = Just DorsalFeature
 dorsal _                                = Nothing
 
 
+{-|
+Pharyngeal fricatives are [Pharyngeal].
+All other sounds are undefined for [Pharyngeal].
 
+(Source: page 264)
+|-}
 pharyngeal :: Phonet -> Maybe PhonemeFeature
-pharyngeal (Consonant _ Pharyngeal _ _) = Just PharyngealFeature
+pharyngeal (Consonant _ Pharyngeal Fricative _) = Just PharyngealFeature
 pharyngeal _ = Nothing
 
 
