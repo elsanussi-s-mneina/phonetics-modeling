@@ -327,6 +327,12 @@ lateral (Consonant _ _ LateralApproximant _) = Just LateralFeature
 lateral (Consonant _ _ LateralFricative _) = Just LateralFeature
 lateral _ = Nothing
 
+{-|
+Affricates are [+ delayed release].
+All other segments are [- delayed release].
+
+(Source: page 260)
+|-}
 delayedRelease :: Phonet -> Maybe PhonemeFeature
 delayedRelease (Consonant _ _ Affricate _) = Just DelayedReleaseFeature
 delayedRelease _ = Nothing
