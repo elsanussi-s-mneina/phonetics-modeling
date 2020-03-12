@@ -485,8 +485,6 @@ strident _                                        = Nothing
 
 
 {-|
-Meaning:
-
 Palatal consonants are [+high].
 Alveolo-palatal consonants are [+high].
 Velar consonants are [+high].
@@ -509,8 +507,6 @@ high (Vowel _ _ _ _) = Just (HighFeature Minus)
 
 
 {-|
-Meaning:
-
 Uvular consonants are [+low].
 Pharyngeal consonants are [+low].
 Glottal consonants are [+low].
@@ -530,8 +526,6 @@ low (Vowel _ _ _ _ ) = Just (LowFeature Minus)
 
 
 {-|
-
-Meaning:
 Back vowels are [+back].
 Central vowels are [+back].
 Front vowels are [-back].
@@ -545,8 +539,6 @@ back _ = Nothing
 
 
 {-|
-
-Meaning of source code:
 Rounded vowels are [+round].
 All other vowels are [-round].
 All other segments are [-round].
