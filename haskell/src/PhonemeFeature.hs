@@ -431,6 +431,20 @@ strident (Consonant _ Pharyngeal     _ _) = Just (StridentFeature Minus)
 strident (Consonant _ Glottal        _ _) = Just (StridentFeature Minus)
 strident _                                = Nothing
 
+
+{-
+Meaning:
+
+Palatal consonants are [+ high].
+Alveolo-palatal consonants are [+ high].
+Velar consonants are [+ high].
+
+Uvular consonants are [- high].
+Other consonants are neither + or - high.
+Close vowels are [+ high].
+Near-close vowels are [+ high].
+Other vowels are [- high].
+-}
 high :: Phonet -> Maybe PhonemeFeature
 high (Consonant _ Palatal _ _) = Just (HighFeature Plus)
 high (Consonant _ AlveoloPalatal _ _) = Just (HighFeature Plus)
@@ -442,6 +456,17 @@ high (Vowel NearClose _ _ _ ) = Just (HighFeature Plus)
 high (Vowel _ _ _ _) = Just (HighFeature Minus)
 
 
+{-
+Meaning:
+
+Uvular consonants are [+ low].
+Pharyngeal consonants are [+ low].
+Glottal consonants are [+ low].
+Other consonants are neither + or - low.
+Open vowels are [+ low].
+Near open vowels are [+ low].
+All other vowels are [- low].
+-}
 low :: Phonet -> Maybe PhonemeFeature
 low (Consonant _ Uvular _ _) = Just (LowFeature Plus)
 low (Consonant _ Pharyngeal _ _) = Just (LowFeature Plus)
@@ -452,13 +477,28 @@ low (Vowel NearOpen _ _ _ ) = Just (LowFeature Plus)
 low (Vowel _ _ _ _ ) = Just (LowFeature Minus)
 
 
+{-
 
+Meaning:
+Back vowels are [+ back].
+Central vowels are [+ back].
+Front vowels are [- back].
+All other phonemes are neither plus or minus back.
+-}
 back :: Phonet -> Maybe PhonemeFeature
 back (Vowel _ Back _ _) = Just (BackFeature Plus)
 back (Vowel _ Central _ _) = Just (BackFeature Plus)
 back (Vowel _ Front _ _) = Just (BackFeature Minus)
 back _ = Nothing
 
+
+{-
+
+Meaning of source code:
+Rounded vowels are [+ round], and
+other vowels are [- round].
+All other phonemes are [- round].
+-}
 round :: Phonet -> Maybe PhonemeFeature
 round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
 round (Vowel _ _ _ _) = Just (RoundFeature Minus)
