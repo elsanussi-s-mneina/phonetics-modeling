@@ -484,7 +484,8 @@ atr _ = Nothing
 
 toTextFeatures :: Phonet -> String
 toTextFeatures phonete =
-  let allString = [ consonantal phonete
+  let  features :: [Maybe PhonemeFeature]
+       features = [ consonantal phonete
                   , syllabic phonete
                   , continuant phonete
                   , sonorant phonete
@@ -506,4 +507,4 @@ toTextFeatures phonete =
                   , spreadGlottis phonete
                   , constrictedGlottis phonete
                   ]
-  in "[" ++ intercalate "; " (map show (dejustifyList allString)) ++ "]"
+  in "[" ++ intercalate "; " (map show (dejustifyList features)) ++ "]"
