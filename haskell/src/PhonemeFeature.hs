@@ -255,6 +255,12 @@ differenceOfUnaryFeature feature list1 list2 =
             then (Just feature, Nothing)
             else (Nothing, Just feature)
 
+{-|
+Vowels are [+syllabic]
+Consonants (glides included) are [-syllabic].
+
+(Source: page 258)
+|-}
 syllabic :: Phonet -> Maybe PhonemeFeature
 syllabic (Vowel     _ _ _ _) = Just (SyllabicFeature Plus)
 syllabic (Consonant _ _ _ _) = Just (SyllabicFeature Minus)
@@ -319,22 +325,25 @@ Vowels are [+continuant].
 Glides are [+continuant].
 
 (Source: page 258)
+
+(
+  Aside: we do not define lateral approximants for [+/-continuant] because the
+  textbook puts it in parentheses. Usually this means, it depends on the language
+  under study or
+  it depends on the linguist.
+  Lateral approximants may be considered [+continuant]. (arguable) (see chart on page 259))
+)
+
 |-}
 continuant :: Phonet -> Maybe PhonemeFeature
 continuant (Consonant _ _ Plosive            _) = Just (ContinuantFeature Minus)
-continuant (Consonant _ _ Nasal            _) = Just (ContinuantFeature Minus)
+continuant (Consonant _ _ Nasal              _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Affricate          _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Approximant        _) = Just (ContinuantFeature Plus)
 continuant (Vowel     _ _ _                  _) = Just (ContinuantFeature Plus)
 continuant consonant@(Consonant _ _ _ _)
   | isGlide consonant = Just (ContinuantFeature Plus)
   | otherwise         = Nothing
-
-
-continuant (Consonant _ _ Fricative          _) = Just (ContinuantFeature Plus)
-continuant (Consonant _ _ Lateral            _) = Just (ContinuantFeature Plus)
-continuant (Consonant _ _ LateralFricative   _) = Just (ContinuantFeature Plus)
-continuant (Consonant _ _ LateralApproximant _) = Just (ContinuantFeature Plus)
 
 
 nasal :: Phonet -> Maybe PhonemeFeature
