@@ -415,32 +415,39 @@ distributed (Consonant _ Palatal        _ _) = Just (DistributedFeature Plus)
 distributed (Consonant _ AlveoloPalatal _ _) = Just (DistributedFeature Plus)
 distributed _ = Nothing
 
+
+{-
+Alveolar fricatives are [+ strident].
+Alveolar affricates are [+ strident], also.
+Post-alveolar fricatives are [+ strident], also.
+Post-alveolar affricates are [+ strident], also.
+Labio-dental fricatives are [+ strident] , also.
+Labio-dental affricates are [+ strident] , also.
+Uvular fricatives are [+ strident], also.
+Uvular affricates are [+ strident], also.
+
+All other fricatives are [- strident].
+All other affricates are [- strident], also.
+
+All other consonants or vowels are undefined for [+/- strident].
+
+(For source of facts
+ see page 266, under [+/- strident] heading, under the subsection "Natural classes".)
+-}
 strident :: Phonet -> Maybe PhonemeFeature
-strident (Consonant _ Bilabial       Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ Bilabial       Affricate _) = Just (StridentFeature Minus)
-strident (Consonant _ LabioDental    Fricative _) = Just (StridentFeature Plus)
-strident (Consonant _ LabioDental    Affricate _) = Just (StridentFeature Plus)
-strident (Consonant _ Dental         Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ Dental         Affricate _) = Just (StridentFeature Minus)
 strident (Consonant _ Alveolar       Fricative _) = Just (StridentFeature Plus)
 strident (Consonant _ Alveolar       Affricate _) = Just (StridentFeature Plus)
 strident (Consonant _ PostAlveolar   Fricative _) = Just (StridentFeature Plus)
 strident (Consonant _ PostAlveolar   Affricate _) = Just (StridentFeature Plus)
-strident (Consonant _ Retroflex      Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ Retroflex      Affricate _) = Just (StridentFeature Minus)
-strident (Consonant _ Palatal        Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ Palatal        Affricate _) = Just (StridentFeature Minus)
-strident (Consonant _ AlveoloPalatal Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ AlveoloPalatal Affricate _) = Just (StridentFeature Minus)
-strident (Consonant _ Velar          Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ Velar          Affricate _) = Just (StridentFeature Minus)
+strident (Consonant _ LabioDental    Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ LabioDental    Affricate _) = Just (StridentFeature Plus)
 strident (Consonant _ Uvular         Fricative _) = Just (StridentFeature Plus)
 strident (Consonant _ Uvular         Affricate _) = Just (StridentFeature Plus)
-strident (Consonant _ Pharyngeal     Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ Pharyngeal     Affricate _) = Just (StridentFeature Minus)
-strident (Consonant _ Glottal        Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ Glottal        Affricate _) = Just (StridentFeature Minus)
-strident _                                = Nothing
+
+strident (Consonant _ _              Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ _              Affricate _) = Just (StridentFeature Minus)
+
+strident _                                        = Nothing
 
 
 {-
