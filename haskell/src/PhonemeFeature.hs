@@ -119,16 +119,16 @@ instance Show PhonemeFeature where
   show (ContinuantFeature polarity)         = show polarity ++ "continuant"
   show (VoiceFeature polarity)              = show polarity ++ "voice"
   show (AdvancedTongueRootFeature polarity) = show polarity ++ "ATR"
-  show NasalFeature                         = "nasal"
-  show LateralFeature                       = "lateral"
-  show DelayedReleaseFeature                = "delayed release"
-  show SpreadGlottisFeature                 = "spread glottis"
-  show ConstrictedGlottisFeature            = "constricted glottis"
-  show LabialFeature                        = "labial"
-  show CoronalFeature                       = "coronal"
-  show DorsalFeature                        = "dorsal"
-  show PharyngealFeature                    = "pharyngeal"
-  show LaryngealFeature                     = "laryngeal"
+  show NasalFeature                         =                  "nasal"
+  show LateralFeature                       =                  "lateral"
+  show DelayedReleaseFeature                =                  "delayed release"
+  show SpreadGlottisFeature                 =                  "spread glottis"
+  show ConstrictedGlottisFeature            =                  "constricted glottis"
+  show LabialFeature                        =                  "labial"
+  show CoronalFeature                       =                  "coronal"
+  show DorsalFeature                        =                  "dorsal"
+  show PharyngealFeature                    =                  "pharyngeal"
+  show LaryngealFeature                     =                  "laryngeal"
   show (RoundFeature polarity)              = show polarity ++ "round"
   show (AnteriorFeature polarity)           = show polarity ++ "anterior"
   show (DistributedFeature polarity)        = show polarity ++ "distributed"
@@ -156,29 +156,29 @@ isUnary _ = False
 -- a list of phonemic features.
 analyzeFeatures :: Phonet -> [PhonemeFeature]
 analyzeFeatures phonete =
-  dejustifyList [ syllabic phonete
-                , consonantal phonete
-                , sonorant phonete
-                , continuant phonete
-                , voice phonete
-                , atr phonete
-                , nasal phonete
-                , lateral phonete
-                , delayedRelease phonete
-                , spreadGlottis phonete
-                , constrictedGlottis phonete
-                , labial phonete
-                , coronal phonete
-                , dorsal phonete
-                , pharyngeal phonete
-                , laryngeal phonete
+  dejustifyList [ syllabic             phonete
+                , consonantal          phonete
+                , sonorant             phonete
+                , continuant           phonete
+                , voice                phonete
+                , atr                  phonete
+                , nasal                phonete
+                , lateral              phonete
+                , delayedRelease       phonete
+                , spreadGlottis        phonete
+                , constrictedGlottis   phonete
+                , labial               phonete
+                , coronal              phonete
+                , dorsal               phonete
+                , pharyngeal           phonete
+                , laryngeal            phonete
                 , PhonemeFeature.round phonete
-                , anterior phonete
-                , distributed phonete
-                , strident phonete
-                , high phonete
-                , low phonete
-                , back phonete
+                , anterior             phonete
+                , distributed          phonete
+                , strident             phonete
+                , high                 phonete
+                , low                  phonete
+                , back                 phonete
                 ]
 
 
@@ -256,16 +256,16 @@ differenceOfUnaryFeature feature list1 list2 =
             else (Nothing, Just feature)
 
 syllabic :: Phonet -> Maybe PhonemeFeature
-syllabic (Vowel _ _ _ _ ) = Just (SyllabicFeature Plus)
+syllabic (Vowel     _ _ _ _) = Just (SyllabicFeature Plus)
 syllabic (Consonant _ _ _ _) = Just (SyllabicFeature Minus)
 
 
 isGlide :: Phonet -> Bool
-isGlide (Consonant _ Palatal Approximant PulmonicEgressive) = True
-isGlide (Consonant _ LabialVelar Approximant PulmonicEgressive) = True
+isGlide (Consonant _ Palatal       Approximant PulmonicEgressive) = True
+isGlide (Consonant _ LabialVelar   Approximant PulmonicEgressive) = True
 isGlide (Consonant _ LabialPalatal Approximant PulmonicEgressive) = True
-isGlide (Consonant _ Velar Approximant PulmonicEgressive) = True
-isGlide _ = False
+isGlide (Consonant _ Velar         Approximant PulmonicEgressive) = True
+isGlide _                                                         = False
 
 
 consonantal :: Phonet -> Maybe PhonemeFeature
@@ -295,20 +295,20 @@ sonorant (Consonant _ _ LateralApproximant _ ) = Just (SonorantFeature Plus)
 
 
 -- Fricatives are not sonorants.
-sonorant (Consonant _ _ Fricative _) = Just (SonorantFeature Minus)
+sonorant (Consonant _ _ Fricative        _) = Just (SonorantFeature Minus)
 -- Lateral fricatives are not sonorants.
 sonorant (Consonant _ _ LateralFricative _) = Just  (SonorantFeature Minus)
 -- Affricates are not sonorants.
-sonorant (Consonant _ _ Affricate _) = Just  (SonorantFeature Minus)
-sonorant _ = Just  (SonorantFeature Minus) -- Add more
+sonorant (Consonant _ _ Affricate        _) = Just  (SonorantFeature Minus)
+sonorant _                                  = Just  (SonorantFeature Minus) -- Add more
 
 
 
 continuant :: Phonet -> Maybe PhonemeFeature
-continuant (Consonant _ _ Fricative _) = Just (ContinuantFeature Plus)
-continuant (Consonant _ _ Approximant _ ) = Just (ContinuantFeature Plus)
-continuant (Consonant _ _ Lateral _) = Just (ContinuantFeature Plus)
-continuant (Consonant _ _ LateralFricative _) = Just (ContinuantFeature Plus)
+continuant (Consonant _ _ Fricative          _) = Just (ContinuantFeature Plus)
+continuant (Consonant _ _ Approximant        _) = Just (ContinuantFeature Plus)
+continuant (Consonant _ _ Lateral            _) = Just (ContinuantFeature Plus)
+continuant (Consonant _ _ LateralFricative   _) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ LateralApproximant _) = Just (ContinuantFeature Plus)
 continuant consonant@(Consonant _ _ _ _)
   | isGlide consonant = Just (ContinuantFeature Plus)
@@ -318,14 +318,14 @@ continuant (Vowel _ _ _ _) = Just (ContinuantFeature Plus)
 
 nasal :: Phonet -> Maybe PhonemeFeature
 nasal (Consonant _ _ Nasal _) = Just NasalFeature
-nasal _ = Nothing
+nasal _                       = Nothing
 
 
 lateral :: Phonet -> Maybe PhonemeFeature
-lateral (Consonant _ _ Lateral _) = Just LateralFeature
+lateral (Consonant _ _ Lateral            _) = Just LateralFeature
 lateral (Consonant _ _ LateralApproximant _) = Just LateralFeature
-lateral (Consonant _ _ LateralFricative _) = Just LateralFeature
-lateral _ = Nothing
+lateral (Consonant _ _ LateralFricative   _) = Just LateralFeature
+lateral _                                    = Nothing
 
 {-|
 Affricates are [+delayed release].
@@ -335,7 +335,7 @@ All other segments are [-delayed release].
 |-}
 delayedRelease :: Phonet -> Maybe PhonemeFeature
 delayedRelease (Consonant _ _ Affricate _) = Just DelayedReleaseFeature
-delayedRelease _ = Nothing
+delayedRelease _                           = Nothing
 
 
 {-|
@@ -346,9 +346,9 @@ All other segments are undefined for [labial].
 (Source: page 264)
 |-}
 labial :: Phonet -> Maybe PhonemeFeature
-labial (Consonant _ Bilabial _ _) = Just LabialFeature
+labial (Consonant _ Bilabial    _ _) = Just LabialFeature
 labial (Consonant _ LabioDental _ _) = Just LabialFeature
-labial _ = Nothing
+labial _                             = Nothing
 
 
 {-|
@@ -395,12 +395,12 @@ All other sounds are undefined for [pharyngeal].
 |-}
 pharyngeal :: Phonet -> Maybe PhonemeFeature
 pharyngeal (Consonant _ Pharyngeal Fricative _) = Just PharyngealFeature
-pharyngeal _ = Nothing
+pharyngeal _                                    = Nothing
 
 
 laryngeal :: Phonet -> Maybe PhonemeFeature
 laryngeal (Consonant _ Glottal _ _ ) = Just LaryngealFeature
-laryngeal _ = Nothing
+laryngeal _                          = Nothing
 
 
 
@@ -532,10 +532,10 @@ Front vowels are [-back].
 All other segments are undefined for [+/-back].
 |-}
 back :: Phonet -> Maybe PhonemeFeature
-back (Vowel _ Back _ _) = Just (BackFeature Plus)
+back (Vowel _ Back    _ _) = Just (BackFeature Plus)
 back (Vowel _ Central _ _) = Just (BackFeature Plus)
-back (Vowel _ Front _ _) = Just (BackFeature Minus)
-back _ = Nothing
+back (Vowel _ Front   _ _) = Just (BackFeature Minus)
+back _                     = Nothing
 
 
 {-|
@@ -545,8 +545,8 @@ All other segments are [-round].
 |-}
 round :: Phonet -> Maybe PhonemeFeature
 round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
-round (Vowel _ _ _ _) = Just (RoundFeature Minus)
-round _ = Just (RoundFeature Minus)
+round (Vowel _ _ _       _) = Just (RoundFeature Minus)
+round _                     = Just (RoundFeature Minus)
 
 atr :: Phonet -> Maybe PhonemeFeature
 atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
@@ -563,32 +563,32 @@ atr (Vowel  NearClose Front   Unrounded Voiced) = Just (AdvancedTongueRootFeatur
 atr (Vowel  NearClose Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Minus)
 atr (Vowel  OpenMid   Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
 atr (Vowel  OpenMid   Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Minus)
-atr _ = Nothing
+atr _                                           = Nothing
 
 
 toTextFeatures :: Phonet -> String
 toTextFeatures phonete =
   let  features :: [Maybe PhonemeFeature]
-       features = [ consonantal phonete
-                  , syllabic phonete
-                  , continuant phonete
-                  , sonorant phonete
-                  , delayedRelease phonete
-                  , anterior phonete
-                  , distributed phonete
-                  , strident phonete
-                  , high phonete
-                  , low phonete
-                  , nasal phonete
-                  , labial phonete
-                  , coronal phonete
-                  , dorsal phonete
-                  , pharyngeal phonete
-                  , laryngeal phonete
-                  , back phonete
+       features = [ consonantal          phonete
+                  , syllabic             phonete
+                  , continuant           phonete
+                  , sonorant             phonete
+                  , delayedRelease       phonete
+                  , anterior             phonete
+                  , distributed          phonete
+                  , strident             phonete
+                  , high                 phonete
+                  , low                  phonete
+                  , nasal                phonete
+                  , labial               phonete
+                  , coronal              phonete
+                  , dorsal               phonete
+                  , pharyngeal           phonete
+                  , laryngeal            phonete
+                  , back                 phonete
                   , PhonemeFeature.round phonete
-                  , atr phonete
-                  , spreadGlottis phonete
-                  , constrictedGlottis phonete
+                  , atr                  phonete
+                  , spreadGlottis        phonete
+                  , constrictedGlottis   phonete
                   ]
   in "[" ++ intercalate "; " (map show (dejustifyList features)) ++ "]"
