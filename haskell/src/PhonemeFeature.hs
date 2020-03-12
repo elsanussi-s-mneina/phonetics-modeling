@@ -265,7 +265,9 @@ syllabic :: Phonet -> Maybe PhonemeFeature
 syllabic (Vowel     _ _ _ _) = Just (SyllabicFeature Plus)
 syllabic (Consonant _ _ _ _) = Just (SyllabicFeature Minus)
 
-
+{-|
+Whether a segment is a glide.
+|-}
 isGlide :: Phonet -> Bool
 isGlide (Consonant _ Palatal       Approximant PulmonicEgressive) = True
 isGlide (Consonant _ LabialVelar   Approximant PulmonicEgressive) = True
