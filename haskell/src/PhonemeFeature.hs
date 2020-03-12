@@ -341,7 +341,7 @@ delayedRelease _ = Nothing
 {-|
 Bilabial consonants are [labial].
 Labio-dental consonants are [labial].
-All other sounds are undefined for [labial].
+All other segments are undefined for [labial].
 
 (Source: page 264)
 |-}
