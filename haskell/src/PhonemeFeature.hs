@@ -182,7 +182,7 @@ analyzeFeatures phonete =
                 ]
 
 
-
+dejustifyList :: [Maybe a] -> [a]
 dejustifyList [] = []
 dejustifyList (Just x: xs) = x:(dejustifyList xs)
 dejustifyList (Nothing:xs) = dejustifyList xs
@@ -308,7 +308,7 @@ sonorant _ = Just  (SonorantFeature Minus) -- Add more
 
 
 
-
+continuant :: Phonet -> Maybe PhonemeFeature
 continuant (Consonant _ _ Fricative _) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ Approximant _ ) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ Lateral _) = Just (ContinuantFeature Plus)
@@ -345,25 +345,22 @@ labial _ = Nothing
 
 
 coronal :: Phonet -> Maybe PhonemeFeature
-coronal (Consonant _ place _ _)
-  | place `elem` [ Dental
-                 , Alveolar
-                 , PostAlveolar
-                 , Retroflex
-                 , Palatal
-                 , AlveoloPalatal
-                 ]
-        = Just CoronalFeature
-coronal _ = Nothing
+coronal (Consonant _ Dental         _ _) = Just CoronalFeature
+coronal (Consonant _ Alveolar       _ _) = Just CoronalFeature
+coronal (Consonant _ PostAlveolar   _ _) = Just CoronalFeature
+coronal (Consonant _ Retroflex      _ _) = Just CoronalFeature
+coronal (Consonant _ Palatal        _ _) = Just CoronalFeature
+coronal (Consonant _ AlveoloPalatal _ _) = Just CoronalFeature
+coronal _                                = Nothing
 
 
 
 dorsal :: Phonet -> Maybe PhonemeFeature
-dorsal (Consonant _ place _ _)
- | place `elem` [Palatal, AlveoloPalatal, Velar, Uvular]
-   -- Aside: Palatal is actually in parentheses in the textbook
-  = Just DorsalFeature
-dorsal _ = Nothing
+dorsal (Consonant _ Palatal        _ _) = Just DorsalFeature  -- Aside: Palatal is actually in parentheses in the textbook
+dorsal (Consonant _ AlveoloPalatal _ _) = Just DorsalFeature
+dorsal (Consonant _ Velar          _ _) = Just DorsalFeature
+dorsal (Consonant _ Uvular         _ _) = Just DorsalFeature
+dorsal _                                = Nothing
 
 
 
@@ -382,7 +379,6 @@ voice :: Phonet -> Maybe PhonemeFeature
 voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) =
   Just (VoiceFeature Minus)
 -- [ʔ] is [- voice]
-
 
 voice (Consonant v _ _ _) =
   Just (VoiceFeature (boolToPolarity (v == Voiced || v == VoicedAspirated)))
@@ -416,7 +412,7 @@ anterior (Consonant _ Palatal           _ _) = Just (AnteriorFeature Minus)
 anterior (Consonant _ AlveoloPalatal    _ _) = Just (AnteriorFeature Minus)
 anterior _ = Nothing
 
-
+distributed :: Phonet -> Maybe PhonemeFeature
 distributed (Consonant _ Dental         _ _) = Just (DistributedFeature Plus)
 distributed (Consonant _ Alveolar       _ _) = Just (DistributedFeature Minus)
 distributed (Consonant _ PostAlveolar   _ _) = Just (DistributedFeature Plus)
@@ -426,7 +422,7 @@ distributed (Consonant _ AlveoloPalatal _ _) = Just (DistributedFeature Plus)
 distributed _ = Nothing
 
 
-
+strident :: Phonet -> Maybe PhonemeFeature
 strident (Consonant _ Bilabial       _ _) = Just (StridentFeature Minus)
 strident (Consonant _ LabioDental    _ _) = Just (StridentFeature Plus)
 strident (Consonant _ Dental         _ _) = Just (StridentFeature Minus)
@@ -439,9 +435,9 @@ strident (Consonant _ Velar          _ _) = Just (StridentFeature Minus)
 strident (Consonant _ Uvular         _ _) = Just (StridentFeature Plus)
 strident (Consonant _ Pharyngeal     _ _) = Just (StridentFeature Minus)
 strident (Consonant _ Glottal        _ _) = Just (StridentFeature Minus)
-strident _ = Nothing
+strident _                                = Nothing
 
-
+high :: Phonet -> Maybe PhonemeFeature
 high (Consonant _ Palatal _ _) = Just (HighFeature Plus)
 high (Consonant _ AlveoloPalatal _ _) = Just (HighFeature Plus)
 high (Consonant _ Velar _ _) = Just (HighFeature Plus)
@@ -450,30 +446,30 @@ high (Consonant _ _ _ _) = Nothing
 high (Vowel height _ _ _ ) =
   Just (HighFeature (boolToPolarity (height == Close || height == NearClose)))
 
-
+low :: Phonet -> Maybe PhonemeFeature
 low (Consonant _ Uvular _ _) = Just (LowFeature Plus)
 low (Consonant _ Pharyngeal _ _) = Just (LowFeature Plus)
 low (Consonant _ Glottal _ _) = Just (LowFeature Plus)
 low (Consonant _ _ _ _) = Nothing
 low (Vowel height _ _ _ ) = Just (LowFeature (boolToPolarity (height == Open || height == NearOpen)))
 
-
+back :: Phonet -> Maybe PhonemeFeature
 back (Vowel _ Back _ _) = Just (BackFeature Plus)
 back (Vowel _ Central _ _) = Just (BackFeature Plus)
 back (Vowel _ Front _ _) = Just (BackFeature Minus)
 back _ = Nothing
 
-
+round :: Phonet -> Maybe PhonemeFeature
 round (Vowel _ _ rounding _) = Just (RoundFeature (boolToPolarity (rounding == Rounded)))
 round _ = Just (RoundFeature Minus)
 
-
-atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus) 
-atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus) 
-atr (Vowel  Close     Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
-atr (Vowel  CloseMid  Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
-atr (Vowel  CloseMid  Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
-atr (Vowel  Close     Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus) 
+atr :: Phonet -> Maybe PhonemeFeature
+atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
+atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
+atr (Vowel  Close     Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)
+atr (Vowel  CloseMid  Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)
+atr (Vowel  CloseMid  Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)
+atr (Vowel  Close     Front   Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)
 atr (Vowel  NearOpen  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
 atr (Vowel  Open      Back    Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
 atr (Vowel  Close     Central Unrounded Voiced) = Just (AdvancedTongueRootFeature Minus)
