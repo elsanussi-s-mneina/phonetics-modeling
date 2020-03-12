@@ -324,10 +324,9 @@ nasal _ = Nothing
 
 
 lateral :: Phonet -> Maybe PhonemeFeature
-lateral (Consonant _ _ manner _)
- | manner == Lateral ||
-   manner == LateralApproximant ||
-   manner == LateralFricative = Just LateralFeature
+lateral (Consonant _ _ Lateral _) = Just LateralFeature
+lateral (Consonant _ _ LateralApproximant _) = Just LateralFeature
+lateral (Consonant _ _ LateralFricative _) = Just LateralFeature
 lateral _ = Nothing
 
 delayedRelease :: Phonet -> Maybe PhonemeFeature
@@ -337,10 +336,8 @@ delayedRelease _ = Nothing
 
 
 labial :: Phonet -> Maybe PhonemeFeature
-labial (Consonant _ place _ _) =
-  if (place == Bilabial || place == LabioDental)
-    then Just LabialFeature
-    else Nothing
+labial (Consonant _ Bilabial _ _) = Just LabialFeature
+labial (Consonant _ LabioDental _ _) = Just LabialFeature
 labial _ = Nothing
 
 
@@ -378,10 +375,10 @@ laryngeal _ = Nothing
 voice :: Phonet -> Maybe PhonemeFeature
 voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just (VoiceFeature Minus)
 -- The voiceless glottal plosive is [- voice]
-
-voice (Consonant v _ _ _) =
-  Just (VoiceFeature (boolToPolarity (v == Voiced || v == VoicedAspirated)))
-voice (Vowel _ _ _ v) = Just (VoiceFeature (boolToPolarity (v == Voiced)))
+voice (Consonant Voiced                                _ _ _) = Just (VoiceFeature Plus)
+voice (Consonant VoicedAspirated                       _ _ _) = Just (VoiceFeature Plus)
+voice (Vowel _ _ _                                    Voiced) = Just (VoiceFeature Plus)
+voice _                                                       = Just (VoiceFeature Minus)
 
 
 spreadGlottis :: Phonet -> Maybe PhonemeFeature
@@ -442,15 +439,21 @@ high (Consonant _ AlveoloPalatal _ _) = Just (HighFeature Plus)
 high (Consonant _ Velar _ _) = Just (HighFeature Plus)
 high (Consonant _ Uvular _ _) = Just (HighFeature Minus)
 high (Consonant _ _ _ _) = Nothing
-high (Vowel height _ _ _ ) =
-  Just (HighFeature (boolToPolarity (height == Close || height == NearClose)))
+high (Vowel Close _ _ _ ) = Just (HighFeature Plus)
+high (Vowel NearClose _ _ _ ) = Just (HighFeature Plus)
+high (Vowel _ _ _ _) = Just (HighFeature Minus)
+
 
 low :: Phonet -> Maybe PhonemeFeature
 low (Consonant _ Uvular _ _) = Just (LowFeature Plus)
 low (Consonant _ Pharyngeal _ _) = Just (LowFeature Plus)
 low (Consonant _ Glottal _ _) = Just (LowFeature Plus)
 low (Consonant _ _ _ _) = Nothing
-low (Vowel height _ _ _ ) = Just (LowFeature (boolToPolarity (height == Open || height == NearOpen)))
+low (Vowel Open _ _ _ ) = Just (LowFeature Plus)
+low (Vowel NearOpen _ _ _ ) = Just (LowFeature Plus)
+low (Vowel _ _ _ _ ) = Just (LowFeature Minus)
+
+
 
 back :: Phonet -> Maybe PhonemeFeature
 back (Vowel _ Back _ _) = Just (BackFeature Plus)
@@ -459,7 +462,8 @@ back (Vowel _ Front _ _) = Just (BackFeature Minus)
 back _ = Nothing
 
 round :: Phonet -> Maybe PhonemeFeature
-round (Vowel _ _ rounding _) = Just (RoundFeature (boolToPolarity (rounding == Rounded)))
+round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
+round (Vowel _ _ _ _) = Just (RoundFeature Minus)
 round _ = Just (RoundFeature Minus)
 
 atr :: Phonet -> Maybe PhonemeFeature
