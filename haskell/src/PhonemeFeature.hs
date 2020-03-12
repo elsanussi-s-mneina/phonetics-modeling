@@ -255,10 +255,6 @@ differenceOfUnaryFeature feature list1 list2 =
             then (Just feature, Nothing)
             else (Nothing, Just feature)
 
-boolToPolarity :: Bool -> Polarity
-boolToPolarity True = Plus
-boolToPolarity False = Minus
-
 syllabic :: Phonet -> Maybe PhonemeFeature
 syllabic (Vowel _ _ _ _ ) = Just (SyllabicFeature Plus)
 syllabic (Consonant _ _ _ _) = Just (SyllabicFeature Minus)
@@ -273,9 +269,9 @@ isGlide _ = False
 
 
 consonantal :: Phonet -> Maybe PhonemeFeature
-consonantal consonant@(Consonant v p m a) =
-  let isConsonantal = not (isGlide consonant)
-  in Just (ConsonantalFeature (boolToPolarity isConsonantal))
+consonantal consonant@(Consonant _ _ _ _)
+  | isGlide consonant = Just (ConsonantalFeature Minus)
+  | otherwise         = Just (ConsonantalFeature Plus)
 consonantal (Vowel _ _ _ _) = Nothing
 
 
@@ -314,7 +310,9 @@ continuant (Consonant _ _ Approximant _ ) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ Lateral _) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ LateralFricative _) = Just (ContinuantFeature Plus)
 continuant (Consonant _ _ LateralApproximant _) = Just (ContinuantFeature Plus)
-continuant c@(Consonant _ _ _ _) = Just (ContinuantFeature (boolToPolarity (isGlide c)))
+continuant c@(Consonant _ _ _ _)
+  | isGlide consonant = Just (ContinuantFeature Plus)
+  | otherwise         = Just (ContinuantFeature Minus)
 continuant (Vowel _ _ _ _) = Just (ContinuantFeature Plus)
 
 
