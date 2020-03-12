@@ -1,20 +1,26 @@
 module Spec (main) where
 
 import Prelude ((++), IO, length, Bool(True, False), putStrLn, putStr, (==), (&&), String, Maybe(Just, Nothing))
-import PhonemeFeature (isGlide, toTextLowFeature, toTextAnteriorFeature,
-                       toTextAnteriorFeature, toTextDistributedFeature,
-                       toTextStridentFeature, toTextHighFeature, 
-                       toTextLowFeature, toTextNasalFeature, 
-                       toTextLabialFeature, toTextCoronalFeature, 
-                       toTextDorsalFeature, 
-                       toTextPharyngealFeature, toTextLaryngealFeature,
-                       toTextRoundFeature, toTextATRFeature, toTextBackFeature,
+import PhonemeFeature (isGlide, low, anterior,
+                       distributed,
+                       strident, high,
+                       low, nasal,
+                       labial, coronal,
+                       dorsal,
+                       pharyngeal, laryngeal,
+                       round, atr, back,
                        PhonemeFeature(NasalFeature, LateralFeature, 
                        DelayedReleaseFeature,
                        SpreadGlottisFeature, ConstrictedGlottisFeature,
                        LabialFeature, CoronalFeature, DorsalFeature,
-                       PharyngealFeature, LaryngealFeature),
-                       isUnary)
+                       PharyngealFeature, LaryngealFeature,
+                       RoundFeature, LowFeature,
+                       AdvancedTongueRootFeature, HighFeature,
+                       LowFeature, BackFeature,
+                       StridentFeature, DistributedFeature,
+                       AnteriorFeature),
+                       isUnary,
+                       Polarity(Minus, Plus))
 import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
 import Tester (printLegend, runTest)
@@ -336,552 +342,552 @@ speFeaturesSpec = do
   putStrLn "SPE Features"
   -- Go to page 267 of the textbook.
   runTest "The low feature value is nothing for [β]." 
-    (toTextLowFeature (Consonant Voiced Bilabial Fricative PulmonicEgressive) == Nothing)
+    (low (Consonant Voiced Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The low feature value for [χ] is [+ low]."
-    (toTextLowFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just "+ low")
+    (low (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just (LowFeature Plus))
   runTest "The low feature value for [ɣ] is [+ low]."
-    (toTextLowFeature (Consonant Voiced Uvular Fricative PulmonicEgressive) == Just "+ low")
+    (low (Consonant Voiced Uvular Fricative PulmonicEgressive) == Just (LowFeature Plus))
   runTest "The low feature value for [ħ] is [+ low]."
-    (toTextLowFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Just "+ low")
+    (low (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Just (LowFeature Plus))
   runTest "The low feature value for [ʕ] is [+ low]."
-    (toTextLowFeature (Consonant Voiced Pharyngeal Fricative PulmonicEgressive) == Just "+ low")
+    (low (Consonant Voiced Pharyngeal Fricative PulmonicEgressive) == Just (LowFeature Plus))
   runTest "The low feature value for [ʔ] is [+ low]."
-    (toTextLowFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Just "+ low")
+    (low (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Just (LowFeature Plus))
   runTest "The low feature value is nothing for [k]."
-    (toTextLowFeature (Consonant Voiceless Velar Plosive PulmonicEgressive) == Nothing)
+    (low (Consonant Voiceless Velar Plosive PulmonicEgressive) == Nothing)
 
   runTest "The anterior feature is nothing for [b]."
-     (toTextAnteriorFeature (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == Nothing)
+     (anterior (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == Nothing)
   runTest "The anterior feature is nothing for [f]."
-     (toTextAnteriorFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (anterior (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The anterior feature is + for [θ]."
-     (toTextAnteriorFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just "+ anterior")
+     (anterior (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just (AnteriorFeature Plus))
   runTest "The anterior feature is + for [s]."
-     (toTextAnteriorFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just "+ anterior")
+     (anterior (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just (AnteriorFeature Plus))
   runTest "The anterior feature is - for [ʃ]."
-     (toTextAnteriorFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just "- anterior")
+     (anterior (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just (AnteriorFeature Minus))
   runTest "The anterior feature is - for [ʂ]."
-     (toTextAnteriorFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just "- anterior")
+     (anterior (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just (AnteriorFeature Minus))
   runTest "The anterior feature is - for [ɕ]" 
-     (toTextAnteriorFeature (analyzeIPA "ɕ") == Just "- anterior")
+     (anterior (analyzeIPA "ɕ") == Just (AnteriorFeature Minus))
   runTest "The anterior feature is - for [ç]" 
-     (toTextAnteriorFeature (analyzeIPA "ç") == Just "- anterior") -- TODO: Check this, is it true .ccording to the textbook?
+     (anterior (analyzeIPA "ç") == Just (AnteriorFeature Minus)) -- TODO: Check this, is it true .ccording to the textbook?
   runTest "The anterior feature is nothing for [x]"
-     (toTextAnteriorFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+     (anterior (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The anterior feature is nothing for [χ]"
-     (toTextAnteriorFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+     (anterior (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
   runTest "The anterior feature is nothing for [ħ]"
-     (toTextAnteriorFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (anterior (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The anterior feature is nothing for [h]"
-     (toTextAnteriorFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (anterior (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
     
 
   runTest "The distributed feature is nothing for [b]."
-     (toTextDistributedFeature (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == Nothing)
+     (distributed (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == Nothing)
   runTest "The distributed feature is nothing for [f]."
-     (toTextDistributedFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (distributed (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The distributed feature is + for [θ]."
-     (toTextDistributedFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just "+ distributed")
+     (distributed (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just (DistributedFeature Plus))
   runTest "The distributed feature is - for [s]."
-     (toTextDistributedFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just "- distributed")
+     (distributed (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just (DistributedFeature Minus))
   runTest "The distributed feature is + for [ʃ]."
-     (toTextDistributedFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just "+ distributed")
+     (distributed (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just (DistributedFeature Plus))
   runTest "The distributed feature is - for [ʂ]."
-     (toTextDistributedFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just "- distributed")
+     (distributed (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just (DistributedFeature Minus))
   runTest "The distributed feature is + for [ɕ]" 
-     (toTextDistributedFeature (analyzeIPA "ɕ") == Just "+ distributed")
+     (distributed (analyzeIPA "ɕ") == Just (DistributedFeature Plus))
   runTest "The distributed feature is + for [ç]" 
-     (toTextDistributedFeature (analyzeIPA "ç") == Just "+ distributed") -- TODO: Check this, is it true according to the textbook?
+     (distributed (analyzeIPA "ç") == Just (DistributedFeature Plus)) -- TODO: Check this, is it true according to the textbook?
   runTest "The distributed feature is nothing for [x]"
-     (toTextDistributedFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+     (distributed (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The distributed feature is nothing for [χ]"
-     (toTextDistributedFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+     (distributed (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
   runTest "The distributed feature is nothing for [ħ]"
-     (toTextDistributedFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (distributed (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The distributed feature is nothing for [h]"
-     (toTextDistributedFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (distributed (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
     
 
   runTest "The strident feature is - for [ɸ]."
-     (toTextStridentFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Just "- strident")
+     (strident (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Just (StridentFeature Minus))
   runTest "The strident feature is + for [f]."
-     (toTextStridentFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Just "+ strident")
+     (strident (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Just (StridentFeature Plus))
   runTest "The strident feature is - for [θ]."
-     (toTextStridentFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just "- strident")
+     (strident (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just (StridentFeature Minus))
   runTest "The strident feature is + for [s]."
-     (toTextStridentFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just "+ strident")
+     (strident (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just (StridentFeature Plus))
   runTest "The strident feature is + for [ʃ]."
-     (toTextStridentFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just "+ strident")
+     (strident (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just (StridentFeature Plus))
   runTest "The strident feature is - for [ʂ]."
-     (toTextStridentFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just "- strident")
+     (strident (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just (StridentFeature Minus))
   runTest "The strident feature is - for [ɕ]" 
-     (toTextStridentFeature (analyzeIPA "ɕ") == Just "- strident")
+     (strident (analyzeIPA "ɕ") == Just (StridentFeature Minus))
   runTest "The strident feature is - for [ç]" 
-     (toTextStridentFeature (analyzeIPA "ç") == Just "- strident") -- TODO: Check this, is it true according to the textbook?
+     (strident (analyzeIPA "ç") == Just (StridentFeature Minus)) -- TODO: Check this, is it true according to the textbook?
   runTest "The strident feature is - for [x]"
-     (toTextStridentFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just "- strident")
+     (strident (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just (StridentFeature Minus))
   runTest "The strident feature is + for [χ]"
-     (toTextStridentFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just "+ strident")
+     (strident (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just (StridentFeature Plus))
   runTest "The strident feature is - for [ħ]"
-     (toTextStridentFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Just "- strident")
+     (strident (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Just (StridentFeature Minus))
   runTest "The strident fetaure is - for [h]"
-     (toTextStridentFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Just "- strident")
+     (strident (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Just (StridentFeature Minus))
     
   runTest "The high feature is nothing for [ɸ]."
-     (toTextHighFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is nothing for [f]."
-     (toTextHighFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is nothing for [θ]."
-     (toTextHighFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is nothing for [s]."
-     (toTextHighFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is nothing for [ʃ]."
-     (toTextHighFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is nothing for [ʂ]."
-     (toTextHighFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is + for [ɕ]" 
-     (toTextHighFeature (analyzeIPA "ɕ") == Just "+ high")
+     (high (analyzeIPA "ɕ") == Just (HighFeature Plus))
   runTest "The high feature is + for [ç]" 
-     (toTextHighFeature (analyzeIPA "ç") == Just "+ high") -- TODO: Check this, is it true according to the textbook?
+     (high (analyzeIPA "ç") == Just (HighFeature Plus)) -- TODO: Check this, is it true according to the textbook?
   runTest "The high feature is + for [x]"
-     (toTextHighFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just "+ high")
+     (high (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just (HighFeature Plus))
   runTest "The high feature is - for [χ]"
-     (toTextHighFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just "- high")
+     (high (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just (HighFeature Minus))
   runTest "The high feature is nothing for [ħ]"
-     (toTextHighFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is nothing for [h]"
-     (toTextHighFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (high (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
     
   runTest "The nasal feature is nothing for [ɸ]."
-     (toTextNasalFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [f]."
-     (toTextNasalFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [θ]."
-     (toTextNasalFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [s]."
-     (toTextNasalFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [ʃ]."
-     (toTextNasalFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [ʂ]."
-     (toTextNasalFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [ɕ]" 
-     (toTextNasalFeature (analyzeIPA "ɕ") == Nothing)
+     (nasal (analyzeIPA "ɕ") == Nothing)
   runTest "The nasal feature is nothing for [ç]" 
-     (toTextNasalFeature (analyzeIPA "ç") == Nothing)
+     (nasal (analyzeIPA "ç") == Nothing)
   runTest "The nasal feature is nothing for [x]"
-     (toTextNasalFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [χ]"
-     (toTextNasalFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [ħ]"
-     (toTextNasalFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [h]"
-     (toTextNasalFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (nasal (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is present for [m]"
-    (toTextNasalFeature (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Just "nasal")
+    (nasal (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Just NasalFeature)
   runTest "The nasal feature is present for [ɱ]"
-    (toTextNasalFeature (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Just "nasal")
+    (nasal (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Just NasalFeature)
   runTest "The nasal feature is present for [n]"
-    (toTextNasalFeature (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Just "nasal")
+    (nasal (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Just NasalFeature)
   runTest "The nasal feature is present for [ɳ]"
-    (toTextNasalFeature (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Just "nasal")
+    (nasal (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Just NasalFeature)
   runTest "The nasal feature is present for [ɲ]"
-    (toTextNasalFeature (Consonant Voiced Palatal Nasal PulmonicEgressive) == Just "nasal")
+    (nasal (Consonant Voiced Palatal Nasal PulmonicEgressive) == Just NasalFeature)
   runTest "The nasal feature is present for [ŋ]"
-    (toTextNasalFeature (Consonant Voiced Velar Nasal PulmonicEgressive) == Just "nasal")
+    (nasal (Consonant Voiced Velar Nasal PulmonicEgressive) == Just NasalFeature)
   runTest "The nasal feature is present for [ɴ]"
-    (toTextNasalFeature (Consonant Voiced Uvular Nasal PulmonicEgressive) == Just "nasal")
+    (nasal (Consonant Voiced Uvular Nasal PulmonicEgressive) == Just NasalFeature)
 
   runTest "The labial feature is present for [ɸ]."
-     (toTextLabialFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Just "labial")
+     (labial (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Just LabialFeature)
   runTest "The labial feature is present for [f]."
-     (toTextLabialFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Just "labial")
+     (labial (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Just LabialFeature)
   runTest "The labial feature is nothing for [θ]."
-     (toTextLabialFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [s]."
-     (toTextLabialFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ʃ]."
-     (toTextLabialFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ʂ]."
-     (toTextLabialFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ɕ]" 
-     (toTextLabialFeature (analyzeIPA "ɕ") == Nothing)
+     (labial (analyzeIPA "ɕ") == Nothing)
   runTest "The labial feature is nothing for [ç]" 
-     (toTextLabialFeature (analyzeIPA "ç") == Nothing)
+     (labial (analyzeIPA "ç") == Nothing)
   runTest "The labial feature is nothing for [x]"
-     (toTextLabialFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [χ]"
-     (toTextLabialFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ħ]"
-     (toTextLabialFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [h]"
-     (toTextLabialFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (labial (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is present for [m]"
-    (toTextLabialFeature (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Just "labial")
+    (labial (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Just LabialFeature)
   runTest "The labial feature is present for [ɱ]"
-    (toTextLabialFeature (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Just "labial")
+    (labial (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Just LabialFeature)
   runTest "The labial feature is nothing for [n]"
-    (toTextLabialFeature (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
+    (labial (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ɳ]"
-    (toTextLabialFeature (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
+    (labial (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ɲ]"
-    (toTextLabialFeature (Consonant Voiced Palatal Nasal PulmonicEgressive) == Nothing)
+    (labial (Consonant Voiced Palatal Nasal PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ŋ]"
-    (toTextLabialFeature (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
+    (labial (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ɴ]"
-    (toTextLabialFeature (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
+    (labial (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
 
 
   runTest "The coronal feature is nothing for [ɸ]."
-     (toTextCoronalFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
+     (coronal (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [f]."
-     (toTextCoronalFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (coronal (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The coronal feature is present for [θ]."
-     (toTextCoronalFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just "coronal")
+     (coronal (Consonant Voiceless Dental Fricative PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is present for [s]."
-     (toTextCoronalFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just "coronal")
+     (coronal (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is present for [ʃ]."
-     (toTextCoronalFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just "coronal")
+     (coronal (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is present for [ʂ]."
-     (toTextCoronalFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just "coronal")
+     (coronal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is present for [ɕ]" 
-     (toTextCoronalFeature (analyzeIPA "ɕ") == Just "coronal")
+     (coronal (analyzeIPA "ɕ") == Just CoronalFeature)
   runTest "The coronal feature is present for [ç]" 
-     (toTextCoronalFeature (analyzeIPA "ç") == Just "coronal")
+     (coronal (analyzeIPA "ç") == Just CoronalFeature)
   runTest "The coronal feature is nothing for [x]"
-     (toTextCoronalFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+     (coronal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [χ]"
-     (toTextCoronalFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+     (coronal (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [ħ]"
-     (toTextCoronalFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (coronal (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [h]"
-     (toTextCoronalFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (coronal (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [m]"
-    (toTextCoronalFeature (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
+    (coronal (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [ɱ]"
-    (toTextCoronalFeature (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
+    (coronal (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
   runTest "The coronal feature is present for [n]"
-    (toTextCoronalFeature (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Just "coronal")
+    (coronal (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is present for [ɳ]"
-    (toTextCoronalFeature (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Just "coronal")
+    (coronal (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is present for [ɲ]"
-    (toTextCoronalFeature (Consonant Voiced Palatal Nasal PulmonicEgressive) == Just "coronal")
+    (coronal (Consonant Voiced Palatal Nasal PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is nothing for [ŋ]"
-    (toTextCoronalFeature (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
+    (coronal (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [ɴ]"
-    (toTextCoronalFeature (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
+    (coronal (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
 
   runTest "The dorsal feature is nothing for [ɸ]."
-     (toTextDorsalFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [f]."
-     (toTextDorsalFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [θ]."
-     (toTextDorsalFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [s]."
-     (toTextDorsalFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [ʃ]."
-     (toTextDorsalFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [ʂ]."
-     (toTextDorsalFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is present for [ɕ]"  -- It is actually in parentheses on page 267.
-     (toTextDorsalFeature (analyzeIPA "ɕ") == Just "dorsal")
+     (dorsal (analyzeIPA "ɕ") == Just DorsalFeature)
   runTest "The dorsal feature is present for [ç]" 
-     (toTextDorsalFeature (analyzeIPA "ç") == Just "dorsal")
+     (dorsal (analyzeIPA "ç") == Just DorsalFeature)
   runTest "The dorsal feature is present for [x]"
-     (toTextDorsalFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just "dorsal")
+     (dorsal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just DorsalFeature)
   runTest "The dorsal feature is present for [χ]"
-     (toTextDorsalFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just "dorsal")
+     (dorsal (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Just DorsalFeature)
   runTest "The dorsal feature is nothing for [ħ]"
-     (toTextDorsalFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [h]"
-     (toTextDorsalFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (dorsal (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [m]"
-    (toTextDorsalFeature (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
+    (dorsal (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [ɱ]"
-    (toTextDorsalFeature (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
+    (dorsal (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [n]"
-    (toTextDorsalFeature (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
+    (dorsal (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [ɳ]"
-    (toTextDorsalFeature (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
+    (dorsal (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is present for [ɲ]"
-    (toTextDorsalFeature (Consonant Voiced Palatal Nasal PulmonicEgressive) == Just "dorsal")
+    (dorsal (Consonant Voiced Palatal Nasal PulmonicEgressive) == Just DorsalFeature)
   runTest "The dorsal feature is present for [ŋ]"
-    (toTextDorsalFeature (Consonant Voiced Velar Nasal PulmonicEgressive) == Just "dorsal")
+    (dorsal (Consonant Voiced Velar Nasal PulmonicEgressive) == Just DorsalFeature)
   runTest "The dorsal feature is present for [ɴ]"
-    (toTextDorsalFeature (Consonant Voiced Uvular Nasal PulmonicEgressive) == Just "dorsal")
+    (dorsal (Consonant Voiced Uvular Nasal PulmonicEgressive) == Just DorsalFeature)
 
 
 
 
   runTest "The pharyngeal feature is nothing for [ɸ]."
-     (toTextPharyngealFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [f]."
-     (toTextPharyngealFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [θ]."
-     (toTextPharyngealFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [s]."
-     (toTextPharyngealFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ʃ]."
-     (toTextPharyngealFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ʂ]."
-     (toTextPharyngealFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ɕ]"
-     (toTextPharyngealFeature (analyzeIPA "ɕ") == Nothing)
+     (pharyngeal (analyzeIPA "ɕ") == Nothing)
   runTest "The pharyngeal feature is nothing for [ç]" 
-     (toTextPharyngealFeature (analyzeIPA "ç") == Nothing)
+     (pharyngeal (analyzeIPA "ç") == Nothing)
   runTest "The pharyngeal feature is nothing for [x]"
-     (toTextPharyngealFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [χ]"
-     (toTextPharyngealFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is present for [ħ]"
-     (toTextPharyngealFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Just "pharyngeal")
+     (pharyngeal (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Just PharyngealFeature)
   runTest "The pharyngeal feature is nothing for [h]"
-     (toTextPharyngealFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
+     (pharyngeal (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [m]"
-    (toTextPharyngealFeature (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
+    (pharyngeal (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ɱ]"
-    (toTextPharyngealFeature (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
+    (pharyngeal (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [n]"
-    (toTextPharyngealFeature (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
+    (pharyngeal (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ɳ]"
-    (toTextPharyngealFeature (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
+    (pharyngeal (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ɲ]"
-    (toTextPharyngealFeature (Consonant Voiced Palatal Nasal PulmonicEgressive) == Nothing)
+    (pharyngeal (Consonant Voiced Palatal Nasal PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ŋ]"
-    (toTextPharyngealFeature (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
+    (pharyngeal (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ɴ]"
-    (toTextPharyngealFeature (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
+    (pharyngeal (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
 
 
 
   runTest "The laryngeal feature is nothing for [ɸ]."
-     (toTextLaryngealFeature (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless Bilabial Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [f]."
-     (toTextLaryngealFeature (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless LabioDental Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [θ]."
-     (toTextLaryngealFeature (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless Dental Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [s]."
-     (toTextLaryngealFeature (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ʃ]."
-     (toTextLaryngealFeature (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ʂ]."
-     (toTextLaryngealFeature (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ɕ]"
-     (toTextLaryngealFeature (analyzeIPA "ɕ") == Nothing)
+     (laryngeal (analyzeIPA "ɕ") == Nothing)
   runTest "The laryngeal feature is nothing for [ç]" 
-     (toTextLaryngealFeature (analyzeIPA "ç") == Nothing)
+     (laryngeal (analyzeIPA "ç") == Nothing)
   runTest "The laryngeal feature is nothing for [x]"
-     (toTextLaryngealFeature (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [χ]"
-     (toTextLaryngealFeature (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless Uvular Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ħ]"
-     (toTextLaryngealFeature (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
+     (laryngeal (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is present for [h]"
-     (toTextLaryngealFeature (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Just "laryngeal")
+     (laryngeal (Consonant Voiceless Glottal Fricative PulmonicEgressive) == Just LaryngealFeature)
   runTest "The laryngeal feature is nothing for [m]"
-    (toTextLaryngealFeature (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
+    (laryngeal (Consonant Voiced Bilabial Nasal PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ɱ]"
-    (toTextLaryngealFeature (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
+    (laryngeal (Consonant Voiced LabioDental Nasal PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [n]"
-    (toTextLaryngealFeature (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
+    (laryngeal (Consonant Voiced Alveolar Nasal PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ɳ]"
-    (toTextLaryngealFeature (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
+    (laryngeal (Consonant Voiced Retroflex Nasal PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ɲ]"
-    (toTextLaryngealFeature (Consonant Voiced Palatal Nasal PulmonicEgressive) == Nothing)
+    (laryngeal (Consonant Voiced Palatal Nasal PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ŋ]"
-    (toTextLaryngealFeature (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
+    (laryngeal (Consonant Voiced Velar Nasal PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ɴ]"
-    (toTextLaryngealFeature (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
+    (laryngeal (Consonant Voiced Uvular Nasal PulmonicEgressive) == Nothing)
 
 
   -- Go to page 270
 
   runTest "The back feature is - for [i]."
-    (toTextBackFeature (analyzeIPA "i") == Just "- back")
+    (back (analyzeIPA "i") == Just (BackFeature Minus))
   runTest "The high feature is + for [i]."
-    (toTextHighFeature (analyzeIPA "i") == Just "+ high")
+    (high (analyzeIPA "i") == Just (HighFeature Plus))
   runTest "The low feature is - for [i]."
-    (toTextLowFeature (analyzeIPA "i") == Just "- low")
+    (low (analyzeIPA "i") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [i]."
-    (toTextATRFeature (analyzeIPA "i") == Just "+ ATR")
+    (atr (analyzeIPA "i") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is - for [i]."
-    (toTextRoundFeature (analyzeIPA "i") == Just "- round")
+    (round (analyzeIPA "i") == Just (RoundFeature Minus))
 
 
   runTest "The back feature is - for [ɪ]."
-    (toTextBackFeature (analyzeIPA "ɪ") == Just "- back")
+    (back (analyzeIPA "ɪ") == Just (BackFeature Minus))
   runTest "The high feature is + for [ɪ]."
-    (toTextHighFeature (analyzeIPA "ɪ") == Just "+ high")
+    (high (analyzeIPA "ɪ") == Just (HighFeature Plus))
   runTest "The low feature is - for [ɪ]."
-    (toTextLowFeature (analyzeIPA "ɪ") == Just "- low")
+    (low (analyzeIPA "ɪ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɪ]."
-    (toTextATRFeature (analyzeIPA "ɪ") == Just "- ATR")
+    (atr (analyzeIPA "ɪ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [ɪ]."
-    (toTextRoundFeature (analyzeIPA "ɪ") == Just "- round")
+    (round (analyzeIPA "ɪ") == Just (RoundFeature Minus))
 
 
   runTest "The back feature is - for [e]."
-    (toTextBackFeature (analyzeIPA "e") == Just "- back")
+    (back (analyzeIPA "e") == Just (BackFeature Minus))
   runTest "The high feature is - for [e]."
-    (toTextHighFeature (analyzeIPA "e") == Just "- high")
+    (high (analyzeIPA "e") == Just (HighFeature Minus))
   runTest "The low feature is - for [e]."
-    (toTextLowFeature (analyzeIPA "e") == Just "- low")
+    (low (analyzeIPA "e") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [e]."
-    (toTextATRFeature (analyzeIPA "e") == Just "+ ATR")
+    (atr (analyzeIPA "e") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is - for [e]."
-    (toTextRoundFeature (analyzeIPA "e") == Just "- round")
+    (round (analyzeIPA "e") == Just (RoundFeature Minus))
 
 
 
 
   runTest "The back feature is - for [ɛ]."
-    (toTextBackFeature (analyzeIPA "ɛ") == Just "- back")
+    (back (analyzeIPA "ɛ") == Just (BackFeature Minus))
   runTest "The high feature is - for [ɛ]."
-    (toTextHighFeature (analyzeIPA "ɛ") == Just "- high")
+    (high (analyzeIPA "ɛ") == Just (HighFeature Minus))
   runTest "The low feature is - for [ɛ]."
-    (toTextLowFeature (analyzeIPA "ɛ") == Just "- low")
+    (low (analyzeIPA "ɛ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɛ]."
-    (toTextATRFeature (analyzeIPA "ɛ") == Just "- ATR")
+    (atr (analyzeIPA "ɛ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [ɛ]."
-    (toTextRoundFeature (analyzeIPA "ɛ") == Just "- round")
+    (round (analyzeIPA "ɛ") == Just (RoundFeature Minus))
     
     
 
   runTest "The back feature is - for [æ]."
-    (toTextBackFeature (analyzeIPA "æ") == Just "- back")
+    (back (analyzeIPA "æ") == Just (BackFeature Minus))
   runTest "The high feature is - for [æ]."
-    (toTextHighFeature (analyzeIPA "æ") == Just "- high")
+    (high (analyzeIPA "æ") == Just (HighFeature Minus))
   runTest "The low feature is + for [æ]."
-    (toTextLowFeature (analyzeIPA "æ") == Just "+ low")
+    (low (analyzeIPA "æ") == Just (LowFeature Plus))
   runTest "The ATR feature is - for [æ]." -- It has a parentheses
-    (toTextATRFeature (analyzeIPA "æ") == Just "- ATR")
+    (atr (analyzeIPA "æ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [æ]."
-    (toTextRoundFeature (analyzeIPA "æ") == Just "- round")
+    (round (analyzeIPA "æ") == Just (RoundFeature Minus))
     
  
   runTest "The back feature is + for [u]."
-    (toTextBackFeature (analyzeIPA "u") == Just "+ back")
+    (back (analyzeIPA "u") == Just (BackFeature Plus))
   runTest "The high feature is + for [u]."
-    (toTextHighFeature (analyzeIPA "u") == Just "+ high")
+    (high (analyzeIPA "u") == Just (HighFeature Plus))
   runTest "The low feature is - for [u]."
-    (toTextLowFeature (analyzeIPA "u") == Just "- low")
+    (low (analyzeIPA "u") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [u]."
-    (toTextATRFeature (analyzeIPA "u") == Just "+ ATR")
+    (atr (analyzeIPA "u") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [u]."
-    (toTextRoundFeature (analyzeIPA "u") == Just "+ round")
+    (round (analyzeIPA "u") == Just (RoundFeature Plus))
 
 
 
 
 
   runTest "The back feature is + for [ʊ]."
-    (toTextBackFeature (analyzeIPA "ʊ") == Just "+ back")
+    (back (analyzeIPA "ʊ") == Just (BackFeature Plus))
   runTest "The high feature is + for [ʊ]."
-    (toTextHighFeature (analyzeIPA "ʊ") == Just "+ high")
+    (high (analyzeIPA "ʊ") == Just (HighFeature Plus))
   runTest "The low feature is - for [ʊ]."
-    (toTextLowFeature (analyzeIPA "ʊ") == Just "- low")
+    (low (analyzeIPA "ʊ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ʊ]."
-    (toTextATRFeature (analyzeIPA "ʊ") == Just "- ATR")
+    (atr (analyzeIPA "ʊ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is + for [ʊ]."
-    (toTextRoundFeature (analyzeIPA "ʊ") == Just "+ round")
+    (round (analyzeIPA "ʊ") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is + for [o]."
-    (toTextBackFeature (analyzeIPA "o") == Just "+ back")
+    (back (analyzeIPA "o") == Just (BackFeature Plus))
   runTest "The high feature is - for [o]."
-    (toTextHighFeature (analyzeIPA "o") == Just "- high")
+    (high (analyzeIPA "o") == Just (HighFeature Minus))
   runTest "The low feature is - for [o]."
-    (toTextLowFeature (analyzeIPA "o") == Just "- low")
+    (low (analyzeIPA "o") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [o]."
-    (toTextATRFeature (analyzeIPA "o") == Just "+ ATR")
+    (atr (analyzeIPA "o") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [o]."
-    (toTextRoundFeature (analyzeIPA "o") == Just "+ round")
+    (round (analyzeIPA "o") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is + for [ɔ]."
-    (toTextBackFeature (analyzeIPA "ɔ") == Just "+ back")
+    (back (analyzeIPA "ɔ") == Just (BackFeature Plus))
   runTest "The high feature is - for [ɔ]."
-    (toTextHighFeature (analyzeIPA "ɔ") == Just "- high")
+    (high (analyzeIPA "ɔ") == Just (HighFeature Minus))
   runTest "The low feature is - for [ɔ]."
-    (toTextLowFeature (analyzeIPA "ɔ") == Just "- low")
+    (low (analyzeIPA "ɔ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɔ]."
-    (toTextATRFeature (analyzeIPA "ɔ") == Just "- ATR")
+    (atr (analyzeIPA "ɔ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is + for [ɔ]."
-    (toTextRoundFeature (analyzeIPA "ɔ") == Just "+ round")
+    (round (analyzeIPA "ɔ") == Just (RoundFeature Plus))
 
 
 
 
   runTest "The back feature is + for [ɑ]."
-    (toTextBackFeature (analyzeIPA "ɑ") == Just "+ back")
+    (back (analyzeIPA "ɑ") == Just (BackFeature Plus))
   runTest "The high feature is - for [ɑ]."
-    (toTextHighFeature (analyzeIPA "ɑ") == Just "- high")
+    (high (analyzeIPA "ɑ") == Just (HighFeature Minus))
   runTest "The low feature is + for [ɑ]."
-    (toTextLowFeature (analyzeIPA "ɑ") == Just "+ low")
+    (low (analyzeIPA "ɑ") == Just (LowFeature Plus))
   runTest "The ATR feature is - for [ɑ]."
-    (toTextATRFeature (analyzeIPA "ɑ") == Just "- ATR") -- In brackets
+    (atr (analyzeIPA "ɑ") == Just (AdvancedTongueRootFeature Minus)) -- In brackets
   runTest "The round feature is - for [ɑ]."
-    (toTextRoundFeature (analyzeIPA "ɑ") == Just "- round")
+    (round (analyzeIPA "ɑ") == Just (RoundFeature Minus))
 
 
 
 
   runTest "The back feature is - for [y]."
-    (toTextBackFeature (analyzeIPA "y") == Just "- back")
+    (back (analyzeIPA "y") == Just (BackFeature Minus))
   runTest "The high feature is + for [y]."
-    (toTextHighFeature (analyzeIPA "y") == Just "+ high")
+    (high (analyzeIPA "y") == Just (HighFeature Plus))
   runTest "The low feature is - for [y]."
-    (toTextLowFeature (analyzeIPA "y") == Just "- low")
+    (low (analyzeIPA "y") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [y]."
-    (toTextATRFeature (analyzeIPA "y") == Just "+ ATR")
+    (atr (analyzeIPA "y") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [y]."
-    (toTextRoundFeature (analyzeIPA "y") == Just "+ round")
+    (round (analyzeIPA "y") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is - for [ø]."
-    (toTextBackFeature (analyzeIPA "ø") == Just "- back")
+    (back (analyzeIPA "ø") == Just (BackFeature Minus))
   runTest "The high feature is - for [ø]."
-    (toTextHighFeature (analyzeIPA "ø") == Just "- high")
+    (high (analyzeIPA "ø") == Just (HighFeature Minus))
   runTest "The low feature is - for [ø]."
-    (toTextLowFeature (analyzeIPA "ø") == Just "- low")
+    (low (analyzeIPA "ø") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [ø]."
-    (toTextATRFeature (analyzeIPA "ø") == Just "+ ATR")
+    (atr (analyzeIPA "ø") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [ø]."
-    (toTextRoundFeature (analyzeIPA "ø") == Just "+ round")
+    (round (analyzeIPA "ø") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is + for [ɨ]."
-    (toTextBackFeature (analyzeIPA "ɨ") == Just "+ back")
+    (back (analyzeIPA "ɨ") == Just (BackFeature Plus))
   runTest "The high feature is + for [ɨ]."
-    (toTextHighFeature (analyzeIPA "ɨ") == Just "+ high")
+    (high (analyzeIPA "ɨ") == Just (HighFeature Plus))
   runTest "The low feature is - for [ɨ]."
-    (toTextLowFeature (analyzeIPA "ɨ") == Just "- low")
+    (low (analyzeIPA "ɨ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɨ]."  -- In parentheses
-    (toTextATRFeature (analyzeIPA "ɨ") == Just "- ATR")
+    (atr (analyzeIPA "ɨ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [ɨ]."
-    (toTextRoundFeature (analyzeIPA "ɨ") == Just "- round")
+    (round (analyzeIPA "ɨ") == Just (RoundFeature Minus))
     
     
  
   runTest "The back feature is + for [ʌ]."
-    (toTextBackFeature (analyzeIPA "ʌ") == Just "+ back")
+    (back (analyzeIPA "ʌ") == Just (BackFeature Plus))
   runTest "The high feature is - for [ʌ]."
-    (toTextHighFeature (analyzeIPA "ʌ") == Just "- high")
+    (high (analyzeIPA "ʌ") == Just (HighFeature Minus))
   runTest "The low feature is - for [ʌ]."
-    (toTextLowFeature (analyzeIPA "ʌ") == Just "- low")
+    (low (analyzeIPA "ʌ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ʌ]."
-    (toTextATRFeature (analyzeIPA "ʌ") == Just "- ATR") -- in parentheses
+    (atr (analyzeIPA "ʌ") == Just (AdvancedTongueRootFeature Minus)) -- in parentheses
   runTest "The round feature is - for [ʌ]."
-    (toTextRoundFeature (analyzeIPA "ʌ") == Just "- round")
+    (round (analyzeIPA "ʌ") == Just (RoundFeature Minus))
 
 
   runTest "The ATR feature is nothing for [z]."
-    (toTextATRFeature (analyzeIPA "z") == Nothing)
+    (atr (analyzeIPA "z") == Nothing)
   runTest "The ATR feature is nothing for [p]."
-    (toTextATRFeature (analyzeIPA "p") == Nothing)
+    (atr (analyzeIPA "p") == Nothing)
 
 
   runTest "The nasal feature is unary."
