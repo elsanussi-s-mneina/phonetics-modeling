@@ -345,7 +345,11 @@ continuant consonant@(Consonant _ _ _ _)
   | isGlide consonant = Just (ContinuantFeature Plus)
   | otherwise         = Nothing
 
-
+{-|
+Nasal consonants are [nasal].
+-- to do: add support for nasal vowels.
+All other segments are not defined for [nasal].
+|-}
 nasal :: Phonet -> Maybe PhonemeFeature
 nasal (Consonant _ _ Nasal _) = Just NasalFeature
 nasal _                       = Nothing
