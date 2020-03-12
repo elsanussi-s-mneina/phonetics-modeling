@@ -416,10 +416,20 @@ coronal (Consonant _ PostAlveolar   _ _) = Just CoronalFeature
 coronal _                                = Nothing
 
 
-
+{-|
+Palatals are [dorsal].
+(
+  Aside: alveolo-palatals do not seem to be dorsals,
+  although the table 12.4 is confusing
+  because it uses the IPA symbol for one.
+  TODO: find more information on whether
+  alveolo-palatals are [dorsal].)
+Velars are [dorsal].
+Uvulars are [dorsal].
+All other segments are undefined for [dorsal].
+|-}
 dorsal :: Phonet -> Maybe PhonemeFeature
-dorsal (Consonant _ Palatal        _ _) = Just DorsalFeature  -- Aside: Palatal is actually in parentheses in the textbook
-dorsal (Consonant _ AlveoloPalatal _ _) = Just DorsalFeature
+dorsal (Consonant _ Palatal        _ _) = Just DorsalFeature
 dorsal (Consonant _ Velar          _ _) = Just DorsalFeature
 dorsal (Consonant _ Uvular         _ _) = Just DorsalFeature
 dorsal _                                = Nothing
