@@ -359,6 +359,7 @@ lateral :: Phonet -> Maybe PhonemeFeature
 lateral (Consonant _ _ Lateral            _) = Just LateralFeature
 lateral (Consonant _ _ LateralApproximant _) = Just LateralFeature
 lateral (Consonant _ _ LateralFricative   _) = Just LateralFeature
+lateral (Consonant _ _ LateralFlap   _) = Just LateralFeature
 lateral _                                    = Nothing
 
 {-|
