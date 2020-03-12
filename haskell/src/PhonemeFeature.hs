@@ -355,6 +355,13 @@ nasal (Consonant _ _ Nasal _) = Just NasalFeature
 nasal _                       = Nothing
 
 
+{-|
+Lateral consonants are [lateral].
+Lateral Approximant consonants are [lateral].
+Lateral fricative consonants are [lateral].
+Lateral flap consonants are [lateral].
+All other segments are not defined for [lateral].
+|-}
 lateral :: Phonet -> Maybe PhonemeFeature
 lateral (Consonant _ _ Lateral            _) = Just LateralFeature
 lateral (Consonant _ _ LateralApproximant _) = Just LateralFeature
