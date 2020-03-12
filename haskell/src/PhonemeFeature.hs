@@ -63,7 +63,7 @@ data Polarity = Plus | Minus
  as a 2D matrix with one column, roughly like this:
  [ +voice     ]
  [ +sonorant  ]
- [  Nasal     ]
+ [  nasal     ]
 
 Note that certain sets of features cannot coexist,
 syntactically. For example a phoneme cannot be
@@ -75,7 +75,7 @@ name of feature).
 
  Note that some analyses
 are language specific, so for some phonemes (not
-the usual case) whether it has feature X (say 'Coronal')
+the usual case) whether it has feature X (say 'coronal')
 depends on the language (theoretical example: e.g. Swahili,
 vs French). This is not implemented here.
 
@@ -463,7 +463,7 @@ Uvular affricates are [+strident], also.
 All other fricatives are [-strident].
 All other affricates are [-strident], also.
 
-All other consonants or vowels are undefined for [+/-strident].
+All other segments are undefined for [+/-strident].
 
 (For source of facts
  see page 266, under [+/-strident] heading, under the subsection "Natural classes".)
@@ -492,10 +492,10 @@ Alveolo-palatal consonants are [+high].
 Velar consonants are [+high].
 
 Uvular consonants are [-high].
-Other consonants are neither + or - high.
+All other consonants are undefined for [+/-high].
 Close vowels are [+high].
 Near-close vowels are [+high].
-Other vowels are [-high].
+All other vowels are [-high].
 |-}
 high :: Phonet -> Maybe PhonemeFeature
 high (Consonant _ Palatal _ _) = Just (HighFeature Plus)
@@ -514,7 +514,7 @@ Meaning:
 Uvular consonants are [+low].
 Pharyngeal consonants are [+low].
 Glottal consonants are [+low].
-Other consonants are neither + or - low.
+All other consonants are undefined for [+/-low].
 Open vowels are [+low].
 Near open vowels are [+low].
 All other vowels are [-low].
@@ -535,7 +535,7 @@ Meaning:
 Back vowels are [+back].
 Central vowels are [+back].
 Front vowels are [-back].
-All other phonemes are neither plus or minus back.
+All other segments are undefined for [+/-back].
 |-}
 back :: Phonet -> Maybe PhonemeFeature
 back (Vowel _ Back _ _) = Just (BackFeature Plus)
@@ -547,9 +547,9 @@ back _ = Nothing
 {-|
 
 Meaning of source code:
-Rounded vowels are [+round], and
-other vowels are [-round].
-All other phonemes are [-round].
+Rounded vowels are [+round].
+All other vowels are [-round].
+All other segments are [-round].
 |-}
 round :: Phonet -> Maybe PhonemeFeature
 round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
