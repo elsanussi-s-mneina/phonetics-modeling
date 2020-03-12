@@ -595,31 +595,35 @@ atr (Vowel  OpenMid   Back    Rounded   Voiced) = Just (AdvancedTongueRootFeatur
 atr _                                           = Nothing
 
 
+featureMatrix :: Phonet -> [Maybe PhonemeFeature]
+featureMatrix phonete
+  = [ consonantal          phonete
+    , syllabic             phonete
+    , continuant           phonete
+    , sonorant             phonete
+    , delayedRelease       phonete
+    , anterior             phonete
+    , distributed          phonete
+    , strident             phonete
+    , high                 phonete
+    , low                  phonete
+    , nasal                phonete
+    , labial               phonete
+    , coronal              phonete
+    , dorsal               phonete
+    , pharyngeal           phonete
+    , laryngeal            phonete
+    , back                 phonete
+    , PhonemeFeature.round phonete
+    , atr                  phonete
+    , spreadGlottis        phonete
+    , constrictedGlottis   phonete
+    ]
+                
 toTextFeatures :: Phonet -> String
 toTextFeatures phonete =
   let  features :: [Maybe PhonemeFeature]
-       features = [ consonantal          phonete
-                  , syllabic             phonete
-                  , continuant           phonete
-                  , sonorant             phonete
-                  , delayedRelease       phonete
-                  , anterior             phonete
-                  , distributed          phonete
-                  , strident             phonete
-                  , high                 phonete
-                  , low                  phonete
-                  , nasal                phonete
-                  , labial               phonete
-                  , coronal              phonete
-                  , dorsal               phonete
-                  , pharyngeal           phonete
-                  , laryngeal            phonete
-                  , back                 phonete
-                  , PhonemeFeature.round phonete
-                  , atr                  phonete
-                  , spreadGlottis        phonete
-                  , constrictedGlottis   phonete
-                  ]
+       features = featureMatrix phonete
   in "[" ++ intercalate "; " (map show (dejustifyList features)) ++ "]"
 
 
@@ -629,27 +633,4 @@ toTextFeatures phonete =
 -- a list of phonemic features.
 analyzeFeatures :: Phonet -> [PhonemeFeature]
 analyzeFeatures phonete =
-  dejustifyList [ syllabic             phonete
-                , consonantal          phonete
-                , sonorant             phonete
-                , continuant           phonete
-                , voice                phonete
-                , atr                  phonete
-                , nasal                phonete
-                , lateral              phonete
-                , delayedRelease       phonete
-                , spreadGlottis        phonete
-                , constrictedGlottis   phonete
-                , labial               phonete
-                , coronal              phonete
-                , dorsal               phonete
-                , pharyngeal           phonete
-                , laryngeal            phonete
-                , PhonemeFeature.round phonete
-                , anterior             phonete
-                , distributed          phonete
-                , strident             phonete
-                , high                 phonete
-                , low                  phonete
-                , back                 phonete
-                ]
+  dejustifyList (featureMatrix phonete)
