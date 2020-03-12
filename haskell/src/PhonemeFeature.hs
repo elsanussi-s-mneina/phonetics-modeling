@@ -376,9 +376,8 @@ laryngeal _ = Nothing
 
 
 voice :: Phonet -> Maybe PhonemeFeature
-voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) =
-  Just (VoiceFeature Minus)
--- [ʔ] is [- voice]
+voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just (VoiceFeature Minus)
+-- The voiceless glottal plosive is [- voice]
 
 voice (Consonant v _ _ _) =
   Just (VoiceFeature (boolToPolarity (v == Voiced || v == VoicedAspirated)))
