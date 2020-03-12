@@ -275,33 +275,29 @@ consonantal consonant@(Consonant _ _ _ _)
 consonantal (Vowel _ _ _ _) = Nothing
 
 
+{-|
+Oral stops are [-sonorant].
+Affricates are [-sonorant].
+Fricatives are [-sonorant].
+Nasals are [+sonorant].
+Approximants are [+sonorant].
+Laterals are [+sonorant].
+Vowels are [+sonorant].
+Glides are [+sonorant].
 
+(Source: page 258)
+|-}
 sonorant :: Phonet -> Maybe PhonemeFeature
--- Vowels are sonorants.
-sonorant (Vowel _ _ _ _) = Just (SonorantFeature Plus)
--- Nasals are sonorants.
-sonorant (Consonant _ _ Nasal _) = Just (SonorantFeature Plus)
--- Approximants are sonorants.
+sonorant (Consonant _ _ Plosive     _) = Just (SonorantFeature Minus)
+sonorant (Consonant _ _ Affricate   _) = Just (SonorantFeature Minus)
+sonorant (Consonant _ _ Fricative   _) = Just (SonorantFeature Minus)
+sonorant (Consonant _ _ Nasal       _) = Just (SonorantFeature Plus)
 sonorant (Consonant _ _ Approximant _) = Just (SonorantFeature Plus)
--- Laterals are sonorants.
-sonorant (Consonant _ _ LateralApproximant _ ) = Just (SonorantFeature Plus)
--- Are Lateral flaps, and Laterals that are not fricatives approximants.
--- Let us just guess that they are:
--- sonorant (Consonants _ _ Lateral _ ) = Just (SonorantFeature Plus) -- unsure
-
--- sonorant (Consonants _ _ LateralFlap _ ) = Flap
--- I am unsure whether lateral flaps are sonorants. That is
--- why the previous line of code is commented out.
-
-
--- Fricatives are not sonorants.
-sonorant (Consonant _ _ Fricative        _) = Just (SonorantFeature Minus)
--- Lateral fricatives are not sonorants.
-sonorant (Consonant _ _ LateralFricative _) = Just  (SonorantFeature Minus)
--- Affricates are not sonorants.
-sonorant (Consonant _ _ Affricate        _) = Just  (SonorantFeature Minus)
-sonorant _                                  = Just  (SonorantFeature Minus) -- Add more
-
+sonorant (Consonant _ _ Lateral     _) = Just (SonorantFeature Plus)
+sonorant (Vowel               _ _ _ _) = Just (SonorantFeature Plus)
+sonorant consonant@(Consonant _ _ _ _)
+  | isGlide consonant = Just (SonorantFeature Plus)
+  | otherwise         = Just (SonorantFeature Minus)
 
 
 continuant :: Phonet -> Maybe PhonemeFeature
