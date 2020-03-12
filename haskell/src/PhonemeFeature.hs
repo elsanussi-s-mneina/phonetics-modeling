@@ -267,12 +267,18 @@ isGlide (Consonant _ LabialPalatal Approximant PulmonicEgressive) = True
 isGlide (Consonant _ Velar         Approximant PulmonicEgressive) = True
 isGlide _                                                         = False
 
+{-|
+Vowels are [-consonantal].
+Glides are [-consonantal].
+Consonants (that are not glides) are [+consonantal].
 
+(Source: page 258)
+|-}
 consonantal :: Phonet -> Maybe PhonemeFeature
+consonantal (Vowel _ _ _ _) = Just (ConsonantalFeature Minus)
 consonantal consonant@(Consonant _ _ _ _)
   | isGlide consonant = Just (ConsonantalFeature Minus)
   | otherwise         = Just (ConsonantalFeature Plus)
-consonantal (Vowel _ _ _ _) = Nothing
 
 
 {-|
