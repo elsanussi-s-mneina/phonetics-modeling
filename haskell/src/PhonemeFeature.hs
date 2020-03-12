@@ -345,13 +345,30 @@ labial (Consonant _ LabioDental _ _) = Just LabialFeature
 labial _ = Nothing
 
 
+{-|
+Dentals are [coronal].
+Alveolars are [coronal] also.
+Alveolopalatals are [coronal] also.
+Retroflexes are [coronal] also.
+Palatals are [coronal] also.
+
+Post-alveolars are [coronal] also.
+
+All other sounds are undefined for [coronal].
+
+(Source: page 264)
+(The fact that Post-alveolar consonants are coronal is indicated by
+ Table 12. on page 265.)
+|-}
 coronal :: Phonet -> Maybe PhonemeFeature
 coronal (Consonant _ Dental         _ _) = Just CoronalFeature
 coronal (Consonant _ Alveolar       _ _) = Just CoronalFeature
-coronal (Consonant _ PostAlveolar   _ _) = Just CoronalFeature
+coronal (Consonant _ AlveoloPalatal _ _) = Just CoronalFeature
 coronal (Consonant _ Retroflex      _ _) = Just CoronalFeature
 coronal (Consonant _ Palatal        _ _) = Just CoronalFeature
-coronal (Consonant _ AlveoloPalatal _ _) = Just CoronalFeature
+
+coronal (Consonant _ PostAlveolar   _ _) = Just CoronalFeature
+
 coronal _                                = Nothing
 
 
