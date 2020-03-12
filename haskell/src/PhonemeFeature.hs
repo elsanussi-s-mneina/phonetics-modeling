@@ -273,10 +273,6 @@ isGlide (Consonant _ LabialPalatal Approximant PulmonicEgressive) = True
 isGlide (Consonant _ Velar         Approximant PulmonicEgressive) = True
 isGlide _                                                         = False
 
-isNasal :: Phonet -> Bool
-isNasal (Consonant _ _ Nasal _) = True
-isNasal _ = False
-
 {-|
 Vowels are [-consonantal].
 Glides are [-consonantal].
