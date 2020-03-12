@@ -415,20 +415,19 @@ distributed (Consonant _ Palatal        _ _) = Just (DistributedFeature Plus)
 distributed (Consonant _ AlveoloPalatal _ _) = Just (DistributedFeature Plus)
 distributed _ = Nothing
 
-
 strident :: Phonet -> Maybe PhonemeFeature
-strident (Consonant _ Bilabial       _ _) = Just (StridentFeature Minus)
-strident (Consonant _ LabioDental    _ _) = Just (StridentFeature Plus)
-strident (Consonant _ Dental         _ _) = Just (StridentFeature Minus)
-strident (Consonant _ Alveolar       _ _) = Just (StridentFeature Plus)
-strident (Consonant _ PostAlveolar   _ _) = Just (StridentFeature Plus)
-strident (Consonant _ Retroflex      _ _) = Just (StridentFeature Minus)
-strident (Consonant _ Palatal        _ _) = Just (StridentFeature Minus)
-strident (Consonant _ AlveoloPalatal _ _) = Just (StridentFeature Minus)
-strident (Consonant _ Velar          _ _) = Just (StridentFeature Minus)
-strident (Consonant _ Uvular         _ _) = Just (StridentFeature Plus)
-strident (Consonant _ Pharyngeal     _ _) = Just (StridentFeature Minus)
-strident (Consonant _ Glottal        _ _) = Just (StridentFeature Minus)
+strident (Consonant _ Bilabial       Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ LabioDental    Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ Dental         Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ Alveolar       Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ PostAlveolar   Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ Retroflex      Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ Palatal        Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ AlveoloPalatal Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ Velar          Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ Uvular         Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ Pharyngeal     Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ Glottal        Fricative _) = Just (StridentFeature Minus)
 strident _                                = Nothing
 
 
