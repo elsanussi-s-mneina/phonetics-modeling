@@ -455,10 +455,10 @@ All other segments are [-voice].
 voice :: Phonet -> Maybe PhonemeFeature
 voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just (VoiceFeature Minus)
 -- The voiceless glottal plosive is [-voice]
-voice (Consonant VoicedAspirated                       _ _ _) = Just (VoiceFeature Plus)
-voice (Consonant Voiced                                _ _ _) = Just (VoiceFeature Plus)
-voice (Vowel _ _ _                                    Voiced) = Just (VoiceFeature Plus)
-voice _                                                       = Just (VoiceFeature Minus)
+voice (Consonant VoicedAspirated _ _ _)  = Just (VoiceFeature Plus)
+voice (Consonant Voiced          _ _ _)  = Just (VoiceFeature Plus)
+voice (Vowel _ _ _               Voiced) = Just (VoiceFeature Plus)
+voice _                                  = Just (VoiceFeature Minus)
 
 {-|
 Voiceless aspirated plosives are [spread glottis].
@@ -480,11 +480,7 @@ Creaky voiced sonorants have the feature [constricted glottis].
 (Source: page 262)
 |-}
 constrictedGlottis :: Phonet -> Maybe PhonemeFeature
-constrictedGlottis (Consonant
-                      _
-                      Glottal
-                      Plosive
-                      _) =
+constrictedGlottis (Consonant _ Glottal Plosive _) =
   Just ConstrictedGlottisFeature
 constrictedGlottis consonant@(Consonant CreakyVoiced _ _ _) =
   if sonorant consonant == Just (SonorantFeature Plus)
