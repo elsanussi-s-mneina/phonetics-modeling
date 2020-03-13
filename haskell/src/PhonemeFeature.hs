@@ -18,6 +18,14 @@ import Lib
 
 import Data.List (intercalate)
 
+{-|
+This function is not relevant to linguistics.
+
+We need this function in order to convert
+a list of Maybe types to their non-maybe
+counterparts. Any values containing Nothing
+are skipped.
+|-}
 dejustifyList :: [Maybe a] -> [a]
 dejustifyList [] = []
 dejustifyList (Just x: xs) = x:(dejustifyList xs)
