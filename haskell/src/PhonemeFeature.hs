@@ -427,7 +427,7 @@ dorsal _                                = Nothing
 
 {-|
 Pharyngeal fricatives are [pharyngeal].
-All other sounds are undefined for [pharyngeal].
+All other segments are undefined for [pharyngeal].
 
 (Source: page 264)
 |-}
@@ -435,7 +435,12 @@ pharyngeal :: Phonet -> Maybe PhonemeFeature
 pharyngeal (Consonant _ Pharyngeal Fricative _) = Just PharyngealFeature
 pharyngeal _                                    = Nothing
 
+{-|
+Glottal consonants are [laryngeal].
+All other segments are undefined for [laryngeal].
 
+(Source: page 265)
+|-}
 laryngeal :: Phonet -> Maybe PhonemeFeature
 laryngeal (Consonant _ Glottal _ _ ) = Just LaryngealFeature
 laryngeal _                          = Nothing
@@ -584,6 +589,7 @@ round :: Phonet -> Maybe PhonemeFeature
 round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
 round (Vowel _ _ _       _) = Just (RoundFeature Minus)
 round _                     = Just (RoundFeature Minus)
+
 
 atr :: Phonet -> Maybe PhonemeFeature
 atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
