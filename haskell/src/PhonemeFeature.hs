@@ -446,32 +446,55 @@ laryngeal (Consonant _ Glottal _ _ ) = Just LaryngealFeature
 laryngeal _                          = Nothing
 
 
-
+{-|
+Voiced Aspirated consonants are [+voice].
+Voiced consonants are [+voice].
+Voiced vowels are [+voice].
+All other segments are [-voice].
+|-}
 voice :: Phonet -> Maybe PhonemeFeature
 voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just (VoiceFeature Minus)
 -- The voiceless glottal plosive is [-voice]
-voice (Consonant Voiced                                _ _ _) = Just (VoiceFeature Plus)
 voice (Consonant VoicedAspirated                       _ _ _) = Just (VoiceFeature Plus)
+voice (Consonant Voiced                                _ _ _) = Just (VoiceFeature Plus)
 voice (Vowel _ _ _                                    Voiced) = Just (VoiceFeature Plus)
 voice _                                                       = Just (VoiceFeature Minus)
 
-
+{-|
+Voiceless aspirated plosives are [spread glottis].
+Voiced aspirated plosives are [spread glottis].
+All other segments are not defined for [spread glottis].
+(Source: page 262)
+|-}
 spreadGlottis :: Phonet -> Maybe PhonemeFeature
-spreadGlottis (Consonant VoicelessAspirated _ _ _) = Just SpreadGlottisFeature
-spreadGlottis (Consonant VoicedAspirated    _ _ _) = Just SpreadGlottisFeature
+spreadGlottis (Consonant VoicelessAspirated _ Plosive _) = Just SpreadGlottisFeature
+spreadGlottis (Consonant VoicedAspirated    _ Plosive _) = Just SpreadGlottisFeature
 spreadGlottis _ = Nothing
 
 
+{-|
+Ejectives have the feature [constricted glottis].
+Glottal stop have the feature [constricted glottis].
+Creaky voiced sonorants have the feature [constricted glottis].
 
+(Source: page 262)
+|-}
 constrictedGlottis :: Phonet -> Maybe PhonemeFeature
 constrictedGlottis (Consonant
-                      Voiceless
+                      _
                       Glottal
                       Plosive
-                      PulmonicEgressive) =
+                      _) =
   Just ConstrictedGlottisFeature
+constrictedGlottis consonant@(Consonant CreakyVoiced _ _ _) =
+  if sonorant consonant == Just (SonorantFeature Plus)
+    then Just ConstrictedGlottisFeature
+    else Nothing
+constrictedGlottis vowel@(Vowel _ _ _ CreakyVoiced) =
+  if sonorant vowel == Just (SonorantFeature Plus)
+    then Just ConstrictedGlottisFeature
+    else Nothing
 constrictedGlottis _  = Nothing
--- TODO: add CreakyVoice here = Just True
 
 
 anterior :: Phonet -> Maybe PhonemeFeature

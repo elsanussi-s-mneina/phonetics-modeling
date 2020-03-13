@@ -150,6 +150,7 @@ data VocalFolds = Voiced
                 | Voiceless
                 | VoicedAspirated
                 | VoicelessAspirated
+                | CreakyVoiced
                 | UnmarkedVocalFolds
                   deriving (Eq, Show)
 
