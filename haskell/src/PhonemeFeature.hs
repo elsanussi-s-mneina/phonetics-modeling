@@ -492,7 +492,21 @@ constrictedGlottis vowel@(Vowel _ _ _ CreakyVoiced) =
     else Nothing
 constrictedGlottis _  = Nothing
 
+{-|
+Dentals are [+anterior].
+Alveolars are [+anterior].
+Post-alveolars are [-anterior].
+Retroflexes are [-anterior].
+Palatals are [-anterior].
 
+(Source: page 265)
+
+TODO: answer the question:
+Question: Are Alveolo-palatals [+anterior], or [-anterior]?
+Alveolo-palatals are [-anterior].
+(SOURCE: not found)
+
+|-}
 anterior :: Phonet -> Maybe PhonemeFeature
 anterior (Consonant _ Dental            _ _) = Just (AnteriorFeature Plus)
 anterior (Consonant _ Alveolar          _ _) = Just (AnteriorFeature Plus)
