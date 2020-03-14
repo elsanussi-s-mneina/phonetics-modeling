@@ -469,7 +469,7 @@ All other segments are not defined for [spread glottis].
 spreadGlottis :: Phonet -> Maybe PhonemeFeature
 spreadGlottis (Consonant VoicelessAspirated _ Plosive _) = Just SpreadGlottisFeature
 spreadGlottis (Consonant VoicedAspirated    _ Plosive _) = Just SpreadGlottisFeature
-spreadGlottis _ = Nothing
+spreadGlottis _                                          = Nothing
 
 
 {-|
@@ -544,19 +544,19 @@ All other segments are undefined for [+/-strident].
 (Source: page 266, under [+/-strident] heading, under the subsection "Natural classes".)
 |-}
 strident :: Phonet -> Maybe PhonemeFeature
-strident (Consonant _ Alveolar       Fricative _) = Just (StridentFeature Plus)
-strident (Consonant _ Alveolar       Affricate _) = Just (StridentFeature Plus)
-strident (Consonant _ PostAlveolar   Fricative _) = Just (StridentFeature Plus)
-strident (Consonant _ PostAlveolar   Affricate _) = Just (StridentFeature Plus)
-strident (Consonant _ LabioDental    Fricative _) = Just (StridentFeature Plus)
-strident (Consonant _ LabioDental    Affricate _) = Just (StridentFeature Plus)
-strident (Consonant _ Uvular         Fricative _) = Just (StridentFeature Plus)
-strident (Consonant _ Uvular         Affricate _) = Just (StridentFeature Plus)
+strident (Consonant _ Alveolar     Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ Alveolar     Affricate _) = Just (StridentFeature Plus)
+strident (Consonant _ PostAlveolar Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ PostAlveolar Affricate _) = Just (StridentFeature Plus)
+strident (Consonant _ LabioDental  Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ LabioDental  Affricate _) = Just (StridentFeature Plus)
+strident (Consonant _ Uvular       Fricative _) = Just (StridentFeature Plus)
+strident (Consonant _ Uvular       Affricate _) = Just (StridentFeature Plus)
 
-strident (Consonant _ _              Fricative _) = Just (StridentFeature Minus)
-strident (Consonant _ _              Affricate _) = Just (StridentFeature Minus)
+strident (Consonant _ _            Fricative _) = Just (StridentFeature Minus)
+strident (Consonant _ _            Affricate _) = Just (StridentFeature Minus)
 
-strident _                                        = Nothing
+strident _                                      = Nothing
 
 
 {-|
@@ -571,14 +571,14 @@ Near-close vowels are [+high].
 All other vowels are [-high].
 |-}
 high :: Phonet -> Maybe PhonemeFeature
-high (Consonant _ Palatal _ _) = Just (HighFeature Plus)
+high (Consonant _ Palatal        _ _) = Just (HighFeature Plus)
 high (Consonant _ AlveoloPalatal _ _) = Just (HighFeature Plus)
-high (Consonant _ Velar _ _) = Just (HighFeature Plus)
-high (Consonant _ Uvular _ _) = Just (HighFeature Minus)
-high (Consonant _ _ _ _) = Nothing
-high (Vowel Close _ _ _ ) = Just (HighFeature Plus)
-high (Vowel NearClose _ _ _ ) = Just (HighFeature Plus)
-high (Vowel _ _ _ _) = Just (HighFeature Minus)
+high (Consonant _ Velar          _ _) = Just (HighFeature Plus)
+high (Consonant _ Uvular         _ _) = Just (HighFeature Minus)
+high (Consonant _ _              _ _) = Nothing
+high (Vowel Close              _ _ _) = Just (HighFeature Plus)
+high (Vowel NearClose          _ _ _) = Just (HighFeature Plus)
+high (Vowel _                  _ _ _) = Just (HighFeature Minus)
 
 
 {-|
@@ -591,13 +591,13 @@ Near open vowels are [+low].
 All other vowels are [-low].
 |-}
 low :: Phonet -> Maybe PhonemeFeature
-low (Consonant _ Uvular _ _) = Just (LowFeature Plus)
+low (Consonant _ Uvular     _ _) = Just (LowFeature Plus)
 low (Consonant _ Pharyngeal _ _) = Just (LowFeature Plus)
-low (Consonant _ Glottal _ _) = Just (LowFeature Plus)
-low (Consonant _ _ _ _) = Nothing
-low (Vowel Open _ _ _ ) = Just (LowFeature Plus)
-low (Vowel NearOpen _ _ _ ) = Just (LowFeature Plus)
-low (Vowel _ _ _ _ ) = Just (LowFeature Minus)
+low (Consonant _ Glottal    _ _) = Just (LowFeature Plus)
+low (Consonant _ _          _ _) = Nothing
+low (Vowel Open _           _ _) = Just (LowFeature Plus)
+low (Vowel NearOpen _       _ _) = Just (LowFeature Plus)
+low (Vowel _ _              _ _) = Just (LowFeature Minus)
 
 
 {-|
