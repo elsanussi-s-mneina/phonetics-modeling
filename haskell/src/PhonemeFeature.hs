@@ -17,19 +17,7 @@ module PhonemeFeature where
 import Lib
 
 import Data.List (intercalate)
-
-{-|
-This function is not relevant to linguistics.
-
-We need this function in order to convert
-a list of Maybe types to their non-maybe
-counterparts. Any values containing Nothing
-are skipped.
-|-}
-dejustifyList :: [Maybe a] -> [a]
-dejustifyList [] = []
-dejustifyList (Just x: xs) = x:(dejustifyList xs)
-dejustifyList (Nothing:xs) = dejustifyList xs
+import Data.Maybe (catMaybes)
 
 
 {-|
@@ -666,13 +654,6 @@ featureMatrix phonete
     , spreadGlottis        phonete
     , constrictedGlottis   phonete
     ]
-                
-toTextFeatures :: Phonet -> String
-toTextFeatures phonete =
-  let  features :: [Maybe PhonemeFeature]
-       features = featureMatrix phonete
-  in "[" ++ intercalate "; " (map show (dejustifyList features)) ++ "]"
-
 
 
 -- | A function that takes data representing
@@ -680,4 +661,11 @@ toTextFeatures phonete =
 -- a list of phonemic features.
 analyzeFeatures :: Phonet -> [PhonemeFeature]
 analyzeFeatures phonete =
-  dejustifyList (featureMatrix phonete)
+  catMaybes (featureMatrix phonete)
+
+toTextFeatures :: Phonet -> String
+toTextFeatures phonete =
+  let  features = analyzeFeatures phonete
+       featuresStrings = map show features
+  in "[" ++ intercalate "; " featuresStrings ++ "]"
+
