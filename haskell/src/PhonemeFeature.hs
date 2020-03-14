@@ -1,5 +1,6 @@
 module PhonemeFeature where
 
+
 -- Design decisions:
 -- This module should not depend on any module
 -- that is specifically for representing graphemes.
@@ -13,6 +14,15 @@ module PhonemeFeature where
 
 -- Go to Section 12.2 of the textbook to understand
 -- the concept of phonological features.
+
+
+
+import Prelude
+  (
+    Bool(False, True), Maybe(Just, Nothing), Show, String, Eq,
+    elem, filter, head, length, map, null, not, otherwise, show,
+    (==), (>), (++), (&&), (||)
+  )
 
 import Lib
 
