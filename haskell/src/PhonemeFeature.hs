@@ -74,9 +74,9 @@ instance Show Polarity where
  
  Notice that: Linguists write a set of features
  as a 2D matrix with one column, roughly like this:
- [ +voice     ]
- [ +sonorant  ]
- [  nasal     ]
+ ⎡ +voice    ⎤
+ ⎢ +sonorant ⎥
+ ⎣  nasal    ⎦
 
 Note that certain sets of features cannot coexist,
 syntactically. For example a phoneme cannot be
