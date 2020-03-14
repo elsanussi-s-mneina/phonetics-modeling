@@ -207,29 +207,29 @@ difference :: [PhonemeFeature]
            -> [PhonemeFeature]
            -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
 difference list1 list2 =
-  [ binaryDifference SyllabicFeature list1 list2
-  , binaryDifference ConsonantalFeature list1 list2
-  , binaryDifference SonorantFeature list1 list2
-  , binaryDifference ContinuantFeature list1 list2
-  , binaryDifference VoiceFeature list1 list2
+  [ binaryDifference SyllabicFeature           list1 list2
+  , binaryDifference ConsonantalFeature        list1 list2
+  , binaryDifference SonorantFeature           list1 list2
+  , binaryDifference ContinuantFeature         list1 list2
+  , binaryDifference VoiceFeature              list1 list2
   , binaryDifference AdvancedTongueRootFeature list1 list2
-  , unaryDifference  NasalFeature list1 list2
-  , unaryDifference  LateralFeature list1 list2
-  , unaryDifference  DelayedReleaseFeature list1 list2
-  , unaryDifference  SpreadGlottisFeature list1 list2
+  , unaryDifference  NasalFeature              list1 list2
+  , unaryDifference  LateralFeature            list1 list2
+  , unaryDifference  DelayedReleaseFeature     list1 list2
+  , unaryDifference  SpreadGlottisFeature      list1 list2
   , unaryDifference  ConstrictedGlottisFeature list1 list2
-  , unaryDifference  LabialFeature list1 list2
-  , unaryDifference  CoronalFeature list1 list2
-  , unaryDifference  DorsalFeature list1 list2
-  , unaryDifference  PharyngealFeature list1 list2
-  , unaryDifference  LaryngealFeature list1 list2
-  , binaryDifference RoundFeature list1 list2
-  , binaryDifference AnteriorFeature list1 list2
-  , binaryDifference DistributedFeature list1 list2
-  , binaryDifference StridentFeature list1 list2
-  , binaryDifference HighFeature list1 list2
-  , binaryDifference LowFeature list1 list2
-  , binaryDifference BackFeature list1 list2
+  , unaryDifference  LabialFeature             list1 list2
+  , unaryDifference  CoronalFeature            list1 list2
+  , unaryDifference  DorsalFeature             list1 list2
+  , unaryDifference  PharyngealFeature         list1 list2
+  , unaryDifference  LaryngealFeature          list1 list2
+  , binaryDifference RoundFeature              list1 list2
+  , binaryDifference AnteriorFeature           list1 list2
+  , binaryDifference DistributedFeature        list1 list2
+  , binaryDifference StridentFeature           list1 list2
+  , binaryDifference HighFeature               list1 list2
+  , binaryDifference LowFeature                list1 list2
+  , binaryDifference BackFeature               list1 list2
   ]
 
 {-|
@@ -339,7 +339,7 @@ lateral :: Phonet -> Maybe PhonemeFeature
 lateral (Consonant _ _ Lateral            _) = Just LateralFeature
 lateral (Consonant _ _ LateralApproximant _) = Just LateralFeature
 lateral (Consonant _ _ LateralFricative   _) = Just LateralFeature
-lateral (Consonant _ _ LateralFlap   _) = Just LateralFeature
+lateral (Consonant _ _ LateralFlap        _) = Just LateralFeature
 lateral _                                    = Nothing
 
 {-|
@@ -502,7 +502,7 @@ anterior (Consonant _ PostAlveolar      _ _) = Just (AnteriorFeature Minus)
 anterior (Consonant _ Retroflex         _ _) = Just (AnteriorFeature Minus)
 anterior (Consonant _ Palatal           _ _) = Just (AnteriorFeature Minus)
 anterior (Consonant _ AlveoloPalatal    _ _) = Just (AnteriorFeature Minus)
-anterior _ = Nothing
+anterior _                                   = Nothing
 
 distributed :: Phonet -> Maybe PhonemeFeature
 distributed (Consonant _ Dental         _ _) = Just (DistributedFeature Plus)
@@ -511,7 +511,7 @@ distributed (Consonant _ PostAlveolar   _ _) = Just (DistributedFeature Plus)
 distributed (Consonant _ Retroflex      _ _) = Just (DistributedFeature Minus)
 distributed (Consonant _ Palatal        _ _) = Just (DistributedFeature Plus)
 distributed (Consonant _ AlveoloPalatal _ _) = Just (DistributedFeature Plus)
-distributed _ = Nothing
+distributed _                                = Nothing
 
 
 {-|
