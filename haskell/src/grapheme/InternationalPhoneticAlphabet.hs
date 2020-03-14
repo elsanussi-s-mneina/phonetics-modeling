@@ -2,8 +2,16 @@ module InternationalPhoneticAlphabet where
 
 import Lib
 
+import Prelude
+  (
+    Char, String,
+    concatMap, div, elem, length, mod, otherwise,
+    (.), (+), (*), (!!), (++), (==)
+  )
+
 type IPAText = String
   -- For storing text meant to be interpreted as International phonetic alphabet
+
 
 
 -- Grammar for combining IPA symbols

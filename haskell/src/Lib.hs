@@ -1,5 +1,13 @@
 module Lib where
 
+
+import Prelude
+  (
+    Bool(False, True), Eq, Show, String,
+    concatMap, show,
+    (==), (/=)
+  )
+
 data Phonet = Consonant { vocalFolds :: VocalFolds
                         , place :: Place   -- | Place of articulation
                         , manner :: Manner -- | Manner of articulation
