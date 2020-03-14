@@ -174,12 +174,12 @@ isUnary LaryngealFeature = True
 isUnary _ = False
 
 
-differenceOfBinaryFeature :: 
+binaryDifference ::
           (Polarity -> PhonemeFeature) 
                     -> [PhonemeFeature] 
                     -> [PhonemeFeature] 
                     -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
-differenceOfBinaryFeature feature list1 list2 =
+binaryDifference feature list1 list2 =
    let
    relevant x = x == feature Plus || x == feature Minus
    list1Relevant = filter relevant list1
@@ -196,11 +196,11 @@ differenceOfBinaryFeature feature list1 list2 =
            else (Nothing, Just (head list2Relevant))
            
 
-differenceOfUnaryFeature :: PhonemeFeature 
+unaryDifference :: PhonemeFeature
                          -> [PhonemeFeature] 
                          -> [PhonemeFeature] 
                          -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
-differenceOfUnaryFeature feature list1 list2 =
+unaryDifference feature list1 list2 =
   if elem feature list1 == elem feature list2
      then (Nothing, Nothing)
      else if elem feature list1 && not (elem feature list2)
@@ -219,29 +219,29 @@ difference :: [PhonemeFeature]
            -> [PhonemeFeature]
            -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
 difference list1 list2 =
-  [ differenceOfBinaryFeature SyllabicFeature list1 list2
-  , differenceOfBinaryFeature ConsonantalFeature list1 list2
-  , differenceOfBinaryFeature SonorantFeature list1 list2
-  , differenceOfBinaryFeature ContinuantFeature list1 list2
-  , differenceOfBinaryFeature VoiceFeature list1 list2
-  , differenceOfBinaryFeature AdvancedTongueRootFeature list1 list2
-  , differenceOfUnaryFeature NasalFeature list1 list2
-  , differenceOfUnaryFeature LateralFeature list1 list2
-  , differenceOfUnaryFeature DelayedReleaseFeature list1 list2
-  , differenceOfUnaryFeature SpreadGlottisFeature list1 list2
-  , differenceOfUnaryFeature ConstrictedGlottisFeature list1 list2
-  , differenceOfUnaryFeature LabialFeature list1 list2
-  , differenceOfUnaryFeature CoronalFeature list1 list2
-  , differenceOfUnaryFeature DorsalFeature list1 list2
-  , differenceOfUnaryFeature PharyngealFeature list1 list2
-  , differenceOfUnaryFeature LaryngealFeature list1 list2
-  , differenceOfBinaryFeature RoundFeature list1 list2
-  , differenceOfBinaryFeature AnteriorFeature list1 list2
-  , differenceOfBinaryFeature DistributedFeature list1 list2
-  , differenceOfBinaryFeature StridentFeature list1 list2
-  , differenceOfBinaryFeature HighFeature list1 list2
-  , differenceOfBinaryFeature LowFeature list1 list2
-  , differenceOfBinaryFeature BackFeature list1 list2
+  [ binaryDifference SyllabicFeature list1 list2
+  , binaryDifference ConsonantalFeature list1 list2
+  , binaryDifference SonorantFeature list1 list2
+  , binaryDifference ContinuantFeature list1 list2
+  , binaryDifference VoiceFeature list1 list2
+  , binaryDifference AdvancedTongueRootFeature list1 list2
+  , unaryDifference  NasalFeature list1 list2
+  , unaryDifference  LateralFeature list1 list2
+  , unaryDifference  DelayedReleaseFeature list1 list2
+  , unaryDifference  SpreadGlottisFeature list1 list2
+  , unaryDifference  ConstrictedGlottisFeature list1 list2
+  , unaryDifference  LabialFeature list1 list2
+  , unaryDifference  CoronalFeature list1 list2
+  , unaryDifference  DorsalFeature list1 list2
+  , unaryDifference  PharyngealFeature list1 list2
+  , unaryDifference  LaryngealFeature list1 list2
+  , binaryDifference RoundFeature list1 list2
+  , binaryDifference AnteriorFeature list1 list2
+  , binaryDifference DistributedFeature list1 list2
+  , binaryDifference StridentFeature list1 list2
+  , binaryDifference HighFeature list1 list2
+  , binaryDifference LowFeature list1 list2
+  , binaryDifference BackFeature list1 list2
   ]
 
 {-|
