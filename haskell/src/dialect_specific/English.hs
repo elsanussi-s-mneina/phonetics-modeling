@@ -1,6 +1,17 @@
 module English where
 
 import Lib
+  (
+    Airstream(PulmonicEgressive),
+    Backness(Back, Central, Front),
+    Manner(Affricate, Approximant, Fricative, Nasal, Plosive),
+    Phonet(Consonant, Vowel),
+    PhonetInventory(PhonetInventory),
+    Place(Alveolar, Bilabial, Dental, Glottal, LabioDental, LabialVelar, Palatal, PostAlveolar, Velar),
+    Rounding(Rounded, Unrounded, UnmarkedRounding),
+    VocalFolds(Voiced, Voiceless),
+    Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open)
+  )
 
 import Prelude ()
 

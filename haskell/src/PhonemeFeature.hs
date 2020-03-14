@@ -25,6 +25,10 @@ import Prelude
   )
 
 import Lib
+  (
+    Airstream(..), Phonet(Consonant, Vowel),
+    VocalFolds(..), Place(..), Manner(..), Height(..), Backness(..), Rounding(..)
+  )
 
 import Data.List (intercalate)
 import Data.Maybe (catMaybes)
