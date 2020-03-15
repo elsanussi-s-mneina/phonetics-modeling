@@ -234,8 +234,8 @@ unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 p
   in Vowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
 
-unmarkDifferences (Consonant voice2 place2 manner2 airstream2) (Vowel height1 backness1 rounding1 voice1) =
-  unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2)
+unmarkDifferences c@(Consonant _ _ _ _) v@(Vowel _ _ _ _) =
+  unmarkDifferences v c -- Change the order of arguments 
 
 
 
