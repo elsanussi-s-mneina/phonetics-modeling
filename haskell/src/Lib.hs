@@ -273,7 +273,7 @@ impossible (Consonant _               Bilabial    LateralFricative   PulmonicEgr
 impossible (Consonant _               Bilabial    LateralApproximant PulmonicEgressive) = True
 impossible (Consonant _               LabioDental LateralFricative   PulmonicEgressive) = True
 impossible (Consonant _               LabioDental LateralApproximant PulmonicEgressive) = True
-impossible _ = False -- Everything else is assumed to be true.
+impossible _ = False -- Everything else is assumed to be possible.
 
 -- | Whether a phonet is in an intervocalic environment.
 -- | This means that there is a vowel directly before it,
