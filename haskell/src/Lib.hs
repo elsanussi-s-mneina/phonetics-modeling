@@ -165,7 +165,7 @@ data VocalFolds = Voiced
 
 
 vocalFoldStates :: [VocalFolds]
-vocalFoldStates = [Voiceless, Voiced]
+vocalFoldStates = [Voiceless, Voiced, VoicedAspirated, VoicelessAspirated, CreakyVoiced]
 
 newtype PhonetInventory = PhonetInventory [Phonet]
 
@@ -184,7 +184,7 @@ voicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicedAspirate
 voicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiced x y z
 voicedPhonet (Consonant   Voiced             x y z) = Consonant   Voiced x y z
 voicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicedAspirated x y z
-voicedPhonet (Consonant   UnmarkedVocalFolds x y z) = Consonant   UnmarkedVocalFolds x y z
+voicedPhonet (Consonant   _                  x y z) = Consonant   Voiced x y z
 voicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiced
 
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
