@@ -100,6 +100,7 @@ placeStates = [ Bilabial
               , PalatoAlveolar
               ]
 
+retractedPlace :: Place -> Place
 retractedPlace Bilabial     = LabioDental
 retractedPlace LabioDental  = Dental
 retractedPlace Dental       = Alveolar
