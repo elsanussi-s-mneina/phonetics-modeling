@@ -178,8 +178,8 @@ englishDescription :: Phonet -> String
 englishDescription x = show x
 
 
-voicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiced equivalent.
+voicedPhonet :: Phonet -> Phonet
 voicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicedAspirated x y z
 voicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiced x y z
 voicedPhonet (Consonant   Voiced             x y z) = Consonant   Voiced x y z
@@ -187,9 +187,8 @@ voicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicedAspirate
 voicedPhonet (Consonant   UnmarkedVocalFolds x y z) = Consonant   UnmarkedVocalFolds x y z
 voicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiced
 
-
-devoicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
+devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet (Consonant   Voiced             x y z) = Consonant   Voiceless          x y z
 devoicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiceless          x y z
 devoicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicelessAspirated x y z
