@@ -203,8 +203,8 @@ spirantizedPhonet (Consonant x place Plosive z) | place /= Alveolar
 
 -- The following is inelegant, but there is no other way in the system,
 -- right now. The part that is inelegant is that,
--- a t which is considered alveolar, becomes θ which is dental
--- when spirantized. So the following line implements this
+-- a [t] which is considered alveolar, when spirantized becomes [θ] which is dental.
+-- So the following line implements this
 -- change in place of articulation.
 spirantizedPhonet (Consonant x Alveolar Plosive z) =
   Consonant x Dental Fricative z
