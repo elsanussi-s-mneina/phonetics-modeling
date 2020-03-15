@@ -4,7 +4,7 @@ import Lib
 
 import Prelude
   (
-    Char, String,
+    Bool(False, True), Char, String,
     concatMap, div, elem, length, mod, otherwise,
     (.), (+), (*), (!!), (++), (==)
   )
@@ -33,8 +33,8 @@ type IPAText = String
 
 -- (assume spaces are disjunctions in the right hand side of the following rules)
 -- ascender → b t d k ʔ f θ ð ħ ʕ h ɦ ɬ l ʎ ʘ ɓ ǀ ɗ ǃ ǂ ɠ ʄ ǁ ʛ ɺ ʢ ʡ ɤ
--- midheight → c ɢ m n ɳ ɲ ɴ ʙ r ʀ ⱱ ɾ v s z x ʁ ʋ ɹ ʟ ʍ ɕ w ʑ ʜ i ɨ ʉ ɯ u ɪ ʏ ʊ e ø ɘ ɵ o ə ɛ œ ɜ ɞ ʌ ɔ æ ɐ a ɶ ɑ ɒ
--- descender → p ɟ g q ɱ ɽ ʒ ʂ ʐ ç ʝ ɣ χ ɻ j ɰ ɥ y
+-- midheight → c ɢ m n  ɴ ʙ r ʀ ⱱ ɾ v s z x ʁ ʋ ɹ ʟ ʍ ɕ w ʑ ʜ i ɨ ʉ ɯ u ɪ ʏ ʊ e ø ɘ ɵ o ə ɛ œ ɜ ɞ ʌ ɔ æ ɐ a ɶ ɑ ɒ
+-- descender → p ɟ g q ɱ ɽ ʒ ʂ ʐ ç ʝ ɣ χ ɻ j ɰ ɥ y ɳ ɲ
 -- ascender_descender → ʈ ɖ ɸ β ʃ ɮ ɭ ɧ
 -- diacritic_below →  ̥ ̩
 -- 
@@ -47,6 +47,132 @@ type IPAText = String
 -- to do: a lot (fully sketch out the grammar, cover use of tie bars,
 -- tone symbols, and aspiration symbols, and more.
 --  Then implement it in functions in a programming language.
+
+
+{-|
+Whether an IPA character is written above the base line
+and to the right of the previous character,
+like how exponents of a power are written
+in mathematical notation.
+|-}
+isExponential :: Char -> Bool
+isExponential 'ʰ' = True
+isExponential 'ʷ' = True
+isExponential 'ʲ' = True
+isExponential 'ˠ' = True
+isExponential 'ˤ' = True
+isExponential 'ⁿ' = True
+isExponential 'ˡ' = True
+isExponential  _  = False
+
+{-|
+Whether a diacritic goes above
+the character it is placed on.
+|-}
+isDiacriticAbove :: Char -> Bool
+isDiacriticAbove '̊' = True
+isDiacriticAbove  _  = False
+
+{-|
+Whether a diacritic goes below
+the character which it is placed on.
+|-}
+isDiacriticBelow :: Char -> Bool
+isDiacriticBelow '̥' = True
+isDiacriticBelow  _  = False
+
+
+{-|
+Whether a character (but not a diacritic)
+takes up space
+below the imaginary horizontal line
+on which it is written.
+
+This could be useful later for determining
+where to put diacritics so that
+they are readable.
+|-}
+isAscender :: Char -> Bool
+isAscender 'b' = True
+isAscender 't' = True
+isAscender 'd' = True
+isAscender 'k' = True
+isAscender 'ʔ' = True
+isAscender 'f' = True
+isAscender 'θ' = True
+isAscender 'ð' = True
+isAscender 'ħ' = True
+isAscender 'ʕ' = True
+isAscender 'h' = True
+isAscender 'ɦ' = True
+isAscender 'ɬ' = True
+isAscender 'l' = True
+isAscender 'ʎ' = True
+isAscender 'ʘ' = True
+isAscender 'ɓ' = True
+isAscender 'ǀ' = True
+isAscender 'ɗ' = True
+isAscender 'ǃ' = True
+isAscender 'ǂ' = True
+isAscender 'ɠ' = True
+isAscender 'ʄ' = True
+isAscender 'ǁ' = True
+isAscender 'ʛ' = True
+isAscender 'ɺ' = True
+isAscender 'ʢ' = True
+isAscender 'ʡ' = True
+isAscender 'ɤ' = True
+isAscender 'ʈ' = True
+isAscender 'ɖ' = True
+isAscender 'ɸ' = True
+isAscender 'β' = True
+isAscender 'ʃ' = True
+isAscender 'ɮ' = True
+isAscender 'ɭ' = True
+isAscender 'ɧ' = True
+isAscender  _  = False
+
+{-|
+Whether a character (but not a diacritic)
+takes up space
+below the imaginary horizontal line
+on which it is written.
+
+This could be useful later for determining
+where to put diacritics so that
+they are readable.
+|-}
+isDescender :: Char -> Bool
+isDescender 'p' = True
+isDescender 'ɟ' = True
+isDescender 'g' = True
+isDescender 'q' = True
+isDescender 'ɱ' = True
+isDescender 'ɽ' = True
+isDescender 'ʒ' = True
+isDescender 'ʂ' = True
+isDescender 'ʐ' = True
+isDescender 'ç' = True
+isDescender 'ʝ' = True
+isDescender 'ɣ' = True
+isDescender 'χ' = True
+isDescender 'ɻ' = True
+isDescender 'j' = True
+isDescender 'ɰ' = True
+isDescender 'ɥ' = True
+isDescender 'y' = True
+isDescender 'ɳ' = True
+isDescender 'ɲ' = True
+isDescender 'ʈ' = True
+isDescender 'ɖ' = True
+isDescender 'ɸ' = True
+isDescender 'β' = True
+isDescender 'ʃ' = True
+isDescender 'ɮ' = True
+isDescender 'ɭ' = True
+isDescender 'ɧ' = True
+isDescender  _  = False
+
 
 graphemesOfIPA :: [Char]
 graphemesOfIPA = consonantsPulmonic 
