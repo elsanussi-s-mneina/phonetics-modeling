@@ -210,7 +210,7 @@ spirantizedPhonet (Consonant x Alveolar Plosive z) =
 
 spirantizedPhonet (Consonant x place Plosive z)
   = Consonant x place Fricative z
-
+spirantizedPhonet other = other
 
 
 
