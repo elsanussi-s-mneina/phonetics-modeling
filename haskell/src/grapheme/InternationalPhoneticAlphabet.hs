@@ -49,6 +49,8 @@ type IPAText = String
 --  Then implement it in functions in a programming language.
 
 
+exponentials = ['ʰ' , 'ʷ' , 'ʲ' , 'ˠ' , 'ˤ' , 'ⁿ' , 'ˡ']
+
 {-|
 Whether an IPA character is written above the base line
 and to the right of the previous character,
@@ -56,15 +58,7 @@ like how exponents of a power are written
 in mathematical notation.
 |-}
 isExponential :: Char -> Bool
-isExponential 'ʰ' = True
-isExponential 'ʷ' = True
-isExponential 'ʲ' = True
-isExponential 'ˠ' = True
-isExponential 'ˤ' = True
-isExponential 'ⁿ' = True
-isExponential 'ˡ' = True
-isExponential  _  = False
-
+isExponential character = character `elem` exponentials
 {-|
 Whether a diacritic goes above
 the character it is placed on.
