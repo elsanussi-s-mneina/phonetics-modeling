@@ -199,8 +199,6 @@ devoicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiceless
 
 
 spirantizedPhonet :: Phonet -> Phonet
-spirantizedPhonet (Consonant x place Plosive z) | place /= Alveolar
-  = Consonant x place Fricative z
 
 -- The following is inelegant, but there is no other way in the system,
 -- right now. The part that is inelegant is that,
@@ -209,6 +207,10 @@ spirantizedPhonet (Consonant x place Plosive z) | place /= Alveolar
 -- change in place of articulation.
 spirantizedPhonet (Consonant x Alveolar Plosive z) =
   Consonant x Dental Fricative z
+
+spirantizedPhonet (Consonant x place Plosive z)
+  = Consonant x place Fricative z
+
 
 
 
