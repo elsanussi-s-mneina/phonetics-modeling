@@ -194,6 +194,7 @@ devoicedPhonet (Consonant   Voiced             x y z) = Consonant   Voiceless   
 devoicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiceless          x y z
 devoicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicelessAspirated x y z
 devoicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicelessAspirated x y z
+devoicedPhonet (Consonant   UnmarkedVocalFolds x y z) = Consonant   UnmarkedVocalFolds x y z 
 devoicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiceless
 
 
