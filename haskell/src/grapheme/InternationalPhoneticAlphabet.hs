@@ -92,45 +92,20 @@ This could be useful later for determining
 where to put diacritics so that
 they are readable.
 |-}
+
+ascenders =
+  ['b', 't', 'd', 'k', 'ʔ', 'f', 'θ', 'ð', 'ħ', 'ʕ', 'h', 'ɦ', 'ɬ', 'l', 'ʎ',
+  'ʘ', 'ɓ', 'ǀ', 'ɗ', 'ǃ', 'ǂ', 'ɠ', 'ʄ', 'ǁ', 'ʛ', 'ɺ', 'ʢ', 'ʡ', 'ɤ', 'ʈ', 'ɖ',
+  'ɸ', 'β', 'ʃ', 'ɮ', 'ɭ', 'ɧ']
+
+
 isAscender :: Char -> Bool
-isAscender 'b' = True
-isAscender 't' = True
-isAscender 'd' = True
-isAscender 'k' = True
-isAscender 'ʔ' = True
-isAscender 'f' = True
-isAscender 'θ' = True
-isAscender 'ð' = True
-isAscender 'ħ' = True
-isAscender 'ʕ' = True
-isAscender 'h' = True
-isAscender 'ɦ' = True
-isAscender 'ɬ' = True
-isAscender 'l' = True
-isAscender 'ʎ' = True
-isAscender 'ʘ' = True
-isAscender 'ɓ' = True
-isAscender 'ǀ' = True
-isAscender 'ɗ' = True
-isAscender 'ǃ' = True
-isAscender 'ǂ' = True
-isAscender 'ɠ' = True
-isAscender 'ʄ' = True
-isAscender 'ǁ' = True
-isAscender 'ʛ' = True
-isAscender 'ɺ' = True
-isAscender 'ʢ' = True
-isAscender 'ʡ' = True
-isAscender 'ɤ' = True
-isAscender 'ʈ' = True
-isAscender 'ɖ' = True
-isAscender 'ɸ' = True
-isAscender 'β' = True
-isAscender 'ʃ' = True
-isAscender 'ɮ' = True
-isAscender 'ɭ' = True
-isAscender 'ɧ' = True
-isAscender  _  = False
+isAscender character = character `elem` ascenders
+
+descenders =
+  ['p', 'ɟ', 'g', 'q', 'ɱ', 'ɽ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'ɣ', 'χ', 'ɻ', 'j',
+   'ɰ', 'ɥ', 'y', 'ɳ', 'ɲ', 'ʈ', 'ɖ', 'ɸ', 'β', 'ʃ', 'ɮ', 'ɭ', 'ɧ']
+
 
 {-|
 Whether a character (but not a diacritic)
@@ -143,36 +118,7 @@ where to put diacritics so that
 they are readable.
 |-}
 isDescender :: Char -> Bool
-isDescender 'p' = True
-isDescender 'ɟ' = True
-isDescender 'g' = True
-isDescender 'q' = True
-isDescender 'ɱ' = True
-isDescender 'ɽ' = True
-isDescender 'ʒ' = True
-isDescender 'ʂ' = True
-isDescender 'ʐ' = True
-isDescender 'ç' = True
-isDescender 'ʝ' = True
-isDescender 'ɣ' = True
-isDescender 'χ' = True
-isDescender 'ɻ' = True
-isDescender 'j' = True
-isDescender 'ɰ' = True
-isDescender 'ɥ' = True
-isDescender 'y' = True
-isDescender 'ɳ' = True
-isDescender 'ɲ' = True
-isDescender 'ʈ' = True
-isDescender 'ɖ' = True
-isDescender 'ɸ' = True
-isDescender 'β' = True
-isDescender 'ʃ' = True
-isDescender 'ɮ' = True
-isDescender 'ɭ' = True
-isDescender 'ɧ' = True
-isDescender  _  = False
-
+isDescender character = character `elem` descenders
 
 graphemesOfIPA :: [Char]
 graphemesOfIPA = consonantsPulmonic 
