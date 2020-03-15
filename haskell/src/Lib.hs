@@ -100,18 +100,18 @@ placeStates = [ Bilabial
               , PalatoAlveolar
               ]
 
-retractedPlace Bilabial = LabioDental
-retractedPlace LabioDental = Dental
-retractedPlace Dental = Alveolar
-retractedPlace Alveolar = PostAlveolar
+retractedPlace Bilabial     = LabioDental
+retractedPlace LabioDental  = Dental
+retractedPlace Dental       = Alveolar
+retractedPlace Alveolar     = PostAlveolar
 retractedPlace PostAlveolar = Retroflex
-retractedPlace Retroflex = Palatal
-retractedPlace Palatal = Velar
-retractedPlace Velar = Uvular
-retractedPlace Uvular = Pharyngeal
-retractedPlace Pharyngeal = Glottal
-retractedPlace Glottal = Epiglottal
-retractedPlace same = same
+retractedPlace Retroflex    = Palatal
+retractedPlace Palatal      = Velar
+retractedPlace Velar        = Uvular
+retractedPlace Uvular       = Pharyngeal
+retractedPlace Pharyngeal   = Glottal
+retractedPlace Glottal      = Epiglottal
+retractedPlace same         = same
 
 
 data Manner = Plosive
@@ -179,21 +179,21 @@ englishDescription x = show x
 
 voicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiced equivalent.
-voicedPhonet (Consonant VoicelessAspirated x  y z) = Consonant VoicedAspirated x y z
-voicedPhonet (Consonant Voiceless x  y z) = Consonant Voiced x y z
-voicedPhonet (Consonant Voiced x  y z) = Consonant Voiced x y z
-voicedPhonet (Consonant VoicedAspirated x  y z) = Consonant VoicedAspirated x y z
-voicedPhonet (Consonant UnmarkedVocalFolds x  y z) = Consonant UnmarkedVocalFolds x y z
-voicedPhonet (Vowel x y z _) = Vowel x y z     Voiced
+voicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicedAspirated x y z
+voicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiced x y z
+voicedPhonet (Consonant   Voiced             x y z) = Consonant   Voiced x y z
+voicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicedAspirated x y z
+voicedPhonet (Consonant   UnmarkedVocalFolds x y z) = Consonant   UnmarkedVocalFolds x y z
+voicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiced
 
 
 devoicedPhonet :: Phonet -> Phonet
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
-devoicedPhonet (Consonant Voiced x  y z) = Consonant Voiceless x  y z
-devoicedPhonet (Consonant Voiceless x  y z) = Consonant Voiceless x  y z
-devoicedPhonet (Consonant VoicedAspirated x  y z) = Consonant VoicelessAspirated x  y z
-devoicedPhonet (Consonant VoicelessAspirated x  y z) = Consonant VoicelessAspirated x  y z
-devoicedPhonet (Vowel x y z _) = Vowel x y z        Voiceless
+devoicedPhonet (Consonant   Voiced             x y z) = Consonant   Voiceless          x y z
+devoicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiceless          x y z
+devoicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicelessAspirated x y z
+devoicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicelessAspirated x y z
+devoicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiceless
 
 
 
@@ -248,10 +248,10 @@ generateFromUnmarked (Consonant voice place manner airstream) =
   in [Consonant v p m a | p <- place', v <- voice',  m <- manner', a <- airstream']
 
 generateFromUnmarked (Vowel height backness rounding voice) =
-  let voice'    = if voice    == UnmarkedVocalFolds    then vocalFoldStates else [voice]
-      height'   = if height   == UnmarkedHeight        then heightStates   else [height]
-      backness' = if backness == UnmarkedBackness      then backnessStates else [backness]
-      rounding' = if rounding == UnmarkedRounding      then roundingStates else [rounding]
+  let voice'    = if voice    == UnmarkedVocalFolds then vocalFoldStates else [voice]
+      height'   = if height   == UnmarkedHeight     then heightStates    else [height]
+      backness' = if backness == UnmarkedBackness   then backnessStates  else [backness]
+      rounding' = if rounding == UnmarkedRounding   then roundingStates  else [rounding]
   in [Vowel h b r v | h <- height', b <- backness', r <- rounding', v <- voice']
 
 
@@ -259,20 +259,20 @@ generateFromUnmarked (Vowel height backness rounding voice) =
 -- considered impossible according to the IPA (pulmonic) consonants chart.
 -- Does not work for other values.
 impossible :: Phonet -> Bool
-impossible (Consonant Voiced Pharyngeal Plosive PulmonicEgressive) = True
-impossible (Consonant VoicedAspirated Pharyngeal Plosive PulmonicEgressive) = True
-impossible (Consonant Voiceless Glottal Plosive PulmonicEgressive) = False -- [ʔ] is not impossible.
-impossible (Consonant _ Glottal Fricative PulmonicEgressive) = False  -- [h] and [ɦ] are not impossible.
-impossible (Consonant _ Glottal _ PulmonicEgressive) = True -- all other pulmonary egressive consonants are impossible..
-impossible (Consonant _ Pharyngeal Nasal PulmonicEgressive) = True
-impossible (Consonant _ Pharyngeal LateralFricative PulmonicEgressive) = True
-impossible (Consonant _ Pharyngeal LateralApproximant PulmonicEgressive) = True
-impossible (Consonant _ Velar Trill PulmonicEgressive) = True
-impossible (Consonant _ Velar TapOrFlap PulmonicEgressive) = True
-impossible (Consonant _ Bilabial LateralFricative PulmonicEgressive) = True
-impossible (Consonant _ Bilabial LateralApproximant PulmonicEgressive) = True
-impossible (Consonant _ LabioDental LateralFricative PulmonicEgressive) = True
-impossible (Consonant _ LabioDental LateralApproximant PulmonicEgressive) = True
+impossible (Consonant Voiced          Pharyngeal  Plosive            PulmonicEgressive) = True
+impossible (Consonant VoicedAspirated Pharyngeal  Plosive            PulmonicEgressive) = True
+impossible (Consonant Voiceless       Glottal     Plosive            PulmonicEgressive) = False  -- [ʔ] is not impossible.
+impossible (Consonant _               Glottal     Fricative          PulmonicEgressive) = False  -- [h] and [ɦ] are not impossible.
+impossible (Consonant _               Glottal     _                  PulmonicEgressive) = True   -- all other pulmonary egressive consonants are impossible..
+impossible (Consonant _               Pharyngeal  Nasal              PulmonicEgressive) = True
+impossible (Consonant _               Pharyngeal  LateralFricative   PulmonicEgressive) = True
+impossible (Consonant _               Pharyngeal  LateralApproximant PulmonicEgressive) = True
+impossible (Consonant _               Velar       Trill              PulmonicEgressive) = True
+impossible (Consonant _               Velar       TapOrFlap          PulmonicEgressive) = True
+impossible (Consonant _               Bilabial    LateralFricative   PulmonicEgressive) = True
+impossible (Consonant _               Bilabial    LateralApproximant PulmonicEgressive) = True
+impossible (Consonant _               LabioDental LateralFricative   PulmonicEgressive) = True
+impossible (Consonant _               LabioDental LateralApproximant PulmonicEgressive) = True
 impossible _ = False -- Everything else is assumed to be true.
 
 -- | Whether a phonet is in an intervocalic environment.
