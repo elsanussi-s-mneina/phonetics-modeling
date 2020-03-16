@@ -426,6 +426,7 @@ analyzeIPA [firstChar, 'ʰ'] =
           -- since we have no way to represent it in the type system. to do: determine
           -- if the idea of an aspirated vowel makes sense
 
+analyzeIPA _ = (Consonant UnmarkedVocalFolds UnmarkedPlace UnmarkedManner UnmarkedAirstream) -- Not recognized.
 
 constructIPA :: Phonet -> IPAText
 -- Affricates
