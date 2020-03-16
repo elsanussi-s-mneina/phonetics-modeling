@@ -410,7 +410,7 @@ analyzeIPA [firstChar, '̥'] =
           Consonant _ place manner airstream    -> Consonant Voiceless place manner airstream
           Vowel height backness rounding _      -> Vowel height backness rounding Voiceless
 
-analyzeIPA [firstChar, '̼'] =
+analyzeIPA [firstChar, '̬'] =
   let fullGrapheme = analyzeIPA [firstChar]
   in case fullGrapheme of
           Consonant _ place manner airstream    -> Consonant Voiced place manner airstream
