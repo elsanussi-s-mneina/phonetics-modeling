@@ -4,7 +4,7 @@ import Lib
 
 import Prelude
   (
-    Bool(False, True), Char, String,
+    Bool(False, True), Char, Eq, Int, String,
     concatMap, div, elem, length, mod, otherwise,
     (.), (+), (*), (!!), (++), (==)
   )
@@ -254,19 +254,16 @@ diacriticsAndSuprasegmentals =
 showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 
 
--- | This function will allow us to convert an IPA symbol
--- | to its analyzed form (its phonetic features)
--- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
-analyzeIPA  :: IPAText -> Phonet
 
 
-
+indexOf :: (Eq a) => [a] -> Int -> a -> Int
 indexOf [] index target = -1
 indexOf (elem:rest) index target = 
   if elem == target
     then index
     else indexOf rest (index + 1) target
 
+analyzeMannerIPA :: Char -> (Manner, Int)
 analyzeMannerIPA x
   | x `elem` (consonantsPulmonicTable !! 0) = (Plosive, 0)
   | x `elem` (consonantsPulmonicTable !! 1) = (Nasal, 1)
@@ -278,14 +275,17 @@ analyzeMannerIPA x
   | x `elem` (consonantsPulmonicTable !! 7) = (LateralApproximant, 7)
   | otherwise = (LateralApproximant, 7) -- Not right, but will have to work for now. -- TODO: Fix this.
 
+analyzePlaceIPA :: Int -> Place
 analyzePlaceIPA colIndex = 
   let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
   in colNames !! (colIndex `div` 2)
 
+placeToHalfColIndex :: Place -> Int
 placeToHalfColIndex place = 
   let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
   in indexOf colNames 0 place
 
+analyzeIPAv2 :: Char -> Phonet
 analyzeIPAv2 x =
   let (manner, rowIndex) = analyzeMannerIPA x 
       colIndex = indexOf (consonantsPulmonicTable !! rowIndex) 0 x
@@ -293,19 +293,28 @@ analyzeIPAv2 x =
       place    = analyzePlaceIPA colIndex 
   in Consonant voicing place manner PulmonicEgressive
 
+colIndexToVoicing :: Int -> VocalFolds
 colIndexToVoicing colIndex = 
   if colIndex `mod` 2 == 0 then Voiceless else Voiced
 
+voicingToColIndexOffset :: VocalFolds -> Int
 voicingToColIndexOffset Voiceless = 0
 voicingToColIndexOffset Voiced    = 1
 
+mannerToRowIndex :: Manner -> Int
 mannerToRowIndex manner = 
   let rowNames = [Plosive, Nasal, Trill, TapOrFlap, Fricative, LateralFricative, Approximant, LateralApproximant]
   in indexOf rowNames 0 manner
 
+voicingAndPlaceToColIndex :: VocalFolds -> Place -> Int
 voicingAndPlaceToColIndex voicing place = 
       (2 * placeToHalfColIndex place) + voicingToColIndexOffset voicing
   
+
+-- | This function will allow us to convert an IPA symbol
+-- | to its analyzed form (its phonetic features)
+-- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
+analyzeIPA  :: IPAText -> Phonet
 
 -- Affricates
 analyzeIPA "t͡ʃ" = Consonant  Voiceless PostAlveolar Affricate PulmonicEgressive
@@ -418,7 +427,7 @@ analyzeIPA [firstChar, 'ʰ'] =
           -- if the idea of an aspirated vowel makes sense
 
 
-
+constructIPA :: Phonet -> IPAText
 -- Affricates
 constructIPA (Consonant  Voiceless PostAlveolar  Affricate PulmonicEgressive) = "t͡ʃ"
 constructIPA (Consonant  Voiced    PostAlveolar  Affricate PulmonicEgressive) = "d͡ʒ"
