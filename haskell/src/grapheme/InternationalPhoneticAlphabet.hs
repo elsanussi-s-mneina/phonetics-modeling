@@ -593,7 +593,8 @@ constructUnaspiratedPulmonicEgressive (Consonant voicing place manner PulmonicEg
    let rowIndex = mannerToRowIndex manner
        colIndex = voicingAndPlaceToColIndex voicing place
    in  [(consonantsPulmonicTable !! rowIndex) !! colIndex]
-
+   
+constructUnaspiratedPulmonicEgressive _ = ""  -- Kind of senseless for non-consonants, so just do nothing.
 
 deaspirate (Consonant VoicedAspirated place manner airstream) =
   (Consonant Voiced place manner airstream)
