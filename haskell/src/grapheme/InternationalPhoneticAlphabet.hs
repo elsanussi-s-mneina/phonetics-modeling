@@ -121,7 +121,7 @@ graphemesOfIPA = consonantsPulmonic
   ++ vowels
   ++ suprasegmentals 
   ++ toneAndWordAccents
-  ++ diacriticsAndSupersegmentals
+  ++ diacriticsAndSuprasegmentals
 -- See: https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
 -- For the source of this information..
 
@@ -217,8 +217,8 @@ toneAndWordAccents =
   , '↘' -- Global fall
   ]
 
-diacriticsAndSupersegmentals :: [Char]
-diacriticsAndSupersegmentals = 
+diacriticsAndSuprasegmentals :: [Char]
+diacriticsAndSuprasegmentals =
   [ 'ʰ'  -- Aspirated
   , 'ʷ'  -- Labialised
   , 'ʲ'  -- Palatalised
