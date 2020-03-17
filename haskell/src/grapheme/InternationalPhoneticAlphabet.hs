@@ -5,7 +5,7 @@ import Lib
 import Prelude
   (
     Bool(False, True), Char, Eq, Int, String,
-    concatMap, div, elem, length, mod, otherwise,
+    concat, concatMap, div, elem, length, mod, otherwise,
     (.), (+), (*), (!!), (++), (==)
   )
 
@@ -127,16 +127,8 @@ graphemesOfIPA = consonantsPulmonic
 
 -- CONSONANTS (PULMONIC)
 consonantsPulmonic :: [Char]
-consonantsPulmonic = 
-  [ 'p', 'b',                     't', 'd',           'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ',           'ʔ'      -- Plosive
-  ,      'm',      'ɱ',                'n',                'ɳ',      'ɲ',      'ŋ',      'ɴ'                     -- Nasal
-  ,      'ʙ',                          'r',                                              'ʀ'                     -- Trill
-  ,                'ⱱ',                'ɾ',                'ɽ'                                                   -- Tap or Flap
-  , 'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ', 'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ'  -- Fricative
-  ,                     'ɬ', 'ɮ'                                                                                 -- Lateral fricative
-  ,                'ʋ',      'ɹ',      'ɻ',                          'j',       'ɰ'                              -- Approximant
-  ,                          'l',      'ɭ',                          'ʎ',       'ʟ'                              -- Lateral approximant
-  ]
+consonantsPulmonic = concat consonantsPulmonicTable
+
 
 
 consonantsPulmonicTable :: [[Char]]
