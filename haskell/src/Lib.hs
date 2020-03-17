@@ -5,7 +5,7 @@ import Prelude
   (
     Bool(False, True), Eq, Show, String,
     concatMap, show,
-    (==), (/=)
+    (==), (/=), (++)
   )
 
 data Phonet = Consonant { vocalFolds :: VocalFolds
@@ -18,13 +18,25 @@ data Phonet = Consonant { vocalFolds :: VocalFolds
                     , rounding :: Rounding
                     , vocalFolds :: VocalFolds
                     }
-                    deriving (Eq, Show)
+                    deriving Eq
+
+instance Show Phonet where
+  show phonet =
+    case phonet of
+      Consonant vocalFolds place manner airstream -> show vocalFolds ++ " " ++ show place ++ " " ++ show manner ++ " " ++ show airstream ++ " consonant" 
+      Vowel height backness rounding vocalFolds   -> show vocalFolds ++ " " ++ show rounding ++ " " ++ show height ++ " " ++ show backness ++ " vowel"
 
 data Backness = Front
               | Central
               | Back
               | UnmarkedBackness
-                deriving (Eq, Show)
+                deriving Eq
+
+instance Show Backness where
+  show Front            = "front"
+  show Central          = "central"
+  show Back             = "back"
+  show UnmarkedBackness = ""
 
 backnessStates :: [Backness]
 backnessStates = [Front, Central, Back]
@@ -37,7 +49,17 @@ data Height = Close
             | NearOpen
             | Open
             | UnmarkedHeight
-              deriving (Eq, Show)
+              deriving Eq
+
+instance Show Height where
+  show Close          = "close"
+  show NearClose      = "near-close"
+  show CloseMid       = "close-mid"
+  show Mid            = "mid"
+  show OpenMid        = "open-mid"
+  show NearOpen       = "near-open"
+  show Open           = "open"
+  show UnmarkedHeight = ""
 
 heightStates :: [Height]
 heightStates =
@@ -54,7 +76,12 @@ heightStates =
 data Rounding = Rounded
               | Unrounded
               | UnmarkedRounding
-                deriving (Eq, Show)
+                deriving Eq
+
+instance Show Rounding where
+  show Rounded          = "rounded"
+  show Unrounded        = "unrounded"
+  show UnmarkedRounding = ""
 
 roundingStates :: [Rounding]
 roundingStates = [Rounded, Unrounded]
@@ -79,7 +106,28 @@ data Place = Bilabial
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
            | UnmarkedPlace
-           deriving (Eq, Show)
+           deriving Eq
+
+instance Show Place where
+  show place =
+    case place of 
+      Bilabial       -> "bilabial"
+      LabioDental    -> "labio-dental"
+      Dental         -> "dental"
+      Alveolar       -> "alveolar"
+      PostAlveolar   -> "post-alveolar"
+      Retroflex      -> "retroflex"
+      Palatal        -> "palatal"
+      Velar          -> "velar"
+      Uvular         -> "uvular"
+      Pharyngeal     -> "pharyngeal"
+      Glottal        -> "glottal"
+      Epiglottal     -> "epiglottal"
+      LabialVelar    -> "labial-velar"
+      LabialPalatal  -> "labial-palatal"
+      AlveoloPalatal -> "alveolo-palatal"
+      PalatoAlveolar -> "palato-alveolar"
+      UnmarkedPlace  -> ""
 
 placeStates :: [Place]
 placeStates = [ Bilabial
@@ -127,7 +175,23 @@ data Manner = Plosive
             | LateralFlap
             | Lateral -- we need this one for the lateral click.
             | UnmarkedManner -- There are very few IPA symbols for lateral flaps
-              deriving (Eq, Show)
+              deriving Eq
+
+instance Show Manner where
+  show manner =
+    case manner of
+      Plosive            -> "plosive"
+      Nasal              -> "nasal"
+      Trill              -> "trill"
+      TapOrFlap          -> "tap or flap"
+      Approximant        -> "approximant"
+      Fricative          -> "fricative"
+      Affricate          -> "affricate"
+      LateralFricative   -> "lateral fricative"
+      LateralApproximant -> "lateral approximant"
+      LateralFlap        -> "lateral flap"
+      Lateral            -> "lateral"
+      UnmarkedManner     -> ""
 
 mannerStates :: [Manner]
 mannerStates = [ Plosive
@@ -147,7 +211,15 @@ data Airstream = PulmonicEgressive
                | Click
                | Implosive
                | UnmarkedAirstream
-                 deriving (Eq, Show)
+                 deriving Eq
+
+instance Show Airstream where
+  show airstream =
+    case airstream of
+      PulmonicEgressive -> "pulmonic egressive"
+      Click             -> "click"
+      Implosive         -> "implosive"
+      UnmarkedAirstream -> ""
 
 airstreamStates :: [Airstream]
 airstreamStates = [ PulmonicEgressive
@@ -161,8 +233,18 @@ data VocalFolds = Voiced
                 | VoicelessAspirated
                 | CreakyVoiced
                 | UnmarkedVocalFolds
-                  deriving (Eq, Show)
+                  deriving Eq
 
+
+instance Show VocalFolds where
+  show vocalFolds =
+    case vocalFolds of
+      Voiced             -> "voiced"
+      Voiceless          -> "voiceless"
+      VoicedAspirated    -> "voiced aspirated"
+      VoicelessAspirated -> "voiceless aspirated"
+      CreakyVoiced       -> "creaky voiced"
+      UnmarkedVocalFolds -> ""
 
 vocalFoldStates :: [VocalFolds]
 vocalFoldStates = [Voiceless, Voiced, VoicedAspirated, VoicelessAspirated, CreakyVoiced]
