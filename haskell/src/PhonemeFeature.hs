@@ -20,7 +20,7 @@ module PhonemeFeature where
 import Prelude
   (
     Bool(False, True), Maybe(Just, Nothing), Show, String, Eq,
-    elem, filter, head, length, map, null, not, otherwise, show,
+    elem, filter, head, length, map, null, not, notElem, otherwise, show,
     (==), (>), (++), (&&), (||)
   )
 
@@ -202,12 +202,10 @@ unaryDifference :: PhonemeFeature
                          -> [PhonemeFeature] 
                          -> [PhonemeFeature] 
                          -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
-unaryDifference feature list1 list2 =
-  if elem feature list1 == elem feature list2
-     then (Nothing, Nothing)
-     else if elem feature list1 && not (elem feature list2)
-            then (Just feature, Nothing)
-            else (Nothing, Just feature)
+unaryDifference feature list1 list2
+  | elem feature list1 == elem feature list2    = (Nothing, Nothing)
+  | elem feature list1 && notElem feature list2 = (Just feature, Nothing)
+  | otherwise                                   = (Nothing, Just feature)
 
 
 
