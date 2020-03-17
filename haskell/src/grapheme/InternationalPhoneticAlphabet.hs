@@ -10,7 +10,7 @@ import Prelude
   )
 
 type IPAText = String
-  -- For storing text meant to be interpreted as International phonetic alphabet
+-- For storing text meant to be interpreted as International phonetic alphabet
 
 
 
