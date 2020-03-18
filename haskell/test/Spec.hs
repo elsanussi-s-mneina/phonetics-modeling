@@ -92,51 +92,51 @@ analyzeIPASpec = do
       runTest ("should be that: [d] is plosive.")
             (show (manner (analyzeIPA "d")) == "plosive")
       runTest ("should be that: [d] is pulmonic egressive.")
-            (airstream (analyzeIPA "d") == PulmonicEgressive)
+            (show (airstream (analyzeIPA "d")) == "pulmonic egressive")
       runTest ("should be that: [ʈ] is voiceless.")
-            (vocalFolds (analyzeIPA "ʈ") == Voiceless)
+            (show (vocalFolds (analyzeIPA "ʈ")) == "voiceless")
       runTest ("should be that: [ʈ] is retroflex.")
-            (place (analyzeIPA "ʈ") == Retroflex)
+            (show (place (analyzeIPA "ʈ")) == "retroflex")
       runTest ("should be that: [ʈ] is a plosive.")
-            (manner (analyzeIPA "ʈ") == Plosive)
+            (show (manner (analyzeIPA "ʈ")) == "plosive")
       runTest ("should be that: [ʈ] is pulmonic egressive.")
-            (airstream (analyzeIPA "ʈ") == PulmonicEgressive)
+            (show (airstream (analyzeIPA "ʈ")) == "pulmonic egressive")
       runTest ("should be that: [ɖ] is voiced.")
-            (vocalFolds (analyzeIPA "ɖ") == Voiced)
+            (show (vocalFolds (analyzeIPA "ɖ")) == "voiced")
       runTest ("should be that: [ɖ] is retroflex.")
-            (place (analyzeIPA "ɖ") == Retroflex)
+            (show (place (analyzeIPA "ɖ")) == "retroflex")
       runTest ("should be that: [ɖ] is a plosive.")
-            (manner (analyzeIPA "ɖ") == Plosive)
+            (show (manner (analyzeIPA "ɖ")) == "plosive")
       runTest ("should be that: [ɖ] is pulmonic egressive.")
-            (airstream (analyzeIPA "ɖ") == PulmonicEgressive)
+            (show (airstream (analyzeIPA "ɖ")) == "pulmonic egressive")
       runTest ("should be that: [b] is a voiceless bilabial plosive consonant with " ++
           "pulmonic egressive airstream mechanism") 
             (show (analyzeIPA "b") == "voiced bilabial plosive pulmonic egressive consonant" && -- Consonant  Voiced    Bilabial  Plosive PulmonicEgressive &&
             constructIPA             (Consonant  Voiced    Bilabial  Plosive PulmonicEgressive) == "b")
       runTest ("should be that: [t] is a voiceless alveloar plosive consonant with " ++
           "pulmonic egressive airstream mechanism") 
-            (analyzeIPA "t" == Consonant  Voiceless Alveolar  Plosive PulmonicEgressive && 
+            (show (analyzeIPA "t") == "voiceless alveolar plosive pulmonic egressive consonant" && 
             constructIPA             (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive) == "t")
 -- Plosives:
       runTest ("should be that: [p] is a voiceless bilabial plosive consonant with " ++ 
           "pulmonic egressive airstream mechanism") 
-           (analyzeIPA "p"  == Consonant  Voiceless Bilabial  Plosive PulmonicEgressive &&
+           (show (analyzeIPA "p") == "voiceless bilabial plosive pulmonic egressive consonant" &&
            constructIPA (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == "p")
       runTest ("should be that: [t] is a voiceless alveolar plosive with " ++ 
           "pulmonic egressive airstream mechanism")  
-          (analyzeIPA "t"  == Consonant  Voiceless Alveolar  Plosive PulmonicEgressive &&
+          (show (analyzeIPA "t")  == "voiceless alveolar plosive pulmonic egressive consonant" &&
           constructIPA              (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive) == "t")
       runTest ("should be that: [d] is a voiced alveolar plosive with " ++ 
           "pulmonic egressive airstream mechanism") 
-          (analyzeIPA "d"  == Consonant  Voiced    Alveolar  Plosive PulmonicEgressive &&
+          (show (analyzeIPA "d")  == "voiced alveolar plosive pulmonic egressive consonant" &&
           constructIPA              (Consonant  Voiced    Alveolar  Plosive PulmonicEgressive) == "d")
       runTest ("should be that: [ʈ] is a voiceless retroflex plosive with " ++ 
           "pulmonic egressive airstream mechanism") 
-          (analyzeIPA "ʈ"  == Consonant  Voiceless Retroflex Plosive PulmonicEgressive &&
+          (show (analyzeIPA "ʈ")  == "voiceless retroflex plosive pulmonic egressive consonant" &&
           constructIPA              (Consonant  Voiceless Retroflex Plosive PulmonicEgressive) == "ʈ")
       runTest ("should be that: [ɖ] is a voiced retroflex plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɖ"  == Consonant  Voiced    Retroflex Plosive PulmonicEgressive)
+          (show (analyzeIPA "ɖ")  == "voiced retroflex plosive pulmonic egressive consonant")
       runTest ("should be that: [c] is a voiceless palatal plosive with " ++ 
           "pulmonic egressive airstream mechanism")
           (analyzeIPA "c"  == Consonant  Voiceless Palatal   Plosive PulmonicEgressive)
