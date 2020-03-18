@@ -1,6 +1,6 @@
 module Spec (main) where
 
-import Prelude ((++), IO, length, Bool(True, False), putStrLn, putStr, (==), (&&), String, Maybe(Just, Nothing))
+import Prelude ((++), IO, length, Bool(True, False), putStrLn, putStr, show, (==), (&&), String, Maybe(Just, Nothing))
 import PhonemeFeature (isGlide, low, anterior,
                        distributed,
                        strident, high,
@@ -57,12 +57,12 @@ analyzeIPASpec = do
       putStrLn "analyzing place, voicing, manner, and airstream mechanism of sound represented by IPA symbols"
       runTest ("[p] is a voiceless bilabial plosive consonant" ++ 
                 " with pulmonic egressive airstream mechanism.")
-                (analyzeIPA "p" == Consonant Voiceless Bilabial Plosive PulmonicEgressive &&
+                (show (analyzeIPA "p") == "voiceless bilabial plosive pulmonic egressive consonant" &&
                 constructIPA     (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == "p") 
  
       runTest ("[pʰ] is a voiceless aspirated bilabial plosive consonant" ++ 
                 " with pulmonic egressive airstream mechanism.")
-                (analyzeIPA "pʰ" == Consonant VoicelessAspirated Bilabial Plosive PulmonicEgressive &&
+                (show (analyzeIPA "pʰ") == "voiceless aspirated bilabial plosive pulmonic egressive consonant" &&
                 constructIPA     (Consonant VoicelessAspirated Bilabial Plosive PulmonicEgressive) == "pʰ") 
                 
       runTest ("should be that: [s] is a voiceless alveolar fricative consonant" ++
@@ -111,7 +111,7 @@ analyzeIPASpec = do
             (airstream (analyzeIPA "ɖ") == PulmonicEgressive)
       runTest ("should be that: [b] is a voiceless bilabial plosive consonant with " ++
           "pulmonic egressive airstream mechanism") 
-            (analyzeIPA "b" == Consonant  Voiced    Bilabial  Plosive PulmonicEgressive &&
+            (show (analyzeIPA "b") == "voiced bilabial plosive pulmonic egressive consonant" && -- Consonant  Voiced    Bilabial  Plosive PulmonicEgressive &&
             constructIPA             (Consonant  Voiced    Bilabial  Plosive PulmonicEgressive) == "b")
       runTest ("should be that: [t] is a voiceless alveloar plosive consonant with " ++
           "pulmonic egressive airstream mechanism") 
