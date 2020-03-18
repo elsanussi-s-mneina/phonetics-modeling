@@ -5,7 +5,7 @@ import Lib
 import Prelude
   (
     Bool(False, True), Char, Eq, Int, String,
-    concat, concatMap, div, elem, length, mod, otherwise,
+    concat, concatMap, div, elem, length, mod, otherwise, show,
     (.), (+), (*), (!!), (++), (==)
   )
 
@@ -616,3 +616,11 @@ devoicedIPA = constructIPA . devoicedPhonet . analyzeIPA
 
 spirantizedIPA :: IPAText -> IPAText
 spirantizedIPA = constructIPA . spirantizedPhonet . analyzeIPA
+
+{-|
+Return an english description of a phoneme,
+given a phoneme's representation in the
+internatinal phonetica alphabet.
+  |-}
+describeIPA :: IPAText -> String
+describeIPA = show . analyzeIPA
