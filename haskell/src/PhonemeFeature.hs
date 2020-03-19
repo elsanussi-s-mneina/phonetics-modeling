@@ -176,6 +176,17 @@ isUnary LaryngealFeature = True
 isUnary _ = False
 
 
+-- Given a binary feature, and another feature.
+-- returns whether they are the same kind of feature.
+-- They don't have to be the same polarity.
+-- For example, [+voice] and [-voice] are mutually relevant features.
+--   As are [+sonorant] and [+sonorant].
+--   But [+sonorant] and [+voice] are not relevant because 
+-- "voice" and "sonorant" are different.
+relevantBinary :: (Polarity -> PhonemeFeature) -> PhonemeFeature -> Bool
+relevantBinary feature otherFeature = 
+  otherFeature == feature Plus || otherFeature == feature Minus
+
 binaryDifference ::
           (Polarity -> PhonemeFeature) 
                     -> [PhonemeFeature] 
@@ -183,9 +194,8 @@ binaryDifference ::
                     -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 binaryDifference feature list1 list2 =
    let
-   relevant x = x == feature Plus || x == feature Minus
-   list1Relevant = filter relevant list1
-   list2Relevant = filter relevant list2
+   list1Relevant = filter (relevantBinary feature) list1
+   list2Relevant = filter (relevantBinary feature) list2
    in
      if  null list1Relevant && null list2Relevant
        || (not (null list1Relevant) && not (null list2Relevant) &&
@@ -196,7 +206,7 @@ binaryDifference feature list1 list2 =
          else if length list1Relevant > length list2Relevant
          then (Just (head list1Relevant), Nothing)
            else (Nothing, Just (head list2Relevant))
-           
+
 
 unaryDifference :: PhonemeFeature
                          -> [PhonemeFeature] 
