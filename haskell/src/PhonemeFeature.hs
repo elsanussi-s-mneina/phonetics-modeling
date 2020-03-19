@@ -192,20 +192,20 @@ binaryDifference ::
                     -> [PhonemeFeature] 
                     -> [PhonemeFeature] 
                     -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
-binaryDifference feature list1 list2 =
-   let
+binaryDifference feature list1 list2
+  | null list1Relevant && null list2Relevant
+       || (not (null list1Relevant) && not (null list2Relevant) 
+       && head list1Relevant == head list2Relevant)
+  = (Nothing, Nothing)
+  | not (null list1Relevant) && not (null list2Relevant)
+  = (Just (head list1Relevant), Just (head list2Relevant))
+  | length list1Relevant > length list2Relevant
+  = (Just (head list1Relevant), Nothing)
+  | otherwise
+  = (Nothing, Just (head list2Relevant))
+   where
    list1Relevant = filter (relevantBinary feature) list1
    list2Relevant = filter (relevantBinary feature) list2
-   in
-     if  null list1Relevant && null list2Relevant
-       || (not (null list1Relevant) && not (null list2Relevant) &&
-           head list1Relevant == head list2Relevant)
-       then (Nothing, Nothing)
-       else if not (null list1Relevant) && not (null list2Relevant)
-         then (Just (head list1Relevant), Just (head list2Relevant))
-         else if length list1Relevant > length list2Relevant
-         then (Just (head list1Relevant), Nothing)
-           else (Nothing, Just (head list2Relevant))
 
 
 unaryDifference :: PhonemeFeature
