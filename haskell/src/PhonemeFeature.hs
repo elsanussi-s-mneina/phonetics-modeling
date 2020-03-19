@@ -633,7 +633,9 @@ round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
 round (Vowel _ _ _       _) = Just (RoundFeature Minus)
 round _                     = Just (RoundFeature Minus)
 
-
+{-|
+Advanced tongue root
+|-}
 atr :: Phonet -> Maybe PhonemeFeature
 atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
 atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
@@ -652,6 +654,18 @@ atr (Vowel  OpenMid   Back    Rounded   Voiced) = Just (AdvancedTongueRootFeatur
 atr _                                           = Nothing
 
 
+{-|
+Given a phoneme (representation)
+Gives a feature matrix.
+
+Note: to non-linguists, feature matrices
+are 1-dimensional, always displayed
+as a single column.
+
+For example:
+/p/
+
+  |-}
 featureMatrix :: Phonet -> [Maybe PhonemeFeature]
 featureMatrix phonete
   = [ consonantal          phonete
