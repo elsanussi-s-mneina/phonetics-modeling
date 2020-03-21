@@ -685,7 +685,7 @@ featureMatrix phonete
     , pharyngeal           phonete
     , laryngeal            phonete
     , back                 phonete
-    , round phonete
+    , round                phonete
     , atr                  phonete
     , spreadGlottis        phonete
     , constrictedGlottis   phonete
