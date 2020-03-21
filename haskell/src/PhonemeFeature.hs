@@ -700,9 +700,13 @@ analyzeFeatures :: Phonet -> [PhonemeFeature]
 analyzeFeatures phonete =
   catMaybes (featureMatrix phonete)
 
+showFeatures :: [PhonemeFeature] -> String
+showFeatures features =
+  let featuresStrings = map show features
+  in "[" ++ intercalate "; " featuresStrings ++ "]"
+
 toTextFeatures :: Phonet -> String
 toTextFeatures phonete =
-  let  features = analyzeFeatures phonete
-       featuresStrings = map show features
-  in "[" ++ intercalate "; " featuresStrings ++ "]"
+  let features = analyzeFeatures phonete
+  in showFeatures features
 

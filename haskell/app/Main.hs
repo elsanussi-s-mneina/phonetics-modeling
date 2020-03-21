@@ -1,8 +1,9 @@
 module Main where
 import System.IO (hFlush, stdout)
 import Lib
-import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA)
+import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
 import English (englishPhonetInventory)
+import PhonemeFeature (analyzeFeatures, difference, showFeatures)
 
 main :: IO ()
 main = 
@@ -17,7 +18,9 @@ main =
                    "2" -> promptForPhonemeToVoice
                    "3" -> promptForPhonemeToDevoice
                    "4" -> promptForPhonemeToDescribe
+                   "5" -> promptForPhonemeToCalculateSPEFeaturesFrom
                    otherwise -> putStrLn $ "Unrecognized selection. No action taken."
+
     putStrLn "\nProgram terminated normally.\n\n"
 
 welcome :: IO ()
@@ -43,6 +46,12 @@ promptForPhonemeToDescribe :: IO ()
 promptForPhonemeToDescribe =  
   promptForPhonemeAndApply describeIPA "Enter the phoneme you would like to describe:"
 
+promptForPhonemeToCalculateSPEFeaturesFrom :: IO ()
+promptForPhonemeToCalculateSPEFeaturesFrom =
+  promptForPhonemeAndApply analyzeIPAToSPE "Enter the phoneme you would like to get the SPE features of:"
+
+analyzeIPAToSPE = showFeatures . analyzeFeatures . analyzeIPA
+
 putPrompt :: IO ()
 putPrompt = do
     putStr prompt
@@ -53,7 +62,9 @@ menu = "What do you want to accomplish?\n\n"
         ++ "1) view the English phoneme inventory (as IPA graphemes).\n"
         ++ "2) make a phoneme voiced.\n"
         ++ "3) make a phoneme unvoiced.\n"
-        ++ "4) describe a phoneme in English.\n\n"
+        ++ "4) describe a phoneme in English.\n"
+        ++ "5) describe a phoneme in SPE Features.\n"
+        ++ "\n"
         ++ "Enter the number representing your selection below, after the prompt, and press enter/return.\n\n\n"
 
 prompt :: String
