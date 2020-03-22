@@ -14,7 +14,7 @@ main =
     selection <- getLine
     putStrLn ("The user selected: " ++ selection ++ "\n")
     case selection of
-                   "1" -> putStrLn $ showIPA englishPhonetInventory
+                   "1" -> putStrLn (showIPA englishPhonetInventory)
                    "2" -> promptForPhonemeToVoice
                    "3" -> promptForPhonemeToDevoice
                    "4" -> promptForPhonemeToDescribe
@@ -30,7 +30,7 @@ promptForPhonemeAndApply func instructions =
     putStrLn instructions
     putPrompt
     phoneme <- getLine
-    putStrLn $ func phoneme
+    putStrLn (func phoneme)
 
 promptForPhonemeToDevoice :: IO ()
 promptForPhonemeToDevoice = 
