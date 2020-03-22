@@ -28,7 +28,8 @@ welcome =
     putStrLn "Please read README.md file for instructions on how to use."
 
 promptForPhonemeAndApply :: (String -> String) -> String -> IO ()
-promptForPhonemeAndApply func instructions= do
+promptForPhonemeAndApply func instructions = 
+  do
     putStrLn instructions
     putPrompt
     phoneme <- getLine
