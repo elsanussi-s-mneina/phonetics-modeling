@@ -19,12 +19,12 @@ main =
                    "3" -> promptForPhonemeToDevoice
                    "4" -> promptForPhonemeToDescribe
                    "5" -> promptForPhonemeToCalculateSPEFeaturesFrom
-                   otherwise -> putStrLn $ "Unrecognized selection. No action taken."
+                   otherwise -> putStrLn "Unrecognized selection. No action taken."
 
     putStrLn "\nProgram terminated normally.\n\n"
 
 welcome :: IO ()
-welcome = do
+welcome =
     putStrLn "Please read README.md file for instructions on how to use."
 
 promptForPhonemeAndApply :: (String -> String) -> String -> IO ()
