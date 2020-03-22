@@ -49,6 +49,7 @@ promptForPhonemeToCalculateSPEFeaturesFrom :: IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
   promptForPhonemeAndApply analyzeIPAToSPE "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its SPE features (on the subsequent line):"
 
+analyzeIPAToSPE :: String -> String
 analyzeIPAToSPE ipaText = showFeatures (analyzeFeatures (analyzeIPA ipaText))
 
 putPrompt :: IO ()
