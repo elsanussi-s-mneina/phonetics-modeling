@@ -19,7 +19,7 @@ main =
                    "3" -> promptForPhonemeToDevoice
                    "4" -> promptForPhonemeToDescribe
                    "5" -> promptForPhonemeToCalculateSPEFeaturesFrom
-                   otherwise -> putStrLn "Unrecognized selection. No action taken."
+                   _ -> putStrLn "Unrecognized selection. No action taken."
 
     putStrLn "\nProgram terminated normally.\n\n"
 
