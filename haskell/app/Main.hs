@@ -1,5 +1,5 @@
 module Main where
-import Prelude (IO, String, getLine, putStr, putStrLn, (.), (++))
+import Prelude (IO, String, getLine, putStr, putStrLn, (++))
 import System.IO (hFlush, stdout)
 import Lib
 import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
@@ -49,7 +49,7 @@ promptForPhonemeToCalculateSPEFeaturesFrom :: IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
   promptForPhonemeAndApply analyzeIPAToSPE "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its SPE features (on the subsequent line):"
 
-analyzeIPAToSPE = showFeatures . analyzeFeatures . analyzeIPA
+analyzeIPAToSPE ipaText = showFeatures (analyzeFeatures (analyzeIPA ipaText))
 
 putPrompt :: IO ()
 putPrompt = do
