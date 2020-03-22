@@ -8,7 +8,7 @@ import PhonemeFeature (analyzeFeatures, difference, showFeatures)
 main :: IO ()
 main = 
   do
-    welcome
+    putStrLn "Please read README.md file for instructions on how to use."
     putStr menu
     putPrompt
     selection <- getLine
@@ -23,9 +23,6 @@ main =
 
     putStrLn "\nProgram terminated normally.\n\n"
 
-welcome :: IO ()
-welcome =
-    putStrLn "Please read README.md file for instructions on how to use."
 
 promptForPhonemeAndApply :: (String -> String) -> String -> IO ()
 promptForPhonemeAndApply func instructions = 
