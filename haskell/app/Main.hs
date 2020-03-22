@@ -1,4 +1,5 @@
 module Main where
+import Prelude (IO, String, getLine, putStr, putStrLn, (.), (++))
 import System.IO (hFlush, stdout)
 import Lib
 import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
