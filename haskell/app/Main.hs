@@ -1,10 +1,9 @@
 module Main where
 import Prelude (IO, String, getLine, putStr, putStrLn, (++))
 import System.IO (hFlush, stdout)
-import Lib
 import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
 import English (englishPhonetInventory)
-import PhonemeFeature (analyzeFeatures, difference, showFeatures)
+import PhonemeFeature (analyzeFeatures, showFeatures)
 
 
 menu :: String
