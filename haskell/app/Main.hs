@@ -36,19 +36,19 @@ promptForPhonemeAndApply func instructions= do
 
 promptForPhonemeToDevoice :: IO ()
 promptForPhonemeToDevoice = 
-  promptForPhonemeAndApply devoicedIPA "Enter the phoneme you would like to devoice:"
+  promptForPhonemeAndApply devoicedIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display the devoiced counterpart (on the subsequent line):"
 
 promptForPhonemeToVoice :: IO ()
 promptForPhonemeToVoice =  
-  promptForPhonemeAndApply voicedIPA "Enter the phoneme you would like to voice:"
+  promptForPhonemeAndApply voicedIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display the voiced counterpart (on the subsequent line):"
 
 promptForPhonemeToDescribe :: IO ()
 promptForPhonemeToDescribe =  
-  promptForPhonemeAndApply describeIPA "Enter the phoneme you would like to describe:"
+  promptForPhonemeAndApply describeIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its English description (on the subsequent line):"
 
 promptForPhonemeToCalculateSPEFeaturesFrom :: IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
-  promptForPhonemeAndApply analyzeIPAToSPE "Enter the phoneme you would like to get the SPE features of:"
+  promptForPhonemeAndApply analyzeIPAToSPE "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its SPE features (on the subsequent line):"
 
 analyzeIPAToSPE = showFeatures . analyzeFeatures . analyzeIPA
 
