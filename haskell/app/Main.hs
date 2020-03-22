@@ -6,23 +6,29 @@ import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeI
 import English (englishPhonetInventory)
 import PhonemeFeature (analyzeFeatures, difference, showFeatures)
 
-main :: IO ()
-main = 
-  do
-    putStrLn "Please read README.md file for instructions on how to use."
-    putStr menu
-    putPrompt
-    selection <- getLine
-    putStrLn ("The user selected: " ++ selection ++ "\n")
-    case selection of
-                   "1" -> putStrLn (showIPA englishPhonetInventory)
-                   "2" -> promptForPhonemeToVoice
-                   "3" -> promptForPhonemeToDevoice
-                   "4" -> promptForPhonemeToDescribe
-                   "5" -> promptForPhonemeToCalculateSPEFeaturesFrom
-                   _ -> putStrLn "Unrecognized selection. No action taken."
 
-    putStrLn "\nProgram terminated normally.\n\n"
+menu :: String
+menu = "What do you want to accomplish?\n\n"
+        ++ "1) view the English phoneme inventory (as IPA graphemes).\n"
+        ++ "2) make a phoneme voiced.\n"
+        ++ "3) make a phoneme unvoiced.\n"
+        ++ "4) describe a phoneme in English.\n"
+        ++ "5) describe a phoneme in SPE Features.\n"
+        ++ "\n"
+        ++ "Enter the number representing your selection below, after the prompt, and press enter/return.\n\n\n"
+
+
+prompt :: String
+prompt = "(PROMPT:) "
+
+
+putPrompt :: IO ()
+putPrompt = do
+    putStr prompt
+    hFlush stdout
+
+analyzeIPAToSPE :: String -> String
+analyzeIPAToSPE ipaText = showFeatures (analyzeFeatures (analyzeIPA ipaText))
 
 
 promptForPhonemeAndApply :: (String -> String) -> String -> IO ()
@@ -45,27 +51,26 @@ promptForPhonemeToDescribe :: IO ()
 promptForPhonemeToDescribe =  
   promptForPhonemeAndApply describeIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its English description (on the subsequent line):"
 
+
 promptForPhonemeToCalculateSPEFeaturesFrom :: IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
   promptForPhonemeAndApply analyzeIPAToSPE "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its SPE features (on the subsequent line):"
 
-analyzeIPAToSPE :: String -> String
-analyzeIPAToSPE ipaText = showFeatures (analyzeFeatures (analyzeIPA ipaText))
 
-putPrompt :: IO ()
-putPrompt = do
-    putStr prompt
-    hFlush stdout
+main :: IO ()
+main = 
+  do
+    putStrLn "Please read README.md file for instructions on how to use."
+    putStr menu
+    putPrompt
+    selection <- getLine
+    putStrLn ("The user selected: " ++ selection ++ "\n")
+    case selection of
+                   "1" -> putStrLn (showIPA englishPhonetInventory)
+                   "2" -> promptForPhonemeToVoice
+                   "3" -> promptForPhonemeToDevoice
+                   "4" -> promptForPhonemeToDescribe
+                   "5" -> promptForPhonemeToCalculateSPEFeaturesFrom
+                   _ -> putStrLn "Unrecognized selection. No action taken."
 
-menu :: String
-menu = "What do you want to accomplish?\n\n"
-        ++ "1) view the English phoneme inventory (as IPA graphemes).\n"
-        ++ "2) make a phoneme voiced.\n"
-        ++ "3) make a phoneme unvoiced.\n"
-        ++ "4) describe a phoneme in English.\n"
-        ++ "5) describe a phoneme in SPE Features.\n"
-        ++ "\n"
-        ++ "Enter the number representing your selection below, after the prompt, and press enter/return.\n\n\n"
-
-prompt :: String
-prompt = "(PROMPT:) "
+    putStrLn "\nProgram terminated normally.\n\n"
