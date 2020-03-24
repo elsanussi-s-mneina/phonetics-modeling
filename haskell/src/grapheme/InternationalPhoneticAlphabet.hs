@@ -290,8 +290,13 @@ colIndexToVoicing colIndex =
   if colIndex `mod` 2 == 0 then Voiceless else Voiced
 
 voicingToColIndexOffset :: VocalFolds -> Int
-voicingToColIndexOffset Voiceless = 0
-voicingToColIndexOffset Voiced    = 1
+voicingToColIndexOffset Voiceless          = 0
+voicingToColIndexOffset Voiced             = 1
+voicingToColIndexOffset VoicelessAspirated = 0
+voicingToColIndexOffset VoicedAspirated    = 1
+voicingToColIndexOffset CreakyVoiced       = 1
+voicingToColIndexOffset UnmarkedVocalFolds = 0
+
 
 mannerToRowIndex :: Manner -> Int
 mannerToRowIndex manner = 
