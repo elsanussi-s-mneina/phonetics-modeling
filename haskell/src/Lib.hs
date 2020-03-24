@@ -272,6 +272,7 @@ voicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiced
 -- | A function that given an IPA symbol will convert it to the voiceless equivalent.
 devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet (Consonant   Voiced             x y z) = Consonant   Voiceless          x y z
+devoicedPhonet (Consonant   CreakyVoiced       x y z) = Consonant   Voiceless          x y z
 devoicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiceless          x y z
 devoicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicelessAspirated x y z
 devoicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicelessAspirated x y z
