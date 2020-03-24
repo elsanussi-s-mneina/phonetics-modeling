@@ -5,7 +5,7 @@ import Prelude
   (
     Bool(False, True), Eq, Show, String,
     concatMap, show,
-    (==), (/=), (++)
+    (==), (++)
   )
 
 data Phonet = Consonant { vocalFolds :: VocalFolds
@@ -23,8 +23,8 @@ data Phonet = Consonant { vocalFolds :: VocalFolds
 instance Show Phonet where
   show phonet =
     case phonet of
-      Consonant vocalFolds place manner airstream -> show vocalFolds ++ " " ++ show place ++ " " ++ show manner ++ " " ++ show airstream ++ " consonant" 
-      Vowel height backness rounding vocalFolds   -> show vocalFolds ++ " " ++ show rounding ++ " " ++ show height ++ " " ++ show backness ++ " vowel"
+      Consonant v p m a -> show v ++ " " ++ show p ++ " " ++ show m ++ " " ++ show a ++ " consonant" 
+      Vowel h b r v   -> show v ++ " " ++ show r ++ " " ++ show h ++ " " ++ show b ++ " vowel"
 
 data Backness = Front
               | Central
@@ -109,8 +109,8 @@ data Place = Bilabial
            deriving Eq
 
 instance Show Place where
-  show place =
-    case place of 
+  show place1 =
+    case place1 of 
       Bilabial       -> "bilabial"
       LabioDental    -> "labio-dental"
       Dental         -> "dental"
@@ -178,8 +178,8 @@ data Manner = Plosive
               deriving Eq
 
 instance Show Manner where
-  show manner =
-    case manner of
+  show manner1 =
+    case manner1 of
       Plosive            -> "plosive"
       Nasal              -> "nasal"
       Trill              -> "trill"
@@ -214,8 +214,8 @@ data Airstream = PulmonicEgressive
                  deriving Eq
 
 instance Show Airstream where
-  show airstream =
-    case airstream of
+  show airstream1 =
+    case airstream1 of
       PulmonicEgressive -> "pulmonic egressive"
       Click             -> "click"
       Implosive         -> "implosive"
@@ -237,8 +237,8 @@ data VocalFolds = Voiced
 
 
 instance Show VocalFolds where
-  show vocalFolds =
-    case vocalFolds of
+  show vocalFolds1 =
+    case vocalFolds1 of
       Voiced             -> "voiced"
       Voiceless          -> "voiceless"
       VoicedAspirated    -> "voiced aspirated"
@@ -291,8 +291,8 @@ spirantizedPhonet :: Phonet -> Phonet
 spirantizedPhonet (Consonant x Alveolar Plosive z) =
   Consonant x Dental Fricative z
 
-spirantizedPhonet (Consonant x place Plosive z)
-  = Consonant x place Fricative z
+spirantizedPhonet (Consonant x place1 Plosive z)
+  = Consonant x place1 Fricative z
 spirantizedPhonet other = other
 
 
@@ -312,7 +312,7 @@ unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 back
       rounding' = if rounding1 == rounding2 then rounding1 else UnmarkedRounding
   in Vowel height' backness' rounding' voice'
 
-unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Consonant voice2 place2 manner2 airstream2) =
+unmarkDifferences (Vowel _ _ _ voice1) (Consonant voice2 _ _ _) =
   let voice' = if voice1 == voice2 then voice1 else UnmarkedVocalFolds
   in Vowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
@@ -326,18 +326,18 @@ unmarkDifferences c@(Consonant _ _ _ _) v@(Vowel _ _ _ _) =
 -- takes any unmarked attributes in the phoneme definition,
 -- and returns a list with all possibilities for that attribute.
 generateFromUnmarked :: Phonet -> [Phonet]
-generateFromUnmarked (Consonant voice place manner airstream) =
-  let voice'     = if voice     == UnmarkedVocalFolds     then vocalFoldStates else [voice]
-      place'     = if place     == UnmarkedPlace          then placeStates     else [place]
-      manner'    = if manner    == UnmarkedManner         then mannerStates    else [manner]
-      airstream' = if airstream == UnmarkedAirstream      then airstreamStates else [airstream]
+generateFromUnmarked (Consonant voice1 place1 manner1 airstream1) =
+  let voice'     = if voice1     == UnmarkedVocalFolds     then vocalFoldStates else [voice1]
+      place'     = if place1     == UnmarkedPlace          then placeStates     else [place1]
+      manner'    = if manner1    == UnmarkedManner         then mannerStates    else [manner1]
+      airstream' = if airstream1 == UnmarkedAirstream      then airstreamStates else [airstream1]
   in [Consonant v p m a | p <- place', v <- voice',  m <- manner', a <- airstream']
 
-generateFromUnmarked (Vowel height backness rounding voice) =
-  let voice'    = if voice    == UnmarkedVocalFolds then vocalFoldStates else [voice]
-      height'   = if height   == UnmarkedHeight     then heightStates    else [height]
-      backness' = if backness == UnmarkedBackness   then backnessStates  else [backness]
-      rounding' = if rounding == UnmarkedRounding   then roundingStates  else [rounding]
+generateFromUnmarked (Vowel height1 backness1 rounding1 voice1) =
+  let voice'    = if voice1    == UnmarkedVocalFolds then vocalFoldStates else [voice1]
+      height'   = if height1   == UnmarkedHeight     then heightStates    else [height1]
+      backness' = if backness1 == UnmarkedBackness   then backnessStates  else [backness1]
+      rounding' = if rounding1 == UnmarkedRounding   then roundingStates  else [rounding1]
   in [Vowel h b r v | h <- height', b <- backness', r <- rounding', v <- voice']
 
 

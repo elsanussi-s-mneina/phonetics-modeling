@@ -130,3 +130,9 @@ To run the executable type:
 To run the tests:
 
 `stack test`
+
+## How to compile the code
+
+In the command line enter:
+
+`stack build --pedantic`

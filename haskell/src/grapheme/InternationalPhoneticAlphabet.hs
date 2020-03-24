@@ -48,7 +48,7 @@ type IPAText = String
 -- tone symbols, and aspiration symbols, and more.
 --  Then implement it in functions in a programming language.
 
-
+exponentials :: [Char]
 exponentials = ['ʰ' , 'ʷ' , 'ʲ' , 'ˠ' , 'ˤ' , 'ⁿ' , 'ˡ']
 
 {-|
@@ -86,7 +86,7 @@ This could be useful later for determining
 where to put diacritics so that
 they are readable.
 |-}
-
+ascenders :: [Char]
 ascenders =
   ['b', 't', 'd', 'k', 'ʔ', 'f', 'θ', 'ð', 'ħ', 'ʕ', 'h', 'ɦ', 'ɬ', 'l', 'ʎ',
   'ʘ', 'ɓ', 'ǀ', 'ɗ', 'ǃ', 'ǂ', 'ɠ', 'ʄ', 'ǁ', 'ʛ', 'ɺ', 'ʢ', 'ʡ', 'ɤ', 'ʈ', 'ɖ',
@@ -96,6 +96,7 @@ ascenders =
 isAscender :: Char -> Bool
 isAscender character = character `elem` ascenders
 
+descenders :: [Char]
 descenders =
   ['p', 'ɟ', 'g', 'q', 'ɱ', 'ɽ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'ɣ', 'χ', 'ɻ', 'j',
    'ɰ', 'ɥ', 'y', 'ɳ', 'ɲ', 'ʈ', 'ɖ', 'ɸ', 'β', 'ʃ', 'ɮ', 'ɭ', 'ɧ']
@@ -163,6 +164,7 @@ otherSymbols =
   ,'ʡ'
   ]
 
+vowels :: [Char]
 vowels =
   ['i', 'y',   'ɨ', 'ʉ',   'ɯ', 'u'   -- Close
   ,'ɪ', 'ʏ',            'ʊ'
@@ -243,15 +245,16 @@ diacriticsAndSuprasegmentals =
   , '̇'    -- Palatalization/Centralization
   ]
 
+showIPA :: PhonetInventory -> [Char]
 showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 
 
 
 
 indexOf :: (Eq a) => [a] -> Int -> a -> Int
-indexOf [] index target = -1
-indexOf (elem:rest) index target = 
-  if elem == target
+indexOf [] _ _ = -1
+indexOf (element:rest) index target = 
+  if element == target
     then index
     else indexOf rest (index + 1) target
 
@@ -273,9 +276,9 @@ analyzePlaceIPA colIndex =
   in colNames !! (colIndex `div` 2)
 
 placeToHalfColIndex :: Place -> Int
-placeToHalfColIndex place = 
+placeToHalfColIndex place1 = 
   let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
-  in indexOf colNames 0 place
+  in indexOf colNames 0 place1
 
 analyzeIPAv2 :: Char -> Phonet
 analyzeIPAv2 x =
@@ -419,6 +422,7 @@ analyzeIPA [firstChar, 'ʰ'] =
           Consonant Voiced place manner airstream    -> Consonant VoicedAspirated place manner airstream
           Consonant Voiceless place manner airstream -> Consonant VoicelessAspirated place manner airstream
           Vowel height backness rounding voice       -> Vowel height backness rounding voice
+          anythingElse                               -> anythingElse
           -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
           -- since we have no way to represent it in the type system. to do: determine
           -- if the idea of an aspirated vowel makes sense
@@ -498,17 +502,17 @@ constructIPA1 (Consonant Voiced             Uvular         UnmarkedManner Implos
 
 
 
-constructIPA1 c@(Consonant Voiced place manner PulmonicEgressive) = 
+constructIPA1 c@(Consonant Voiced _ _ PulmonicEgressive) = 
   constructUnaspiratedPulmonicEgressive c
 
-constructIPA1 c@(Consonant VoicedAspirated place manner PulmonicEgressive) = 
+constructIPA1 c@(Consonant VoicedAspirated _ _ PulmonicEgressive) = 
   constructUnaspiratedPulmonicEgressive (deaspirate c) ++ "ʰ"
 
 
-constructIPA1 c@(Consonant Voiceless place manner PulmonicEgressive) = 
+constructIPA1 c@(Consonant Voiceless _ _ PulmonicEgressive) = 
   constructUnaspiratedPulmonicEgressive c
 
-constructIPA1 c@(Consonant VoicelessAspirated place manner PulmonicEgressive) = 
+constructIPA1 c@(Consonant VoicelessAspirated _ _ PulmonicEgressive) = 
   constructUnaspiratedPulmonicEgressive (deaspirate c) ++ "ʰ"
 
 -- Close Vowels:
@@ -595,7 +599,7 @@ constructIPA2 _ = "∅" -- This return value ( a symbol representing the empty s
 -- We are only using it here so that we can ignore values we have not programmed
 -- yet. We just want it to show that we do not have it.
 
-
+constructUnaspiratedPulmonicEgressive :: Phonet -> [Char]
 constructUnaspiratedPulmonicEgressive (Consonant voicing place manner PulmonicEgressive) =
    let rowIndex = mannerToRowIndex manner
        colIndex = voicingAndPlaceToColIndex voicing place
@@ -603,11 +607,12 @@ constructUnaspiratedPulmonicEgressive (Consonant voicing place manner PulmonicEg
    
 constructUnaspiratedPulmonicEgressive _ = ""  -- Kind of senseless for non-consonants, so just do nothing.
 
+deaspirate :: Phonet -> Phonet
 deaspirate (Consonant VoicedAspirated place manner airstream) =
   (Consonant Voiced place manner airstream)
 
-deaspirate (Consonant VoicelessAspirated place manner airstream) =
-  (Consonant Voiceless place manner airstream)
+deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
+  (Consonant Voiceless place1 manner1 airstream1)
   
 deaspirate x = x
 
