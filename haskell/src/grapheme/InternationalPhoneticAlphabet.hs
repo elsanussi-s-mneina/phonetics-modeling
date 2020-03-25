@@ -630,7 +630,7 @@ spirantizedIPA = constructIPA . spirantizedPhonet . analyzeIPA
 {-|
 Return an english description of a phoneme,
 given a phoneme's representation in the
-internatinal phonetica alphabet.
+international phonetic alphabet.
   |-}
 describeIPA :: IPAText -> String
 describeIPA = show . analyzeIPA
