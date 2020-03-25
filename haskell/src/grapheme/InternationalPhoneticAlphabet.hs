@@ -130,19 +130,30 @@ graphemesOfIPA = consonantsPulmonic
 consonantsPulmonic :: [Char]
 consonantsPulmonic = concat consonantsPulmonicTable
 
+plosivePulmonic            = [ 'p', 'b', ' ', ' ', ' ', ' ', 't', 'd', ' ', ' ', 'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ', ' ', ' ', 'ʔ', ' '] -- Plosive
+nasalPulmonic              = [ ' ', 'm', ' ', 'ɱ', ' ', ' ', ' ', 'n', ' ', ' ', ' ', 'ɳ', ' ', 'ɲ', ' ', 'ŋ', ' ', 'ɴ', ' ', ' ', ' ', ' '] -- Nasal
+trillPulmonic              = [ ' ', 'ʙ', ' ', ' ', ' ', ' ', ' ', 'r', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'ʀ', ' ', ' ', ' ', ' '] -- Trill
+tapOrFlapPulmonic          = [ ' ', ' ', ' ', 'ⱱ', ' ', ' ', ' ', 'ɾ', ' ', ' ', ' ', 'ɽ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '] -- Tap or Flap
+fricativePulmonic          = [ 'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ', 'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ']  -- Fricative
+lateralFricativePulmonic   = [ ' ', ' ', ' ', ' ', ' ', ' ', 'ɬ', 'ɮ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '] -- Lateral fricative
+approximantPulmonic        = [ ' ', ' ', ' ', 'ʋ', ' ', ' ', ' ', 'ɹ', ' ', ' ', ' ', 'ɻ', ' ', 'j', ' ', 'ɰ', ' ', ' ', ' ', ' ', ' ', ' '] -- Approximant
+lateralApproximantPulmonic = [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'l', ' ', ' ', ' ', 'ɭ', ' ', 'ʎ', ' ', 'ʟ', ' ', ' ', ' ', ' ', ' ', ' '] -- Lateral approximant
+
+
 
 
 consonantsPulmonicTable :: [[Char]]
 consonantsPulmonicTable =
- [[ 'p', 'b', ' ', ' ', ' ', ' ', 't', 'd', ' ', ' ', 'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ', ' ', ' ', 'ʔ', ' '] -- Plosive
- ,[ ' ', 'm', ' ', 'ɱ', ' ', ' ', ' ', 'n', ' ', ' ', ' ', 'ɳ', ' ', 'ɲ', ' ', 'ŋ', ' ', 'ɴ', ' ', ' ', ' ', ' '] -- Nasal
- ,[ ' ', 'ʙ', ' ', ' ', ' ', ' ', ' ', 'r', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'ʀ', ' ', ' ', ' ', ' '] -- Trill
- ,[ ' ', ' ', ' ', 'ⱱ', ' ', ' ', ' ', 'ɾ', ' ', ' ', ' ', 'ɽ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '] -- Tap or Flap
- ,[ 'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ', 'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ']  -- Fricative
- ,[ ' ', ' ', ' ', ' ', ' ', ' ', 'ɬ', 'ɮ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '] -- Lateral fricative
- ,[ ' ', ' ', ' ', 'ʋ', ' ', ' ', ' ', 'ɹ', ' ', ' ', ' ', 'ɻ', ' ', 'j', ' ', 'ɰ', ' ', ' ', ' ', ' ', ' ', ' '] -- Approximant
- ,[ ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'l', ' ', ' ', ' ', 'ɭ', ' ', 'ʎ', ' ', 'ʟ', ' ', ' ', ' ', ' ', ' ', ' '] -- Lateral approximant
+ [ plosivePulmonic
+ , nasalPulmonic
+ , trillPulmonic
+ , tapOrFlapPulmonic
+ , fricativePulmonic
+ , lateralFricativePulmonic
+ , approximantPulmonic
+ , lateralApproximantPulmonic
  ]
+
 
 consonantsNonPulmonic :: [Char]
 consonantsNonPulmonic =
@@ -260,14 +271,14 @@ indexOf (element:rest) index target =
 
 analyzeMannerIPA :: Char -> (Manner, Int)
 analyzeMannerIPA x
-  | x `elem` (consonantsPulmonicTable !! 0) = (Plosive, 0)
-  | x `elem` (consonantsPulmonicTable !! 1) = (Nasal, 1)
-  | x `elem` (consonantsPulmonicTable !! 2) = (Trill, 2)
-  | x `elem` (consonantsPulmonicTable !! 3) = (TapOrFlap, 3)
-  | x `elem` (consonantsPulmonicTable !! 4) = (Fricative, 4)
-  | x `elem` (consonantsPulmonicTable !! 5) = (LateralFricative, 5)
-  | x `elem` (consonantsPulmonicTable !! 6) = (Approximant, 6)
-  | x `elem` (consonantsPulmonicTable !! 7) = (LateralApproximant, 7)
+  | x `elem` plosivePulmonic            = (Plosive, 0)
+  | x `elem` nasalPulmonic              = (Nasal, 1)
+  | x `elem` trillPulmonic              = (Trill, 2)
+  | x `elem` tapOrFlapPulmonic          = (TapOrFlap, 3)
+  | x `elem` fricativePulmonic          = (Fricative, 4)
+  | x `elem` lateralFricativePulmonic   = (LateralFricative, 5)
+  | x `elem` approximantPulmonic        = (Approximant, 6)
+  | x `elem` lateralApproximantPulmonic = (LateralApproximant, 7)
   | otherwise = (LateralApproximant, 7) -- Not right, but will have to work for now. -- TODO: Fix this.
 
 analyzePlaceIPA :: Int -> Place
