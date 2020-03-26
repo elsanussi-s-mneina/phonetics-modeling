@@ -361,12 +361,3 @@ impossible (Consonant _               LabioDental LateralFricative   PulmonicEgr
 impossible (Consonant _               LabioDental LateralApproximant PulmonicEgressive) = True
 impossible _ = False -- Everything else is assumed to be possible.
 
--- | Whether a phonet is in an intervocalic environment.
--- | This means that there is a vowel directly before it,
--- | and one after it.
-interVocalic :: Phonet  -- Before
-             -> Phonet  -- After
-             -> Bool
-interVocalic (Vowel _ _ _ _) (Vowel _ _ _ _) = True
-interVocalic _ _ = False
-
