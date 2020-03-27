@@ -23,7 +23,7 @@ data Phonet = Consonant { vocalFolds :: VocalFolds
 instance Show Phonet where
   show phonet =
     case phonet of
-      Consonant v p m a -> show v ++ " " ++ show p ++ " " ++ show m ++ " " ++ show a ++ " consonant" 
+      Consonant v p m a -> show v ++ " " ++ show p ++ " " ++ show m ++ " " ++ show a ++ " consonant"
       Vowel h b r v   -> show v ++ " " ++ show r ++ " " ++ show h ++ " " ++ show b ++ " vowel"
 
 data Backness = Front
@@ -107,9 +107,8 @@ data Place = Bilabial
            -- is between alveolopalatal, and palatoalveolar
            | Places [Place]
            | UnmarkedPlace
-           | NoPlace
 
-instance Eq Place where 
+instance Eq Place where
   Bilabial     == Bilabial            = True
   LabioDental  == LabioDental         = True
   Dental       == Dental              = True
@@ -127,33 +126,9 @@ instance Eq Place where
   _            == _                   = False
 
 
-{-
-data Place = Bilabial Place
-           | LabioDental Place
-           | Dental Place
-           | Alveolar Place
-           | PostAlveolar Place
-           | Retroflex Place
-           | Palatal Place
-           | Velar Place
-           | Uvular Place
-           | Pharyngeal Place
-           | Glottal Place
-           | Epiglottal Place
-           -- I am unsure if the following three should be counted
-           -- as 6 different places of articulation, or just 3
-           | LabialVelar Place
-           | LabialPalatal Place
-           | AlveoloPalatal Place
-           | PalatoAlveolar Place  -- To do: investigate what the difference
-           -- is between alveolopalatal, and palatoalveolar
-           | UnmarkedPlace
-           | NoPlace
-           deriving Eq
--}
 instance Show Place where
   show place1 =
-    case place1 of 
+    case place1 of
       Bilabial       -> "bilabial"
       LabioDental    -> "labio-dental"
       Dental         -> "dental"
@@ -319,7 +294,7 @@ devoicedPhonet (Consonant   CreakyVoiced       x y z) = Consonant   Voiceless   
 devoicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiceless          x y z
 devoicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicelessAspirated x y z
 devoicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicelessAspirated x y z
-devoicedPhonet (Consonant   UnmarkedVocalFolds x y z) = Consonant   UnmarkedVocalFolds x y z 
+devoicedPhonet (Consonant   UnmarkedVocalFolds x y z) = Consonant   UnmarkedVocalFolds x y z
 devoicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiceless
 
 
@@ -361,7 +336,7 @@ unmarkDifferences (Vowel _ _ _ voice1) (Consonant voice2 _ _ _) =
 
 
 unmarkDifferences c@(Consonant _ _ _ _) v@(Vowel _ _ _ _) =
-  unmarkDifferences v c -- Change the order of arguments 
+  unmarkDifferences v c -- Change the order of arguments
 
 
 
@@ -403,4 +378,3 @@ impossible (Consonant _               Bilabial    LateralApproximant PulmonicEgr
 impossible (Consonant _               LabioDental LateralFricative   PulmonicEgressive) = True
 impossible (Consonant _               LabioDental LateralApproximant PulmonicEgressive) = True
 impossible _ = False -- Everything else is assumed to be possible.
-
