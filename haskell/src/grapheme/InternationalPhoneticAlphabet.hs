@@ -5,7 +5,7 @@ import Lib
 import Prelude
   (
     Bool(False, True), Char, Eq, Int, String,
-    concat, concatMap, div, elem, length, mod, otherwise, show,
+    concat, concatMap, div, elem, init, last, length, mod, otherwise, show,
     (.), (+), (*), (!!), (++), (==)
   )
 
@@ -14,8 +14,8 @@ type IPAText = String
 
 
 
-exponentials :: [Char]
-exponentials = ['ʰ' , 'ʷ' , 'ʲ' , 'ˠ' , 'ˤ' , 'ⁿ' , 'ˡ']
+exponentials :: [IPAText]
+exponentials = ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ⁿ" , "ˡ"]
 
 {-|
 Whether an IPA character is written above the base line
@@ -23,22 +23,22 @@ and to the right of the previous character,
 like how exponents of a power are written
 in mathematical notation.
 |-}
-isExponential :: Char -> Bool
+isExponential :: IPAText -> Bool
 isExponential character = character `elem` exponentials
 {-|
 Whether a diacritic goes above
 the character it is placed on.
 |-}
-isDiacriticAbove :: Char -> Bool
-isDiacriticAbove '̊' = True
+isDiacriticAbove :: IPAText -> Bool
+isDiacriticAbove "̊" = True
 isDiacriticAbove  _  = False
 
 {-|
 Whether a diacritic goes below
 the character which it is placed on.
 |-}
-isDiacriticBelow :: Char -> Bool
-isDiacriticBelow '̥' = True
+isDiacriticBelow :: IPAText -> Bool
+isDiacriticBelow "̥" = True
 isDiacriticBelow  _  = False
 
 
@@ -52,20 +52,20 @@ This could be useful later for determining
 where to put diacritics so that
 they are readable.
 |-}
-ascenders :: [Char]
+ascenders :: [IPAText]
 ascenders =
-  ['b', 't', 'd', 'k', 'ʔ', 'f', 'θ', 'ð', 'ħ', 'ʕ', 'h', 'ɦ', 'ɬ', 'l', 'ʎ',
-  'ʘ', 'ɓ', 'ǀ', 'ɗ', 'ǃ', 'ǂ', 'ɠ', 'ʄ', 'ǁ', 'ʛ', 'ɺ', 'ʢ', 'ʡ', 'ɤ', 'ʈ', 'ɖ',
-  'ɸ', 'β', 'ʃ', 'ɮ', 'ɭ', 'ɧ']
+  ["b", "t", "d", "k", "ʔ", "f", "θ", "ð", "ħ", "ʕ", "h", "ɦ", "ɬ", "l", "ʎ",
+  "ʘ", "ɓ", "ǀ", "ɗ", "ǃ", "ǂ", "ɠ", "ʄ", "ǁ", "ʛ", "ɺ", "ʢ", "ʡ", "ɤ", "ʈ", "ɖ",
+  "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
 
 
-isAscender :: Char -> Bool
+isAscender :: IPAText -> Bool
 isAscender character = character `elem` ascenders
 
-descenders :: [Char]
+descenders :: [IPAText]
 descenders =
-  ['p', 'ɟ', 'g', 'q', 'ɱ', 'ɽ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'ɣ', 'χ', 'ɻ', 'j',
-   'ɰ', 'ɥ', 'y', 'ɳ', 'ɲ', 'ʈ', 'ɖ', 'ɸ', 'β', 'ʃ', 'ɮ', 'ɭ', 'ɧ']
+  ["p", "ɟ", "g", "q", "ɱ", "ɽ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "ɣ", "χ", "ɻ", "j",
+   "ɰ", "ɥ", "y", "ɳ", "ɲ", "ʈ", "ɖ", "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
 
 
 {-|
@@ -78,10 +78,10 @@ This could be useful later for determining
 where to put diacritics so that
 they are readable.
 |-}
-isDescender :: Char -> Bool
+isDescender :: IPAText -> Bool
 isDescender character = character `elem` descenders
 
-graphemesOfIPA :: [Char]
+graphemesOfIPA :: [IPAText]
 graphemesOfIPA = consonantsPulmonic 
   ++ consonantsNonPulmonic
   ++ otherSymbols
@@ -93,22 +93,22 @@ graphemesOfIPA = consonantsPulmonic
 -- For the source of this information..
 
 -- CONSONANTS (PULMONIC)
-consonantsPulmonic :: [Char]
+consonantsPulmonic :: [IPAText]
 consonantsPulmonic = concat consonantsPulmonicTable
 
-plosivePulmonic            = [ 'p', 'b', ' ', ' ', ' ', ' ', 't', 'd', ' ', ' ', 'ʈ', 'ɖ', 'c', 'ɟ', 'k', 'g', 'q', 'ɢ', ' ', ' ', 'ʔ', ' '] -- Plosive
-nasalPulmonic              = [ ' ', 'm', ' ', 'ɱ', ' ', ' ', ' ', 'n', ' ', ' ', ' ', 'ɳ', ' ', 'ɲ', ' ', 'ŋ', ' ', 'ɴ', ' ', ' ', ' ', ' '] -- Nasal
-trillPulmonic              = [ ' ', 'ʙ', ' ', ' ', ' ', ' ', ' ', 'r', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'ʀ', ' ', ' ', ' ', ' '] -- Trill
-tapOrFlapPulmonic          = [ ' ', ' ', ' ', 'ⱱ', ' ', ' ', ' ', 'ɾ', ' ', ' ', ' ', 'ɽ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '] -- Tap or Flap
-fricativePulmonic          = [ 'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ', 'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ']  -- Fricative
-lateralFricativePulmonic   = [ ' ', ' ', ' ', ' ', ' ', ' ', 'ɬ', 'ɮ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '] -- Lateral fricative
-approximantPulmonic        = [ ' ', ' ', ' ', 'ʋ', ' ', ' ', ' ', 'ɹ', ' ', ' ', ' ', 'ɻ', ' ', 'j', ' ', 'ɰ', ' ', ' ', ' ', ' ', ' ', ' '] -- Approximant
-lateralApproximantPulmonic = [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'l', ' ', ' ', ' ', 'ɭ', ' ', 'ʎ', ' ', 'ʟ', ' ', ' ', ' ', ' ', ' ', ' '] -- Lateral approximant
+plosivePulmonic            = [ "p", "b", " ", " ", " ", " ", "t", "d", " ", " ", "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ", " ", " ", "ʔ", " "] -- Plosive
+nasalPulmonic              = [ " ", "m", " ", "ɱ", " ", " ", " ", "n", " ", " ", " ", "ɳ", " ", "ɲ", " ", "ŋ", " ", "ɴ", " ", " ", " ", " "] -- Nasal
+trillPulmonic              = [ " ", "ʙ", " ", " ", " ", " ", " ", "r", " ", " ", " ", " ", " ", " ", " ", " ", " ", "ʀ", " ", " ", " ", " "] -- Trill
+tapOrFlapPulmonic          = [ " ", " ", " ", "ⱱ", " ", " ", " ", "ɾ", " ", " ", " ", "ɽ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Tap or Flap
+fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ", "h", "ɦ"]  -- Fricative
+lateralFricativePulmonic   = [ " ", " ", " ", " ", " ", " ", "ɬ", "ɮ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Lateral fricative
+approximantPulmonic        = [ " ", " ", " ", "ʋ", " ", " ", " ", "ɹ", " ", " ", " ", "ɻ", " ", "j", " ", "ɰ", " ", " ", " ", " ", " ", " "] -- Approximant
+lateralApproximantPulmonic = [ " ", " ", " ", " ", " ", " ", " ", "l", " ", " ", " ", "ɭ", " ", "ʎ", " ", "ʟ", " ", " ", " ", " ", " ", " "] -- Lateral approximant
 
 
 
 
-consonantsPulmonicTable :: [[Char]]
+consonantsPulmonicTable :: [[IPAText]]
 consonantsPulmonicTable =
  [ plosivePulmonic
  , nasalPulmonic
@@ -121,108 +121,108 @@ consonantsPulmonicTable =
  ]
 
 
-consonantsNonPulmonic :: [Char]
+consonantsNonPulmonic :: [IPAText]
 consonantsNonPulmonic =
 -- Clicks   Voiced implosives
- [ 'ʘ',     'ɓ' -- Bilabial
- , 'ǀ', {- Dental -}    'ɗ' -- Dental/alveolar
- , 'ǃ', {-  (Post)alveolar -}  'ʄ'
- , 'ǂ',  'ɠ'
- , 'ǁ',  'ʛ'
+ [ "ʘ",     "ɓ" -- Bilabial
+ , "ǀ", {- Dental -}    "ɗ" -- Dental/alveolar
+ , "ǃ", {-  (Post)alveolar -}  "ʄ"
+ , "ǂ",  "ɠ"
+ , "ǁ",  "ʛ"
  ] 
 
-otherSymbols :: [Char]
+otherSymbols :: [IPAText]
 otherSymbols =
-  ['ʍ',  'ɕ'
-  ,'w',  'ʑ'
-  ,'ɥ',  'ɺ'
-  ,'ʜ',  'ɧ'
-  ,'ʢ'
-  ,'ʡ'
+  ["ʍ",  "ɕ"
+  ,"w",  "ʑ"
+  ,"ɥ",  "ɺ"
+  ,"ʜ",  "ɧ"
+  ,"ʢ"
+  ,"ʡ"
   ]
 
-vowels :: [Char]
+vowels :: [IPAText]
 vowels =
-  ['i', 'y',   'ɨ', 'ʉ',   'ɯ', 'u'   -- Close
-  ,'ɪ', 'ʏ',            'ʊ'
-  ,'e', 'ø',   'ɘ', 'ɵ',   'ɤ', 'o'   -- Close-mid
-  ,               'ə'
-  ,'ɛ', 'œ',   'ɜ', 'ɞ',   'ʌ', 'ɔ'   -- Open-mid
-  , 'æ',           'ɐ'
-  , 'a', 'ɶ',              'ɑ', 'ɒ'  -- Open
+  ["i", "y",   "ɨ", "ʉ",   "ɯ", "u"   -- Close
+  ,"ɪ", "ʏ",            "ʊ"
+  ,"e", "ø",   "ɘ", "ɵ",   "ɤ", "o"   -- Close-mid
+  ,               "ə"
+  ,"ɛ", "œ",   "ɜ", "ɞ",   "ʌ", "ɔ"   -- Open-mid
+  , "æ",           "ɐ"
+  , "a", "ɶ",              "ɑ", "ɒ"  -- Open
   ]     
 
-suprasegmentals :: [Char]
+suprasegmentals :: [IPAText]
 suprasegmentals =
-  [ 'ˈ'   -- Primary stress
-  , 'ˌ'   -- Secondary stress
-  , 'ː'   -- Long
-  , 'ˑ'   -- Half long
+  [ "ˈ"   -- Primary stress
+  , "ˌ"   -- Secondary stress
+  , "ː"   -- Long
+  , "ˑ"   -- Half long
 
-  , '̆'    -- Extra short
-  , '|'   -- Minor (foot) group 
-  , '‖'   -- Major (intonation) group
-  , '.'   -- Syllable break
-  , '‿'   -- Linking (absence of a break
+  , "̆"    -- Extra short
+  , "|"   -- Minor (foot) group 
+  , "‖"   -- Major (intonation) group
+  , "."   -- Syllable break
+  , "‿"   -- Linking (absence of a break
   ]
 
 
-toneAndWordAccents :: [Char]
+toneAndWordAccents :: [IPAText]
 toneAndWordAccents =
 {- Level -}
-  [ '˥', '̋'  -- Extra high
-  , '˦', '́'  -- High
-  , '˧', '̄'  -- Mid
-  , '˨', '̀'  -- Low
-  , '˩', '̏'  -- Extra low
-  ,      'ꜜ'  -- Downstep
-  ,      'ꜛ'  -- Upstep
+  [ "˥", "̋"  -- Extra high
+  , "˦", "́"  -- High
+  , "˧", "̄"  -- Mid
+  , "˨", "̀"  -- Low
+  , "˩", "̏"  -- Extra low
+  ,      "ꜜ"  -- Downstep
+  ,      "ꜛ"  -- Upstep
 
 {- Countour -}
-  , '̌' -- Rising
-  , '̂' -- Falling
-  , '᷄' -- High rising
-  , '᷅' -- Low rising
-  , '᷈' -- Rising-falling
-  , '↗' -- Global rise
-  , '↘' -- Global fall
+  , "̌" -- Rising
+  , "̂" -- Falling
+  , "᷄" -- High rising
+  , "᷅" -- Low rising
+  , "᷈" -- Rising-falling
+  , "↗" -- Global rise
+  , "↘" -- Global fall
   ]
 
-diacriticsAndSuprasegmentals :: [Char]
+diacriticsAndSuprasegmentals :: [IPAText]
 diacriticsAndSuprasegmentals =
-  [ 'ʰ'  -- Aspirated
-  , 'ʷ'  -- Labialised
-  , 'ʲ'  -- Palatalised
-  , 'ˠ'  -- Velarised
-  , 'ˤ'  -- Pharyngealised
-  , 'ⁿ'  -- Pre/post nasalised
-  , 'ˡ'  -- Lateral release
+  [ "ʰ"  -- Aspirated
+  , "ʷ"  -- Labialised
+  , "ʲ"  -- Palatalised
+  , "ˠ"  -- Velarised
+  , "ˤ"  -- Pharyngealised
+  , "ⁿ"  -- Pre/post nasalised
+  , "ˡ"  -- Lateral release
 
-  , '˞'  -- Rhoticity
-  , 'ʼ'  -- Ejective
-  , '̚'   -- No audible release
+  , "˞"  -- Rhoticity
+  , "ʼ"  -- Ejective
+  , "̚"   -- No audible release
 
-  , '̩'   -- Syllabic
-  , '̯'   -- Non-syllabic
-  , '̰'   -- Creaky voiced
-  , '̥'   -- Voiceless
-  , '̬'   -- Voiced
-  , '̤'   -- Breathy voiced
-  , '̊'   -- Voiceless (diacritic placed above symbol with descender)
-  , '̍'   -- Syllabic (diacritic placed above)
-  , '̪'   -- Dental
-  , '̺'   -- Apical
-  , '̻'   -- Laminal
-  , '̼'   -- Linguolabial
-  , '.'  -- Closer variety/Fricative
-  , '̃'   -- Nasalised
-  , '̈'   -- Centralised
-  , '̽'   -- Mid centralised
-  , '̆'   -- Extra short
-  , '̇'    -- Palatalization/Centralization
+  , "̩"   -- Syllabic
+  , "̯"   -- Non-syllabic
+  , "̰"   -- Creaky voiced
+  , "̥"   -- Voiceless
+  , "̬"   -- Voiced
+  , "̤"   -- Breathy voiced
+  , "̊"   -- Voiceless (diacritic placed above symbol with descender)
+  , "̍"   -- Syllabic (diacritic placed above)
+  , "̪"   -- Dental
+  , "̺"   -- Apical
+  , "̻"   -- Laminal
+  , "̼"   -- Linguolabial
+  , "."  -- Closer variety/Fricative
+  , "̃"   -- Nasalised
+  , "̈"   -- Centralised
+  , "̽"   -- Mid centralised
+  , "̆"   -- Extra short
+  , "̇"    -- Palatalization/Centralization
   ]
 
-showIPA :: PhonetInventory -> [Char]
+showIPA :: PhonetInventory -> IPAText
 showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 
 
@@ -235,7 +235,7 @@ indexOf (element:rest) index target =
     then index
     else indexOf rest (index + 1) target
 
-analyzeMannerIPA :: Char -> (Manner, Int)
+analyzeMannerIPA :: IPAText -> (Manner, Int)
 analyzeMannerIPA x
   | x `elem` plosivePulmonic            = (Plosive, 0)
   | x `elem` nasalPulmonic              = (Nasal, 1)
@@ -257,7 +257,7 @@ placeToHalfColIndex place1 =
   let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
   in indexOf colNames 0 place1
 
-analyzeIPAv2 :: Char -> Phonet
+analyzeIPAv2 :: IPAText -> Phonet
 analyzeIPAv2 x =
   let (manner, rowIndex) = analyzeMannerIPA x 
       colIndex = indexOf (consonantsPulmonicTable !! rowIndex) 0 x
@@ -378,33 +378,33 @@ analyzeIPA "ɒ"  = Vowel  Open Back  Rounded   Voiced
 
 analyzeIPA x 
    | length x == 1
-      = analyzeIPAv2 (x !! 0)
+      = analyzeIPAv2 x
 
 -- Handle Diacritics:
-analyzeIPA [firstChar, '̥'] =
-  let fullGrapheme = analyzeIPA [firstChar]
-  in case fullGrapheme of
-          Consonant _ place manner airstream    -> Consonant Voiceless place manner airstream
-          Vowel height backness rounding _      -> Vowel height backness rounding Voiceless
+analyzeIPA ipaText =
+  case [last ipaText] of 
+    "̥" ->
+      let fullGrapheme = analyzeIPA (init ipaText)
+      in case fullGrapheme of
+              Consonant _ place manner airstream    -> Consonant Voiceless place manner airstream
+              Vowel height backness rounding _      -> Vowel height backness rounding Voiceless
+    "̬" ->
+      let fullGrapheme = analyzeIPA (init ipaText)
+      in case fullGrapheme of
+              Consonant _ place manner airstream    -> Consonant Voiced place manner airstream
+              Vowel height backness rounding _      -> Vowel height backness rounding Voiced
 
-analyzeIPA [firstChar, '̬'] =
-  let fullGrapheme = analyzeIPA [firstChar]
-  in case fullGrapheme of
-          Consonant _ place manner airstream    -> Consonant Voiced place manner airstream
-          Vowel height backness rounding _      -> Vowel height backness rounding Voiced
-
-analyzeIPA [firstChar, 'ʰ'] =
-  let fullGrapheme = analyzeIPA [firstChar]
-  in case fullGrapheme of
-          Consonant Voiced place manner airstream    -> Consonant VoicedAspirated place manner airstream
-          Consonant Voiceless place manner airstream -> Consonant VoicelessAspirated place manner airstream
-          Vowel height backness rounding voice       -> Vowel height backness rounding voice
-          anythingElse                               -> anythingElse
-          -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
-          -- since we have no way to represent it in the type system. to do: determine
-          -- if the idea of an aspirated vowel makes sense
-
-analyzeIPA _ = (Consonant UnmarkedVocalFolds UnmarkedPlace UnmarkedManner UnmarkedAirstream) -- Not recognized.
+    "ʰ" ->
+      let fullGrapheme = analyzeIPA (init ipaText)
+      in case fullGrapheme of
+              Consonant Voiced place manner airstream    -> Consonant VoicedAspirated place manner airstream
+              Consonant Voiceless place manner airstream -> Consonant VoicelessAspirated place manner airstream
+              Vowel height backness rounding voice       -> Vowel height backness rounding voice
+              anythingElse                               -> anythingElse
+              -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
+              -- since we have no way to represent it in the type system. to do: determine
+              -- if the idea of an aspirated vowel makes sense
+    _ -> Consonant UnmarkedVocalFolds UnmarkedPlace UnmarkedManner UnmarkedAirstream -- Not recognized.
 
 constructIPA :: Phonet -> IPAText
 -- Affricates
@@ -576,11 +576,15 @@ constructIPA2 _ = "∅" -- This return value ( a symbol representing the empty s
 -- We are only using it here so that we can ignore values we have not programmed
 -- yet. We just want it to show that we do not have it.
 
-constructUnaspiratedPulmonicEgressive :: Phonet -> [Char]
+constructUnaspiratedPulmonicEgressive :: Phonet -> IPAText
+
+
+
+
 constructUnaspiratedPulmonicEgressive (Consonant voicing place manner PulmonicEgressive) =
    let rowIndex = mannerToRowIndex manner
        colIndex = voicingAndPlaceToColIndex voicing place
-   in  [(consonantsPulmonicTable !! rowIndex) !! colIndex]
+   in  (consonantsPulmonicTable !! rowIndex) !! colIndex
    
 constructUnaspiratedPulmonicEgressive _ = ""  -- Kind of senseless for non-consonants, so just do nothing.
 
