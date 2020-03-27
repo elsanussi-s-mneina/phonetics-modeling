@@ -82,11 +82,11 @@ isDescender :: IPAText -> Bool
 isDescender character = character `elem` descenders
 
 graphemesOfIPA :: [IPAText]
-graphemesOfIPA = consonantsPulmonic 
+graphemesOfIPA = consonantsPulmonic
   ++ consonantsNonPulmonic
   ++ otherSymbols
   ++ vowels
-  ++ suprasegmentals 
+  ++ suprasegmentals
   ++ toneAndWordAccents
   ++ diacriticsAndSuprasegmentals
 -- See: https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
@@ -129,7 +129,7 @@ consonantsNonPulmonic =
  , "ǃ", {-  (Post)alveolar -}  "ʄ"
  , "ǂ",  "ɠ"
  , "ǁ",  "ʛ"
- ] 
+ ]
 
 otherSymbols :: [IPAText]
 otherSymbols =
@@ -150,7 +150,7 @@ vowels =
   ,"ɛ", "œ",   "ɜ", "ɞ",   "ʌ", "ɔ"   -- Open-mid
   , "æ",           "ɐ"
   , "a", "ɶ",              "ɑ", "ɒ"  -- Open
-  ]     
+  ]
 
 suprasegmentals :: [IPAText]
 suprasegmentals =
@@ -160,7 +160,7 @@ suprasegmentals =
   , "ˑ"   -- Half long
 
   , "̆"    -- Extra short
-  , "|"   -- Minor (foot) group 
+  , "|"   -- Minor (foot) group
   , "‖"   -- Major (intonation) group
   , "."   -- Syllable break
   , "‿"   -- Linking (absence of a break
@@ -230,19 +230,19 @@ showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 
 indexOf :: (Eq a) => [a] -> Int -> a -> Int
 indexOf [] _ _ = -1
-indexOf (element:rest) index target = 
+indexOf (element:rest) index target =
   if element == target
     then index
     else indexOf rest (index + 1) target
 
 
 placeToHalfColIndex :: Place -> Int
-placeToHalfColIndex place1 = 
+placeToHalfColIndex place1 =
   let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
   in indexOf colNames 0 place1
 
 colIndexToVoicing :: Int -> VocalFolds
-colIndexToVoicing colIndex = 
+colIndexToVoicing colIndex =
   if colIndex `mod` 2 == 0 then Voiceless else Voiced
 
 voicingToColIndexOffset :: VocalFolds -> Int
@@ -255,14 +255,14 @@ voicingToColIndexOffset UnmarkedVocalFolds = 0
 
 
 mannerToRowIndex :: Manner -> Int
-mannerToRowIndex manner = 
+mannerToRowIndex manner =
   let rowNames = [Plosive, Nasal, Trill, TapOrFlap, Fricative, LateralFricative, Approximant, LateralApproximant]
   in indexOf rowNames 0 manner
 
 voicingAndPlaceToColIndex :: VocalFolds -> Place -> Int
-voicingAndPlaceToColIndex voicing place = 
+voicingAndPlaceToColIndex voicing place =
       (2 * placeToHalfColIndex place) + voicingToColIndexOffset voicing
-  
+
 
 -- | This function will allow us to convert an IPA symbol
 -- | to its analyzed form (its phonetic features)
@@ -438,7 +438,7 @@ analyzeIPA "ɒ"  = Vowel  Open Back  Rounded   Voiced
 
 -- Handle Diacritics:
 analyzeIPA ipaText =
-  case [last ipaText] of 
+  case [last ipaText] of
     "̥" ->
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
@@ -535,17 +535,17 @@ constructIPA1 (Consonant Voiced             Uvular         UnmarkedManner Implos
 
 
 
-constructIPA1 c@(Consonant Voiced _ _ PulmonicEgressive) = 
+constructIPA1 c@(Consonant Voiced _ _ PulmonicEgressive) =
   constructUnaspiratedPulmonicEgressive c
 
-constructIPA1 c@(Consonant VoicedAspirated _ _ PulmonicEgressive) = 
+constructIPA1 c@(Consonant VoicedAspirated _ _ PulmonicEgressive) =
   constructUnaspiratedPulmonicEgressive (deaspirate c) ++ "ʰ"
 
 
-constructIPA1 c@(Consonant Voiceless _ _ PulmonicEgressive) = 
+constructIPA1 c@(Consonant Voiceless _ _ PulmonicEgressive) =
   constructUnaspiratedPulmonicEgressive c
 
-constructIPA1 c@(Consonant VoicelessAspirated _ _ PulmonicEgressive) = 
+constructIPA1 c@(Consonant VoicelessAspirated _ _ PulmonicEgressive) =
   constructUnaspiratedPulmonicEgressive (deaspirate c) ++ "ʰ"
 
 -- Close Vowels:
@@ -641,7 +641,7 @@ constructUnaspiratedPulmonicEgressive (Consonant voicing place manner PulmonicEg
    let rowIndex = mannerToRowIndex manner
        colIndex = voicingAndPlaceToColIndex voicing place
    in  (consonantsPulmonicTable !! rowIndex) !! colIndex
-   
+
 constructUnaspiratedPulmonicEgressive _ = ""  -- Kind of senseless for non-consonants, so just do nothing.
 
 deaspirate :: Phonet -> Phonet
@@ -650,7 +650,7 @@ deaspirate (Consonant VoicedAspirated place manner airstream) =
 
 deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
   (Consonant Voiceless place1 manner1 airstream1)
-  
+
 deaspirate x = x
 
 
