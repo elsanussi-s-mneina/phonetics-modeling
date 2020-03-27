@@ -4,7 +4,7 @@ module Lib where
 import Prelude
   (
     Bool(False, True), Eq, Show, String,
-    concatMap, show,
+    concatMap, elem, show,
     (==), (++)
   )
 
@@ -105,9 +105,52 @@ data Place = Bilabial
            | AlveoloPalatal
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
+           | Places [Place]
            | UnmarkedPlace
-           deriving Eq
+           | NoPlace
 
+instance Eq Place where 
+  Bilabial     == Bilabial            = True
+  LabioDental  == LabioDental         = True
+  Dental       == Dental              = True
+  Alveolar     == Alveolar            = True
+  PostAlveolar == PostAlveolar        = True
+  Retroflex    == Retroflex           = True
+  Palatal      == Palatal             = True
+  Velar        == Velar               = True
+  Uvular       == Uvular              = True
+  Pharyngeal   == Pharyngeal          = True
+  Glottal      == Glottal             = True
+  Epiglottal   == Epiglottal          = True
+  x            == Places pList        = x `elem` pList
+  Places x     == y                   = y == Places x
+  _            == _                   = False
+
+
+{-
+data Place = Bilabial Place
+           | LabioDental Place
+           | Dental Place
+           | Alveolar Place
+           | PostAlveolar Place
+           | Retroflex Place
+           | Palatal Place
+           | Velar Place
+           | Uvular Place
+           | Pharyngeal Place
+           | Glottal Place
+           | Epiglottal Place
+           -- I am unsure if the following three should be counted
+           -- as 6 different places of articulation, or just 3
+           | LabialVelar Place
+           | LabialPalatal Place
+           | AlveoloPalatal Place
+           | PalatoAlveolar Place  -- To do: investigate what the difference
+           -- is between alveolopalatal, and palatoalveolar
+           | UnmarkedPlace
+           | NoPlace
+           deriving Eq
+-}
 instance Show Place where
   show place1 =
     case place1 of 
