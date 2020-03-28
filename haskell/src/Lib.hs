@@ -4,7 +4,7 @@ module Lib where
 import Prelude
   (
     Bool(False, True), Eq, Show, String,
-    concatMap, elem, show,
+    concatMap, elem, map, show, unwords,
     (==), (++)
   )
 
@@ -146,6 +146,7 @@ instance Show Place where
       AlveoloPalatal -> "alveolo-palatal"
       PalatoAlveolar -> "palato-alveolar"
       UnmarkedPlace  -> ""
+      Places ps      -> unwords (map show ps)
 
 placeStates :: [Place]
 placeStates = [ Bilabial

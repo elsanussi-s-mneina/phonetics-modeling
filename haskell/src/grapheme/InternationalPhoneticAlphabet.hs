@@ -374,10 +374,7 @@ analyzeIPA "ɕ" = Consonant Voiceless AlveoloPalatal Fricative   PulmonicEgressi
 analyzeIPA "ʑ" = Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive
 analyzeIPA "ɺ" = Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive
 
--- We cannot handle the ɧ (simultaneous ʃ and x) because
--- we did not define our data types to handle it yet.
--- In any case, here is some pseudocode for it:
--- analyzeIPA "ɧ" = simultaneous (analyzeIPA "ʃ") (analyzeIPA "x")
+analyzeIPA "ɧ" = Consonant Voiceless (Places [PostAlveolar, Velar]) Fricative PulmonicEgressive
 
 -- Other Consonants:
 analyzeIPA "ʘ" = Consonant UnmarkedVocalFolds Bilabial       UnmarkedManner Click
@@ -517,9 +514,7 @@ constructIPA1 (Consonant Voiceless AlveoloPalatal Fricative   PulmonicEgressive)
 constructIPA1 (Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive) = "ʑ"
 constructIPA1 (Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive) = "ɺ"
 
--- We cannot handle the ɧ (simultaneous ʃ and x) because
--- we did not define our data types to handle it yet.
--- constructIPA (simultaneous (analyzeIPA "ʃ") (analyzeIPA "x")) = "ɧ"
+constructIPA1 (Consonant Voiceless (Places [PostAlveolar, Velar]) Fricative PulmonicEgressive) = "ɧ"
 
 -- Other Consonants:
 constructIPA1 (Consonant UnmarkedVocalFolds Bilabial       UnmarkedManner Click    ) = "ʘ"
