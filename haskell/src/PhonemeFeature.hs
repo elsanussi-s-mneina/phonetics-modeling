@@ -1,4 +1,4 @@
-module PhonemeFeature where
+module PhonemeFeature (toTextFeatures, analyzeFeatures, showFeatures, difference) where
 
 
 -- Design decisions:
@@ -26,8 +26,33 @@ import Prelude
 
 import Lib
   (
-    Airstream(..), Phonet(Consonant, Vowel),
-    VocalFolds(..), Place(..), Manner(..), Height(..), Backness(..), Rounding(..)
+    Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced), 
+              Place(
+                Bilabial
+              , LabioDental
+              , Dental
+              , Alveolar
+              , PostAlveolar
+              , Retroflex
+              , Palatal
+              , Velar
+              , Uvular
+              , Pharyngeal
+              , Glottal
+              , LabialVelar
+              , LabialPalatal
+              , AlveoloPalatal), 
+              Manner(
+                Plosive
+              , Nasal
+              , Approximant
+              , Fricative
+              , Affricate
+              , LateralFricative
+              , LateralApproximant
+              , LateralFlap
+              , Lateral), Airstream(PulmonicEgressive),
+            Height(Close, NearClose, CloseMid, OpenMid, NearOpen, Open), Backness(Front, Central, Back), Rounding(Rounded, Unrounded),
   )
 
 import Data.List (intercalate)
@@ -160,20 +185,6 @@ instance Show PhonemeFeature where
   show (HighFeature polarity)               = show polarity ++ "high"
   show (LowFeature polarity)                = show polarity ++ "low"
   show (BackFeature polarity)               = show polarity ++ "back"
-
--- | A function for determining if a feature is unary or not.
-isUnary :: PhonemeFeature -> Bool
-isUnary NasalFeature = True
-isUnary LateralFeature = True
-isUnary DelayedReleaseFeature = True
-isUnary SpreadGlottisFeature = True
-isUnary ConstrictedGlottisFeature = True
-isUnary LabialFeature = True
-isUnary CoronalFeature = True
-isUnary DorsalFeature = True
-isUnary PharyngealFeature = True
-isUnary LaryngealFeature = True
-isUnary _ = False
 
 
 -- Given a binary feature, and another feature.

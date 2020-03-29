@@ -1,4 +1,39 @@
-module Lib where
+module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced, UnmarkedVocalFolds), 
+              Place(
+                Bilabial
+              , LabioDental
+              , Dental
+              , Alveolar
+              , PostAlveolar
+              , Retroflex
+              , Palatal
+              , Velar
+              , Uvular
+              , Pharyngeal
+              , Glottal
+              , Epiglottal
+              , LabialVelar
+              , LabialPalatal
+              , AlveoloPalatal
+              , PalatoAlveolar 
+              , Places
+              , UnmarkedPlace), 
+              Manner(
+                Plosive
+              , Nasal
+              , Trill
+              , TapOrFlap
+              , Approximant
+              , Fricative
+              , Affricate
+              , LateralFricative
+              , LateralApproximant
+              , LateralFlap
+              , Lateral 
+              , UnmarkedManner), Airstream(PulmonicEgressive, Click, Implosive, UnmarkedAirstream),
+            Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open, UnmarkedHeight), Backness(Front, Central, Back, UnmarkedBackness), Rounding(Rounded, Unrounded, UnmarkedRounding), PhonetInventory(..),
+            voicedPhonet, devoicedPhonet, impossible, generateFromUnmarked, unmarkDifferences,
+            spirantizedPhonet, retractedPlace) where
 
 
 import Prelude
@@ -8,16 +43,16 @@ import Prelude
     (==), (++)
   )
 
-data Phonet = Consonant { vocalFolds :: VocalFolds
-                        , place :: Place   -- | Place of articulation
-                        , manner :: Manner -- | Manner of articulation
-                        , airstream :: Airstream
-                        }
-            | Vowel { height :: Height
-                    , backness :: Backness
-                    , rounding :: Rounding
-                    , vocalFolds :: VocalFolds
-                    }
+data Phonet = Consonant VocalFolds
+                        Place   -- | Place of articulation
+                        Manner -- | Manner of articulation
+                        Airstream
+                        
+            | Vowel Height
+                    Backness
+                    Rounding
+                    VocalFolds
+                    
                     deriving Eq
 
 instance Show Phonet where
@@ -268,7 +303,7 @@ instance Show VocalFolds where
 vocalFoldStates :: [VocalFolds]
 vocalFoldStates = [Voiceless, Voiced, VoicedAspirated, VoicelessAspirated, CreakyVoiced]
 
-newtype PhonetInventory = PhonetInventory [Phonet]
+data PhonetInventory = PhonetInventory [Phonet]
 
 
 instance Show PhonetInventory where

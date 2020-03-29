@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 79d111cbf0227188c3b05e6bfdcc3628e47589215de1dd7f3f1a6343ad4d0808
+-- hash: d178c4f1297e0ee4ef455f6f980ceae7cacc304c9ee642ef289a8786dc656765
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -28,6 +28,7 @@ library
   exposed-modules:
       Lib
       PhonemeFeature
+      GraphemeGrammar
       InternationalPhoneticAlphabet
       English
   other-modules:
@@ -36,6 +37,7 @@ library
       src
       src/grapheme
       src/dialect_specific
+  ghc-options: -Weverything -Werror -Wunsafe -Wno-safe
   build-depends:
       base >=4.7 && <5
   default-language: Haskell2010
@@ -46,7 +48,7 @@ executable phonetics-modeling-exe
       Paths_phonetics_modeling
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Werror -Wunsafe -Wno-safe
   build-depends:
       base >=4.7 && <5
     , phonetics-modeling

@@ -1,11 +1,50 @@
-module InternationalPhoneticAlphabet where
+module InternationalPhoneticAlphabet (IPAText, describeIPA, constructIPA, analyzeIPA, voicedIPA, devoicedIPA, showIPA, spirantizedIPA,
+  diacriticsAndSuprasegmentals, toneAndWordAccents, suprasegmentals, vowels, otherSymbols, consonantsNonPulmonic, consonantsPulmonic, graphemesOfIPA) where
 
-import Lib
+import Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced, UnmarkedVocalFolds), 
+
+
+            Place(
+                Bilabial
+              , LabioDental
+              , Dental
+              , Alveolar
+              , PostAlveolar
+              , Retroflex
+              , Palatal
+              , Velar
+              , Uvular
+              , Pharyngeal
+              , Glottal
+              , Epiglottal
+              , LabialVelar
+              , LabialPalatal
+              , AlveoloPalatal
+              , PalatoAlveolar 
+              , Places
+              , UnmarkedPlace),
+              Manner(
+                Plosive
+              , Nasal
+              , Trill
+              , TapOrFlap
+              , Approximant
+              , Fricative
+              , Affricate
+              , LateralFricative
+              , LateralApproximant
+              , LateralFlap
+              , Lateral 
+              , UnmarkedManner), Airstream(PulmonicEgressive, Click, Implosive, UnmarkedAirstream),
+               Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open) -- , -- UnmarkedHeight), 
+              , Backness(Front, Central, Back), Rounding(Rounded, Unrounded, UnmarkedRounding), PhonetInventory(PhonetInventory), spirantizedPhonet, devoicedPhonet,
+            voicedPhonet
+            )
 
 import Prelude
   (
-    Bool(False, True), Char, Eq, Int, String,
-    concat, concatMap, div, elem, init, last, length, mod, otherwise, show,
+    Eq, Int, String,
+    concat, concatMap, init, last, show,
     (.), (+), (*), (!!), (++), (==)
   )
 
@@ -14,72 +53,6 @@ type IPAText = String
 
 
 
-exponentials :: [IPAText]
-exponentials = ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ⁿ" , "ˡ"]
-
-{-|
-Whether an IPA character is written above the base line
-and to the right of the previous character,
-like how exponents of a power are written
-in mathematical notation.
-|-}
-isExponential :: IPAText -> Bool
-isExponential character = character `elem` exponentials
-{-|
-Whether a diacritic goes above
-the character it is placed on.
-|-}
-isDiacriticAbove :: IPAText -> Bool
-isDiacriticAbove "̊" = True
-isDiacriticAbove  _  = False
-
-{-|
-Whether a diacritic goes below
-the character which it is placed on.
-|-}
-isDiacriticBelow :: IPAText -> Bool
-isDiacriticBelow "̥" = True
-isDiacriticBelow  _  = False
-
-
-{-|
-Whether a character (but not a diacritic)
-takes up space
-below the imaginary horizontal line
-on which it is written.
-
-This could be useful later for determining
-where to put diacritics so that
-they are readable.
-|-}
-ascenders :: [IPAText]
-ascenders =
-  ["b", "t", "d", "k", "ʔ", "f", "θ", "ð", "ħ", "ʕ", "h", "ɦ", "ɬ", "l", "ʎ",
-  "ʘ", "ɓ", "ǀ", "ɗ", "ǃ", "ǂ", "ɠ", "ʄ", "ǁ", "ʛ", "ɺ", "ʢ", "ʡ", "ɤ", "ʈ", "ɖ",
-  "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
-
-
-isAscender :: IPAText -> Bool
-isAscender character = character `elem` ascenders
-
-descenders :: [IPAText]
-descenders =
-  ["p", "ɟ", "g", "q", "ɱ", "ɽ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "ɣ", "χ", "ɻ", "j",
-   "ɰ", "ɥ", "y", "ɳ", "ɲ", "ʈ", "ɖ", "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
-
-
-{-|
-Whether a character (but not a diacritic)
-takes up space
-below the imaginary horizontal line
-on which it is written.
-
-This could be useful later for determining
-where to put diacritics so that
-they are readable.
-|-}
-isDescender :: IPAText -> Bool
-isDescender character = character `elem` descenders
 
 graphemesOfIPA :: [IPAText]
 graphemesOfIPA = consonantsPulmonic
@@ -96,13 +69,28 @@ graphemesOfIPA = consonantsPulmonic
 consonantsPulmonic :: [IPAText]
 consonantsPulmonic = concat consonantsPulmonicTable
 
+plosivePulmonic :: [String]
 plosivePulmonic            = [ "p", "b", " ", " ", " ", " ", "t", "d", " ", " ", "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ", " ", " ", "ʔ", " "] -- Plosive
+
+nasalPulmonic :: [String]
 nasalPulmonic              = [ " ", "m", " ", "ɱ", " ", " ", " ", "n", " ", " ", " ", "ɳ", " ", "ɲ", " ", "ŋ", " ", "ɴ", " ", " ", " ", " "] -- Nasal
+
+trillPulmonic :: [String]
 trillPulmonic              = [ " ", "ʙ", " ", " ", " ", " ", " ", "r", " ", " ", " ", " ", " ", " ", " ", " ", " ", "ʀ", " ", " ", " ", " "] -- Trill
+
+tapOrFlapPulmonic :: [String]
 tapOrFlapPulmonic          = [ " ", " ", " ", "ⱱ", " ", " ", " ", "ɾ", " ", " ", " ", "ɽ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Tap or Flap
+
+fricativePulmonic :: [String]
 fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ", "h", "ɦ"]  -- Fricative
+
+lateralFricativePulmonic :: [String]
 lateralFricativePulmonic   = [ " ", " ", " ", " ", " ", " ", "ɬ", "ɮ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Lateral fricative
+
+approximantPulmonic :: [String]
 approximantPulmonic        = [ " ", " ", " ", "ʋ", " ", " ", " ", "ɹ", " ", " ", " ", "ɻ", " ", "j", " ", "ɰ", " ", " ", " ", " ", " ", " "] -- Approximant
+
+lateralApproximantPulmonic :: [String]
 lateralApproximantPulmonic = [ " ", " ", " ", " ", " ", " ", " ", "l", " ", " ", " ", "ɭ", " ", "ʎ", " ", "ʟ", " ", " ", " ", " ", " ", " "] -- Lateral approximant
 
 
@@ -241,9 +229,6 @@ placeToHalfColIndex place1 =
   let colNames = [Bilabial, LabioDental, Dental, Alveolar, PostAlveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal]
   in indexOf colNames 0 place1
 
-colIndexToVoicing :: Int -> VocalFolds
-colIndexToVoicing colIndex =
-  if colIndex `mod` 2 == 0 then Voiceless else Voiced
 
 voicingToColIndexOffset :: VocalFolds -> Int
 voicingToColIndexOffset Voiceless          = 0

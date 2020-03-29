@@ -1,4 +1,4 @@
-module English where
+module English (englishPhonetInventory) where
 
 import Lib
   (

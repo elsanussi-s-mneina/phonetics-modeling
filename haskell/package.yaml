@@ -23,10 +23,15 @@ dependencies:
 - base >= 4.7 && < 5
 
 library:
-  source-dirs: 
+  source-dirs:
   - src
   - src/grapheme
   - src/dialect_specific
+  ghc-options:
+  - -Weverything
+  - -Werror
+  - -Wunsafe
+  - -Wno-safe
 
 executables:
   phonetics-modeling-exe:
@@ -36,8 +41,13 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Weverything
+    - -Werror
+    - -Wunsafe
+    - -Wno-safe
     dependencies:
     - phonetics-modeling
+
 
 tests:
   phonetics-modeling-test:
