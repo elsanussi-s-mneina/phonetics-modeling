@@ -679,6 +679,7 @@ featureMatrix phonete
     , high                 phonete
     , low                  phonete
     , nasal                phonete
+    , lateral              phonete
     , labial               phonete
     , coronal              phonete
     , dorsal               phonete
