@@ -202,7 +202,7 @@ diacriticsAndSuprasegmentals =
   , "̺"   -- Apical
   , "̻"   -- Laminal
   , "̼"   -- Linguolabial
-  , "."  -- Closer variety/Fricative
+  , "̣"   -- Closer variety/Fricative
   , "̃"   -- Nasalised
   , "̈"   -- Centralised
   , "̽"   -- Mid centralised
