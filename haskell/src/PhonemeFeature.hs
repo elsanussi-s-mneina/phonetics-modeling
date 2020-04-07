@@ -1,4 +1,26 @@
-module PhonemeFeature (toTextFeatures, analyzeFeatures, showFeatures, difference) where
+module PhonemeFeature (toTextFeatures, analyzeFeatures, showFeatures, difference,
+
+
+                       isGlide, low, anterior,
+                       distributed,
+                       strident, high,
+                       nasal,
+                       labial, coronal,
+                       dorsal,
+                       pharyngeal, laryngeal,
+                       round, atr, back,
+                       PhonemeFeature(NasalFeature, LateralFeature, 
+                       DelayedReleaseFeature,
+                       SpreadGlottisFeature, ConstrictedGlottisFeature,
+                       LabialFeature, CoronalFeature, DorsalFeature,
+                       PharyngealFeature, LaryngealFeature,
+                       RoundFeature,
+                       AdvancedTongueRootFeature, HighFeature,
+                       LowFeature, BackFeature,
+                       StridentFeature, DistributedFeature,
+                       AnteriorFeature),
+                       Polarity(Minus, Plus)
+                      ) where
 
 
 -- Design decisions:

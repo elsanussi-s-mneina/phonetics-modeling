@@ -4,7 +4,7 @@ import Prelude ((++), IO, length, Bool(True, False), putStrLn, putStr, show, (==
 import PhonemeFeature (isGlide, low, anterior,
                        distributed,
                        strident, high,
-                       low, nasal,
+                       nasal,
                        labial, coronal,
                        dorsal,
                        pharyngeal, laryngeal,
@@ -14,12 +14,11 @@ import PhonemeFeature (isGlide, low, anterior,
                        SpreadGlottisFeature, ConstrictedGlottisFeature,
                        LabialFeature, CoronalFeature, DorsalFeature,
                        PharyngealFeature, LaryngealFeature,
-                       RoundFeature, LowFeature,
+                       RoundFeature,
                        AdvancedTongueRootFeature, HighFeature,
                        LowFeature, BackFeature,
                        StridentFeature, DistributedFeature,
                        AnteriorFeature),
-                       isUnary,
                        Polarity(Minus, Plus))
 import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
@@ -69,46 +68,6 @@ analyzeIPASpec = do
                 "with pulmonic egressive airstream mechanism.") 
                 (show (analyzeIPA "s") == "voiceless alveolar fricative pulmonic egressive consonant" &&
                     constructIPA             (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == "s")
-      runTest ("should be that: [b] is voiced.") 
-            (show (vocalFolds (analyzeIPA "b")) == "voiced")
-      runTest ("should be that: [b] is bilabial.") 
-            (show (place (analyzeIPA "b")) == "bilabial")
-      runTest ("should be that: [b] is a plosive.")
-            (show (manner (analyzeIPA "b")) == "plosive")
-      runTest ("should be that: [b] is pulmonic egressive.")
-            (show (airstream (analyzeIPA "b")) == "pulmonic egressive")
-      runTest ("should be that: [t] is voiceless.")
-            (show (vocalFolds (analyzeIPA "t")) == "voiceless")
-      runTest ("should be that: [t] is alveolar.")
-            (show (place (analyzeIPA "t")) == "alveolar")
-      runTest ("should be that: [t] is a plosive.")
-            (show (manner (analyzeIPA "t")) == "plosive")
-      runTest ("should be that: [t] is plumonic egressive.")
-            (show (airstream (analyzeIPA "t")) == "pulmonic egressive")
-      runTest ("should be that: [d] is voiced.")
-            (show (vocalFolds (analyzeIPA "d")) == "voiced")
-      runTest ("should be that: [d] is alveolar.")
-            (show (place (analyzeIPA "d")) == "alveolar")
-      runTest ("should be that: [d] is plosive.")
-            (show (manner (analyzeIPA "d")) == "plosive")
-      runTest ("should be that: [d] is pulmonic egressive.")
-            (show (airstream (analyzeIPA "d")) == "pulmonic egressive")
-      runTest ("should be that: [ʈ] is voiceless.")
-            (show (vocalFolds (analyzeIPA "ʈ")) == "voiceless")
-      runTest ("should be that: [ʈ] is retroflex.")
-            (show (place (analyzeIPA "ʈ")) == "retroflex")
-      runTest ("should be that: [ʈ] is a plosive.")
-            (show (manner (analyzeIPA "ʈ")) == "plosive")
-      runTest ("should be that: [ʈ] is pulmonic egressive.")
-            (show (airstream (analyzeIPA "ʈ")) == "pulmonic egressive")
-      runTest ("should be that: [ɖ] is voiced.")
-            (show (vocalFolds (analyzeIPA "ɖ")) == "voiced")
-      runTest ("should be that: [ɖ] is retroflex.")
-            (show (place (analyzeIPA "ɖ")) == "retroflex")
-      runTest ("should be that: [ɖ] is a plosive.")
-            (show (manner (analyzeIPA "ɖ")) == "plosive")
-      runTest ("should be that: [ɖ] is pulmonic egressive.")
-            (show (airstream (analyzeIPA "ɖ")) == "pulmonic egressive")
       runTest ("should be that: [b] is a voiceless bilabial plosive consonant with " ++
           "pulmonic egressive airstream mechanism") 
             (show (analyzeIPA "b") == "voiced bilabial plosive pulmonic egressive consonant" && -- Consonant  Voiced    Bilabial  Plosive PulmonicEgressive &&
@@ -889,24 +848,3 @@ speFeaturesSpec = do
   runTest "The ATR feature is nothing for [p]."
     (atr (analyzeIPA "p") == Nothing)
 
-
-  runTest "The nasal feature is unary."
-    (isUnary NasalFeature)
-  runTest "The lateral feature is unary."
-    (isUnary LateralFeature)
-  runTest "The delayed release feature is unary."
-    (isUnary DelayedReleaseFeature)
-  runTest "The spread glottis feature is unary."
-    (isUnary SpreadGlottisFeature)
-  runTest "The constricted glottis feature is unary."
-    (isUnary ConstrictedGlottisFeature)
-  runTest "The labial feature is unary."
-    (isUnary LabialFeature)
-  runTest "The coronal feature is unary."
-    (isUnary CoronalFeature)
-  runTest "The dorsal feature is unary."
-    (isUnary DorsalFeature)
-  runTest "The pharyngeal feature is unary."
-    (isUnary PharyngealFeature)
-  runTest "The LaryngealFeature is unary."
-    (isUnary LaryngealFeature)
