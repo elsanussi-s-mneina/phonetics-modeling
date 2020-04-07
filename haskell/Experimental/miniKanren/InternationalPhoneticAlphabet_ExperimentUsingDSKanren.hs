@@ -49,95 +49,119 @@ I used the command
 stack -- ghci
 in the "phonetics-modeling/haskell" directory
 
-to get the following results.
+(Note: "*..>" is notation here for the prompt in GHCi)
+Then run:
+*..> :l Experimental/miniKanren/InternationalPhoneticAlphabet_ExperimentUsingDSKanren.hs 
+
+Then run main:
+*..> main
+
+to check that the code runs.
 -}
 
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature> import Language.DSKanren
+module InternationalPhoneticAlphabet_ExperimentUsingDSKanren where 
 
-
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> success)
-[_0]
-
-
--- Create my first real predicate.
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> Atom "3" === Atom "4")
-[]
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> Atom "3" === Atom "3")
-[_0]
+import Language.DSKanren
 
 
 
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> Atom "p" === Atom "b")
-[]
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> list [Atom "voiced", Atom "p"] === Atom "b")
-[]
+main =
+  do 
+     print $ map fst . runN 1 $ (\t -> success)
+     -- Expected result:
+     -- [_0]
+
+
+     -- Create my first real predicate.
+     print $ map fst . runN 1 $ (\t -> Atom "3" === Atom "4")
+     -- Expected result:
+     -- []
+     print $ map fst . runN 1 $ (\t -> Atom "3" === Atom "3")
+     -- Expected result:
+     -- [_0]
+     print $ map fst . runN 1 $ (\t -> Atom "p" === Atom "b")
+     -- Expected result:
+     -- []
+     print $ map fst . runN 1 $ (\t -> list [Atom "voiced", Atom "p"] === Atom "b")
+     -- Expected result:
+     -- []
 
 
 
--- Using disconjunction:
+     -- Using disconjunction:
+     print $ map fst . runN 1 $ (\t -> disconj ( Atom "a" === Atom "a") (Atom "b" === Atom "c"))
+     -- Expected result:
+     -- [_0]
 
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> disconj ( Atom "a" === Atom "a") (Atom "b" === Atom "c"))
-[_0]
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> disconj ( Atom "a" === Atom "q") (Atom "b" === Atom "c"))
-[]
-
-
-
--- Using unification:
-
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> disconj ( Atom "a" === Atom "q") (Atom "b" === t))
-['b]
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> map fst . runN 1 $ (\t -> disconj ( t === Atom "q") (Atom "b" === t))
-['q]
-
-
--- Using conde:
--- It is sort of like "and"
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> runN 3 $ \t -> conde [(t === Atom "c"), (t === Pair (Atom "a") ( Atom "b"))]
-[('c,[]),(('a, 'b),[])]
+     print $ map fst . runN 1 $ (\t -> disconj ( Atom "a" === Atom "q") (Atom "b" === Atom "c"))
+     -- Expected result:
+     -- []
 
 
 
--- Trying to define facts:
+     -- Using unification:
+     print $ map fst . runN 1 $ (\t -> disconj ( Atom "a" === Atom "q") (Atom "b" === t))
+     -- Expected result:
+     -- ['b]
+
+     print $ map fst . runN 1 $ (\t -> disconj ( t === Atom "q") (Atom "b" === t))
+     -- Expected result:
+     -- ['q]
 
 
--- Let's try to make something useful
-runN 3 $ \t -> conde [(Pair (Atom "voiced") (Atom "p") === Atom "b"), (Pair (Atom "voiced") (Atom "t") === Atom "d")]
-[]
+     -- Using conde:
+     -- It is sort of like "and"
+     print $ runN 3 $ \t -> conde [(t === Atom "c"), (t === Pair (Atom "a") ( Atom "b"))]
+     -- Expected result:
+     -- [('c,[]),(('a, 'b),[])]
+
+
+
+     -- Trying to define facts:
+
+
+     -- Let's try to make something useful
+     print $ runN 3 $ \t -> conde [(Pair (Atom "voiced") (Atom "p") === Atom "b"), (Pair (Atom "voiced") (Atom "t") === Atom "d")]
+     -- []
 
 -- okay now let us allow querying:
-let factsAboutVoicing = \t -> conde [ 
+factsAboutVoicing = \t -> conde [ 
                               list [(Atom "voiced"), (Atom "p"), (Atom "b")] === t, 
                               list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t]
 
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> runN 3 $ factsAboutVoicing
-[(('voiced, ('p, ('b, 'nil))),[]),(('voiced, ('t, ('d, 'nil))),[])]
+
+demoFactsAboutVoicing =
+     print $ runN 3 $ factsAboutVoicing
+     -- [(('voiced, ('p, ('b, 'nil))),[]),(('voiced, ('t, ('d, 'nil))),[])]
 
 -- Alright better, than nothing, but still not useful.
 -- it only returns all the facts, it does not let us query any more specifically.
 -- I used a strange trick I thought up, to use the t variable as true.
 
 
-let factsAboutVoicingStrong = \t ->
+factsAboutVoicingStrong = \t ->
          foldr disconj failure
              [ list [(Atom "voiced"), (Atom "p"), (Atom "b")] === t
              , list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t
              ]
 
- isVoicedO :: Term -> Predicate
- isVoicedO voiced =
-   conde [ manyFresh $ \t voiceless ->
-             program ([ list [(Atom "voiced"), voiceless, voiced] === t
-                      , factsAboutVoicingStrong t] )]
-
-runN 3 $ \t -> isVoicedO (Atom "p")
-[]
--- That means it is not voiced, which is correct.
+isVoicedO :: Term -> Predicate
+isVoicedO voiced =
+  conde [ manyFresh $ \t voiceless ->
+          program ([ list [(Atom "voiced"), voiceless, voiced] === t
+                    , factsAboutVoicingStrong t] )]
 
 
-runN 3 $ \t -> isVoicedO (Atom "b")
-[(_0,[])]
--- That means it is voiced. Finally we succeeded. So far.
+isVoicedODemo =
+     do
+     print $ runN 3 $ \t -> isVoicedO (Atom "p")
+     -- []
+     -- That means it is not voiced, which is correct.
+
+
+     print $ runN 3 $ \t -> isVoicedO (Atom "b")
+     -- [(_0,[])]
+     -- That means it is voiced. Finally we succeeded. So far.
 
 -- Now let us make a wrapper function:
 
@@ -146,14 +170,17 @@ isVoiced phoneme = not (null kanrenResult)
      where kanrenResult =  runN 1 (\_ -> isVoicedO (Atom phoneme))
 
 
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> isVoiced "p"
-False
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> isVoiced "b"
-True
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> isVoiced "t"
-False
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> isVoiced "d"
-True
+isVoicedDemo :: IO ()
+isVoicedDemo =
+     do
+     print $ isVoiced "p"
+     -- False
+     print $ isVoiced "b"
+     -- True
+     print $ isVoiced "t"
+     -- False
+     print $ isVoiced "d"
+     -- True
 
 -- It works.
 
@@ -162,27 +189,26 @@ True
 -- 
 
 
- makeVoicedO :: Term -> Term -> Predicate
- makeVoicedO voiceless result =
+makeVoicedO :: Term -> Term -> Predicate
+makeVoicedO voiceless result =
    conde [ manyFresh $ \t ->
              program ([ list [(Atom "voiced"), voiceless, result] === t
                       , factsAboutVoicingStrong t] )]
 
 
 
-runN 3 $ \t -> makeVoicedO (Atom "p") t
-
-
 -- It works!
 
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> runN 3 $ \t -> makeVoicedO (Atom "p") t
-[('b,[])]
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> runN 3 $ \t -> makeVoicedO (Atom "b") t
-[]
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> runN 3 $ \t -> makeVoicedO (Atom "s") t
-[]
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> runN 3 $ \t -> makeVoicedO (Atom "t") t
-[('d,[])]
+makeVoicedODemo = 
+     do
+     print $ runN 3 $ \t -> makeVoicedO (Atom "p") t
+     -- [('b,[])]
+     print $ runN 3 $ \t -> makeVoicedO (Atom "b") t
+     -- []
+     print $ runN 3 $ \t -> makeVoicedO (Atom "s") t
+     -- []
+     print $ runN 3 $ \t -> makeVoicedO (Atom "t") t
+     -- [('d,[])]
 
 
 -- Let us write a wrapper:
@@ -196,11 +222,11 @@ makeVoiced phoneme =
            
 
 
- makeVoicelessO :: Term -> Term -> Predicate
- makeVoicelessO voiced result =
-   conde [ manyFresh $ \t ->
-             program ([ list [(Atom "voiced"), result, voiced] === t
-                      , factsAboutVoicingStrong t] )]
+makeVoicelessO :: Term -> Term -> Predicate
+makeVoicelessO voiced result =
+  conde [ manyFresh $ \t ->
+          program ([ list [(Atom "voiced"), result, voiced] === t
+                    , factsAboutVoicingStrong t] )]
 
 
 makeVoiceless :: String -> String
@@ -212,14 +238,16 @@ makeVoiceless phoneme =
      where kanrenResult = runN 1 (\t -> makeVoicelessO (Atom phoneme) t)
 
 
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> makeVoiceless "d"
-"t"
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> makeVoiceless "b"
-"p"
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> makeVoiceless "p"
-"p"
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> makeVoiceless "t"
-"t"
-*Main English GraphemeGrammar InternationalPhoneticAlphabet Lib PhonemeFeature Language.DSKanren Prelude> makeVoiceless "q"
-
+makeVoicelessDemo =
+     do 
+     print $ makeVoiceless "d"
+     -- "t"
+     print $ makeVoiceless "b"
+     -- "p"
+     print $ makeVoiceless "p"
+     -- "p"
+     print $ makeVoiceless "t"
+     -- "t"
+     print $ makeVoiceless "q"
+     -- "q"
 -- It works.
