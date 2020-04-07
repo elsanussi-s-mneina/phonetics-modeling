@@ -34,10 +34,11 @@ resolver: lts-13.29
 #  - wai
 packages:
 - .
+
 # Dependency packages to be pulled from upstream that are not in the resolver
 # using the same syntax as the packages field.
 # (e.g., acme-missiles-0.3)
-# extra-deps: []
+extra-deps: ["ds-kanren-0.2.0.1@sha256:b4275541bcc48385d04f8c225509359191a2e0d5faaa078f1cc4e2c52db3d1d8,1527"]
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
