@@ -216,15 +216,15 @@ instance Show PhonemeFeature where
 --   As are [+sonorant] and [+sonorant].
 --   But [+sonorant] and [+voice] are not relevant because 
 -- "voice" and "sonorant" are different.
-relevantBinary :: (Polarity -> PhonemeFeature) -> PhonemeFeature -> Bool
+relevantBinary ∷ (Polarity → PhonemeFeature) → PhonemeFeature → Bool
 relevantBinary feature otherFeature = 
   otherFeature == feature Plus || otherFeature == feature Minus
 
 binaryDifference ::
-          (Polarity -> PhonemeFeature) 
-                    -> [PhonemeFeature] 
-                    -> [PhonemeFeature] 
-                    -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+          (Polarity → PhonemeFeature) 
+                    → [PhonemeFeature] 
+                    → [PhonemeFeature] 
+                    → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 binaryDifference feature list1 list2
   | null list1Relevant && null list2Relevant
        || (not (null list1Relevant) && not (null list2Relevant) 
@@ -241,10 +241,10 @@ binaryDifference feature list1 list2
    list2Relevant = filter (relevantBinary feature) list2
 
 
-unaryDifference :: PhonemeFeature
-                         -> [PhonemeFeature] 
-                         -> [PhonemeFeature] 
-                         -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+unaryDifference ∷ PhonemeFeature
+                         → [PhonemeFeature] 
+                         → [PhonemeFeature] 
+                         → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 unaryDifference feature list1 list2
   | elem feature list1 == elem feature list2    = (Nothing, Nothing)
   | elem feature list1 && notElem feature list2 = (Just feature, Nothing)
@@ -258,9 +258,9 @@ unaryDifference feature list1 list2
 -- will be represented; and any phonemic
 -- feature that is positive in one list but absent
 -- in the other will be represented.
-difference :: [PhonemeFeature]
-           -> [PhonemeFeature]
-           -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
+difference ∷ [PhonemeFeature]
+           → [PhonemeFeature]
+           → [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
 difference list1 list2 =
   [ binaryDifference SyllabicFeature           list1 list2
   , binaryDifference ConsonantalFeature        list1 list2
@@ -293,14 +293,14 @@ Consonants (glides included) are [-syllabic].
 
 (Source: page 258)
 |-}
-syllabic :: Phonet -> Maybe PhonemeFeature
+syllabic ∷ Phonet → Maybe PhonemeFeature
 syllabic (Vowel     _ _ _ _) = Just (SyllabicFeature Plus)
 syllabic (Consonant _ _ _ _) = Just (SyllabicFeature Minus)
 
 {-|
 Whether a segment is a glide.
 |-}
-isGlide :: Phonet -> Bool
+isGlide ∷ Phonet → Bool
 isGlide (Consonant _ Palatal       Approximant PulmonicEgressive) = True
 isGlide (Consonant _ LabialVelar   Approximant PulmonicEgressive) = True
 isGlide (Consonant _ LabialPalatal Approximant PulmonicEgressive) = True
@@ -314,7 +314,7 @@ Consonants (that are not glides) are [+consonantal].
 
 (Source: page 258)
 |-}
-consonantal :: Phonet -> Maybe PhonemeFeature
+consonantal ∷ Phonet → Maybe PhonemeFeature
 consonantal (Vowel _ _ _ _) = Just (ConsonantalFeature Minus)
 consonantal consonant@(Consonant _ _ _ _)
   | isGlide consonant = Just (ConsonantalFeature Minus)
@@ -333,7 +333,7 @@ Glides are [+sonorant].
 
 (Source: page 258)
 |-}
-sonorant :: Phonet -> Maybe PhonemeFeature
+sonorant ∷ Phonet → Maybe PhonemeFeature
 sonorant (Consonant _ _ Plosive     _) = Just (SonorantFeature Minus)
 sonorant (Consonant _ _ Affricate   _) = Just (SonorantFeature Minus)
 sonorant (Consonant _ _ Fricative   _) = Just (SonorantFeature Minus)
@@ -363,7 +363,7 @@ Glides are [+continuant].
   Lateral approximants may be considered [+continuant]. (arguable) (see chart on page 259))
 
 |-}
-continuant :: Phonet -> Maybe PhonemeFeature
+continuant ∷ Phonet → Maybe PhonemeFeature
 continuant (Consonant _ _ Plosive            _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Nasal              _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Affricate          _) = Just (ContinuantFeature Minus)
@@ -378,7 +378,7 @@ Nasal consonants are [nasal].
 -- to do: add support for nasal vowels.
 All other segments are not defined for [nasal].
 |-}
-nasal :: Phonet -> Maybe PhonemeFeature
+nasal ∷ Phonet → Maybe PhonemeFeature
 nasal (Consonant _ _ Nasal _) = Just NasalFeature
 nasal _                       = Nothing
 
@@ -390,7 +390,7 @@ Lateral fricative consonants are [lateral].
 Lateral flap consonants are [lateral].
 All other segments are not defined for [lateral].
 |-}
-lateral :: Phonet -> Maybe PhonemeFeature
+lateral ∷ Phonet → Maybe PhonemeFeature
 lateral (Consonant _ _ Lateral            _) = Just LateralFeature
 lateral (Consonant _ _ LateralApproximant _) = Just LateralFeature
 lateral (Consonant _ _ LateralFricative   _) = Just LateralFeature
@@ -403,7 +403,7 @@ All other segments are [-delayed release].
 
 (Source: page 260)
 |-}
-delayedRelease :: Phonet -> Maybe PhonemeFeature
+delayedRelease ∷ Phonet → Maybe PhonemeFeature
 delayedRelease (Consonant _ _ Affricate _) = Just DelayedReleaseFeature
 delayedRelease _                           = Nothing
 
@@ -415,7 +415,7 @@ All other segments are undefined for [labial].
 
 (Source: page 264)
 |-}
-labial :: Phonet -> Maybe PhonemeFeature
+labial ∷ Phonet → Maybe PhonemeFeature
 labial (Consonant _ Bilabial    _ _) = Just LabialFeature
 labial (Consonant _ LabioDental _ _) = Just LabialFeature
 labial _                             = Nothing
@@ -436,7 +436,7 @@ All other sounds are undefined for [coronal].
 (The fact that Post-alveolar consonants are coronal is indicated by
  Table 12. on page 265.)
 |-}
-coronal :: Phonet -> Maybe PhonemeFeature
+coronal ∷ Phonet → Maybe PhonemeFeature
 coronal (Consonant _ Dental         _ _) = Just CoronalFeature
 coronal (Consonant _ Alveolar       _ _) = Just CoronalFeature
 coronal (Consonant _ AlveoloPalatal _ _) = Just CoronalFeature
@@ -461,7 +461,7 @@ Velars are [dorsal].
 Uvulars are [dorsal].
 All other segments are undefined for [dorsal].
 |-}
-dorsal :: Phonet -> Maybe PhonemeFeature
+dorsal ∷ Phonet → Maybe PhonemeFeature
 dorsal (Consonant _ Palatal        _ _) = Just DorsalFeature
 dorsal (Consonant _ Velar          _ _) = Just DorsalFeature
 dorsal (Consonant _ Uvular         _ _) = Just DorsalFeature
@@ -474,7 +474,7 @@ All other segments are undefined for [pharyngeal].
 
 (Source: page 264)
 |-}
-pharyngeal :: Phonet -> Maybe PhonemeFeature
+pharyngeal ∷ Phonet → Maybe PhonemeFeature
 pharyngeal (Consonant _ Pharyngeal Fricative _) = Just PharyngealFeature
 pharyngeal _                                    = Nothing
 
@@ -484,7 +484,7 @@ All other segments are undefined for [laryngeal].
 
 (Source: page 265)
 |-}
-laryngeal :: Phonet -> Maybe PhonemeFeature
+laryngeal ∷ Phonet → Maybe PhonemeFeature
 laryngeal (Consonant _ Glottal _ _ ) = Just LaryngealFeature
 laryngeal _                          = Nothing
 
@@ -495,7 +495,7 @@ Voiced consonants are [+voice].
 Voiced vowels are [+voice].
 All other segments are [-voice].
 |-}
-voice :: Phonet -> Maybe PhonemeFeature
+voice ∷ Phonet → Maybe PhonemeFeature
 voice (Consonant Voiceless Glottal Plosive PulmonicEgressive) = Just (VoiceFeature Minus)
 -- The voiceless glottal plosive is [-voice]
 voice (Consonant VoicedAspirated _ _ _)  = Just (VoiceFeature Plus)
@@ -509,7 +509,7 @@ Voiced aspirated plosives are [spread glottis].
 All other segments are not defined for [spread glottis].
 (Source: page 262)
 |-}
-spreadGlottis :: Phonet -> Maybe PhonemeFeature
+spreadGlottis ∷ Phonet → Maybe PhonemeFeature
 spreadGlottis (Consonant VoicelessAspirated _ Plosive _) = Just SpreadGlottisFeature
 spreadGlottis (Consonant VoicedAspirated    _ Plosive _) = Just SpreadGlottisFeature
 spreadGlottis _                                          = Nothing
@@ -522,7 +522,7 @@ Creaky voiced sonorants have the feature [constricted glottis].
 
 (Source: page 262)
 |-}
-constrictedGlottis :: Phonet -> Maybe PhonemeFeature
+constrictedGlottis ∷ Phonet → Maybe PhonemeFeature
 constrictedGlottis (Consonant _ Glottal Plosive _) =
   Just ConstrictedGlottisFeature
 constrictedGlottis consonant@(Consonant CreakyVoiced _ _ _) =
@@ -550,7 +550,7 @@ Alveolo-palatals are [-anterior].
 (SOURCE: not found)
 
 |-}
-anterior :: Phonet -> Maybe PhonemeFeature
+anterior ∷ Phonet → Maybe PhonemeFeature
 anterior (Consonant _ Dental            _ _) = Just (AnteriorFeature Plus)
 anterior (Consonant _ Alveolar          _ _) = Just (AnteriorFeature Plus)
 anterior (Consonant _ PostAlveolar      _ _) = Just (AnteriorFeature Minus)
@@ -559,7 +559,7 @@ anterior (Consonant _ Palatal           _ _) = Just (AnteriorFeature Minus)
 anterior (Consonant _ AlveoloPalatal    _ _) = Just (AnteriorFeature Minus)
 anterior _                                   = Nothing
 
-distributed :: Phonet -> Maybe PhonemeFeature
+distributed ∷ Phonet → Maybe PhonemeFeature
 distributed (Consonant _ Dental         _ _) = Just (DistributedFeature Plus)
 distributed (Consonant _ Alveolar       _ _) = Just (DistributedFeature Minus)
 distributed (Consonant _ PostAlveolar   _ _) = Just (DistributedFeature Plus)
@@ -586,7 +586,7 @@ All other segments are undefined for [+/-strident].
 
 (Source: page 266, under [+/-strident] heading, under the subsection "Natural classes".)
 |-}
-strident :: Phonet -> Maybe PhonemeFeature
+strident ∷ Phonet → Maybe PhonemeFeature
 strident (Consonant _ Alveolar     Fricative _) = Just (StridentFeature Plus)
 strident (Consonant _ Alveolar     Affricate _) = Just (StridentFeature Plus)
 strident (Consonant _ PostAlveolar Fricative _) = Just (StridentFeature Plus)
@@ -613,7 +613,7 @@ Close vowels are [+high].
 Near-close vowels are [+high].
 All other vowels are [-high].
 |-}
-high :: Phonet -> Maybe PhonemeFeature
+high ∷ Phonet → Maybe PhonemeFeature
 high (Consonant _ Palatal        _ _) = Just (HighFeature Plus)
 high (Consonant _ AlveoloPalatal _ _) = Just (HighFeature Plus)
 high (Consonant _ Velar          _ _) = Just (HighFeature Plus)
@@ -633,7 +633,7 @@ Open vowels are [+low].
 Near open vowels are [+low].
 All other vowels are [-low].
 |-}
-low :: Phonet -> Maybe PhonemeFeature
+low ∷ Phonet → Maybe PhonemeFeature
 low (Consonant _ Uvular     _ _) = Just (LowFeature Plus)
 low (Consonant _ Pharyngeal _ _) = Just (LowFeature Plus)
 low (Consonant _ Glottal    _ _) = Just (LowFeature Plus)
@@ -649,7 +649,7 @@ Central vowels are [+back].
 Front vowels are [-back].
 All other segments are undefined for [+/-back].
 |-}
-back :: Phonet -> Maybe PhonemeFeature
+back ∷ Phonet → Maybe PhonemeFeature
 back (Vowel _ Back    _ _) = Just (BackFeature Plus)
 back (Vowel _ Central _ _) = Just (BackFeature Plus)
 back (Vowel _ Front   _ _) = Just (BackFeature Minus)
@@ -661,7 +661,7 @@ Rounded vowels are [+round].
 All other vowels are [-round].
 All other segments are [-round].
 |-}
-round :: Phonet -> Maybe PhonemeFeature
+round ∷ Phonet → Maybe PhonemeFeature
 round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
 round (Vowel _ _ _       _) = Just (RoundFeature Minus)
 round _                     = Just (RoundFeature Minus)
@@ -669,7 +669,7 @@ round _                     = Just (RoundFeature Minus)
 {-|
 Advanced tongue root
 |-}
-atr :: Phonet -> Maybe PhonemeFeature
+atr ∷ Phonet → Maybe PhonemeFeature
 atr (Vowel  Close     Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
 atr (Vowel  CloseMid  Front   Unrounded Voiced) = Just (AdvancedTongueRootFeature Plus)
 atr (Vowel  Close     Back    Rounded   Voiced) = Just (AdvancedTongueRootFeature Plus)
@@ -699,7 +699,7 @@ For example:
 /p/
 
   |-}
-featureMatrix :: Phonet -> [Maybe PhonemeFeature]
+featureMatrix ∷ Phonet → [Maybe PhonemeFeature]
 featureMatrix phonete
   = [ consonantal          phonete
     , syllabic             phonete
@@ -730,16 +730,16 @@ featureMatrix phonete
 -- | A function that takes data representing
 -- how a phoneme is pronounced, and returns
 -- a list of phonemic features.
-analyzeFeatures :: Phonet -> [PhonemeFeature]
+analyzeFeatures ∷ Phonet → [PhonemeFeature]
 analyzeFeatures phonete =
   catMaybes (featureMatrix phonete)
 
-showFeatures :: [PhonemeFeature] -> String
+showFeatures ∷ [PhonemeFeature] → String
 showFeatures features =
   let featuresStrings = map show features
   in "[" ++ intercalate "; " featuresStrings ++ "]"
 
-toTextFeatures :: Phonet -> String
+toTextFeatures ∷ Phonet → String
 toTextFeatures phonete =
   let features = analyzeFeatures phonete
   in showFeatures features

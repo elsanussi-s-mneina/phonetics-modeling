@@ -20,7 +20,7 @@ import Prelude ()
 -- | suffice.
 -- | This following sound inventory of English is from page 20 of
 -- | (2013, Elizabeth C. Zsiga, The Sounds of Language)
-englishPhonetInventory :: PhonetInventory
+englishPhonetInventory ∷ PhonetInventory
 englishPhonetInventory = PhonetInventory
   [
   Consonant  Voiced    Bilabial      Plosive   PulmonicEgressive,

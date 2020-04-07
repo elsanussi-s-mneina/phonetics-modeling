@@ -27,6 +27,8 @@ library:
   - src
   - src/grapheme
   - src/dialect_specific
+  extensions:
+  - UnicodeSyntax 
   ghc-options:
   - -Weverything
   - -Werror
@@ -34,6 +36,7 @@ library:
   - -Wno-safe
   - -fwarn-incomplete-patterns
   - -fwarn-incomplete-uni-patterns
+  - -XUnicodeSyntax
   dependencies:
   - ds-kanren
 
@@ -51,19 +54,21 @@ executables:
     - -Wno-safe
     - -fwarn-incomplete-patterns
     - -fwarn-incomplete-uni-patterns
-
+    - -XUnicodeSyntax 
     dependencies:
     - phonetics-modeling
-
 
 tests:
   phonetics-modeling-test:
     main:                Spec.hs
     source-dirs:         test
+    extensions:
+    - UnicodeSyntax 
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     - -main-is Spec
+    - -XUnicodeSyntax
     dependencies:
     - phonetics-modeling

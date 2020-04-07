@@ -27,7 +27,7 @@ import English (englishPhonetInventory)
 sectionDivider = "\n\n"
 
 
-main :: IO ()
+main ∷ IO ()
 main = do
   printLegend
   glideSpec
@@ -40,7 +40,7 @@ main = do
   -- We need at least one PutStrLn so that all output makes it to the console before the program terminates.
 
 
-glideSpec :: IO ()
+glideSpec ∷ IO ()
 glideSpec = do
   putStrLn sectionDivider
   putStrLn "recognizing a glide"
@@ -49,7 +49,7 @@ glideSpec = do
   runTest "[w] is a glide." (isGlide (analyzeIPAHelper "w") == True) 
   runTest "[c] is not a glide." (isGlide (analyzeIPAHelper "c") == False) 
 
-analyzeIPASpec :: IO ()
+analyzeIPASpec ∷ IO ()
 analyzeIPASpec = do
       putStrLn sectionDivider
 
@@ -267,7 +267,7 @@ analyzeIPASpec = do
 
 
 
-spirantizedIPASpec :: IO()
+spirantizedIPASpec ∷ IO()
 spirantizedIPASpec = do
       putStrLn sectionDivider
       putStrLn "spirantizing a sound (represented in IPA)" 
@@ -278,7 +278,7 @@ spirantizedIPASpec = do
       runTest ("should be that: [x] is spirantized [k].")
             (spirantizedIPA "k" == "x")
 
-devoicedIPASpec :: IO()
+devoicedIPASpec ∷ IO()
 devoicedIPASpec = do
       putStrLn sectionDivider
       putStrLn "devoicing a sound (represented in IPA)" 
@@ -287,7 +287,7 @@ devoicedIPASpec = do
       runTest ("should be that: [n̥] is devoiced [n].")
             (devoicedIPA "n" == "n̥")
 
-showEnglishPhonemeInventorySpec :: IO ()
+showEnglishPhonemeInventorySpec ∷ IO ()
 showEnglishPhonemeInventorySpec = do
   putStrLn sectionDivider
   putStrLn "Showing english phoneme inventory"
@@ -295,7 +295,7 @@ showEnglishPhonemeInventorySpec = do
     (showIPA englishPhonetInventory == 
      "bpdtgkʔvfðθzsʒʃhd͡ʒt͡ʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ")
 
-speFeaturesSpec :: IO ()
+speFeaturesSpec ∷ IO ()
 speFeaturesSpec = do
   putStrLn sectionDivider
   putStrLn "SPE Features"

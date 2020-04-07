@@ -7,7 +7,7 @@ import English (englishPhonetInventory)
 import PhonemeFeature (analyzeFeatures, showFeatures)
 
 
-menu :: String
+menu ∷ String
 menu = "What do you want to accomplish?\n\n"
         ++ "1) view the English phoneme inventory (as IPA graphemes).\n"
         ++ "2) make a phoneme voiced.\n"
@@ -18,63 +18,63 @@ menu = "What do you want to accomplish?\n\n"
         ++ "Enter the number representing your selection below, after the prompt, and press enter/return.\n\n\n"
 
 
-prompt :: String
+prompt ∷ String
 prompt = "(PROMPT:) "
 
 
-putPrompt :: IO ()
+putPrompt ∷ IO ()
 putPrompt = do
     putStr prompt
     hFlush stdout
 
-analyzeIPAToSPE :: String -> String
+analyzeIPAToSPE ∷ String → String
 analyzeIPAToSPE ipaText = 
   let maybePhonet = analyzeIPA ipaText
   in case maybePhonet of 
-       Nothing -> "Sorry, unable to calculate answer with that input."
-       Just phonet -> showFeatures (analyzeFeatures phonet)
+       Nothing → "Sorry, unable to calculate answer with that input."
+       Just phonet → showFeatures (analyzeFeatures phonet)
 
 
-promptForPhonemeAndApply :: (String -> String) -> String -> IO ()
+promptForPhonemeAndApply ∷ (String → String) → String → IO ()
 promptForPhonemeAndApply func instructions = 
   do
     putStrLn instructions
     putPrompt
-    phoneme <- getLine
+    phoneme ← getLine
     putStrLn (func phoneme)
 
-promptForPhonemeToDevoice :: IO ()
+promptForPhonemeToDevoice ∷ IO ()
 promptForPhonemeToDevoice = 
   promptForPhonemeAndApply devoicedIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display the devoiced counterpart (on the subsequent line):"
 
-promptForPhonemeToVoice :: IO ()
+promptForPhonemeToVoice ∷ IO ()
 promptForPhonemeToVoice =  
   promptForPhonemeAndApply voicedIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display the voiced counterpart (on the subsequent line):"
 
-promptForPhonemeToDescribe :: IO ()
+promptForPhonemeToDescribe ∷ IO ()
 promptForPhonemeToDescribe =  
   promptForPhonemeAndApply describeIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its English description (on the subsequent line):"
 
 
-promptForPhonemeToCalculateSPEFeaturesFrom :: IO ()
+promptForPhonemeToCalculateSPEFeaturesFrom ∷ IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
   promptForPhonemeAndApply analyzeIPAToSPE "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its SPE features (on the subsequent line):"
 
 
-main :: IO ()
+main ∷ IO ()
 main = 
   do
     putStrLn "Please read README.md file for instructions on how to use."
     putStr menu
     putPrompt
-    selection <- getLine
+    selection ← getLine
     putStrLn ("The user selected: " ++ selection ++ "\n")
     case selection of
-                   "1" -> putStrLn (showIPA englishPhonetInventory)
-                   "2" -> promptForPhonemeToVoice
-                   "3" -> promptForPhonemeToDevoice
-                   "4" -> promptForPhonemeToDescribe
-                   "5" -> promptForPhonemeToCalculateSPEFeaturesFrom
-                   _ -> putStrLn "Unrecognized selection. No action taken."
+                   "1" → putStrLn (showIPA englishPhonetInventory)
+                   "2" → promptForPhonemeToVoice
+                   "3" → promptForPhonemeToDevoice
+                   "4" → promptForPhonemeToDescribe
+                   "5" → promptForPhonemeToCalculateSPEFeaturesFrom
+                   _ → putStrLn "Unrecognized selection. No action taken."
 
     putStrLn "\nProgram terminated normally.\n\n"

@@ -52,7 +52,7 @@ type IPAText = String
 
 
 
-graphemesOfIPA :: [IPAText]
+graphemesOfIPA ∷ [IPAText]
 graphemesOfIPA = consonantsPulmonic
   ++ consonantsNonPulmonic
   ++ otherSymbols
@@ -64,37 +64,37 @@ graphemesOfIPA = consonantsPulmonic
 -- For the source of this information..
 
 -- CONSONANTS (PULMONIC)
-consonantsPulmonic :: [IPAText]
+consonantsPulmonic ∷ [IPAText]
 consonantsPulmonic = concat consonantsPulmonicTable
 
-plosivePulmonic :: [String]
+plosivePulmonic ∷ [String]
 plosivePulmonic            = [ "p", "b", " ", " ", " ", " ", "t", "d", " ", " ", "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ", " ", " ", "ʔ", " "] -- Plosive
 
-nasalPulmonic :: [String]
+nasalPulmonic ∷ [String]
 nasalPulmonic              = [ " ", "m", " ", "ɱ", " ", " ", " ", "n", " ", " ", " ", "ɳ", " ", "ɲ", " ", "ŋ", " ", "ɴ", " ", " ", " ", " "] -- Nasal
 
-trillPulmonic :: [String]
+trillPulmonic ∷ [String]
 trillPulmonic              = [ " ", "ʙ", " ", " ", " ", " ", " ", "r", " ", " ", " ", " ", " ", " ", " ", " ", " ", "ʀ", " ", " ", " ", " "] -- Trill
 
-tapOrFlapPulmonic :: [String]
+tapOrFlapPulmonic ∷ [String]
 tapOrFlapPulmonic          = [ " ", " ", " ", "ⱱ", " ", " ", " ", "ɾ", " ", " ", " ", "ɽ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Tap or Flap
 
-fricativePulmonic :: [String]
+fricativePulmonic ∷ [String]
 fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ", "h", "ɦ"]  -- Fricative
 
-lateralFricativePulmonic :: [String]
+lateralFricativePulmonic ∷ [String]
 lateralFricativePulmonic   = [ " ", " ", " ", " ", " ", " ", "ɬ", "ɮ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Lateral fricative
 
-approximantPulmonic :: [String]
+approximantPulmonic ∷ [String]
 approximantPulmonic        = [ " ", " ", " ", "ʋ", " ", " ", " ", "ɹ", " ", " ", " ", "ɻ", " ", "j", " ", "ɰ", " ", " ", " ", " ", " ", " "] -- Approximant
 
-lateralApproximantPulmonic :: [String]
+lateralApproximantPulmonic ∷ [String]
 lateralApproximantPulmonic = [ " ", " ", " ", " ", " ", " ", " ", "l", " ", " ", " ", "ɭ", " ", "ʎ", " ", "ʟ", " ", " ", " ", " ", " ", " "] -- Lateral approximant
 
 
 
 
-consonantsPulmonicTable :: [[IPAText]]
+consonantsPulmonicTable ∷ [[IPAText]]
 consonantsPulmonicTable =
  [ plosivePulmonic
  , nasalPulmonic
@@ -107,7 +107,7 @@ consonantsPulmonicTable =
  ]
 
 
-consonantsNonPulmonic :: [IPAText]
+consonantsNonPulmonic ∷ [IPAText]
 consonantsNonPulmonic =
 -- Clicks   Voiced implosives
  [ "ʘ",     "ɓ" -- Bilabial
@@ -117,7 +117,7 @@ consonantsNonPulmonic =
  , "ǁ",  "ʛ"
  ]
 
-otherSymbols :: [IPAText]
+otherSymbols ∷ [IPAText]
 otherSymbols =
   ["ʍ",  "ɕ"
   ,"w",  "ʑ"
@@ -127,7 +127,7 @@ otherSymbols =
   ,"ʡ"
   ]
 
-vowels :: [IPAText]
+vowels ∷ [IPAText]
 vowels =
   ["i", "y",   "ɨ", "ʉ",   "ɯ", "u"   -- Close
   ,"ɪ", "ʏ",            "ʊ"
@@ -138,7 +138,7 @@ vowels =
   , "a", "ɶ",              "ɑ", "ɒ"  -- Open
   ]
 
-suprasegmentals :: [IPAText]
+suprasegmentals ∷ [IPAText]
 suprasegmentals =
   [ "ˈ"   -- Primary stress
   , "ˌ"   -- Secondary stress
@@ -153,7 +153,7 @@ suprasegmentals =
   ]
 
 
-toneAndWordAccents :: [IPAText]
+toneAndWordAccents ∷ [IPAText]
 toneAndWordAccents =
 {- Level -}
   [ "˥", "̋"  -- Extra high
@@ -174,7 +174,7 @@ toneAndWordAccents =
   , "↘" -- Global fall
   ]
 
-diacriticsAndSuprasegmentals :: [IPAText]
+diacriticsAndSuprasegmentals ∷ [IPAText]
 diacriticsAndSuprasegmentals =
   [ "ʰ"  -- Aspirated
   , "ʷ"  -- Labialised
@@ -207,7 +207,7 @@ diacriticsAndSuprasegmentals =
   , "̇"    -- Palatalization/Centralization
   ]
 
-showIPA :: PhonetInventory -> IPAText
+showIPA ∷ PhonetInventory → IPAText
 showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 
 
@@ -215,7 +215,7 @@ showIPA (PhonetInventory phonetes) = concatMap constructIPA phonetes
 -- | This function will allow us to convert an IPA symbol
 -- | to its analyzed form (its phonetic features)
 -- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
-analyzeIPA  :: IPAText -> Maybe Phonet
+analyzeIPA  ∷ IPAText → Maybe Phonet
 
 
 -- | This function will allow us to convert an IPA symbol
@@ -387,36 +387,36 @@ analyzeIPA ipaText =
     "̥" ->
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
-              Just (Consonant _ place manner airstream)    -> Just $ Consonant Voiceless place manner airstream
-              Just (Vowel height backness rounding _  )    -> Just $ Vowel height backness rounding Voiceless
-              _                                            -> Nothing
+              Just (Consonant _ place manner airstream)    → Just $ Consonant Voiceless place manner airstream
+              Just (Vowel height backness rounding _  )    → Just $ Vowel height backness rounding Voiceless
+              _                                            → Nothing
     "̬" ->
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
-              Just (Consonant _ place manner airstream)    -> Just $ Consonant Voiced place manner airstream
-              Just (Vowel height backness rounding _  )    -> Just $ Vowel height backness rounding Voiced
-              _                                            -> Nothing
+              Just (Consonant _ place manner airstream)    → Just $ Consonant Voiced place manner airstream
+              Just (Vowel height backness rounding _  )    → Just $ Vowel height backness rounding Voiced
+              _                                            → Nothing
 
     "ʰ" ->
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
-              Just (Consonant Voiced place manner airstream   ) -> Just $ Consonant VoicedAspirated place manner airstream
-              Just (Consonant Voiceless place manner airstream) -> Just $ Consonant VoicelessAspirated place manner airstream
-              Just (Vowel height backness rounding voice      ) -> Just $ Vowel height backness rounding voice
-              anythingElse                                      -> anythingElse
+              Just (Consonant Voiced place manner airstream   ) → Just $ Consonant VoicedAspirated place manner airstream
+              Just (Consonant Voiceless place manner airstream) → Just $ Consonant VoicelessAspirated place manner airstream
+              Just (Vowel height backness rounding voice      ) → Just $ Vowel height backness rounding voice
+              anythingElse                                      → anythingElse
               -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
               -- since we have no way to represent it in the type system. to do: determine
               -- if the idea of an aspirated vowel makes sense
-    _ -> Nothing -- Not recognized.
+    _ → Nothing -- Not recognized.
 
 
-constructIPA :: Phonet -> IPAText
+constructIPA ∷ Phonet → IPAText
 constructIPA phoneme = 
   case constructIPARecursive 3 0 phoneme of
-    Just graphemes -> graphemes
-    Nothing        -> "∅"
+    Just graphemes → graphemes
+    Nothing        → "∅"
 
-constructIPARecursive :: Int -> Int -> Phonet -> Maybe IPAText
+constructIPARecursive ∷ Int → Int → Phonet → Maybe IPAText
 constructIPARecursive recursionLimit recursionLevel _
   | recursionLevel == recursionLimit = Nothing
 
@@ -556,8 +556,8 @@ constructIPARecursive _ _ (Vowel      Open               Back                   
 constructIPARecursive recursionLimit recursionLevel  (Consonant  x PostAlveolar y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant x Alveolar y z) of
-           Nothing -> Nothing
-           Just regularIPA -> Just (regularIPA ++ "̠")  -- Add the diacritic for "retracted"
+           Nothing → Nothing
+           Just regularIPA → Just (regularIPA ++ "̠")  -- Add the diacritic for "retracted"
 
 
 
@@ -569,15 +569,15 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant  x PostAlveolar 
 constructIPARecursive recursionLimit recursionLevel  (Consonant Voiceless x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel)  (Consonant Voiced x y z) of 
-           Nothing -> Nothing
-           Just regularIPA -> Just (regularIPA ++ "̥") -- add diacritic for voiceless
+           Nothing → Nothing
+           Just regularIPA → Just (regularIPA ++ "̥") -- add diacritic for voiceless
 
 -- Add the small circle diacritic to vowels to make them voiceless.
 constructIPARecursive recursionLimit recursionLevel (Vowel x y z Voiceless)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiced) of
-           Nothing -> Nothing
-           Just regularIPA -> Just (regularIPA ++ "̥")
+           Nothing → Nothing
+           Just regularIPA → Just (regularIPA ++ "̥")
 
 -- If there is no way to express a voiced consonant in a single
 -- grapheme add a diacritic to the grapheme that represents
@@ -585,32 +585,32 @@ constructIPARecursive recursionLimit recursionLevel (Vowel x y z Voiceless)
 constructIPARecursive recursionLimit recursionLevel  (Consonant Voiced x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of 
-           Nothing -> Nothing
-           Just regularIPA -> Just (regularIPA ++ "̬")
+           Nothing → Nothing
+           Just regularIPA → Just (regularIPA ++ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  (Vowel x y z Voiced)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiceless) of 
-           Nothing -> Nothing 
-           Just regularIPA -> Just (regularIPA ++ "̬")
+           Nothing → Nothing 
+           Just regularIPA → Just (regularIPA ++ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicedAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
-           Nothing         -> Nothing
-           Just regularIPA -> Just (regularIPA ++ "ʰ")
+           Nothing         → Nothing
+           Just regularIPA → Just (regularIPA ++ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicelessAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of 
-           Nothing         -> Nothing
-           Just regularIPA -> Just (regularIPA ++ "ʰ")
+           Nothing         → Nothing
+           Just regularIPA → Just (regularIPA ++ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant CreakyVoiced _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
-           Nothing         -> Nothing
-           Just regularIPA -> Just (regularIPA ++ "̰")
+           Nothing         → Nothing
+           Just regularIPA → Just (regularIPA ++ "̰")
 
 
 constructIPARecursive _ _ _
@@ -619,7 +619,7 @@ constructIPARecursive _ _ _
 
 
 
-deaspirate :: Phonet -> Phonet
+deaspirate ∷ Phonet → Phonet
 deaspirate (Consonant VoicedAspirated place manner airstream) =
   (Consonant Voiced place manner airstream)
 
@@ -629,20 +629,20 @@ deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
 deaspirate x = x
 
 
-constructDeconstruct :: (Phonet -> Phonet) -> IPAText -> IPAText
+constructDeconstruct ∷ (Phonet → Phonet) → IPAText → IPAText
 constructDeconstruct func x = 
   let something = analyzeIPA x 
   in case something of 
-       Nothing -> "∅" 
-       Just phonet -> constructIPA (func phonet)
+       Nothing → "∅" 
+       Just phonet → constructIPA (func phonet)
 
-voicedIPA :: IPAText -> IPAText
+voicedIPA ∷ IPAText → IPAText
 voicedIPA = constructDeconstruct voicedPhonet
 
-devoicedIPA :: IPAText -> IPAText
+devoicedIPA ∷ IPAText → IPAText
 devoicedIPA = constructDeconstruct devoicedPhonet
 
-spirantizedIPA :: IPAText -> IPAText
+spirantizedIPA ∷ IPAText → IPAText
 spirantizedIPA = constructDeconstruct spirantizedPhonet
 
 
@@ -651,5 +651,5 @@ Return an english description of a phoneme,
 given a phoneme's representation in the
 international phonetic alphabet.
   |-}
-describeIPA :: IPAText -> String
+describeIPA ∷ IPAText → String
 describeIPA = show . analyzeIPA
