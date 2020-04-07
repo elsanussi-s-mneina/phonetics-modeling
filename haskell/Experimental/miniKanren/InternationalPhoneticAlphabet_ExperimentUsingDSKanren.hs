@@ -18,7 +18,7 @@ Then run main:
 to check that the code runs.
 -}
 
-module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced) where 
+module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, facts, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
 
 import Prelude (Bool, IO, String, foldr, fst, head, not, null, print, (.), ($))
 import Language.DSKanren (Term(Atom), Predicate, conde, disconj, failure, list, manyFresh, program, runN, (===))
@@ -27,7 +27,6 @@ main :: IO ()
 main =
   do 
      print "Program terminated normally"
-
 
 facts :: Term -> Predicate
 facts = \t ->
@@ -63,8 +62,10 @@ makeVoicedO voiceless result =
 makeVoiced :: String -> String
 makeVoiced phoneme = 
      if not (null kanrenResult)
-     then let Atom voiced = (fst . head) kanrenResult
-          in voiced
+     then 
+       case (fst . head) kanrenResult of
+              Atom voiced -> voiced
+              _           -> phoneme
      else phoneme  -- do nothing
      where kanrenResult = runN 1 (\t -> makeVoicedO (Atom phoneme) t)
            
@@ -73,14 +74,16 @@ makeVoiced phoneme =
 makeVoicelessO :: Term -> Term -> Predicate
 makeVoicelessO voiced result =
   conde [ manyFresh $ \t ->
-          program ([ list [(Atom "voiced"), result, voiced] === t
+          program ([ list [(Atom "voiced"), result, voiced ] === t
                     , facts t] )]
 
 
 makeVoiceless :: String -> String
 makeVoiceless phoneme = 
      if not (null kanrenResult)
-     then let Atom voiced = (fst . head) kanrenResult
-          in voiced
+     then 
+       case (fst . head) kanrenResult of
+              Atom voiceless -> voiceless
+              _              -> phoneme
      else phoneme  -- do nothing
      where kanrenResult = runN 1 (\t -> makeVoicelessO (Atom phoneme) t)
