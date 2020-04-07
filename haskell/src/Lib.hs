@@ -1,4 +1,4 @@
-module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced, UnmarkedVocalFolds), 
+module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced), 
               Place(
                 Bilabial
               , LabioDental
@@ -16,8 +16,7 @@ module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAsp
               , LabialPalatal
               , AlveoloPalatal
               , PalatoAlveolar 
-              , Places
-              , UnmarkedPlace), 
+              , Places), 
               Manner(
                 Plosive
               , Nasal
@@ -30,8 +29,8 @@ module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAsp
               , LateralApproximant
               , LateralFlap
               , Lateral 
-              , UnmarkedManner), Airstream(PulmonicEgressive, Click, Implosive, UnmarkedAirstream),
-            Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open, UnmarkedHeight), Backness(Front, Central, Back, UnmarkedBackness), Rounding(Rounded, Unrounded, UnmarkedRounding), PhonetInventory(..),
+              ), Airstream(PulmonicEgressive, Click, Implosive),
+            Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open), Backness(Front, Central, Back), Rounding(Rounded, Unrounded), PhonetInventory(..),
             voicedPhonet, devoicedPhonet, impossible, generateFromUnmarked, unmarkDifferences,
             spirantizedPhonet, retractedPlace) where
 
@@ -52,8 +51,20 @@ data Phonet = Consonant VocalFolds
                     Backness
                     Rounding
                     VocalFolds
-                    
                     deriving Eq
+
+data UnmarkablePhonet 
+  = UnmarkableConsonant
+      UnmarkableVocalFolds
+      UnmarkablePlace
+      UnmarkableManner
+      UnmarkableAirstream
+  | UnmarkableVowel
+      UnmarkableHeight
+      UnmarkableBackness
+      UnmarkableRounding
+      UnmarkableVocalFolds
+
 
 instance Show Phonet where
   show phonet =
@@ -64,14 +75,16 @@ instance Show Phonet where
 data Backness = Front
               | Central
               | Back
-              | UnmarkedBackness
                 deriving Eq
+
+data UnmarkableBackness
+  = UnmarkedBackness
+  | MarkedBackness Backness
 
 instance Show Backness where
   show Front            = "front"
   show Central          = "central"
   show Back             = "back"
-  show UnmarkedBackness = ""
 
 backnessStates :: [Backness]
 backnessStates = [Front, Central, Back]
@@ -83,8 +96,10 @@ data Height = Close
             | OpenMid
             | NearOpen
             | Open
-            | UnmarkedHeight
               deriving Eq
+
+data UnmarkableHeight
+  = UnmarkedHeight | MarkedHeight Height
 
 instance Show Height where
   show Close          = "close"
@@ -94,7 +109,6 @@ instance Show Height where
   show OpenMid        = "open-mid"
   show NearOpen       = "near-open"
   show Open           = "open"
-  show UnmarkedHeight = ""
 
 heightStates :: [Height]
 heightStates =
@@ -110,13 +124,15 @@ heightStates =
 
 data Rounding = Rounded
               | Unrounded
-              | UnmarkedRounding
                 deriving Eq
+
+data UnmarkableRounding 
+  = UnmarkedRounding
+  | MarkedRounding Rounding
 
 instance Show Rounding where
   show Rounded          = "rounded"
   show Unrounded        = "unrounded"
-  show UnmarkedRounding = ""
 
 roundingStates :: [Rounding]
 roundingStates = [Rounded, Unrounded]
@@ -141,7 +157,10 @@ data Place = Bilabial
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
            | Places [Place]
-           | UnmarkedPlace
+
+data UnmarkablePlace 
+  = UnmarkedPlace
+  | MarkedPlace Place
 
 instance Eq Place where
   Bilabial     == Bilabial            = True
@@ -180,7 +199,6 @@ instance Show Place where
       LabialPalatal  -> "labial-palatal"
       AlveoloPalatal -> "alveolo-palatal"
       PalatoAlveolar -> "palato-alveolar"
-      UnmarkedPlace  -> ""
       Places ps      -> unwords (map show ps)
 
 placeStates :: [Place]
@@ -226,10 +244,13 @@ data Manner = Plosive
             | Affricate
             | LateralFricative
             | LateralApproximant
-            | LateralFlap
+            | LateralFlap  -- There are very few IPA symbols for lateral flaps
             | Lateral -- we need this one for the lateral click.
-            | UnmarkedManner -- There are very few IPA symbols for lateral flaps
               deriving Eq
+
+data UnmarkableManner 
+  = UnmarkedManner 
+  | MarkedManner Manner
 
 instance Show Manner where
   show manner1 =
@@ -245,7 +266,6 @@ instance Show Manner where
       LateralApproximant -> "lateral approximant"
       LateralFlap        -> "lateral flap"
       Lateral            -> "lateral"
-      UnmarkedManner     -> ""
 
 mannerStates :: [Manner]
 mannerStates = [ Plosive
@@ -264,8 +284,11 @@ mannerStates = [ Plosive
 data Airstream = PulmonicEgressive
                | Click
                | Implosive
-               | UnmarkedAirstream
                  deriving Eq
+
+data UnmarkableAirstream 
+  = UnmarkedAirstream
+  | MarkedAirstream Airstream
 
 instance Show Airstream where
   show airstream1 =
@@ -273,7 +296,6 @@ instance Show Airstream where
       PulmonicEgressive -> "pulmonic egressive"
       Click             -> "click"
       Implosive         -> "implosive"
-      UnmarkedAirstream -> ""
 
 airstreamStates :: [Airstream]
 airstreamStates = [ PulmonicEgressive
@@ -286,8 +308,11 @@ data VocalFolds = Voiced
                 | VoicedAspirated
                 | VoicelessAspirated
                 | CreakyVoiced
-                | UnmarkedVocalFolds
                   deriving Eq
+
+data UnmarkableVocalFolds 
+  = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
+
 
 
 instance Show VocalFolds where
@@ -298,7 +323,6 @@ instance Show VocalFolds where
       VoicedAspirated    -> "voiced aspirated"
       VoicelessAspirated -> "voiceless aspirated"
       CreakyVoiced       -> "creaky voiced"
-      UnmarkedVocalFolds -> ""
 
 vocalFoldStates :: [VocalFolds]
 vocalFoldStates = [Voiceless, Voiced, VoicedAspirated, VoicelessAspirated, CreakyVoiced]
@@ -330,7 +354,6 @@ devoicedPhonet (Consonant   CreakyVoiced       x y z) = Consonant   Voiceless   
 devoicedPhonet (Consonant   Voiceless          x y z) = Consonant   Voiceless          x y z
 devoicedPhonet (Consonant   VoicedAspirated    x y z) = Consonant   VoicelessAspirated x y z
 devoicedPhonet (Consonant   VoicelessAspirated x y z) = Consonant   VoicelessAspirated x y z
-devoicedPhonet (Consonant   UnmarkedVocalFolds x y z) = Consonant   UnmarkedVocalFolds x y z
 devoicedPhonet (Vowel x y z _                       ) = Vowel x y z Voiceless
 
 
@@ -351,24 +374,24 @@ spirantizedPhonet other = other
 
 
 
-unmarkDifferences :: Phonet -> Phonet -> Phonet
+unmarkDifferences :: Phonet -> Phonet -> UnmarkablePhonet
 unmarkDifferences (Consonant voice1 place1 manner1 airstream1) (Consonant voice2 place2 manner2 airstream2)=
-  let voice'     = if voice1     == voice2     then voice1     else UnmarkedVocalFolds
-      place'     = if place1     == place2     then place1     else UnmarkedPlace
-      manner'    = if manner1    == manner2    then manner1    else UnmarkedManner
-      airstream' = if airstream1 == airstream2 then airstream1 else UnmarkedAirstream
-  in Consonant voice' place' manner' airstream'
+  let voice'     = if voice1     == voice2     then MarkedVocalFolds voice1     else UnmarkedVocalFolds
+      place'     = if place1     == place2     then MarkedPlace      place1     else UnmarkedPlace
+      manner'    = if manner1    == manner2    then MarkedManner     manner1    else UnmarkedManner
+      airstream' = if airstream1 == airstream2 then MarkedAirstream  airstream1 else UnmarkedAirstream
+  in UnmarkableConsonant voice' place' manner' airstream'
 
 unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 backness2 rounding2 voice2) =
-  let voice'    = if voice1    == voice2    then voice1    else UnmarkedVocalFolds
-      height'   = if height1   == height2   then height1   else UnmarkedHeight
-      backness' = if backness1 == backness2 then backness1 else UnmarkedBackness
-      rounding' = if rounding1 == rounding2 then rounding1 else UnmarkedRounding
-  in Vowel height' backness' rounding' voice'
+  let voice'    = if voice1    == voice2    then MarkedVocalFolds voice1    else UnmarkedVocalFolds
+      height'   = if height1   == height2   then MarkedHeight     height1   else UnmarkedHeight
+      backness' = if backness1 == backness2 then MarkedBackness   backness1 else UnmarkedBackness
+      rounding' = if rounding1 == rounding2 then MarkedRounding   rounding1 else UnmarkedRounding
+  in UnmarkableVowel height' backness' rounding' voice'
 
 unmarkDifferences (Vowel _ _ _ voice1) (Consonant voice2 _ _ _) =
-  let voice' = if voice1 == voice2 then voice1 else UnmarkedVocalFolds
-  in Vowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
+  let voice' = if voice1 == voice2 then MarkedVocalFolds voice1 else UnmarkedVocalFolds
+  in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
 
 unmarkDifferences c@(Consonant _ _ _ _) v@(Vowel _ _ _ _) =
@@ -379,21 +402,58 @@ unmarkDifferences c@(Consonant _ _ _ _) v@(Vowel _ _ _ _) =
 -- This function (I realize it is poorly named)
 -- takes any unmarked attributes in the phoneme definition,
 -- and returns a list with all possibilities for that attribute.
-generateFromUnmarked :: Phonet -> [Phonet]
-generateFromUnmarked (Consonant voice1 place1 manner1 airstream1) =
-  let voice'     = if voice1     == UnmarkedVocalFolds     then vocalFoldStates else [voice1]
-      place'     = if place1     == UnmarkedPlace          then placeStates     else [place1]
-      manner'    = if manner1    == UnmarkedManner         then mannerStates    else [manner1]
-      airstream' = if airstream1 == UnmarkedAirstream      then airstreamStates else [airstream1]
+generateFromUnmarked :: UnmarkablePhonet -> [Phonet]
+generateFromUnmarked (UnmarkableConsonant voice1 place1 manner1 airstream1) =
+  let voice'     = unmarkableVoiceToList     voice1
+      place'     = unmarkablePlaceToList     place1
+      manner'    = unmarkableMannerToList    manner1
+      airstream' = unmarkableAirstreamToList airstream1
   in [Consonant v p m a | p <- place', v <- voice',  m <- manner', a <- airstream']
 
-generateFromUnmarked (Vowel height1 backness1 rounding1 voice1) =
-  let voice'    = if voice1    == UnmarkedVocalFolds then vocalFoldStates else [voice1]
-      height'   = if height1   == UnmarkedHeight     then heightStates    else [height1]
-      backness' = if backness1 == UnmarkedBackness   then backnessStates  else [backness1]
-      rounding' = if rounding1 == UnmarkedRounding   then roundingStates  else [rounding1]
+generateFromUnmarked (UnmarkableVowel height1 backness1 rounding1 voice1) =
+  let voice'    = unmarkableVoiceToList    voice1
+      height'   = unmarkableHeightToList   height1
+      backness' = unmarkableBacknessToList backness1
+      rounding' = unmarkableRoundingToList rounding1
   in [Vowel h b r v | h <- height', b <- backness', r <- rounding', v <- voice']
 
+
+
+unmarkableVoiceToList voice1 = 
+  case voice1 of 
+       MarkedVocalFolds x -> [x]
+       UnmarkedVocalFolds -> vocalFoldStates
+
+unmarkablePlaceToList place1 =
+  case place1 of
+       MarkedPlace x -> [x]
+       UnmarkedPlace -> placeStates
+
+unmarkableMannerToList manner1 =
+  case manner1 of
+       MarkedManner x -> [x]
+       UnmarkedManner -> mannerStates
+
+unmarkableAirstreamToList airstream1 = 
+  case airstream1 of
+       MarkedAirstream x -> [x]
+       UnmarkedAirstream -> airstreamStates
+
+
+unmarkableHeightToList height1 = 
+  case height1 of
+       MarkedHeight x -> [x]
+       UnmarkedHeight -> heightStates
+
+unmarkableBacknessToList backness1 =
+  case backness1 of 
+       MarkedBackness x -> [x]
+       UnmarkedBackness -> backnessStates
+
+unmarkableRoundingToList rounding1 = 
+  case rounding1 of
+       MarkedRounding x -> [x]
+       UnmarkedRounding -> roundingStates
 
 -- The following function returns whether an articulation is
 -- considered impossible according to the IPA (pulmonic) consonants chart.

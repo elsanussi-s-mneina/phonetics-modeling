@@ -8,7 +8,7 @@ import Lib
     Phonet(Consonant, Vowel),
     PhonetInventory(PhonetInventory),
     Place(Alveolar, Bilabial, Dental, Glottal, LabioDental, LabialVelar, Palatal, PostAlveolar, Velar),
-    Rounding(Rounded, Unrounded, UnmarkedRounding),
+    Rounding(Rounded, Unrounded),
     VocalFolds(Voiced, Voiceless),
     Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open)
   )
@@ -76,7 +76,7 @@ englishPhonetInventory = PhonetInventory
   Vowel  CloseMid Back    Rounded   Voiced, -- "o"
 
   -- Mid Vowels:
-  Vowel Mid Central UnmarkedRounding Voiced, -- "ə"
+  Vowel Mid Central Unrounded Voiced, -- "ə"
 
 
   -- Open-mid Vowels:
@@ -89,7 +89,7 @@ englishPhonetInventory = PhonetInventory
 
   -- Near-open
   Vowel  NearOpen Front   Unrounded Voiced, -- "æ"
-  Vowel  NearOpen Central UnmarkedRounding  Voiced, -- "ɐ"
+  Vowel  NearOpen Central Unrounded  Voiced, -- "ɐ"
 
   -- Open Vowels:
   -- English lacks: Vowel  Open Front Unrounded Voiced -- "a"

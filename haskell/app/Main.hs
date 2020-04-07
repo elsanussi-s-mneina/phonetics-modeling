@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Prelude (IO, String, getLine, putStr, putStrLn, (++))
+import Prelude (IO, String, Maybe(Just, Nothing), getLine, putStr, putStrLn, (++))
 import System.IO (hFlush, stdout)
 import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
 import English (englishPhonetInventory)
@@ -28,7 +28,11 @@ putPrompt = do
     hFlush stdout
 
 analyzeIPAToSPE :: String -> String
-analyzeIPAToSPE ipaText = showFeatures (analyzeFeatures (analyzeIPA ipaText))
+analyzeIPAToSPE ipaText = 
+  let maybePhonet = analyzeIPA ipaText
+  in case maybePhonet of 
+       Nothing -> "Sorry, unable to calculate answer with that input."
+       Just phonet -> showFeatures (analyzeFeatures phonet)
 
 
 promptForPhonemeAndApply :: (String -> String) -> String -> IO ()

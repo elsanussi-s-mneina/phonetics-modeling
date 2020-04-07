@@ -1,6 +1,6 @@
 module Spec (main) where
-
-import Prelude ((++), IO, length, Bool(True, False), putStrLn, putStr, show, (==), (&&), String, Maybe(Just, Nothing))
+import Data.Maybe (fromJust) 
+import Prelude ((++), (>>=), (.), IO, length, Bool(True, False), putStrLn, putStr, show, (==), (&&), String, Maybe(Just, Nothing))
 import PhonemeFeature (isGlide, low, anterior,
                        distributed,
                        strident, high,
@@ -44,10 +44,10 @@ glideSpec :: IO ()
 glideSpec = do
   putStrLn sectionDivider
   putStrLn "recognizing a glide"
-  runTest "[j] the voiced palatal approximant is a glide." (isGlide (analyzeIPA "j") == True ) 
-  runTest "[ʝ] the voiced palatal fricative is not a glide." (isGlide (analyzeIPA "ʝ") == False) 
-  runTest "[w] is a glide." (isGlide (analyzeIPA "w") == True) 
-  runTest "[c] is not a glide." (isGlide (analyzeIPA "c") == False) 
+  runTest "[j] the voiced palatal approximant is a glide." (isGlide (analyzeIPAHelper "j") == True ) 
+  runTest "[ʝ] the voiced palatal fricative is not a glide." (isGlide (analyzeIPAHelper "ʝ") == False) 
+  runTest "[w] is a glide." (isGlide (analyzeIPAHelper "w") == True) 
+  runTest "[c] is not a glide." (isGlide (analyzeIPAHelper "c") == False) 
 
 analyzeIPASpec :: IO ()
 analyzeIPASpec = do
@@ -56,213 +56,213 @@ analyzeIPASpec = do
       putStrLn "analyzing place, voicing, manner, and airstream mechanism of sound represented by IPA symbols"
       runTest ("[p] is a voiceless bilabial plosive consonant" ++ 
                 " with pulmonic egressive airstream mechanism.")
-                (show (analyzeIPA "p") == "voiceless bilabial plosive pulmonic egressive consonant" &&
+                (show (analyzeIPAHelper "p") == "voiceless bilabial plosive pulmonic egressive consonant" &&
                 constructIPA     (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == "p") 
  
       runTest ("[pʰ] is a voiceless aspirated bilabial plosive consonant" ++ 
                 " with pulmonic egressive airstream mechanism.")
-                (show (analyzeIPA "pʰ") == "voiceless aspirated bilabial plosive pulmonic egressive consonant" &&
+                (show (analyzeIPAHelper "pʰ") == "voiceless aspirated bilabial plosive pulmonic egressive consonant" &&
                 constructIPA     (Consonant VoicelessAspirated Bilabial Plosive PulmonicEgressive) == "pʰ") 
                 
       runTest ("should be that: [s] is a voiceless alveolar fricative consonant" ++
                 "with pulmonic egressive airstream mechanism.") 
-                (show (analyzeIPA "s") == "voiceless alveolar fricative pulmonic egressive consonant" &&
+                (show (analyzeIPAHelper "s") == "voiceless alveolar fricative pulmonic egressive consonant" &&
                     constructIPA             (Consonant Voiceless Alveolar Fricative PulmonicEgressive) == "s")
       runTest ("should be that: [b] is a voiceless bilabial plosive consonant with " ++
           "pulmonic egressive airstream mechanism") 
-            (show (analyzeIPA "b") == "voiced bilabial plosive pulmonic egressive consonant" && -- Consonant  Voiced    Bilabial  Plosive PulmonicEgressive &&
+            (show (analyzeIPAHelper "b") == "voiced bilabial plosive pulmonic egressive consonant" && -- Consonant  Voiced    Bilabial  Plosive PulmonicEgressive &&
             constructIPA             (Consonant  Voiced    Bilabial  Plosive PulmonicEgressive) == "b")
       runTest ("should be that: [t] is a voiceless alveloar plosive consonant with " ++
           "pulmonic egressive airstream mechanism") 
-            (show (analyzeIPA "t") == "voiceless alveolar plosive pulmonic egressive consonant" && 
+            (show (analyzeIPAHelper "t") == "voiceless alveolar plosive pulmonic egressive consonant" && 
             constructIPA             (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive) == "t")
 -- Plosives:
       runTest ("should be that: [p] is a voiceless bilabial plosive consonant with " ++ 
           "pulmonic egressive airstream mechanism") 
-           (show (analyzeIPA "p") == "voiceless bilabial plosive pulmonic egressive consonant" &&
+           (show (analyzeIPAHelper "p") == "voiceless bilabial plosive pulmonic egressive consonant" &&
            constructIPA (Consonant Voiceless Bilabial Plosive PulmonicEgressive) == "p")
       runTest ("should be that: [t] is a voiceless alveolar plosive with " ++ 
           "pulmonic egressive airstream mechanism")  
-          (show (analyzeIPA "t")  == "voiceless alveolar plosive pulmonic egressive consonant" &&
+          (show (analyzeIPAHelper "t")  == "voiceless alveolar plosive pulmonic egressive consonant" &&
           constructIPA              (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive) == "t")
       runTest ("should be that: [d] is a voiced alveolar plosive with " ++ 
           "pulmonic egressive airstream mechanism") 
-          (show (analyzeIPA "d")  == "voiced alveolar plosive pulmonic egressive consonant" &&
+          (show (analyzeIPAHelper "d")  == "voiced alveolar plosive pulmonic egressive consonant" &&
           constructIPA              (Consonant  Voiced    Alveolar  Plosive PulmonicEgressive) == "d")
       runTest ("should be that: [ʈ] is a voiceless retroflex plosive with " ++ 
           "pulmonic egressive airstream mechanism") 
-          (show (analyzeIPA "ʈ")  == "voiceless retroflex plosive pulmonic egressive consonant" &&
+          (show (analyzeIPAHelper "ʈ")  == "voiceless retroflex plosive pulmonic egressive consonant" &&
           constructIPA              (Consonant  Voiceless Retroflex Plosive PulmonicEgressive) == "ʈ")
       runTest ("should be that: [ɖ] is a voiced retroflex plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (show (analyzeIPA "ɖ")  == "voiced retroflex plosive pulmonic egressive consonant")
+          (show (analyzeIPAHelper "ɖ")  == "voiced retroflex plosive pulmonic egressive consonant")
       runTest ("should be that: [c] is a voiceless palatal plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "c"  == Consonant  Voiceless Palatal   Plosive PulmonicEgressive)
+          (analyzeIPAHelper "c"  == Consonant  Voiceless Palatal   Plosive PulmonicEgressive)
       runTest ("should be that: [ɟ] is a voiced palatal plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɟ"  == Consonant  Voiced    Palatal   Plosive PulmonicEgressive)
+          (analyzeIPAHelper "ɟ"  == Consonant  Voiced    Palatal   Plosive PulmonicEgressive)
       runTest ("should be that: [k] is a voiceless velar plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "k"  == Consonant  Voiceless Velar     Plosive PulmonicEgressive)
+          (analyzeIPAHelper "k"  == Consonant  Voiceless Velar     Plosive PulmonicEgressive)
       runTest ("should be that: [g] is a voiced velar plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "g"  == Consonant  Voiced    Velar     Plosive PulmonicEgressive)
+          (analyzeIPAHelper "g"  == Consonant  Voiced    Velar     Plosive PulmonicEgressive)
       runTest ("should be that: [q] is a voiceless uvular plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "q"  == Consonant  Voiceless Uvular    Plosive PulmonicEgressive)
+          (analyzeIPAHelper "q"  == Consonant  Voiceless Uvular    Plosive PulmonicEgressive)
       runTest ("should be that: [ɢ] is a voiced uvular plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɢ"  == Consonant  Voiced    Uvular    Plosive PulmonicEgressive)
+          (analyzeIPAHelper "ɢ"  == Consonant  Voiced    Uvular    Plosive PulmonicEgressive)
       runTest ("should be that: [ʔ] is a voiceless glottal plosive with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʔ"  == Consonant  Voiceless Glottal   Plosive PulmonicEgressive)
+          (analyzeIPAHelper "ʔ"  == Consonant  Voiceless Glottal   Plosive PulmonicEgressive)
      -- Nasals:
       runTest ("should be that: [m] is a voiced bilabial nasal with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "m"  == Consonant  Voiced Bilabial    Nasal PulmonicEgressive)
+          (analyzeIPAHelper "m"  == Consonant  Voiced Bilabial    Nasal PulmonicEgressive)
       runTest ("should be that: [ɱ] is a voiced labio-dental nasal with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɱ"  == Consonant  Voiced LabioDental Nasal PulmonicEgressive)
+          (analyzeIPAHelper "ɱ"  == Consonant  Voiced LabioDental Nasal PulmonicEgressive)
       runTest ("should be that: [n] is a voiced alveolar nasal with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "n"  == Consonant  Voiced Alveolar    Nasal PulmonicEgressive)
+          (analyzeIPAHelper "n"  == Consonant  Voiced Alveolar    Nasal PulmonicEgressive)
       runTest ("should be that: [ɳ] is a voiced retroflex nasal with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɳ"  == Consonant  Voiced Retroflex   Nasal PulmonicEgressive)
+          (analyzeIPAHelper "ɳ"  == Consonant  Voiced Retroflex   Nasal PulmonicEgressive)
       runTest ("should be that: [ɲ] is a voiced palatal nasal with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɲ"  == Consonant  Voiced Palatal     Nasal PulmonicEgressive)
+          (analyzeIPAHelper "ɲ"  == Consonant  Voiced Palatal     Nasal PulmonicEgressive)
       runTest ("should be that: [ŋ] is a voiced velar nasal with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ŋ"  == Consonant  Voiced Velar       Nasal PulmonicEgressive)
+          (analyzeIPAHelper "ŋ"  == Consonant  Voiced Velar       Nasal PulmonicEgressive)
       runTest ("should be that: [ɴ] is a voiced uvular nasal with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɴ"  == Consonant  Voiced Uvular      Nasal PulmonicEgressive)
+          (analyzeIPAHelper "ɴ"  == Consonant  Voiced Uvular      Nasal PulmonicEgressive)
      -- Trills:
       runTest ("should be that: [ʙ] is a voiced bilabial trill with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʙ"  == Consonant  Voiced Bilabial Trill PulmonicEgressive)
+          (analyzeIPAHelper "ʙ"  == Consonant  Voiced Bilabial Trill PulmonicEgressive)
       runTest ("should be that: [r] is a voiced alveolar trill with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "r"  == Consonant  Voiced Alveolar Trill PulmonicEgressive)
+          (analyzeIPAHelper "r"  == Consonant  Voiced Alveolar Trill PulmonicEgressive)
       runTest ("should be that: [ʀ] is a voiced uvular trill with " ++ 
           "pulmonic egressive airstream mechanism") 
-          (analyzeIPA "ʀ"  == Consonant  Voiced Uvular   Trill PulmonicEgressive &&
+          (analyzeIPAHelper "ʀ"  == Consonant  Voiced Uvular   Trill PulmonicEgressive &&
           constructIPA              (Consonant  Voiced Uvular   Trill PulmonicEgressive) == "ʀ")
      -- Taps or flaps:
       runTest ("should be that: [ⱱ] is a voiced labio-dental tap or flap with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ⱱ"  == Consonant  Voiced LabioDental TapOrFlap PulmonicEgressive)
+          (analyzeIPAHelper "ⱱ"  == Consonant  Voiced LabioDental TapOrFlap PulmonicEgressive)
       runTest ("should be that: [ɾ] is a voiced alveolar tap or flap with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɾ"  == Consonant  Voiced Alveolar    TapOrFlap PulmonicEgressive)
+          (analyzeIPAHelper "ɾ"  == Consonant  Voiced Alveolar    TapOrFlap PulmonicEgressive)
       runTest ("should be that: [ɽ] is a voiced retroflex tap or flap with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɽ"  == Consonant  Voiced Retroflex   TapOrFlap PulmonicEgressive)
+          (analyzeIPAHelper "ɽ"  == Consonant  Voiced Retroflex   TapOrFlap PulmonicEgressive)
       -- Fricatives:
       runTest ("should be that: [ɸ] is a voiceless bilabial fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɸ"  == Consonant  Voiceless Bilabial     Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ɸ"  == Consonant  Voiceless Bilabial     Fricative PulmonicEgressive)
       runTest ("should be that: [β] is a voiced bilabial fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "β"  == Consonant  Voiced    Bilabial     Fricative PulmonicEgressive)
+          (analyzeIPAHelper "β"  == Consonant  Voiced    Bilabial     Fricative PulmonicEgressive)
       runTest ("should be that: [f] is a voiceless labio-dental fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "f"  == Consonant  Voiceless LabioDental  Fricative PulmonicEgressive)
+          (analyzeIPAHelper "f"  == Consonant  Voiceless LabioDental  Fricative PulmonicEgressive)
       runTest ("should be that: [v] is a voiced labio-dental fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "v"  == Consonant  Voiced    LabioDental  Fricative PulmonicEgressive)
+          (analyzeIPAHelper "v"  == Consonant  Voiced    LabioDental  Fricative PulmonicEgressive)
       runTest ("should be that: [θ] is a voiceless dental fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "θ"  == Consonant  Voiceless Dental       Fricative PulmonicEgressive)
+          (analyzeIPAHelper "θ"  == Consonant  Voiceless Dental       Fricative PulmonicEgressive)
       runTest ("should be that: [ð] is a voiced dental fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ð"  == Consonant  Voiced    Dental       Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ð"  == Consonant  Voiced    Dental       Fricative PulmonicEgressive)
       runTest ("should be that: [s] is a voiceless alveolar fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "s"  == Consonant  Voiceless Alveolar     Fricative PulmonicEgressive)
+          (analyzeIPAHelper "s"  == Consonant  Voiceless Alveolar     Fricative PulmonicEgressive)
       runTest ("should be that: [z] is a voiced alveolar fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "z"  == Consonant  Voiced    Alveolar     Fricative PulmonicEgressive)
+          (analyzeIPAHelper "z"  == Consonant  Voiced    Alveolar     Fricative PulmonicEgressive)
       runTest ("should be that: [ʃ] is a voiceless post-alveolar fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʃ"  == Consonant  Voiceless PostAlveolar Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ʃ"  == Consonant  Voiceless PostAlveolar Fricative PulmonicEgressive)
       runTest ("should be that: [ʒ] is a voiced post-alveolar fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʒ"  == Consonant  Voiced    PostAlveolar Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ʒ"  == Consonant  Voiced    PostAlveolar Fricative PulmonicEgressive)
       runTest ("should be that: [ʂ] is a voiceless retroflex fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʂ"  == Consonant  Voiceless Retroflex    Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ʂ"  == Consonant  Voiceless Retroflex    Fricative PulmonicEgressive)
       runTest ("should be that: [ʐ] is a voiced retroflex fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʐ"  == Consonant  Voiced    Retroflex    Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ʐ"  == Consonant  Voiced    Retroflex    Fricative PulmonicEgressive)
       runTest ("should be that: [ç] is a voiceless palatal fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ç"  == Consonant  Voiceless Palatal      Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ç"  == Consonant  Voiceless Palatal      Fricative PulmonicEgressive)
       runTest ("should be that: [ʝ] is a voiced palatal fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʝ"  == Consonant  Voiced    Palatal      Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ʝ"  == Consonant  Voiced    Palatal      Fricative PulmonicEgressive)
       runTest ("should be that: [x] is a voiceless velar fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "x"  == Consonant  Voiceless Velar        Fricative PulmonicEgressive)
+          (analyzeIPAHelper "x"  == Consonant  Voiceless Velar        Fricative PulmonicEgressive)
       runTest ("should be that: [ɣ] is a voiced velar fricative with " ++ 
           "pulmonic egressive airstream mechanism") 
-          (analyzeIPA "ɣ"  == Consonant  Voiced    Velar        Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ɣ"  == Consonant  Voiced    Velar        Fricative PulmonicEgressive)
       runTest ("should be that: [χ] is a voiceless uvular fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "χ"  == Consonant  Voiceless Uvular       Fricative PulmonicEgressive)
+          (analyzeIPAHelper "χ"  == Consonant  Voiceless Uvular       Fricative PulmonicEgressive)
       runTest ("should be that: [ʁ] is a voiced uvular fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʁ"  == Consonant  Voiced    Uvular       Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ʁ"  == Consonant  Voiced    Uvular       Fricative PulmonicEgressive)
       runTest ("should be that: [ħ] is a voiceless pharyngeal fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ħ"  == Consonant  Voiceless Pharyngeal   Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ħ"  == Consonant  Voiceless Pharyngeal   Fricative PulmonicEgressive)
       runTest ("should be that: [ʕ] is a voiced pharyngeal fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʕ"  == Consonant  Voiced    Pharyngeal   Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ʕ"  == Consonant  Voiced    Pharyngeal   Fricative PulmonicEgressive)
       runTest ("should be that: [h] is a voiceless glottal fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "h"  == Consonant  Voiceless Glottal      Fricative PulmonicEgressive)
+          (analyzeIPAHelper "h"  == Consonant  Voiceless Glottal      Fricative PulmonicEgressive)
       runTest ("should be that: [ɦ] is a voiced glottal fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɦ"  == Consonant  Voiced    Glottal      Fricative PulmonicEgressive)
+          (analyzeIPAHelper "ɦ"  == Consonant  Voiced    Glottal      Fricative PulmonicEgressive)
       -- Lateral Fricatives:
       runTest ("should be that: [ɬ] is a voiceless alveolar lateral fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɬ" == Consonant  Voiceless Alveolar LateralFricative PulmonicEgressive)
+          (analyzeIPAHelper "ɬ" == Consonant  Voiceless Alveolar LateralFricative PulmonicEgressive)
       runTest ("should be that: [ɮ] is a voiced alveolar lateral fricative with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɮ" == Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive)
+          (analyzeIPAHelper "ɮ" == Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive)
       -- Approximants:
       runTest ("should be that: [ʋ] is a voiced labio-dental approximant with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʋ"  == Consonant  Voiced LabioDental  Approximant PulmonicEgressive)
+          (analyzeIPAHelper "ʋ"  == Consonant  Voiced LabioDental  Approximant PulmonicEgressive)
       runTest ("should be that: [ɹ] is a voiced alveolar approximant with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɹ"  == Consonant  Voiced Alveolar Approximant PulmonicEgressive)
+          (analyzeIPAHelper "ɹ"  == Consonant  Voiced Alveolar Approximant PulmonicEgressive)
       runTest ("should be that: [ɻ] is a voiced retroflex approximant with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɻ"  == Consonant  Voiced Retroflex    Approximant PulmonicEgressive)
+          (analyzeIPAHelper "ɻ"  == Consonant  Voiced Retroflex    Approximant PulmonicEgressive)
       runTest ("should be that: [j] is a voiced palatal approximant with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "j"  == Consonant  Voiced Palatal      Approximant PulmonicEgressive)
+          (analyzeIPAHelper "j"  == Consonant  Voiced Palatal      Approximant PulmonicEgressive)
       runTest ("should be that: [ɰ] is a voiced velar approximant with " ++
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɰ"  == Consonant  Voiced Velar        Approximant PulmonicEgressive)
+          (analyzeIPAHelper "ɰ"  == Consonant  Voiced Velar        Approximant PulmonicEgressive)
       -- Lateral Approximants:
       runTest ("should be that: [l] is a voiced alveolar lateral approximant with " ++ 
           "pulmonic egressive airstream mechanism") 
-          (analyzeIPA "l"  == Consonant  Voiced Alveolar  LateralApproximant PulmonicEgressive)
+          (analyzeIPAHelper "l"  == Consonant  Voiced Alveolar  LateralApproximant PulmonicEgressive)
       runTest ("should be that: [ɭ] is a voiced retroflex lateral approximant with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ɭ"  == Consonant  Voiced Retroflex LateralApproximant PulmonicEgressive)
+          (analyzeIPAHelper "ɭ"  == Consonant  Voiced Retroflex LateralApproximant PulmonicEgressive)
       runTest ("should be that: [ʎ] is a voiced palatal lateral approximant with " ++ 
           "pulmonic egressive airstream mechanism")
-          (analyzeIPA "ʎ"  == Consonant  Voiced Palatal   LateralApproximant PulmonicEgressive)
+          (analyzeIPAHelper "ʎ"  == Consonant  Voiced Palatal   LateralApproximant PulmonicEgressive)
       runTest ("should be that: [ʟ] is a voiced velar lateral approximant with " ++ 
           "pulmonic egressive airstream mechanism")
-           (analyzeIPA "ʟ"  == Consonant  Voiced Velar     LateralApproximant PulmonicEgressive)
+           (analyzeIPAHelper "ʟ"  == Consonant  Voiced Velar     LateralApproximant PulmonicEgressive)
 
 
 
@@ -328,9 +328,9 @@ speFeaturesSpec = do
   runTest "The anterior feature is - for [ʂ]."
      (anterior (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just (AnteriorFeature Minus))
   runTest "The anterior feature is - for [ɕ]" 
-     (anterior (analyzeIPA "ɕ") == Just (AnteriorFeature Minus))
+     (anterior (analyzeIPAHelper "ɕ") == Just (AnteriorFeature Minus))
   runTest "The anterior feature is - for [ç]" 
-     (anterior (analyzeIPA "ç") == Just (AnteriorFeature Minus)) -- TODO: Check this, is it true .ccording to the textbook?
+     (anterior (analyzeIPAHelper "ç") == Just (AnteriorFeature Minus)) -- TODO: Check this, is it true .ccording to the textbook?
   runTest "The anterior feature is nothing for [x]"
      (anterior (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The anterior feature is nothing for [χ]"
@@ -354,9 +354,9 @@ speFeaturesSpec = do
   runTest "The distributed feature is - for [ʂ]."
      (distributed (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just (DistributedFeature Minus))
   runTest "The distributed feature is + for [ɕ]" 
-     (distributed (analyzeIPA "ɕ") == Just (DistributedFeature Plus))
+     (distributed (analyzeIPAHelper "ɕ") == Just (DistributedFeature Plus))
   runTest "The distributed feature is + for [ç]" 
-     (distributed (analyzeIPA "ç") == Just (DistributedFeature Plus)) -- TODO: Check this, is it true according to the textbook?
+     (distributed (analyzeIPAHelper "ç") == Just (DistributedFeature Plus)) -- TODO: Check this, is it true according to the textbook?
   runTest "The distributed feature is nothing for [x]"
      (distributed (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The distributed feature is nothing for [χ]"
@@ -380,9 +380,9 @@ speFeaturesSpec = do
   runTest "The strident feature is - for [ʂ]."
      (strident (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just (StridentFeature Minus))
   runTest "The strident feature is - for [ɕ]" 
-     (strident (analyzeIPA "ɕ") == Just (StridentFeature Minus))
+     (strident (analyzeIPAHelper "ɕ") == Just (StridentFeature Minus))
   runTest "The strident feature is - for [ç]" 
-     (strident (analyzeIPA "ç") == Just (StridentFeature Minus)) -- TODO: Check this, is it true according to the textbook?
+     (strident (analyzeIPAHelper "ç") == Just (StridentFeature Minus)) -- TODO: Check this, is it true according to the textbook?
   runTest "The strident feature is - for [x]"
      (strident (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just (StridentFeature Minus))
   runTest "The strident feature is + for [χ]"
@@ -405,9 +405,9 @@ speFeaturesSpec = do
   runTest "The high feature is nothing for [ʂ]."
      (high (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The high feature is + for [ɕ]" 
-     (high (analyzeIPA "ɕ") == Just (HighFeature Plus))
+     (high (analyzeIPAHelper "ɕ") == Just (HighFeature Plus))
   runTest "The high feature is + for [ç]" 
-     (high (analyzeIPA "ç") == Just (HighFeature Plus)) -- TODO: Check this, is it true according to the textbook?
+     (high (analyzeIPAHelper "ç") == Just (HighFeature Plus)) -- TODO: Check this, is it true according to the textbook?
   runTest "The high feature is + for [x]"
      (high (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just (HighFeature Plus))
   runTest "The high feature is - for [χ]"
@@ -430,9 +430,9 @@ speFeaturesSpec = do
   runTest "The nasal feature is nothing for [ʂ]."
      (nasal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [ɕ]" 
-     (nasal (analyzeIPA "ɕ") == Nothing)
+     (nasal (analyzeIPAHelper "ɕ") == Nothing)
   runTest "The nasal feature is nothing for [ç]" 
-     (nasal (analyzeIPA "ç") == Nothing)
+     (nasal (analyzeIPAHelper "ç") == Nothing)
   runTest "The nasal feature is nothing for [x]"
      (nasal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The nasal feature is nothing for [χ]"
@@ -469,9 +469,9 @@ speFeaturesSpec = do
   runTest "The labial feature is nothing for [ʂ]."
      (labial (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [ɕ]" 
-     (labial (analyzeIPA "ɕ") == Nothing)
+     (labial (analyzeIPAHelper "ɕ") == Nothing)
   runTest "The labial feature is nothing for [ç]" 
-     (labial (analyzeIPA "ç") == Nothing)
+     (labial (analyzeIPAHelper "ç") == Nothing)
   runTest "The labial feature is nothing for [x]"
      (labial (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The labial feature is nothing for [χ]"
@@ -509,9 +509,9 @@ speFeaturesSpec = do
   runTest "The coronal feature is present for [ʂ]."
      (coronal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Just CoronalFeature)
   runTest "The coronal feature is present for [ɕ]" 
-     (coronal (analyzeIPA "ɕ") == Just CoronalFeature)
+     (coronal (analyzeIPAHelper "ɕ") == Just CoronalFeature)
   runTest "The coronal feature is present for [ç]" 
-     (coronal (analyzeIPA "ç") == Just CoronalFeature)
+     (coronal (analyzeIPAHelper "ç") == Just CoronalFeature)
   runTest "The coronal feature is nothing for [x]"
      (coronal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The coronal feature is nothing for [χ]"
@@ -548,9 +548,9 @@ speFeaturesSpec = do
   runTest "The dorsal feature is nothing for [ʂ]."
      (dorsal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The dorsal feature is nothing for [ɕ]" -- May need to double check this.
-     (dorsal (analyzeIPA "ɕ") == Nothing)
+     (dorsal (analyzeIPAHelper "ɕ") == Nothing)
   runTest "The dorsal feature is present for [ç]" 
-     (dorsal (analyzeIPA "ç") == Just DorsalFeature)
+     (dorsal (analyzeIPAHelper "ç") == Just DorsalFeature)
   runTest "The dorsal feature is present for [x]"
      (dorsal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Just DorsalFeature)
   runTest "The dorsal feature is present for [χ]"
@@ -590,9 +590,9 @@ speFeaturesSpec = do
   runTest "The pharyngeal feature is nothing for [ʂ]."
      (pharyngeal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [ɕ]"
-     (pharyngeal (analyzeIPA "ɕ") == Nothing)
+     (pharyngeal (analyzeIPAHelper "ɕ") == Nothing)
   runTest "The pharyngeal feature is nothing for [ç]" 
-     (pharyngeal (analyzeIPA "ç") == Nothing)
+     (pharyngeal (analyzeIPAHelper "ç") == Nothing)
   runTest "The pharyngeal feature is nothing for [x]"
      (pharyngeal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The pharyngeal feature is nothing for [χ]"
@@ -631,9 +631,9 @@ speFeaturesSpec = do
   runTest "The laryngeal feature is nothing for [ʂ]."
      (laryngeal (Consonant Voiceless Retroflex Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [ɕ]"
-     (laryngeal (analyzeIPA "ɕ") == Nothing)
+     (laryngeal (analyzeIPAHelper "ɕ") == Nothing)
   runTest "The laryngeal feature is nothing for [ç]" 
-     (laryngeal (analyzeIPA "ç") == Nothing)
+     (laryngeal (analyzeIPAHelper "ç") == Nothing)
   runTest "The laryngeal feature is nothing for [x]"
      (laryngeal (Consonant Voiceless Velar Fricative PulmonicEgressive) == Nothing)
   runTest "The laryngeal feature is nothing for [χ]"
@@ -661,190 +661,192 @@ speFeaturesSpec = do
   -- Go to page 270
 
   runTest "The back feature is - for [i]."
-    (back (analyzeIPA "i") == Just (BackFeature Minus))
+    (back (analyzeIPAHelper "i") == Just (BackFeature Minus))
   runTest "The high feature is + for [i]."
-    (high (analyzeIPA "i") == Just (HighFeature Plus))
+    (high (analyzeIPAHelper "i") == Just (HighFeature Plus))
   runTest "The low feature is - for [i]."
-    (low (analyzeIPA "i") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "i") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [i]."
-    (atr (analyzeIPA "i") == Just (AdvancedTongueRootFeature Plus))
+    (atr (analyzeIPAHelper "i") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is - for [i]."
-    (round (analyzeIPA "i") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "i") == Just (RoundFeature Minus))
 
 
   runTest "The back feature is - for [ɪ]."
-    (back (analyzeIPA "ɪ") == Just (BackFeature Minus))
+    (back (analyzeIPAHelper "ɪ") == Just (BackFeature Minus))
   runTest "The high feature is + for [ɪ]."
-    (high (analyzeIPA "ɪ") == Just (HighFeature Plus))
+    (high (analyzeIPAHelper "ɪ") == Just (HighFeature Plus))
   runTest "The low feature is - for [ɪ]."
-    (low (analyzeIPA "ɪ") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "ɪ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɪ]."
-    (atr (analyzeIPA "ɪ") == Just (AdvancedTongueRootFeature Minus))
+    (atr (analyzeIPAHelper "ɪ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [ɪ]."
-    (round (analyzeIPA "ɪ") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "ɪ") == Just (RoundFeature Minus))
 
 
   runTest "The back feature is - for [e]."
-    (back (analyzeIPA "e") == Just (BackFeature Minus))
+    (back (analyzeIPAHelper "e") == Just (BackFeature Minus))
   runTest "The high feature is - for [e]."
-    (high (analyzeIPA "e") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "e") == Just (HighFeature Minus))
   runTest "The low feature is - for [e]."
-    (low (analyzeIPA "e") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "e") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [e]."
-    (atr (analyzeIPA "e") == Just (AdvancedTongueRootFeature Plus))
+    (atr (analyzeIPAHelper "e") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is - for [e]."
-    (round (analyzeIPA "e") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "e") == Just (RoundFeature Minus))
 
 
 
 
   runTest "The back feature is - for [ɛ]."
-    (back (analyzeIPA "ɛ") == Just (BackFeature Minus))
+    (back (analyzeIPAHelper "ɛ") == Just (BackFeature Minus))
   runTest "The high feature is - for [ɛ]."
-    (high (analyzeIPA "ɛ") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "ɛ") == Just (HighFeature Minus))
   runTest "The low feature is - for [ɛ]."
-    (low (analyzeIPA "ɛ") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "ɛ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɛ]."
-    (atr (analyzeIPA "ɛ") == Just (AdvancedTongueRootFeature Minus))
+    (atr (analyzeIPAHelper "ɛ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [ɛ]."
-    (round (analyzeIPA "ɛ") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "ɛ") == Just (RoundFeature Minus))
     
     
 
   runTest "The back feature is - for [æ]."
-    (back (analyzeIPA "æ") == Just (BackFeature Minus))
+    (back (analyzeIPAHelper "æ") == Just (BackFeature Minus))
   runTest "The high feature is - for [æ]."
-    (high (analyzeIPA "æ") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "æ") == Just (HighFeature Minus))
   runTest "The low feature is + for [æ]."
-    (low (analyzeIPA "æ") == Just (LowFeature Plus))
+    (low (analyzeIPAHelper "æ") == Just (LowFeature Plus))
   runTest "The ATR feature is - for [æ]." -- It has a parentheses
-    (atr (analyzeIPA "æ") == Just (AdvancedTongueRootFeature Minus))
+    (atr (analyzeIPAHelper "æ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [æ]."
-    (round (analyzeIPA "æ") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "æ") == Just (RoundFeature Minus))
     
  
   runTest "The back feature is + for [u]."
-    (back (analyzeIPA "u") == Just (BackFeature Plus))
+    (back (analyzeIPAHelper "u") == Just (BackFeature Plus))
   runTest "The high feature is + for [u]."
-    (high (analyzeIPA "u") == Just (HighFeature Plus))
+    (high (analyzeIPAHelper "u") == Just (HighFeature Plus))
   runTest "The low feature is - for [u]."
-    (low (analyzeIPA "u") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "u") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [u]."
-    (atr (analyzeIPA "u") == Just (AdvancedTongueRootFeature Plus))
+    (atr (analyzeIPAHelper "u") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [u]."
-    (round (analyzeIPA "u") == Just (RoundFeature Plus))
+    (round (analyzeIPAHelper "u") == Just (RoundFeature Plus))
 
 
 
 
 
   runTest "The back feature is + for [ʊ]."
-    (back (analyzeIPA "ʊ") == Just (BackFeature Plus))
+    (back (analyzeIPAHelper "ʊ") == Just (BackFeature Plus))
   runTest "The high feature is + for [ʊ]."
-    (high (analyzeIPA "ʊ") == Just (HighFeature Plus))
+    (high (analyzeIPAHelper "ʊ") == Just (HighFeature Plus))
   runTest "The low feature is - for [ʊ]."
-    (low (analyzeIPA "ʊ") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "ʊ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ʊ]."
-    (atr (analyzeIPA "ʊ") == Just (AdvancedTongueRootFeature Minus))
+    (atr (analyzeIPAHelper "ʊ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is + for [ʊ]."
-    (round (analyzeIPA "ʊ") == Just (RoundFeature Plus))
+    (round (analyzeIPAHelper "ʊ") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is + for [o]."
-    (back (analyzeIPA "o") == Just (BackFeature Plus))
+    (back (analyzeIPAHelper "o") == Just (BackFeature Plus))
   runTest "The high feature is - for [o]."
-    (high (analyzeIPA "o") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "o") == Just (HighFeature Minus))
   runTest "The low feature is - for [o]."
-    (low (analyzeIPA "o") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "o") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [o]."
-    (atr (analyzeIPA "o") == Just (AdvancedTongueRootFeature Plus))
+    (atr (analyzeIPAHelper "o") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [o]."
-    (round (analyzeIPA "o") == Just (RoundFeature Plus))
+    (round (analyzeIPAHelper "o") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is + for [ɔ]."
-    (back (analyzeIPA "ɔ") == Just (BackFeature Plus))
+    (back (analyzeIPAHelper "ɔ") == Just (BackFeature Plus))
   runTest "The high feature is - for [ɔ]."
-    (high (analyzeIPA "ɔ") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "ɔ") == Just (HighFeature Minus))
   runTest "The low feature is - for [ɔ]."
-    (low (analyzeIPA "ɔ") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "ɔ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɔ]."
-    (atr (analyzeIPA "ɔ") == Just (AdvancedTongueRootFeature Minus))
+    (atr (analyzeIPAHelper "ɔ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is + for [ɔ]."
-    (round (analyzeIPA "ɔ") == Just (RoundFeature Plus))
+    (round (analyzeIPAHelper "ɔ") == Just (RoundFeature Plus))
 
 
 
 
   runTest "The back feature is + for [ɑ]."
-    (back (analyzeIPA "ɑ") == Just (BackFeature Plus))
+    (back (analyzeIPAHelper "ɑ") == Just (BackFeature Plus))
   runTest "The high feature is - for [ɑ]."
-    (high (analyzeIPA "ɑ") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "ɑ") == Just (HighFeature Minus))
   runTest "The low feature is + for [ɑ]."
-    (low (analyzeIPA "ɑ") == Just (LowFeature Plus))
+    (low (analyzeIPAHelper "ɑ") == Just (LowFeature Plus))
   runTest "The ATR feature is - for [ɑ]."
-    (atr (analyzeIPA "ɑ") == Just (AdvancedTongueRootFeature Minus)) -- In brackets
+    (atr (analyzeIPAHelper "ɑ") == Just (AdvancedTongueRootFeature Minus)) -- In brackets
   runTest "The round feature is - for [ɑ]."
-    (round (analyzeIPA "ɑ") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "ɑ") == Just (RoundFeature Minus))
 
 
 
 
   runTest "The back feature is - for [y]."
-    (back (analyzeIPA "y") == Just (BackFeature Minus))
+    (back (analyzeIPAHelper "y") == Just (BackFeature Minus))
   runTest "The high feature is + for [y]."
-    (high (analyzeIPA "y") == Just (HighFeature Plus))
+    (high (analyzeIPAHelper "y") == Just (HighFeature Plus))
   runTest "The low feature is - for [y]."
-    (low (analyzeIPA "y") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "y") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [y]."
-    (atr (analyzeIPA "y") == Just (AdvancedTongueRootFeature Plus))
+    (atr (analyzeIPAHelper "y") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [y]."
-    (round (analyzeIPA "y") == Just (RoundFeature Plus))
+    (round (analyzeIPAHelper "y") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is - for [ø]."
-    (back (analyzeIPA "ø") == Just (BackFeature Minus))
+    (back (analyzeIPAHelper "ø") == Just (BackFeature Minus))
   runTest "The high feature is - for [ø]."
-    (high (analyzeIPA "ø") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "ø") == Just (HighFeature Minus))
   runTest "The low feature is - for [ø]."
-    (low (analyzeIPA "ø") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "ø") == Just (LowFeature Minus))
   runTest "The ATR feature is + for [ø]."
-    (atr (analyzeIPA "ø") == Just (AdvancedTongueRootFeature Plus))
+    (atr (analyzeIPAHelper "ø") == Just (AdvancedTongueRootFeature Plus))
   runTest "The round feature is + for [ø]."
-    (round (analyzeIPA "ø") == Just (RoundFeature Plus))
+    (round (analyzeIPAHelper "ø") == Just (RoundFeature Plus))
 
 
 
   runTest "The back feature is + for [ɨ]."
-    (back (analyzeIPA "ɨ") == Just (BackFeature Plus))
+    (back (analyzeIPAHelper "ɨ") == Just (BackFeature Plus))
   runTest "The high feature is + for [ɨ]."
-    (high (analyzeIPA "ɨ") == Just (HighFeature Plus))
+    (high (analyzeIPAHelper "ɨ") == Just (HighFeature Plus))
   runTest "The low feature is - for [ɨ]."
-    (low (analyzeIPA "ɨ") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "ɨ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ɨ]."  -- In parentheses
-    (atr (analyzeIPA "ɨ") == Just (AdvancedTongueRootFeature Minus))
+    (atr (analyzeIPAHelper "ɨ") == Just (AdvancedTongueRootFeature Minus))
   runTest "The round feature is - for [ɨ]."
-    (round (analyzeIPA "ɨ") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "ɨ") == Just (RoundFeature Minus))
     
     
  
   runTest "The back feature is + for [ʌ]."
-    (back (analyzeIPA "ʌ") == Just (BackFeature Plus))
+    (back (analyzeIPAHelper "ʌ") == Just (BackFeature Plus))
   runTest "The high feature is - for [ʌ]."
-    (high (analyzeIPA "ʌ") == Just (HighFeature Minus))
+    (high (analyzeIPAHelper "ʌ") == Just (HighFeature Minus))
   runTest "The low feature is - for [ʌ]."
-    (low (analyzeIPA "ʌ") == Just (LowFeature Minus))
+    (low (analyzeIPAHelper "ʌ") == Just (LowFeature Minus))
   runTest "The ATR feature is - for [ʌ]."
-    (atr (analyzeIPA "ʌ") == Just (AdvancedTongueRootFeature Minus)) -- in parentheses
+    (atr (analyzeIPAHelper "ʌ") == Just (AdvancedTongueRootFeature Minus)) -- in parentheses
   runTest "The round feature is - for [ʌ]."
-    (round (analyzeIPA "ʌ") == Just (RoundFeature Minus))
+    (round (analyzeIPAHelper "ʌ") == Just (RoundFeature Minus))
 
 
   runTest "The ATR feature is nothing for [z]."
-    (atr (analyzeIPA "z") == Nothing)
+    (atr (analyzeIPAHelper "z") == Nothing)
   runTest "The ATR feature is nothing for [p]."
-    (atr (analyzeIPA "p") == Nothing)
+    (  atr (analyzeIPAHelper "p") == Nothing)
 
+
+analyzeIPAHelper = fromJust . analyzeIPA
