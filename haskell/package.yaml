@@ -32,6 +32,8 @@ library:
   - -Werror
   - -Wunsafe
   - -Wno-safe
+  - -fwarn-incomplete-patterns
+  - -fwarn-incomplete-uni-patterns
 
 executables:
   phonetics-modeling-exe:
@@ -45,6 +47,9 @@ executables:
     - -Werror
     - -Wunsafe
     - -Wno-safe
+    - -fwarn-incomplete-patterns
+    - -fwarn-incomplete-uni-patterns
+
     dependencies:
     - phonetics-modeling
 
