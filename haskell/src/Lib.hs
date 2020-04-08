@@ -1,3 +1,4 @@
+
 module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced), 
               Place(
                 Bilabial
@@ -35,12 +36,12 @@ module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAsp
             spirantizedPhonet, retractedPlace) where
 
 
-import Prelude
-  (
-    Bool(False, True), Eq, Show, String,
-    concatMap, elem, map, show, unwords,
-    (==), (++)
-  )
+import Prelude (Bool(False, True), Eq((==)), Show(show), String,
+  concatMap, map, unwords)
+
+import Prelude.Unicode ((⧺), (≡), (∈))
+
+
 
 data Phonet = Consonant VocalFolds
                         Place   -- | Place of articulation
@@ -69,8 +70,8 @@ data UnmarkablePhonet
 instance Show Phonet where
   show phonet =
     case phonet of
-      Consonant v p m a → show v ++ " " ++ show p ++ " " ++ show m ++ " " ++ show a ++ " consonant"
-      Vowel h b r v   → show v ++ " " ++ show r ++ " " ++ show h ++ " " ++ show b ++ " vowel"
+      Consonant v p m a → show v ⧺ " " ⧺ show p ⧺ " " ⧺ show m ⧺ " " ⧺ show a ⧺ " consonant"
+      Vowel h b r v   → show v ⧺ " " ⧺ show r ⧺ " " ⧺ show h ⧺ " " ⧺ show b ⧺ " vowel"
 
 data Backness = Front
               | Central
@@ -175,7 +176,7 @@ instance Eq Place where
   Pharyngeal   == Pharyngeal          = True
   Glottal      == Glottal             = True
   Epiglottal   == Epiglottal          = True
-  x            == Places pList        = x `elem` pList
+  x            == Places pList        = x ∈ pList
   Places x     == y                   = y == Places x
   _            == _                   = False
 
@@ -376,21 +377,21 @@ spirantizedPhonet other = other
 
 unmarkDifferences ∷ Phonet → Phonet → UnmarkablePhonet
 unmarkDifferences (Consonant voice1 place1 manner1 airstream1) (Consonant voice2 place2 manner2 airstream2)=
-  let voice'     = if voice1     == voice2     then MarkedVocalFolds voice1     else UnmarkedVocalFolds
-      place'     = if place1     == place2     then MarkedPlace      place1     else UnmarkedPlace
-      manner'    = if manner1    == manner2    then MarkedManner     manner1    else UnmarkedManner
-      airstream' = if airstream1 == airstream2 then MarkedAirstream  airstream1 else UnmarkedAirstream
+  let voice'     = if voice1     ≡ voice2     then MarkedVocalFolds voice1     else UnmarkedVocalFolds
+      place'     = if place1     ≡ place2     then MarkedPlace      place1     else UnmarkedPlace
+      manner'    = if manner1    ≡ manner2    then MarkedManner     manner1    else UnmarkedManner
+      airstream' = if airstream1 ≡ airstream2 then MarkedAirstream  airstream1 else UnmarkedAirstream
   in UnmarkableConsonant voice' place' manner' airstream'
 
 unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 backness2 rounding2 voice2) =
-  let voice'    = if voice1    == voice2    then MarkedVocalFolds voice1    else UnmarkedVocalFolds
-      height'   = if height1   == height2   then MarkedHeight     height1   else UnmarkedHeight
-      backness' = if backness1 == backness2 then MarkedBackness   backness1 else UnmarkedBackness
-      rounding' = if rounding1 == rounding2 then MarkedRounding   rounding1 else UnmarkedRounding
+  let voice'    = if voice1    ≡ voice2    then MarkedVocalFolds voice1    else UnmarkedVocalFolds
+      height'   = if height1   ≡ height2   then MarkedHeight     height1   else UnmarkedHeight
+      backness' = if backness1 ≡ backness2 then MarkedBackness   backness1 else UnmarkedBackness
+      rounding' = if rounding1 ≡ rounding2 then MarkedRounding   rounding1 else UnmarkedRounding
   in UnmarkableVowel height' backness' rounding' voice'
 
 unmarkDifferences (Vowel _ _ _ voice1) (Consonant voice2 _ _ _) =
-  let voice' = if voice1 == voice2 then MarkedVocalFolds voice1 else UnmarkedVocalFolds
+  let voice' = if voice1 ≡ voice2 then MarkedVocalFolds voice1 else UnmarkedVocalFolds
   in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
 

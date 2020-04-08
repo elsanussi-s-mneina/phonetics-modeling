@@ -1,6 +1,10 @@
 module Main (main) where
 
-import Prelude (IO, String, Maybe(Just, Nothing), getLine, putStr, putStrLn, (++))
+import Prelude (IO, String, Maybe(Just, Nothing), getLine, putStr, putStrLn)
+import Prelude.Unicode
+  ( (⧺)
+  )
+
 import System.IO (hFlush, stdout)
 import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
 import English (englishPhonetInventory)
@@ -9,13 +13,13 @@ import PhonemeFeature (analyzeFeatures, showFeatures)
 
 menu ∷ String
 menu = "What do you want to accomplish?\n\n"
-        ++ "1) view the English phoneme inventory (as IPA graphemes).\n"
-        ++ "2) make a phoneme voiced.\n"
-        ++ "3) make a phoneme unvoiced.\n"
-        ++ "4) describe a phoneme in English.\n"
-        ++ "5) describe a phoneme in SPE Features.\n"
-        ++ "\n"
-        ++ "Enter the number representing your selection below, after the prompt, and press enter/return.\n\n\n"
+        ⧺ "1) view the English phoneme inventory (as IPA graphemes).\n"
+        ⧺ "2) make a phoneme voiced.\n"
+        ⧺ "3) make a phoneme unvoiced.\n"
+        ⧺ "4) describe a phoneme in English.\n"
+        ⧺ "5) describe a phoneme in SPE Features.\n"
+        ⧺ "\n"
+        ⧺ "Enter the number representing your selection below, after the prompt, and press enter/return.\n\n\n"
 
 
 prompt ∷ String
@@ -68,7 +72,7 @@ main =
     putStr menu
     putPrompt
     selection ← getLine
-    putStrLn ("The user selected: " ++ selection ++ "\n")
+    putStrLn ("The user selected: " ⧺ selection ⧺ "\n")
     case selection of
                    "1" → putStrLn (showIPA englishPhonetInventory)
                    "2" → promptForPhonemeToVoice

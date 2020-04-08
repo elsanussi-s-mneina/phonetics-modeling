@@ -43,8 +43,33 @@ import Prelude
   (
     Bool(False, True), Maybe(Just, Nothing), Show, String, Eq,
     elem, filter, head, length, map, null, not, notElem, otherwise, show,
-    (==), (>), (++), (&&), (||)
+    (>)
   )
+
+import Prelude.Unicode
+  ( (≡), (⧺), (∧), (∨)
+  )
+
+
+
+{-
+module Prelude.Unicode
+    ( (¬), (∧), (∨)
+    , (≡), (≢), (≠)
+    , (≤), (≥), (≮), (≯)
+    , (−)
+    , π
+    , (÷), (×), (⋅)
+    , (∘)
+    , (⧺)
+    , (∈), (∉)
+    , (‼)
+    , (⊥)
+    , (∣), (∤)
+    , ℤ, ℚ
+    , 𝜀
+    )
+-}
 
 import Lib
   (
@@ -144,7 +169,7 @@ syntactically. For example a phoneme cannot be
 [+voice] and [-voice].
 
 TODO: implement checking whether a set of phonemes
-contains non-existant pairs (+ and - for the same
+contains non-existant pairs (+ and − for the same
 name of feature).
 
  Note that some analyses
@@ -184,12 +209,12 @@ data PhonemeFeature = SyllabicFeature Polarity
 
 
 instance Show PhonemeFeature where
-  show (SyllabicFeature polarity)           = show polarity ++ "syllabic"
-  show (ConsonantalFeature polarity)        = show polarity ++ "consonantal"
-  show (SonorantFeature polarity)           = show polarity ++ "sonorant"
-  show (ContinuantFeature polarity)         = show polarity ++ "continuant"
-  show (VoiceFeature polarity)              = show polarity ++ "voice"
-  show (AdvancedTongueRootFeature polarity) = show polarity ++ "ATR"
+  show (SyllabicFeature polarity)           = show polarity ⧺ "syllabic"
+  show (ConsonantalFeature polarity)        = show polarity ⧺ "consonantal"
+  show (SonorantFeature polarity)           = show polarity ⧺ "sonorant"
+  show (ContinuantFeature polarity)         = show polarity ⧺ "continuant"
+  show (VoiceFeature polarity)              = show polarity ⧺ "voice"
+  show (AdvancedTongueRootFeature polarity) = show polarity ⧺ "ATR"
   show NasalFeature                         =                  "nasal"
   show LateralFeature                       =                  "lateral"
   show DelayedReleaseFeature                =                  "delayed release"
@@ -200,25 +225,25 @@ instance Show PhonemeFeature where
   show DorsalFeature                        =                  "dorsal"
   show PharyngealFeature                    =                  "pharyngeal"
   show LaryngealFeature                     =                  "laryngeal"
-  show (RoundFeature polarity)              = show polarity ++ "round"
-  show (AnteriorFeature polarity)           = show polarity ++ "anterior"
-  show (DistributedFeature polarity)        = show polarity ++ "distributed"
-  show (StridentFeature polarity)           = show polarity ++ "strident"
-  show (HighFeature polarity)               = show polarity ++ "high"
-  show (LowFeature polarity)                = show polarity ++ "low"
-  show (BackFeature polarity)               = show polarity ++ "back"
+  show (RoundFeature polarity)              = show polarity ⧺ "round"
+  show (AnteriorFeature polarity)           = show polarity ⧺ "anterior"
+  show (DistributedFeature polarity)        = show polarity ⧺ "distributed"
+  show (StridentFeature polarity)           = show polarity ⧺ "strident"
+  show (HighFeature polarity)               = show polarity ⧺ "high"
+  show (LowFeature polarity)                = show polarity ⧺ "low"
+  show (BackFeature polarity)               = show polarity ⧺ "back"
 
 
 -- Given a binary feature, and another feature.
 -- returns whether they are the same kind of feature.
 -- They don't have to be the same polarity.
--- For example, [+voice] and [-voice] are mutually relevant features.
+-- For example, [+voice] and [−voice] are mutually relevant features.
 --   As are [+sonorant] and [+sonorant].
 --   But [+sonorant] and [+voice] are not relevant because 
 -- "voice" and "sonorant" are different.
 relevantBinary ∷ (Polarity → PhonemeFeature) → PhonemeFeature → Bool
 relevantBinary feature otherFeature = 
-  otherFeature == feature Plus || otherFeature == feature Minus
+  otherFeature ≡ feature Plus ∨ otherFeature ≡ feature Minus
 
 binaryDifference ::
           (Polarity → PhonemeFeature) 
@@ -226,11 +251,11 @@ binaryDifference ::
                     → [PhonemeFeature] 
                     → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 binaryDifference feature list1 list2
-  | null list1Relevant && null list2Relevant
-       || (not (null list1Relevant) && not (null list2Relevant) 
-       && head list1Relevant == head list2Relevant)
+  | null list1Relevant ∧ null list2Relevant
+       ∨ (not (null list1Relevant) ∧ not (null list2Relevant) 
+       ∧ head list1Relevant ≡ head list2Relevant)
   = (Nothing, Nothing)
-  | not (null list1Relevant) && not (null list2Relevant)
+  | not (null list1Relevant) ∧ not (null list2Relevant)
   = (Just (head list1Relevant), Just (head list2Relevant))
   | length list1Relevant > length list2Relevant
   = (Just (head list1Relevant), Nothing)
@@ -246,8 +271,8 @@ unaryDifference ∷ PhonemeFeature
                          → [PhonemeFeature] 
                          → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 unaryDifference feature list1 list2
-  | elem feature list1 == elem feature list2    = (Nothing, Nothing)
-  | elem feature list1 && notElem feature list2 = (Just feature, Nothing)
+  | elem feature list1 ≡ elem feature list2    = (Nothing, Nothing)
+  | elem feature list1 ∧ notElem feature list2 = (Just feature, Nothing)
   | otherwise                                   = (Nothing, Just feature)
 
 
@@ -526,11 +551,11 @@ constrictedGlottis ∷ Phonet → Maybe PhonemeFeature
 constrictedGlottis (Consonant _ Glottal Plosive _) =
   Just ConstrictedGlottisFeature
 constrictedGlottis consonant@(Consonant CreakyVoiced _ _ _) =
-  if sonorant consonant == Just (SonorantFeature Plus)
+  if sonorant consonant ≡ Just (SonorantFeature Plus)
     then Just ConstrictedGlottisFeature
     else Nothing
 constrictedGlottis vowel@(Vowel _ _ _ CreakyVoiced) =
-  if sonorant vowel == Just (SonorantFeature Plus)
+  if sonorant vowel ≡ Just (SonorantFeature Plus)
     then Just ConstrictedGlottisFeature
     else Nothing
 constrictedGlottis _  = Nothing
@@ -737,7 +762,7 @@ analyzeFeatures phonete =
 showFeatures ∷ [PhonemeFeature] → String
 showFeatures features =
   let featuresStrings = map show features
-  in "[" ++ intercalate "; " featuresStrings ++ "]"
+  in "[" ⧺ intercalate "; " featuresStrings ⧺ "]"
 
 toTextFeatures ∷ Phonet → String
 toTextFeatures phonete =

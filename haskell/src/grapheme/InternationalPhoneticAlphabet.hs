@@ -43,8 +43,11 @@ import Prelude
   (
     Int, Maybe(Just, Nothing), String,
     concat, concatMap, init, last, show,
-    (.), (<), ($), (+), (++), (==)
+    (<), ($), (+)
   )
+
+
+import Prelude.Unicode ((⧺), (≡), (∘))
 
 type IPAText = String
 -- For storing text meant to be interpreted as International phonetic alphabet
@@ -54,12 +57,12 @@ type IPAText = String
 
 graphemesOfIPA ∷ [IPAText]
 graphemesOfIPA = consonantsPulmonic
-  ++ consonantsNonPulmonic
-  ++ otherSymbols
-  ++ vowels
-  ++ suprasegmentals
-  ++ toneAndWordAccents
-  ++ diacriticsAndSuprasegmentals
+  ⧺ consonantsNonPulmonic
+  ⧺ otherSymbols
+  ⧺ vowels
+  ⧺ suprasegmentals
+  ⧺ toneAndWordAccents
+  ⧺ diacriticsAndSuprasegmentals
 -- See: https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
 -- For the source of this information..
 
@@ -384,20 +387,20 @@ analyzeIPA "ɒ"  = Just $ Vowel  Open Back  Rounded   Voiced
 -- Handle Diacritics:
 analyzeIPA ipaText =
   case [last ipaText] of
-    "̥" ->
+    "̥" →
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
               Just (Consonant _ place manner airstream)    → Just $ Consonant Voiceless place manner airstream
               Just (Vowel height backness rounding _  )    → Just $ Vowel height backness rounding Voiceless
               _                                            → Nothing
-    "̬" ->
+    "̬" →
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
               Just (Consonant _ place manner airstream)    → Just $ Consonant Voiced place manner airstream
               Just (Vowel height backness rounding _  )    → Just $ Vowel height backness rounding Voiced
               _                                            → Nothing
 
-    "ʰ" ->
+    "ʰ" →
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
               Just (Consonant Voiced place manner airstream   ) → Just $ Consonant VoicedAspirated place manner airstream
@@ -407,7 +410,7 @@ analyzeIPA ipaText =
               -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
               -- since we have no way to represent it in the type system. to do: determine
               -- if the idea of an aspirated vowel makes sense
-    _ → Nothing -- Not recognized.
+    _ → Nothing -- not recognized.
 
 
 constructIPA ∷ Phonet → IPAText
@@ -418,7 +421,7 @@ constructIPA phoneme =
 
 constructIPARecursive ∷ Int → Int → Phonet → Maybe IPAText
 constructIPARecursive recursionLimit recursionLevel _
-  | recursionLevel == recursionLimit = Nothing
+  | recursionLevel ≡ recursionLimit = Nothing
 
 -- Plosives:
 constructIPARecursive _ _ (Consonant  Voiceless          Bilabial                       Plosive            PulmonicEgressive) = Just "p" 
@@ -557,7 +560,7 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant  x PostAlveolar 
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant x Alveolar y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ++ "̠")  -- Add the diacritic for "retracted"
+           Just regularIPA → Just (regularIPA ⧺ "̠")  -- Add the diacritic for "retracted"
 
 
 
@@ -570,14 +573,14 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant Voiceless x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel)  (Consonant Voiced x y z) of 
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ++ "̥") -- add diacritic for voiceless
+           Just regularIPA → Just (regularIPA ⧺ "̥") -- add diacritic for voiceless
 
 -- Add the small circle diacritic to vowels to make them voiceless.
 constructIPARecursive recursionLimit recursionLevel (Vowel x y z Voiceless)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiced) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ++ "̥")
+           Just regularIPA → Just (regularIPA ⧺ "̥")
 
 -- If there is no way to express a voiced consonant in a single
 -- grapheme add a diacritic to the grapheme that represents
@@ -586,31 +589,31 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant Voiced x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of 
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ++ "̬")
+           Just regularIPA → Just (regularIPA ⧺ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  (Vowel x y z Voiced)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiceless) of 
            Nothing → Nothing 
-           Just regularIPA → Just (regularIPA ++ "̬")
+           Just regularIPA → Just (regularIPA ⧺ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicedAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ++ "ʰ")
+           Just regularIPA → Just (regularIPA ⧺ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicelessAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of 
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ++ "ʰ")
+           Just regularIPA → Just (regularIPA ⧺ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant CreakyVoiced _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ++ "̰")
+           Just regularIPA → Just (regularIPA ⧺ "̰")
 
 
 constructIPARecursive _ _ _
@@ -652,4 +655,4 @@ given a phoneme's representation in the
 international phonetic alphabet.
   |-}
 describeIPA ∷ IPAText → String
-describeIPA = show . analyzeIPA
+describeIPA = show ∘ analyzeIPA

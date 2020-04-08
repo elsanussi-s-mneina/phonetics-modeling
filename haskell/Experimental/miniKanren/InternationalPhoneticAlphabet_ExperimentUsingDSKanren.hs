@@ -17,10 +17,12 @@ Then run main:
 
 to check that the code runs.
 -}
+{-# LANGUAGE UnicodeSyntax #-}
 
 module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, facts, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
 
-import Prelude (Bool, IO, String, foldr, fst, head, not, null, print, (.), ($))
+import Prelude (Bool, IO, String, foldr, fst, head, not, null, print, ($))
+import Prelude.Unicode ((∘))
 import Language.DSKanren (Term(Atom), Predicate, conde, disconj, failure, list, manyFresh, program, runN, (===))
 
 main ∷ IO ()
@@ -29,7 +31,7 @@ main =
      print "Program terminated normally"
 
 facts ∷ Term → Predicate
-facts = \t ->
+facts = \t →
          foldr disconj failure
              [ list [(Atom "voiced"), (Atom "p"), (Atom "b")] === t
              , list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t
@@ -37,7 +39,7 @@ facts = \t ->
 
 isVoicedO ∷ Term → Predicate
 isVoicedO voiced =
-  conde [ manyFresh $ \t voiceless ->
+  conde [ manyFresh $ \t voiceless →
           program ([ list [(Atom "voiced"), voiceless, voiced] === t
                     , facts t] )]
 
@@ -52,7 +54,7 @@ isVoiced phoneme = not (null kanrenResult)
 
 makeVoicedO ∷ Term → Term → Predicate
 makeVoicedO voiceless result =
-   conde [ manyFresh $ \t ->
+   conde [ manyFresh $ \t →
              program ([ list [(Atom "voiced"), voiceless, result] === t
                       , facts t] )]
 
@@ -63,7 +65,7 @@ makeVoiced ∷ String → String
 makeVoiced phoneme = 
      if not (null kanrenResult)
      then 
-       case (fst . head) kanrenResult of
+       case (fst ∘ head) kanrenResult of
               Atom voiced → voiced
               _           → phoneme
      else phoneme  -- do nothing
@@ -73,7 +75,7 @@ makeVoiced phoneme =
 
 makeVoicelessO ∷ Term → Term → Predicate
 makeVoicelessO voiced result =
-  conde [ manyFresh $ \t ->
+  conde [ manyFresh $ \t →
           program ([ list [(Atom "voiced"), result, voiced ] === t
                     , facts t] )]
 
@@ -82,8 +84,8 @@ makeVoiceless ∷ String → String
 makeVoiceless phoneme = 
      if not (null kanrenResult)
      then 
-       case (fst . head) kanrenResult of
+       case (fst ∘ head) kanrenResult of
               Atom voiceless → voiceless
               _              → phoneme
      else phoneme  -- do nothing
-     where kanrenResult = runN 1 (\t → makeVoicelessO (Atom phoneme) t)
+     where kanrenResult = runN 1 (\ t → makeVoicelessO (Atom phoneme) t)

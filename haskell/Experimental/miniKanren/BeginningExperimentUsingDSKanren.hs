@@ -58,60 +58,60 @@ Then run main:
 
 to check that the code runs.
 -}
-
+{-# LANGUAGE UnicodeSyntax #-}
 module BeginningExperimentUsingDSKanren where 
 
 import Language.DSKanren
-
+import Prelude.Unicode ((∘))
 
 
 main =
   do 
-     print $ map fst . runN 1 $ (\t → success)
+     print $ map fst ∘ runN 1 $ (\t → success)
      -- Expected result:
      -- [_0]
 
 
      -- Create my first real predicate.
-     print $ map fst . runN 1 $ (\t → Atom "3" === Atom "4")
+     print $ map fst ∘ runN 1 $ (\t → Atom "3" === Atom "4")
      -- Expected result:
      -- []
-     print $ map fst . runN 1 $ (\t → Atom "3" === Atom "3")
+     print $ map fst ∘ runN 1 $ (\t → Atom "3" === Atom "3")
      -- Expected result:
      -- [_0]
-     print $ map fst . runN 1 $ (\t → Atom "p" === Atom "b")
+     print $ map fst ∘ runN 1 $ (\t → Atom "p" === Atom "b")
      -- Expected result:
      -- []
-     print $ map fst . runN 1 $ (\t → list [Atom "voiced", Atom "p"] === Atom "b")
+     print $ map fst ∘ runN 1 $ (\t → list [Atom "voiced", Atom "p"] === Atom "b")
      -- Expected result:
      -- []
 
 
 
      -- Using disconjunction:
-     print $ map fst . runN 1 $ (\t → disconj ( Atom "a" === Atom "a") (Atom "b" === Atom "c"))
+     print $ map fst ∘ runN 1 $ (\t → disconj ( Atom "a" === Atom "a") (Atom "b" === Atom "c"))
      -- Expected result:
      -- [_0]
 
-     print $ map fst . runN 1 $ (\t → disconj ( Atom "a" === Atom "q") (Atom "b" === Atom "c"))
+     print $ map fst ∘ runN 1 $ (\t → disconj ( Atom "a" === Atom "q") (Atom "b" === Atom "c"))
      -- Expected result:
      -- []
 
 
 
      -- Using unification:
-     print $ map fst . runN 1 $ (\t → disconj ( Atom "a" === Atom "q") (Atom "b" === t))
+     print $ map fst ∘ runN 1 $ (\t → disconj ( Atom "a" === Atom "q") (Atom "b" === t))
      -- Expected result:
      -- ['b]
 
-     print $ map fst . runN 1 $ (\t → disconj ( t === Atom "q") (Atom "b" === t))
+     print $ map fst ∘ runN 1 $ (\t → disconj ( t === Atom "q") (Atom "b" === t))
      -- Expected result:
      -- ['q]
 
 
      -- Using conde:
      -- It is sort of like "and"
-     print $ runN 3 $ \t → conde [(t === Atom "c"), (t === Pair (Atom "a") ( Atom "b"))]
+     print $ runN 3 $ (\t → conde [(t === Atom "c"), (t === Pair (Atom "a") ( Atom "b"))])
      -- Expected result:
      -- [('c,[]),(('a, 'b),[])]
 
@@ -121,13 +121,13 @@ main =
 
 
      -- Let's try to make something useful
-     print $ runN 3 $ \t → conde [(Pair (Atom "voiced") (Atom "p") === Atom "b"), (Pair (Atom "voiced") (Atom "t") === Atom "d")]
+     print $ runN 3 $ (\t → conde [(Pair (Atom "voiced") (Atom "p") === Atom "b"), (Pair (Atom "voiced") (Atom "t") === Atom "d")])
      -- []
 
 -- okay now let us allow querying:
-factsAboutVoicing = \t → conde [ 
+factsAboutVoicing = (\t → conde [ 
                               list [(Atom "voiced"), (Atom "p"), (Atom "b")] === t, 
-                              list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t]
+                              list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t])
 
 
 demoFactsAboutVoicing =
@@ -139,7 +139,7 @@ demoFactsAboutVoicing =
 -- I used a strange trick I thought up, to use the t variable as true.
 
 
-factsAboutVoicingStrong = \t ->
+factsAboutVoicingStrong = \t →
          foldr disconj failure
              [ list [(Atom "voiced"), (Atom "p"), (Atom "b")] === t
              , list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t
@@ -147,19 +147,19 @@ factsAboutVoicingStrong = \t ->
 
 isVoicedO ∷ Term → Predicate
 isVoicedO voiced =
-  conde [ manyFresh $ \t voiceless ->
+  conde [ manyFresh $ \t voiceless →
           program ([ list [(Atom "voiced"), voiceless, voiced] === t
                     , factsAboutVoicingStrong t] )]
 
 
 isVoicedODemo =
      do
-     print $ runN 3 $ \t → isVoicedO (Atom "p")
+     print $ runN 3 $ (\t → isVoicedO (Atom "p"))
      -- []
      -- That means it is not voiced, which is correct.
 
 
-     print $ runN 3 $ \t → isVoicedO (Atom "b")
+     print $ runN 3 $ (\t → isVoicedO (Atom "b"))
      -- [(_0,[])]
      -- That means it is voiced. Finally we succeeded. So far.
 
@@ -191,7 +191,7 @@ isVoicedDemo =
 
 makeVoicedO ∷ Term → Term → Predicate
 makeVoicedO voiceless result =
-   conde [ manyFresh $ \t ->
+   conde [ manyFresh $ \ t →
              program ([ list [(Atom "voiced"), voiceless, result] === t
                       , factsAboutVoicingStrong t] )]
 
@@ -201,13 +201,13 @@ makeVoicedO voiceless result =
 
 makeVoicedODemo = 
      do
-     print $ runN 3 $ \t → makeVoicedO (Atom "p") t
+     print $ runN 3 $ (\ t → makeVoicedO (Atom "p") t)
      -- [('b,[])]
-     print $ runN 3 $ \t → makeVoicedO (Atom "b") t
+     print $ runN 3 $ (\ t → makeVoicedO (Atom "b") t)
      -- []
-     print $ runN 3 $ \t → makeVoicedO (Atom "s") t
+     print $ runN 3 $ (\ t → makeVoicedO (Atom "s") t)
      -- []
-     print $ runN 3 $ \t → makeVoicedO (Atom "t") t
+     print $ runN 3 $ (\ t → makeVoicedO (Atom "t") t)
      -- [('d,[])]
 
 
@@ -215,7 +215,7 @@ makeVoicedODemo =
 makeVoiced ∷ String → String
 makeVoiced phoneme = 
      if not (null kanrenResult)
-     then let Atom voiced = (fst . head) kanrenResult
+     then let Atom voiced = (fst ∘ head) kanrenResult
           in voiced
      else phoneme  -- do nothing
      where kanrenResult = runN 1 (\t → makeVoicedO (Atom phoneme) t)
@@ -224,7 +224,7 @@ makeVoiced phoneme =
 
 makeVoicelessO ∷ Term → Term → Predicate
 makeVoicelessO voiced result =
-  conde [ manyFresh $ \t ->
+  conde [ manyFresh $ \t →
           program ([ list [(Atom "voiced"), result, voiced] === t
                     , factsAboutVoicingStrong t] )]
 
@@ -232,7 +232,7 @@ makeVoicelessO voiced result =
 makeVoiceless ∷ String → String
 makeVoiceless phoneme = 
      if not (null kanrenResult)
-     then let Atom voiced = (fst . head) kanrenResult
+     then let Atom voiced = (fst ∘ head) kanrenResult
           in voiced
      else phoneme  -- do nothing
      where kanrenResult = runN 1 (\t → makeVoicelessO (Atom phoneme) t)

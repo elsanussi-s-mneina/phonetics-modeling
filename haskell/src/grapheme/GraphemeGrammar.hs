@@ -1,6 +1,7 @@
 module GraphemeGrammar (isAscender, isDescender, isExponential, isDiacriticAbove, isDiacriticBelow) where
 
-import Prelude (Bool(True, False), elem)
+import Prelude (Bool(True, False))
+import Prelude.Unicode ((∈))
 
 import InternationalPhoneticAlphabet (IPAText)
 
@@ -14,7 +15,7 @@ like how exponents of a power are written
 in mathematical notation.
 |-}
 isExponential ∷ IPAText → Bool
-isExponential character = character `elem` exponentials
+isExponential character = character ∈ exponentials
 {-|
 Whether a diacritic goes above
 the character it is placed on.
@@ -50,7 +51,7 @@ ascenders =
 
 
 isAscender ∷ IPAText → Bool
-isAscender character = character `elem` ascenders
+isAscender character = character ∈ ascenders
 
 descenders ∷ [IPAText]
 descenders =
@@ -69,4 +70,4 @@ where to put diacritics so that
 they are readable.
 |-}
 isDescender ∷ IPAText → Bool
-isDescender character = character `elem` descenders
+isDescender character = character ∈ descenders
