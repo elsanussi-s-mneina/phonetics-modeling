@@ -9,7 +9,7 @@ import System.IO (hFlush, stdout)
 import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
 import English (englishPhonetInventory)
 import PhonemeFeature (analyzeFeatures, showFeatures)
-
+import DeveloperMode (developerMain)
 
 menu ∷ String
 menu = "What do you want to accomplish?\n\n"
@@ -79,6 +79,7 @@ main =
                    "3" → promptForPhonemeToDevoice
                    "4" → promptForPhonemeToDescribe
                    "5" → promptForPhonemeToCalculateSPEFeaturesFrom
+                   "road not taken" → developerMain
                    _ → putStrLn "Unrecognized selection. No action taken."
 
     putStrLn "\nProgram terminated normally.\n\n"

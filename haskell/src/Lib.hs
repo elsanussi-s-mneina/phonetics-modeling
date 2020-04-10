@@ -33,7 +33,16 @@ module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAsp
               ), Airstream(PulmonicEgressive, Click, Implosive),
             Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open), Backness(Front, Central, Back), Rounding(Rounded, Unrounded), PhonetInventory(..),
             voicedPhonet, devoicedPhonet, impossible, generateFromUnmarked, unmarkDifferences,
-            spirantizedPhonet, retractedPlace) where
+            spirantizedPhonet, retractedPlace
+            , UnmarkablePhonet(UnmarkableConsonant, UnmarkableVowel)
+            , UnmarkableVocalFolds(UnmarkedVocalFolds, MarkedVocalFolds)
+            , UnmarkablePlace(UnmarkedPlace, MarkedPlace)
+            , UnmarkableManner(UnmarkedManner, MarkedManner)
+            , UnmarkableAirstream(UnmarkedAirstream, MarkedAirstream)
+            , UnmarkableHeight(UnmarkedHeight, MarkedHeight)
+            , UnmarkableBackness(UnmarkedBackness, MarkedBackness)
+            , UnmarkableRounding(UnmarkedRounding, MarkedRounding)
+            ) where
 
 
 import Prelude (Bool(False, True), Eq((==)), Show(show), String,
