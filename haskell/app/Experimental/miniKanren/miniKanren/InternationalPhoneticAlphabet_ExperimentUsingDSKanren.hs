@@ -10,7 +10,7 @@ in the "phonetics-modeling/haskell" directory
 
 (Note: "*..>" is notation here for the prompt in GHCi)
 Then run:
-*..> :l Experimental/miniKanren/InternationalPhoneticAlphabet_ExperimentUsingDSKanren.hs 
+*..> :l app/Experimental/miniKanren/miniKanren/InternationalPhoneticAlphabet_ExperimentUsingDSKanren.hs 
 
 Then run main:
 *..> main
