@@ -37,11 +37,21 @@ facts = \t →
              , list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t
              ]
 
+facts2 ∷ Term → Predicate
+facts2 = \t →
+         foldr disconj failure
+             [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === t
+             , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
+             , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
+             , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
+             ]
+
+
 isVoicedO ∷ Term → Predicate
 isVoicedO voiced =
-  conde [ manyFresh $ \t voiceless →
-          program ([ list [(Atom "voiced"), voiceless, voiced] === t
-                    , facts t] )]
+  conde [ manyFresh $ \t place →
+          program ([ list [(Atom "voiced"), place, voiced] === t
+                    , facts2 t] )]
 
 
 
