@@ -19,11 +19,11 @@ to check that the code runs.
 -}
 {-# LANGUAGE UnicodeSyntax #-}
 
-module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
+module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, isVoiceless, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
 
-import Prelude (Bool, IO, String, foldr, fst, head, length, not, null, print, (>), ($))
-import Prelude.Unicode ((∘), (⧺))
-import Language.DSKanren (Term(Atom), Predicate, conde, conj, disconj, failure, list, manyFresh, program, runN, (===))
+import Prelude (Bool, IO, String, fst, head, length, not, null, print, (>), ($))
+import Prelude.Unicode ((∘))
+import Language.DSKanren (Term(Atom), Predicate, conde, conj, list, manyFresh, runN, (===))
 
 main ∷ IO ()
 main =
@@ -56,8 +56,11 @@ isVoicedO = isVocalFoldStateO "voiced"
 
 isUnifiable termToPredicate =  length (runN 1 termToPredicate)  > 0
 
-isVoiceless ipaString = isUnifiable (\t → isVoicelessO (Atom ipaString))
-isVoiced ipaString = isUnifiable (\t → isVoicedO (Atom ipaString))
+isVoiceless :: String → Bool
+isVoiceless ipaString = isUnifiable (\_ → isVoicelessO (Atom ipaString))
+
+isVoiced ∷ String → Bool
+isVoiced ipaString = isUnifiable (\_ → isVoicedO (Atom ipaString))
 
 
 makeVoicedO ∷ Term → Term → Predicate
