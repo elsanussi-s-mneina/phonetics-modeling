@@ -19,103 +19,56 @@ to check that the code runs.
 -}
 {-# LANGUAGE UnicodeSyntax #-}
 
-module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, facts, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
+module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
 
 import Prelude (Bool, IO, String, foldr, fst, head, length, not, null, print, (>), ($))
 import Prelude.Unicode ((∘), (⧺))
-import Language.DSKanren (Term(Atom), Predicate, conde, disconj, failure, list, manyFresh, program, runN, (===))
+import Language.DSKanren (Term(Atom), Predicate, conde, conj, disconj, failure, list, manyFresh, program, runN, (===))
 
 main ∷ IO ()
 main =
   do 
      print "Program terminated normally"
 
-facts ∷ Term → Predicate
-facts = \t →
-         foldr disconj failure
-             [ list [(Atom "voiced"), (Atom "p"), (Atom "b")] === t
-             , list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t
-             ]
-
-facts3 ∷ Term → Predicate
-facts3 = \t ->
-          conde
-             [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")]
-             , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")]
-             , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")]
-             , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")]
-             ]
-
-dummy1 :: Term → Predicate
-dummy1 ipaAtom = 
-   let t = list [(Atom "voiceless"), (Atom "bilabial"), ipaAtom]
-   in
-                    conde
-                         [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === t
-                         , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
-                         , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
-                         , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
-                         ]
+factsUnifiedWithTerm ∷ Term → [Predicate]
+factsUnifiedWithTerm t =
+          [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === t
+          , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
+          , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
+          , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
+          ]
 
 
-isVoiceless₂ ipaString = length (runN 1 (\t → dummy1 (Atom ipaString)))  > 0
--- works for "p" and "b" only
-
-
-dummy₃ :: Term → Predicate
-dummy₃ ipaAtom = 
+isVocalFoldStateO :: String → Term → Predicate
+isVocalFoldStateO vocalFoldState ipaAtom = 
   manyFresh $ \place →
-   let t = list [(Atom "voiceless"), place, ipaAtom]
+   let t = list [(Atom vocalFoldState), place, ipaAtom]
    in
-                    conde
-                         [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === t
-                         , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
-                         , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
-                         , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
-                         ]
+      conde
+         (factsUnifiedWithTerm t)  
 
 
-isVoiceless₃ ipaString = length (runN 1 (\t → dummy₃ (Atom ipaString)))  > 0
+isVoicelessO :: Term → Predicate
+isVoicelessO = isVocalFoldStateO "voiceless"
 
-{-- isVoiceless₃ works! See the following:
-*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "p"
-True
-*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "b"
-False
-*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "d"
-False
-*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "t"
-True
---}
+isVoicedO :: Term → Predicate
+isVoicedO = isVocalFoldStateO "voiced"
 
+isUnifiable termToPredicate =  length (runN 1 termToPredicate)  > 0
 
--- runN 4  (\t → (dummy1 (list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] )))
-
-
-isVoicedO ∷ Term → Predicate
-isVoicedO voiced =
-      manyFresh $ \place t →
-          program ([ list [(Atom "voiced"), place, voiced] === t
-                   , facts3 t
-                   ])
-
-
-
-isVoiced ∷ String → Bool
-isVoiced phoneme = not (null kanrenResult)
-     where kanrenResult =  runN 1 (\_ → isVoicedO (Atom phoneme))
-
-
+isVoiceless ipaString = isUnifiable (\t → isVoicelessO (Atom ipaString))
+isVoiced ipaString = isUnifiable (\t → isVoicedO (Atom ipaString))
 
 
 makeVoicedO ∷ Term → Term → Predicate
 makeVoicedO voiceless result =
-   conde [ manyFresh $ \place t →
-             program ([ list [(Atom "voiceless"), place] === voiceless
-                      , list [(Atom "voiced"), place] === result
-                      , facts3 t
-                      ])]
-
+   conde [ manyFresh $ \place →
+             let t = list [(Atom "voiceless"), place, voiceless]
+                 t₂ = list [(Atom "voiced"), place, result]
+               in conj 
+                    (conde (factsUnifiedWithTerm t))
+                    (conde (factsUnifiedWithTerm t₂)) 
+         ]
 
 
 -- Let us write a wrapper:
@@ -130,12 +83,16 @@ makeVoiced phoneme =
      where kanrenResult = runN 1 (\t → makeVoicedO (Atom phoneme) t)
            
 
-
 makeVoicelessO ∷ Term → Term → Predicate
 makeVoicelessO voiced result =
-  conde [ manyFresh $ \t →
-          program ([ list [(Atom "voiced"), result, voiced ] === t
-                    , facts t] )]
+   conde [ manyFresh $ \place →
+             let t = list [(Atom "voiceless"), place, result]
+                 t₂ = list [(Atom "voiced"), place, voiced]
+               in conj 
+                    (conde (factsUnifiedWithTerm t))
+                    (conde (factsUnifiedWithTerm t₂)) 
+         ]
+
 
 
 makeVoiceless ∷ String → String
