@@ -19,16 +19,25 @@ to check that the code runs.
 -}
 {-# LANGUAGE UnicodeSyntax #-}
 
-module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, isVoiceless, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
+module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, isVoiceless, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless, testString) where 
 
-import Prelude (Bool, IO, String, fst, head, length, not, null, print, (>), ($))
-import Prelude.Unicode ((∘))
+import Prelude (Bool, String, fst, head, length, not, null, show, (>), ($))
+import Prelude.Unicode ((∘), (⧺))
 import Language.DSKanren (Term(Atom), Predicate, conde, conj, list, manyFresh, runN, (===))
 
-main ∷ IO ()
-main =
-  do 
-     print "Program terminated normally"
+testString ∷ [String]
+testString =
+     [ "Demo of miniKanren version of InternationalPhoneticAlphabet module ..."
+     , "If one makes /p/ voiced, one gets /" ⧺ makeVoiced "p" ⧺ "/"
+     , "If one makes /t/ voiced, one gets /" ⧺ makeVoiced "t" ⧺ "/"
+     , "If one makes /b/ voiceless, one gets /" ⧺ makeVoiceless "b" ⧺ "/"
+     , "If one makes /d/ voiceless, one gets /" ⧺ makeVoiceless "d" ⧺ "/"
+     , "Is /p/ voiced? " ⧺ show (isVoiced "p")
+     , "Is /b/ voiced? " ⧺ show (isVoiced "b")
+     , "Is /t/ voiceless? " ⧺ show (isVoiceless "t")
+     , "Is /d/ voiceless? " ⧺ show (isVoiceless "d")
+     , "That is all. Done demonstrating miniKanren version of InternationalPhoneticAlphabet module."
+     ]
 
 factsUnifiedWithTerm ∷ Term → [Predicate]
 factsUnifiedWithTerm t =
