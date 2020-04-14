@@ -21,8 +21,8 @@ to check that the code runs.
 
 module InternationalPhoneticAlphabet_ExperimentUsingDSKanren (makeVoiced, isVoiced, facts, main, isVoicedO, makeVoicedO, makeVoicelessO, makeVoiceless) where 
 
-import Prelude (Bool, IO, String, foldr, fst, head, not, null, print, ($))
-import Prelude.Unicode ((∘))
+import Prelude (Bool, IO, String, foldr, fst, head, length, not, null, print, (>), ($))
+import Prelude.Unicode ((∘), (⧺))
 import Language.DSKanren (Term(Atom), Predicate, conde, disconj, failure, list, manyFresh, program, runN, (===))
 
 main ∷ IO ()
@@ -37,21 +37,67 @@ facts = \t →
              , list [(Atom "voiced"), (Atom "t"), (Atom "d")] === t
              ]
 
-facts2 ∷ Term → Predicate
-facts2 = \t →
-         foldr disconj failure
-             [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === t
-             , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
-             , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
-             , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
+facts3 ∷ Term → Predicate
+facts3 = \t ->
+          conde
+             [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")]
+             , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")]
+             , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")]
+             , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")]
              ]
+
+dummy1 :: Term → Predicate
+dummy1 ipaAtom = 
+   let t = list [(Atom "voiceless"), (Atom "bilabial"), ipaAtom]
+   in
+                    conde
+                         [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === t
+                         , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
+                         , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
+                         , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
+                         ]
+
+
+isVoiceless₂ ipaString = length (runN 1 (\t → dummy1 (Atom ipaString)))  > 0
+-- works for "p" and "b" only
+
+
+dummy₃ :: Term → Predicate
+dummy₃ ipaAtom = 
+  manyFresh $ \place →
+   let t = list [(Atom "voiceless"), place, ipaAtom]
+   in
+                    conde
+                         [ list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] === t
+                         , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
+                         , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
+                         , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
+                         ]
+
+
+isVoiceless₃ ipaString = length (runN 1 (\t → dummy₃ (Atom ipaString)))  > 0
+
+{-- isVoiceless₃ works! See the following:
+*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "p"
+True
+*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "b"
+False
+*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "d"
+False
+*InternationalPhoneticAlphabet_ExperimentUsingDSKanren> isVoiceless₃ "t"
+True
+--}
+
+
+-- runN 4  (\t → (dummy1 (list [(Atom "voiceless"), (Atom "bilabial"), (Atom "p")] )))
 
 
 isVoicedO ∷ Term → Predicate
 isVoicedO voiced =
-  conde [ manyFresh $ \t place →
+      manyFresh $ \place t →
           program ([ list [(Atom "voiced"), place, voiced] === t
-                    , facts2 t] )]
+                   , facts3 t
+                   ])
 
 
 
@@ -64,9 +110,11 @@ isVoiced phoneme = not (null kanrenResult)
 
 makeVoicedO ∷ Term → Term → Predicate
 makeVoicedO voiceless result =
-   conde [ manyFresh $ \t →
-             program ([ list [(Atom "voiced"), voiceless, result] === t
-                      , facts t] )]
+   conde [ manyFresh $ \place t →
+             program ([ list [(Atom "voiceless"), place] === voiceless
+                      , list [(Atom "voiced"), place] === result
+                      , facts3 t
+                      ])]
 
 
 
