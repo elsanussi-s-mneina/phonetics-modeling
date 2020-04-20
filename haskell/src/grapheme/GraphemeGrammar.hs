@@ -1,7 +1,11 @@
-module GraphemeGrammar (isAscender, isDescender, isExponential, isDiacriticAbove, isDiacriticBelow) where
+module GraphemeGrammar 
+  ( isAscender, isDescender, isExponential
+  , isDiacriticAbove, isDiacriticBelow
+  , preventProhibitedCombination
+  ) where
 
 import Prelude (Bool(True, False))
-import Prelude.Unicode ((∈))
+import Prelude.Unicode ((∈), (⧺), (∧))
 
 import InternationalPhoneticAlphabet (IPAText)
 
@@ -31,6 +35,27 @@ the character which it is placed on.
 isDiacriticBelow ∷ IPAText → Bool
 isDiacriticBelow "̥" = True
 isDiacriticBelow  _  = False
+
+{-|
+When given a diacritic that goes above,
+replaces it with one that goes below,
+and has the same meaning.
+otherwise does nothing.
+  |-}
+lowerDiacritic ∷ IPAText → IPAText
+lowerDiacritic "̊" = "̥"
+lowerDiacritic x  = x
+
+
+{-|
+When given a diacritic that goes below,
+replaces it with one that goes below, and
+has the same meaning;
+otherwise it does nothing. 
+  |-}
+raiseDiacritic ∷ IPAText → IPAText
+raiseDiacritic "̥" = "̊"
+raiseDiacritic x  = x
 
 
 {-|
@@ -71,3 +96,24 @@ they are readable.
 |-}
 isDescender ∷ IPAText → Bool
 isDescender character = character ∈ descenders
+
+
+{-|
+Prevent placement of diacrtic's below a full-width
+character,
+when doing so would likely make the result
+difficult to read, whenever there is another
+diacrtiic with the same meaning, but can go above.
+And vice-versa (above - below).
+
+Only support the voiceless diacritic so far.
+  |-}
+preventProhibitedCombination :: IPAText → IPAText
+preventProhibitedCombination [] = []
+preventProhibitedCombination [y] = [y]
+preventProhibitedCombination noChange@(x:y:z) = 
+  if isAscender [x] ∧ isDiacriticAbove [y]
+  then [x] ⧺ lowerDiacritic [y] ⧺ z
+  else if isDescender [x] ∧ isDiacriticBelow [y]
+  then [x] ⧺ raiseDiacritic [y] ⧺ z
+  else noChange

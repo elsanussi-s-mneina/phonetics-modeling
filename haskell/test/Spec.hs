@@ -27,6 +27,7 @@ import Lib
 import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
 import Tester (printLegend, runTest)
 import English (englishPhonetInventory)
+import GraphemeGrammar (preventProhibitedCombination)
 sectionDivider = "\n\n"
 
 
@@ -39,8 +40,28 @@ main = do
   spirantizedIPASpec
   showEnglishPhonemeInventorySpec
   speFeaturesSpec
+  graphemeGrammarSpec
   putStrLn "\n\nProgram (Test suite) terminated normally."
   -- We need at least one PutStrLn so that all output makes it to the console before the program terminates.
+
+-- TODO: make the console output when running the tests using
+-- `stack test` 
+-- not say that the tests passed, when there is actually a failure.
+
+
+graphemeGrammarSpec ∷ IO ()
+graphemeGrammarSpec = do
+  putStrLn sectionDivider
+  runTest "t̥ (t with under-ring) should remain t̥ when fixing misplaced diacritics."
+    (preventProhibitedCombination "t̥" ≡ "t̥")
+  runTest "z̥ (z with under-ring) should remain z̥ when fixing misplaced diacritics."
+    (preventProhibitedCombination "z̥" ≡ "z̥")
+  runTest "p̥ (p with under-ring) should become p̊ (p with over-ring) when fixing misplaced diacritics."
+    (preventProhibitedCombination "p̥" ≡ "p̊")
+  runTest "z̊ (z with over-ring) should not change when fixing misplaced diacritics."
+    (preventProhibitedCombination "z̊" ≡ "z̊")
+  runTest "l̊ (l with over-ring) should become l̥ (l with under-ring) when fixing misplaced diacritics."
+    (preventProhibitedCombination "l̊" ≡ "l̥")
 
 
 glideSpec ∷ IO ()
