@@ -2,44 +2,12 @@
 
 module InternationalPhoneticAlphabet (IPAText, describeIPA, constructIPA, analyzeIPA, voicedIPA, devoicedIPA, showIPA, spirantizedIPA,
   diacriticsAndSuprasegmentals, toneAndWordAccents, suprasegmentals, vowels, otherSymbols, consonantsNonPulmonic, consonantsPulmonic, graphemesOfIPA) where
-
-import Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced), 
-            Place(
-                Bilabial
-              , LabioDental
-              , Dental
-              , Alveolar
-              , PostAlveolar
-              , Retroflex
-              , Palatal
-              , Velar
-              , Uvular
-              , Pharyngeal
-              , Glottal
-              , Epiglottal
-              , LabialVelar
-              , LabialPalatal
-              , AlveoloPalatal
-              , PalatoAlveolar 
-              , Places
-              ),
-              Manner(
-                Plosive
-              , Nasal
-              , Trill
-              , TapOrFlap
-              , Approximant
-              , Fricative
-              , Affricate
-              , LateralFricative
-              , LateralApproximant
-              , LateralFlap
-              , Lateral 
-              ), Airstream(PulmonicEgressive, Click, Implosive)
-              , Height(Close, NearClose, CloseMid, Mid, OpenMid, NearOpen, Open)
-              , Backness(Front, Central, Back), Rounding(Rounded, Unrounded), PhonetInventory(PhonetInventory), spirantizedPhonet, devoicedPhonet,
-            voicedPhonet
-            )
+import Lib_Types
+import Lib_Functions
+          ( spirantizedPhonet
+          , devoicedPhonet
+          , voicedPhonet
+          )
 
 import Prelude
   (

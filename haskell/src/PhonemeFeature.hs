@@ -40,7 +40,6 @@ module PhonemeFeature (toTextFeatures, analyzeFeatures, showFeatures, difference
 -- the concept of phonological features.
 
 
-
 import Prelude
   (
     Bool(False, True), Maybe(Just, Nothing), Show, String, Eq,
@@ -52,36 +51,8 @@ import Prelude.Unicode
   ( (≡), (⧺), (∧), (∨)
   )
 
-import Lib
-  (
-    Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced), 
-              Place(
-                Bilabial
-              , LabioDental
-              , Dental
-              , Alveolar
-              , PostAlveolar
-              , Retroflex
-              , Palatal
-              , Velar
-              , Uvular
-              , Pharyngeal
-              , Glottal
-              , LabialVelar
-              , LabialPalatal
-              , AlveoloPalatal), 
-              Manner(
-                Plosive
-              , Nasal
-              , Approximant
-              , Fricative
-              , Affricate
-              , LateralFricative
-              , LateralApproximant
-              , LateralFlap
-              , Lateral), Airstream(PulmonicEgressive),
-            Height(Close, NearClose, CloseMid, OpenMid, NearOpen, Open), Backness(Front, Central, Back), Rounding(Rounded, Unrounded),
-  )
+import Lib_Types
+
 
 import Data.List (intercalate)
 import Data.Maybe (catMaybes)

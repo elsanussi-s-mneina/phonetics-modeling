@@ -34,6 +34,9 @@ library:
   - -Wno-safe
   - -fwarn-incomplete-patterns
   - -fwarn-incomplete-uni-patterns
+  - -Winaccessible-code
+  - -Wno-missing-export-lists
+  - -Wno-missing-import-lists
   dependencies:
   - base-unicode-symbols
   # - ds-kanren  # Needed for the miniKanren experiment. Not needed for any important functionality.

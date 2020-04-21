@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b46c24549ee5ad8d2cd95ac1da6d696e12958b6b9ba318b1b0944930399e2cfc
+-- hash: 087c2e5ca17b140b1a9d4df6a1a0928159fb6baab1f7b0c3f950a5608b32ad0a
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -27,6 +27,8 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Lib_Functions
+      Lib_Types
       PhonemeFeature
       GraphemeGrammar
       InternationalPhoneticAlphabet
@@ -37,7 +39,7 @@ library
       src
       src/grapheme
       src/dialect_specific
-  ghc-options: -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns
+  ghc-options: -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Winaccessible-code -Wno-missing-export-lists -Wno-missing-import-lists
   build-depends:
       base >=4.7 && <5
     , base-unicode-symbols

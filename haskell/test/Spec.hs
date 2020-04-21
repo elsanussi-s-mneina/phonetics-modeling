@@ -6,30 +6,10 @@ import Prelude (IO, length, Bool(True, False), putStrLn, putStr, show, String, M
 import Prelude.Unicode
   ( (≡), (⧺), (∧), (∨), (∘)
   )
-import PhonemeFeature (isGlide, low, anterior,
-                       distributed,
-                       strident, high,
-                       nasal,
-                       labial, coronal,
-                       dorsal,
-                       pharyngeal, laryngeal,
-                       round, atr, back,
-                       PhonemeFeature(NasalFeature, LateralFeature, 
-                       DelayedReleaseFeature,
-                       SpreadGlottisFeature, ConstrictedGlottisFeature,
-                       LabialFeature, CoronalFeature, DorsalFeature,
-                       PharyngealFeature, LaryngealFeature,
-                       RoundFeature,
-                       AdvancedTongueRootFeature, HighFeature,
-                       LowFeature, BackFeature,
-                       StridentFeature, DistributedFeature,
-                       AnteriorFeature),
-                       Polarity(Minus, Plus))
+
 import Lib
-import InternationalPhoneticAlphabet (analyzeIPA, constructIPA, showIPA, spirantizedIPA, devoicedIPA)
+
 import Tester (printLegend, runTest)
-import English (englishPhonetInventory)
-import GraphemeGrammar (preventProhibitedCombination)
 sectionDivider = "\n\n"
 
 

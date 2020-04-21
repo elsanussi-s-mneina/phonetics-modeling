@@ -3,7 +3,7 @@
 module Experimental.CodeGeneration.InternationalPhoneticAlphabetCodeGen(codeGenAllStatementsConstructIPAHaskell) where
 
 
-import Lib 
+import Lib
   ( Phonet
   , Airstream(PulmonicEgressive)
   , UnmarkablePhonet(UnmarkableConsonant)
