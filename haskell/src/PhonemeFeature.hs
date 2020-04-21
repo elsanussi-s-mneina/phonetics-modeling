@@ -50,27 +50,6 @@ import Prelude.Unicode
   ( (≡), (⧺), (∧), (∨)
   )
 
-
-
-{-
-module Prelude.Unicode
-    ( (¬), (∧), (∨)
-    , (≡), (≢), (≠)
-    , (≤), (≥), (≮), (≯)
-    , (−)
-    , π
-    , (÷), (×), (⋅)
-    , (∘)
-    , (⧺)
-    , (∈), (∉)
-    , (‼)
-    , (⊥)
-    , (∣), (∤)
-    , ℤ, ℚ
-    , 𝜀
-    )
--}
-
 import Lib
   (
     Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced), 
