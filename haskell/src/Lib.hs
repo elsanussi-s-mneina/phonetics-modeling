@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 
 module Lib (Phonet(Consonant, Vowel), VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated, CreakyVoiced), 
               Place(

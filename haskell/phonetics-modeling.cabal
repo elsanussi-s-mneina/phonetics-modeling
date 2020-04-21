@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ce56b5c9f3b9cafc73da4098fff243819cb6a13cc58636f01c2778515a0009ad
+-- hash: b46c24549ee5ad8d2cd95ac1da6d696e12958b6b9ba318b1b0944930399e2cfc
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -37,7 +37,7 @@ library
       src
       src/grapheme
       src/dialect_specific
-  ghc-options: -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -XUnicodeSyntax
+  ghc-options: -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns
   build-depends:
       base >=4.7 && <5
     , base-unicode-symbols
@@ -51,7 +51,7 @@ executable phonetics-modeling-exe
       Paths_phonetics_modeling
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -XUnicodeSyntax
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns
   build-depends:
       base >=4.7 && <5
     , base-unicode-symbols
@@ -66,7 +66,7 @@ test-suite phonetics-modeling-test
       Paths_phonetics_modeling
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Spec -XUnicodeSyntax
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Spec
   build-depends:
       base >=4.7 && <5
     , base-unicode-symbols

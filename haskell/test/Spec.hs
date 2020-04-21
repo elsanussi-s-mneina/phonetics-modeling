@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module Spec (main) where
 import Data.Maybe (fromJust) 
 import Prelude (IO, length, Bool(True, False), putStrLn, putStr, show, String, Maybe(Just, Nothing))

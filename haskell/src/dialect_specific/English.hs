@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module English (englishPhonetInventory) where
 
 import Lib

@@ -1,4 +1,4 @@
-{- (Experiment ended)
+{- (Experiment ended April 2020)
 In this file, I show my experiments using MiniKanren, a relational logic language.
 Specifically I use the ds-karen implementation of it as a domain specific language hosted in Haskell.
 

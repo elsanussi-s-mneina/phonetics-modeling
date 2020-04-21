@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module PhonemeFeature (toTextFeatures, analyzeFeatures, showFeatures, difference,
 
 

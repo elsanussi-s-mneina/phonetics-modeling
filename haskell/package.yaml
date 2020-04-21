@@ -34,7 +34,6 @@ library:
   - -Wno-safe
   - -fwarn-incomplete-patterns
   - -fwarn-incomplete-uni-patterns
-  - -XUnicodeSyntax
   dependencies:
   - base-unicode-symbols
   # - ds-kanren  # Needed for the miniKanren experiment. Not needed for any important functionality.
@@ -53,7 +52,6 @@ executables:
     - -Wno-safe
     - -fwarn-incomplete-patterns
     - -fwarn-incomplete-uni-patterns
-    - -XUnicodeSyntax 
     dependencies:
     - base-unicode-symbols
     - phonetics-modeling
@@ -67,7 +65,6 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     - -main-is Spec
-    - -XUnicodeSyntax
     dependencies:
     - base-unicode-symbols
     - phonetics-modeling

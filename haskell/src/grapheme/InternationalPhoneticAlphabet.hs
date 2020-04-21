@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module InternationalPhoneticAlphabet (IPAText, describeIPA, constructIPA, analyzeIPA, voicedIPA, devoicedIPA, showIPA, spirantizedIPA,
   diacriticsAndSuprasegmentals, toneAndWordAccents, suprasegmentals, vowels, otherSymbols, consonantsNonPulmonic, consonantsPulmonic, graphemesOfIPA) where
 

@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module Main (main) where
 
 import Prelude (IO, String, Maybe(Just, Nothing), getLine, putStr, putStrLn)

@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module Experimental.CodeGeneration.InternationalPhoneticAlphabetCodeGen(codeGenAllStatementsConstructIPAHaskell) where
 
 

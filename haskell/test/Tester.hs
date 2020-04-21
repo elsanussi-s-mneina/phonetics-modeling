@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module Tester (runTest, printLegend) where
 
 import Prelude (IO, putStrLn, putStr, Bool(True, False), String)

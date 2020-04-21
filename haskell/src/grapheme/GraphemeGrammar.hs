@@ -1,3 +1,5 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module GraphemeGrammar 
   ( isAscender, isDescender, isExponential
   , isDiacriticAbove, isDiacriticBelow
