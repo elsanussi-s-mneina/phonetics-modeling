@@ -37,7 +37,7 @@ library:
   - -XUnicodeSyntax
   dependencies:
   - base-unicode-symbols
-  - ds-kanren
+  # - ds-kanren  # Needed for the miniKanren experiment. Not needed for any important functionality.
 
 executables:
   phonetics-modeling-exe:

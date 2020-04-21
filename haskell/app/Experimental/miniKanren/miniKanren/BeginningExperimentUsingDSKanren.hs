@@ -1,4 +1,4 @@
-{-
+{- (Experiment ended)
 In this file, I show my experiments using MiniKanren, a relational logic language.
 Specifically I use the ds-karen implementation of it as a domain specific language hosted in Haskell.
 
@@ -251,3 +251,16 @@ makeVoicelessDemo =
      print $ makeVoiceless "q"
      -- "q"
 -- It works.
+
+{-|
+Conclusion:
+(as of 2020 April 21: I decided not to use the ds-kanren library, because
+the amount of effort necessary to define the functions to handle
+diacritics was overwhelming.
+
+I liked the challenge of trying to define the problem in miniKanren, but 
+I haven't learned enough miniKanren to be productive in it.
+
+The other problem is that if I use miniKanren I would make whoever reads
+my source code to require far more specific/rare knowledge.
+|-}

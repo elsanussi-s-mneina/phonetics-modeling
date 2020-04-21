@@ -1,4 +1,4 @@
-{-
+{- (Experiment ended April 2020)
 You need the following dependency to follow along in the examples:
 
 "ds-kanren-0.2.0.1@sha256:b4275541bcc48385d04f8c225509359191a2e0d5faaa078f1cc4e2c52db3d1d8,1527"
@@ -45,8 +45,16 @@ factsUnifiedWithTerm t =
           , list [(Atom "voiced"), (Atom "bilabial"), (Atom "b")] === t
           , list [(Atom "voiceless"), (Atom "alveolar"), (Atom "t")] === t
           , list [(Atom "voiced"), (Atom "alveolar"), (Atom "d")] === t
+          , list [(Atom "voiceless"), (Atom "glottal"), (Atom "ʔ")] === t
           ]
 
+termVoiceless :: Term → Term
+termVoiceless (list [(Atom _), place, grapheme]) = list [(Atom "voiceless"), place, grapheme]
+
+searchThroughVoicedDiacritic t =
+  manyFresh $ \grapheme →
+     list [(Atom "voiceless"), place, (Atom (grapheme))] === termVoiceless t
+     list [(Atom "voiced"), place, (Atom (grapheme:"̬"))] === t
 
 isVocalFoldStateO :: String → Term → Predicate
 isVocalFoldStateO vocalFoldState ipaAtom = 
