@@ -441,28 +441,19 @@ consonantsPulmonic ∷ [IPAText]
 consonantsPulmonic = concat consonantsPulmonicTable
 
 plosivePulmonic ∷ [String]
-plosivePulmonic            = [ "p", "b", " ", " ", " ", " ", "t", "d", " ", " "
-                             , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ", " ", " "
-                             , "ʔ", " "
+plosivePulmonic            = [ "p", "b",                     "t", "d"
+                             , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ"
+                             , "ʔ"
                              ] -- Plosive
 
 nasalPulmonic ∷ [String]
-nasalPulmonic              = [ " ", "m", " ", "ɱ", " ", " ", " ", "n", " ", " "
-                             , " ", "ɳ", " ", "ɲ", " ", "ŋ", " ", "ɴ", " ", " "
-                             , " ", " "
-                             ] -- Nasal
+nasalPulmonic              = ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"] -- Nasal
 
 trillPulmonic ∷ [String]
-trillPulmonic              = [ " ", "ʙ", " ", " ", " ", " ", " ", "r", " ", " "
-                             , " ", " ", " ", " ", " ", " ", " ", "ʀ", " ", " "
-                             , " ", " "
-                             ] -- Trill
+trillPulmonic              = [ "ʙ", "r", "ʀ"] -- Trill
 
 tapOrFlapPulmonic ∷ [String]
-tapOrFlapPulmonic          = [ " ", " ", " ", "ⱱ", " ", " ", " ", "ɾ", " ", " "
-                             , " ", "ɽ", " ", " ", " ", " ", " ", " ", " ", " "
-                             , " ", " "
-                             ] -- Tap or Flap
+tapOrFlapPulmonic          = [ "ⱱ", "ɾ", "ɽ"] -- Tap or Flap
 
 fricativePulmonic ∷ [String]
 fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
@@ -471,22 +462,13 @@ fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ",
                              ]  -- Fricative
 
 lateralFricativePulmonic ∷ [String]
-lateralFricativePulmonic   = [ " ", " ", " ", " ", " ", " ", "ɬ", "ɮ", " ", " "
-                             , " ", " ", " ", " ", " ", " ", " ", " ", " ", " "
-                             , " ", " "
-                             ] -- Lateral fricative
+lateralFricativePulmonic   = [ "ɬ", "ɮ" ] -- Lateral fricative
 
 approximantPulmonic ∷ [String]
-approximantPulmonic        = [ " ", " ", " ", "ʋ", " ", " ", " ", "ɹ", " ", " "
-                             , " ", "ɻ", " ", "j", " ", "ɰ", " ", " ", " ", " "
-                             , " ", " "
-                             ] -- Approximant
+approximantPulmonic        = [ "ʋ", "ɻ", "j", "ɰ" ] -- Approximant
 
 lateralApproximantPulmonic ∷ [String]
-lateralApproximantPulmonic = [ " ", " ", " ", " ", " ", " ", " ", "l", " ", " "
-                             , " ", "ɭ", " ", "ʎ", " ", "ʟ", " ", " ", " ", " "
-                             , " ", " "
-                             ] -- Lateral approximant
+lateralApproximantPulmonic = [ "l", "ɭ", "ʎ", "ʟ" ] -- Lateral approximant
 
 
 
