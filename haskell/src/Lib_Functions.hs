@@ -1064,9 +1064,9 @@ binaryDifference feature list1 list2
 
 
 unaryDifference ∷ PhonemeFeature
-                         → [PhonemeFeature] 
-                         → [PhonemeFeature] 
-                         → (Maybe PhonemeFeature, Maybe PhonemeFeature)
+                → [PhonemeFeature] 
+                → [PhonemeFeature] 
+                → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 unaryDifference feature list1 list2
   | elem feature list1 ≡ elem feature list2    = (Nothing, Nothing)
   | elem feature list1 ∧ notElem feature list2 = (Just feature, Nothing)
