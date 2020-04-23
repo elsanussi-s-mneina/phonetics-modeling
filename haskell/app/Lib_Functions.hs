@@ -1,6 +1,4 @@
 {-# LANGUAGE UnicodeSyntax #-}
-
-
 module Lib_Functions where
 
 import Lib_Types
