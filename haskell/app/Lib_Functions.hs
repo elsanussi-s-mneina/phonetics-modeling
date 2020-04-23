@@ -5,32 +5,19 @@ module Lib_Functions where
 
 import Lib_Types
 
-import Prelude 
-  ( Bool(False, True)
-  , Int
-  , Maybe(Just, Nothing)
-  , Show(show)
-  , String
-  , concat
-  , concatMap
-  , elem
-  , filter
-  , head
-  , init
-  , last
-  , length
-  , map
-  , not
-  , notElem
-  , null
+import Prelude
+  ( Bool(False, True)      , Int       , Maybe(Just, Nothing)
+  , Show(show)             , String
+  , concat                 , concatMap , elem
+  , filter                 , head      , init
+  , last                   , length    , map
+  , not                    , notElem   , null
   , otherwise
-  , (>)
-  , (+)
-  , (<)
+  , (>)                    , (+)       , (<)
   , ($)
   )
 
-import Data.List 
+import Data.List
   ( intercalate
   )
 
@@ -38,12 +25,8 @@ import Data.Maybe
   ( catMaybes
   )
 
-import Prelude.Unicode 
-  ( (∘)
-  , (≡)
-  , (⧺)
-  , (∧)
-  , (∨)
+import Prelude.Unicode
+  ( (∘) , (≡) , (⧺) , (∧) , (∨)
   , (∈)
   )
 
@@ -106,22 +89,42 @@ spirantizedPhonet other = other
 
 
 unmarkDifferences ∷ Phonet → Phonet → UnmarkablePhonet
-unmarkDifferences (Consonant voice1 place1 manner1 airstream1) (Consonant voice2 place2 manner2 airstream2)=
-  let voice'     = if voice1     ≡ voice2     then MarkedVocalFolds voice1     else UnmarkedVocalFolds
-      place'     = if place1     ≡ place2     then MarkedPlace      place1     else UnmarkedPlace
-      manner'    = if manner1    ≡ manner2    then MarkedManner     manner1    else UnmarkedManner
-      airstream' = if airstream1 ≡ airstream2 then MarkedAirstream  airstream1 else UnmarkedAirstream
+unmarkDifferences (Consonant voice1 place1 manner1 airstream1)
+                  (Consonant voice2 place2 manner2 airstream2) =
+  let voice'     = if voice1     ≡ voice2
+                     then MarkedVocalFolds voice1
+                     else UnmarkedVocalFolds
+      place'     = if place1     ≡ place2
+                     then MarkedPlace      place1
+                     else UnmarkedPlace
+      manner'    = if manner1    ≡ manner2
+                     then MarkedManner     manner1
+                     else UnmarkedManner
+      airstream' = if airstream1 ≡ airstream2
+                     then MarkedAirstream  airstream1
+                     else UnmarkedAirstream
   in UnmarkableConsonant voice' place' manner' airstream'
 
-unmarkDifferences (Vowel height1 backness1 rounding1 voice1) (Vowel height2 backness2 rounding2 voice2) =
-  let voice'    = if voice1    ≡ voice2    then MarkedVocalFolds voice1    else UnmarkedVocalFolds
-      height'   = if height1   ≡ height2   then MarkedHeight     height1   else UnmarkedHeight
-      backness' = if backness1 ≡ backness2 then MarkedBackness   backness1 else UnmarkedBackness
-      rounding' = if rounding1 ≡ rounding2 then MarkedRounding   rounding1 else UnmarkedRounding
+unmarkDifferences (Vowel height1 backness1 rounding1 voice1)
+                  (Vowel height2 backness2 rounding2 voice2) =
+  let voice'    = if voice1    ≡ voice2
+                    then MarkedVocalFolds voice1
+                    else UnmarkedVocalFolds
+      height'   = if height1   ≡ height2
+                    then MarkedHeight     height1
+                    else UnmarkedHeight
+      backness' = if backness1 ≡ backness2
+                    then MarkedBackness   backness1
+                    else UnmarkedBackness
+      rounding' = if rounding1 ≡ rounding2
+                    then MarkedRounding   rounding1
+                    else UnmarkedRounding
   in UnmarkableVowel height' backness' rounding' voice'
 
 unmarkDifferences (Vowel _ _ _ voice1) (Consonant voice2 _ _ _) =
-  let voice' = if voice1 ≡ voice2 then MarkedVocalFolds voice1 else UnmarkedVocalFolds
+  let voice' = if voice1 ≡ voice2
+                 then MarkedVocalFolds voice1
+                 else UnmarkedVocalFolds
   in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
 
@@ -150,8 +153,8 @@ generateFromUnmarked (UnmarkableVowel height1 backness1 rounding1 voice1) =
 
 
 unmarkableVoiceToList ∷ UnmarkableVocalFolds → [VocalFolds]
-unmarkableVoiceToList voice1 = 
-  case voice1 of 
+unmarkableVoiceToList voice1 =
+  case voice1 of
        MarkedVocalFolds x → [x]
        UnmarkedVocalFolds → vocalFoldStates
 
@@ -169,26 +172,26 @@ unmarkableMannerToList manner1 =
        UnmarkedManner → mannerStates
 
 unmarkableAirstreamToList ∷ UnmarkableAirstream → [Airstream]
-unmarkableAirstreamToList airstream1 = 
+unmarkableAirstreamToList airstream1 =
   case airstream1 of
        MarkedAirstream x → [x]
        UnmarkedAirstream → airstreamStates
 
 
 unmarkableHeightToList ∷ UnmarkableHeight → [Height]
-unmarkableHeightToList height1 = 
+unmarkableHeightToList height1 =
   case height1 of
        MarkedHeight x → [x]
        UnmarkedHeight → heightStates
 
 unmarkableBacknessToList ∷ UnmarkableBackness → [Backness]
 unmarkableBacknessToList backness1 =
-  case backness1 of 
+  case backness1 of
        MarkedBackness x → [x]
        UnmarkedBackness → backnessStates
 
 unmarkableRoundingToList ∷ UnmarkableRounding → [Rounding]
-unmarkableRoundingToList rounding1 = 
+unmarkableRoundingToList rounding1 =
   case rounding1 of
        MarkedRounding x → [x]
        UnmarkedRounding → roundingStates
@@ -351,7 +354,7 @@ lowerDiacritic x  = x
 When given a diacritic that goes below,
 replaces it with one that goes below, and
 has the same meaning;
-otherwise it does nothing. 
+otherwise it does nothing.
   |-}
 raiseDiacritic ∷ IPAText → IPAText
 raiseDiacritic "̥" = "̊"
@@ -411,7 +414,7 @@ Only support the voiceless diacritic so far.
 preventProhibitedCombination :: IPAText → IPAText
 preventProhibitedCombination [] = []
 preventProhibitedCombination [y] = [y]
-preventProhibitedCombination noChange@(x:y:z) = 
+preventProhibitedCombination noChange@(x:y:z) =
   if isAscender [x] ∧ isDiacriticAbove [y]
   then [x] ⧺ lowerDiacritic [y] ⧺ z
   else if isDescender [x] ∧ isDiacriticBelow [y]
@@ -439,28 +442,52 @@ consonantsPulmonic ∷ [IPAText]
 consonantsPulmonic = concat consonantsPulmonicTable
 
 plosivePulmonic ∷ [String]
-plosivePulmonic            = [ "p", "b", " ", " ", " ", " ", "t", "d", " ", " ", "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ", " ", " ", "ʔ", " "] -- Plosive
+plosivePulmonic            = [ "p", "b", " ", " ", " ", " ", "t", "d", " ", " "
+                             , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ", " ", " "
+                             , "ʔ", " "
+                             ] -- Plosive
 
 nasalPulmonic ∷ [String]
-nasalPulmonic              = [ " ", "m", " ", "ɱ", " ", " ", " ", "n", " ", " ", " ", "ɳ", " ", "ɲ", " ", "ŋ", " ", "ɴ", " ", " ", " ", " "] -- Nasal
+nasalPulmonic              = [ " ", "m", " ", "ɱ", " ", " ", " ", "n", " ", " "
+                             , " ", "ɳ", " ", "ɲ", " ", "ŋ", " ", "ɴ", " ", " "
+                             , " ", " "
+                             ] -- Nasal
 
 trillPulmonic ∷ [String]
-trillPulmonic              = [ " ", "ʙ", " ", " ", " ", " ", " ", "r", " ", " ", " ", " ", " ", " ", " ", " ", " ", "ʀ", " ", " ", " ", " "] -- Trill
+trillPulmonic              = [ " ", "ʙ", " ", " ", " ", " ", " ", "r", " ", " "
+                             , " ", " ", " ", " ", " ", " ", " ", "ʀ", " ", " "
+                             , " ", " "
+                             ] -- Trill
 
 tapOrFlapPulmonic ∷ [String]
-tapOrFlapPulmonic          = [ " ", " ", " ", "ⱱ", " ", " ", " ", "ɾ", " ", " ", " ", "ɽ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Tap or Flap
+tapOrFlapPulmonic          = [ " ", " ", " ", "ⱱ", " ", " ", " ", "ɾ", " ", " "
+                             , " ", "ɽ", " ", " ", " ", " ", " ", " ", " ", " "
+                             , " ", " "
+                             ] -- Tap or Flap
 
 fricativePulmonic ∷ [String]
-fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ", "h", "ɦ"]  -- Fricative
+fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
+                             , "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ"
+                             , "h", "ɦ"
+                             ]  -- Fricative
 
 lateralFricativePulmonic ∷ [String]
-lateralFricativePulmonic   = [ " ", " ", " ", " ", " ", " ", "ɬ", "ɮ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "] -- Lateral fricative
+lateralFricativePulmonic   = [ " ", " ", " ", " ", " ", " ", "ɬ", "ɮ", " ", " "
+                             , " ", " ", " ", " ", " ", " ", " ", " ", " ", " "
+                             , " ", " "
+                             ] -- Lateral fricative
 
 approximantPulmonic ∷ [String]
-approximantPulmonic        = [ " ", " ", " ", "ʋ", " ", " ", " ", "ɹ", " ", " ", " ", "ɻ", " ", "j", " ", "ɰ", " ", " ", " ", " ", " ", " "] -- Approximant
+approximantPulmonic        = [ " ", " ", " ", "ʋ", " ", " ", " ", "ɹ", " ", " "
+                             , " ", "ɻ", " ", "j", " ", "ɰ", " ", " ", " ", " "
+                             , " ", " "
+                             ] -- Approximant
 
 lateralApproximantPulmonic ∷ [String]
-lateralApproximantPulmonic = [ " ", " ", " ", " ", " ", " ", " ", "l", " ", " ", " ", "ɭ", " ", "ʎ", " ", "ʟ", " ", " ", " ", " ", " ", " "] -- Lateral approximant
+lateralApproximantPulmonic = [ " ", " ", " ", " ", " ", " ", " ", "l", " ", " "
+                             , " ", "ɭ", " ", "ʎ", " ", "ʟ", " ", " ", " ", " "
+                             , " ", " "
+                             ] -- Lateral approximant
 
 
 
@@ -782,7 +809,7 @@ analyzeIPA ipaText =
 
 
 constructIPA ∷ Phonet → IPAText
-constructIPA phoneme = 
+constructIPA phoneme =
   case constructIPARecursive 3 0 phoneme of
     Just graphemes → graphemes
     Nothing        → "∅"
@@ -792,64 +819,64 @@ constructIPARecursive recursionLimit recursionLevel _
   | recursionLevel ≡ recursionLimit = Nothing
 
 -- Plosives:
-constructIPARecursive _ _ (Consonant  Voiceless          Bilabial                       Plosive            PulmonicEgressive) = Just "p" 
-constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Plosive            PulmonicEgressive) = Just "b" 
-constructIPARecursive _ _ (Consonant  Voiceless          Alveolar                       Plosive            PulmonicEgressive) = Just "t" 
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Plosive            PulmonicEgressive) = Just "d" 
-constructIPARecursive _ _ (Consonant  Voiceless          Retroflex                      Plosive            PulmonicEgressive) = Just "ʈ" 
-constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Plosive            PulmonicEgressive) = Just "ɖ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Palatal                        Plosive            PulmonicEgressive) = Just "c" 
-constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Plosive            PulmonicEgressive) = Just "ɟ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Velar                          Plosive            PulmonicEgressive) = Just "k" 
-constructIPARecursive _ _ (Consonant  Voiced             Velar                          Plosive            PulmonicEgressive) = Just "g" 
-constructIPARecursive _ _ (Consonant  Voiceless          Uvular                         Plosive            PulmonicEgressive) = Just "q" 
-constructIPARecursive _ _ (Consonant  Voiced             Uvular                         Plosive            PulmonicEgressive) = Just "ɢ" 
+constructIPARecursive _ _ (Consonant  Voiceless          Bilabial                       Plosive            PulmonicEgressive) = Just "p"
+constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Plosive            PulmonicEgressive) = Just "b"
+constructIPARecursive _ _ (Consonant  Voiceless          Alveolar                       Plosive            PulmonicEgressive) = Just "t"
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Plosive            PulmonicEgressive) = Just "d"
+constructIPARecursive _ _ (Consonant  Voiceless          Retroflex                      Plosive            PulmonicEgressive) = Just "ʈ"
+constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Plosive            PulmonicEgressive) = Just "ɖ"
+constructIPARecursive _ _ (Consonant  Voiceless          Palatal                        Plosive            PulmonicEgressive) = Just "c"
+constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Plosive            PulmonicEgressive) = Just "ɟ"
+constructIPARecursive _ _ (Consonant  Voiceless          Velar                          Plosive            PulmonicEgressive) = Just "k"
+constructIPARecursive _ _ (Consonant  Voiced             Velar                          Plosive            PulmonicEgressive) = Just "g"
+constructIPARecursive _ _ (Consonant  Voiceless          Uvular                         Plosive            PulmonicEgressive) = Just "q"
+constructIPARecursive _ _ (Consonant  Voiced             Uvular                         Plosive            PulmonicEgressive) = Just "ɢ"
 constructIPARecursive _ _ (Consonant  Voiceless          Glottal                        Plosive            PulmonicEgressive) = Just "ʔ"  -- Nasals (next line):
-constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Nasal              PulmonicEgressive) = Just "m" 
-constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    Nasal              PulmonicEgressive) = Just "ɱ" 
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Nasal              PulmonicEgressive) = Just "n" 
-constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Nasal              PulmonicEgressive) = Just "ɳ" 
-constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Nasal              PulmonicEgressive) = Just "ɲ" 
-constructIPARecursive _ _ (Consonant  Voiced             Velar                          Nasal              PulmonicEgressive) = Just "ŋ" 
+constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Nasal              PulmonicEgressive) = Just "m"
+constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    Nasal              PulmonicEgressive) = Just "ɱ"
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Nasal              PulmonicEgressive) = Just "n"
+constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Nasal              PulmonicEgressive) = Just "ɳ"
+constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Nasal              PulmonicEgressive) = Just "ɲ"
+constructIPARecursive _ _ (Consonant  Voiced             Velar                          Nasal              PulmonicEgressive) = Just "ŋ"
 constructIPARecursive _ _ (Consonant  Voiced             Uvular                         Nasal              PulmonicEgressive) = Just "ɴ"  -- Trills (next line):
-constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Trill              PulmonicEgressive) = Just "ʙ" 
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Trill              PulmonicEgressive) = Just "r" 
+constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Trill              PulmonicEgressive) = Just "ʙ"
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Trill              PulmonicEgressive) = Just "r"
 constructIPARecursive _ _ (Consonant  Voiced             Uvular                         Trill              PulmonicEgressive) = Just "ʀ"  -- Taps or flaps (next line):
-constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    TapOrFlap          PulmonicEgressive) = Just "ⱱ" 
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       TapOrFlap          PulmonicEgressive) = Just "ɾ" 
+constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    TapOrFlap          PulmonicEgressive) = Just "ⱱ"
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       TapOrFlap          PulmonicEgressive) = Just "ɾ"
 constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      TapOrFlap          PulmonicEgressive) = Just "ɽ"  -- Fricatives (next line):
-constructIPARecursive _ _ (Consonant  Voiceless          Bilabial                       Fricative          PulmonicEgressive) = Just "ɸ" 
-constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Fricative          PulmonicEgressive) = Just "β" 
-constructIPARecursive _ _ (Consonant  Voiceless          LabioDental                    Fricative          PulmonicEgressive) = Just "f" 
-constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    Fricative          PulmonicEgressive) = Just "v" 
-constructIPARecursive _ _ (Consonant  Voiceless          Dental                         Fricative          PulmonicEgressive) = Just "θ" 
-constructIPARecursive _ _ (Consonant  Voiced             Dental                         Fricative          PulmonicEgressive) = Just "ð" 
-constructIPARecursive _ _ (Consonant  Voiceless          Alveolar                       Fricative          PulmonicEgressive) = Just "s" 
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Fricative          PulmonicEgressive) = Just "z" 
-constructIPARecursive _ _ (Consonant  Voiceless          PostAlveolar                   Fricative          PulmonicEgressive) = Just "ʃ" 
-constructIPARecursive _ _ (Consonant  Voiced             PostAlveolar                   Fricative          PulmonicEgressive) = Just "ʒ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Retroflex                      Fricative          PulmonicEgressive) = Just "ʂ" 
-constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Fricative          PulmonicEgressive) = Just "ʐ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Palatal                        Fricative          PulmonicEgressive) = Just "ç" 
-constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Fricative          PulmonicEgressive) = Just "ʝ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Velar                          Fricative          PulmonicEgressive) = Just "x" 
-constructIPARecursive _ _ (Consonant  Voiced             Velar                          Fricative          PulmonicEgressive) = Just "ɣ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Uvular                         Fricative          PulmonicEgressive) = Just "χ" 
-constructIPARecursive _ _ (Consonant  Voiced             Uvular                         Fricative          PulmonicEgressive) = Just "ʁ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Pharyngeal                     Fricative          PulmonicEgressive) = Just "ħ" 
-constructIPARecursive _ _ (Consonant  Voiced             Pharyngeal                     Fricative          PulmonicEgressive) = Just "ʕ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Glottal                        Fricative          PulmonicEgressive) = Just "h" 
+constructIPARecursive _ _ (Consonant  Voiceless          Bilabial                       Fricative          PulmonicEgressive) = Just "ɸ"
+constructIPARecursive _ _ (Consonant  Voiced             Bilabial                       Fricative          PulmonicEgressive) = Just "β"
+constructIPARecursive _ _ (Consonant  Voiceless          LabioDental                    Fricative          PulmonicEgressive) = Just "f"
+constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    Fricative          PulmonicEgressive) = Just "v"
+constructIPARecursive _ _ (Consonant  Voiceless          Dental                         Fricative          PulmonicEgressive) = Just "θ"
+constructIPARecursive _ _ (Consonant  Voiced             Dental                         Fricative          PulmonicEgressive) = Just "ð"
+constructIPARecursive _ _ (Consonant  Voiceless          Alveolar                       Fricative          PulmonicEgressive) = Just "s"
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Fricative          PulmonicEgressive) = Just "z"
+constructIPARecursive _ _ (Consonant  Voiceless          PostAlveolar                   Fricative          PulmonicEgressive) = Just "ʃ"
+constructIPARecursive _ _ (Consonant  Voiced             PostAlveolar                   Fricative          PulmonicEgressive) = Just "ʒ"
+constructIPARecursive _ _ (Consonant  Voiceless          Retroflex                      Fricative          PulmonicEgressive) = Just "ʂ"
+constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Fricative          PulmonicEgressive) = Just "ʐ"
+constructIPARecursive _ _ (Consonant  Voiceless          Palatal                        Fricative          PulmonicEgressive) = Just "ç"
+constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Fricative          PulmonicEgressive) = Just "ʝ"
+constructIPARecursive _ _ (Consonant  Voiceless          Velar                          Fricative          PulmonicEgressive) = Just "x"
+constructIPARecursive _ _ (Consonant  Voiced             Velar                          Fricative          PulmonicEgressive) = Just "ɣ"
+constructIPARecursive _ _ (Consonant  Voiceless          Uvular                         Fricative          PulmonicEgressive) = Just "χ"
+constructIPARecursive _ _ (Consonant  Voiced             Uvular                         Fricative          PulmonicEgressive) = Just "ʁ"
+constructIPARecursive _ _ (Consonant  Voiceless          Pharyngeal                     Fricative          PulmonicEgressive) = Just "ħ"
+constructIPARecursive _ _ (Consonant  Voiced             Pharyngeal                     Fricative          PulmonicEgressive) = Just "ʕ"
+constructIPARecursive _ _ (Consonant  Voiceless          Glottal                        Fricative          PulmonicEgressive) = Just "h"
 constructIPARecursive _ _ (Consonant  Voiced             Glottal                        Fricative          PulmonicEgressive) = Just "ɦ"  -- Lateral Fricatives (next line):
-constructIPARecursive _ _ (Consonant  Voiceless          Alveolar                       LateralFricative   PulmonicEgressive) = Just "ɬ" 
+constructIPARecursive _ _ (Consonant  Voiceless          Alveolar                       LateralFricative   PulmonicEgressive) = Just "ɬ"
 constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       LateralFricative   PulmonicEgressive) = Just "ɮ" -- Approximants (next line):
-constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    Approximant        PulmonicEgressive) = Just "ʋ" 
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Approximant        PulmonicEgressive) = Just "ɹ" 
-constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Approximant        PulmonicEgressive) = Just "ɻ" 
-constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Approximant        PulmonicEgressive) = Just "j" 
+constructIPARecursive _ _ (Consonant  Voiced             LabioDental                    Approximant        PulmonicEgressive) = Just "ʋ"
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Approximant        PulmonicEgressive) = Just "ɹ"
+constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      Approximant        PulmonicEgressive) = Just "ɻ"
+constructIPARecursive _ _ (Consonant  Voiced             Palatal                        Approximant        PulmonicEgressive) = Just "j"
 constructIPARecursive _ _ (Consonant  Voiced             Velar                          Approximant        PulmonicEgressive) = Just "ɰ"  -- Lateral Approximants (next line):
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       LateralApproximant PulmonicEgressive) = Just "l" 
-constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      LateralApproximant PulmonicEgressive) = Just "ɭ" 
-constructIPARecursive _ _ (Consonant  Voiced             Palatal                        LateralApproximant PulmonicEgressive) = Just "ʎ" 
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       LateralApproximant PulmonicEgressive) = Just "l"
+constructIPARecursive _ _ (Consonant  Voiced             Retroflex                      LateralApproximant PulmonicEgressive) = Just "ɭ"
+constructIPARecursive _ _ (Consonant  Voiced             Palatal                        LateralApproximant PulmonicEgressive) = Just "ʎ"
 constructIPARecursive _ _ (Consonant  Voiced             Velar                          LateralApproximant PulmonicEgressive) = Just "ʟ" -- Affricates (next line)
 constructIPARecursive _ _ (Consonant  Voiceless          PostAlveolar                   Affricate          PulmonicEgressive) = Just "t͡ʃ"
 constructIPARecursive _ _ (Consonant  Voiced             PostAlveolar                   Affricate          PulmonicEgressive) = Just "d͡ʒ"
@@ -858,15 +885,15 @@ constructIPARecursive _ _ (Consonant  Voiceless          Alveolar               
 constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       Affricate          PulmonicEgressive) = Just "d͡z"
 constructIPARecursive _ _ (Consonant  Voiceless          Velar                          Affricate          PulmonicEgressive) = Just "k͡x"
 constructIPARecursive _ _ (Consonant  Voiceless          Uvular                         Affricate          PulmonicEgressive) = Just "q͡χ" -- Under the Other Symbols part of the IPA chart:
-constructIPARecursive _ _ (Consonant  Voiced             LabialVelar                    Approximant        PulmonicEgressive) = Just "w" 
-constructIPARecursive _ _ (Consonant  Voiceless          LabialVelar                    Fricative          PulmonicEgressive) = Just "ʍ" 
-constructIPARecursive _ _ (Consonant  Voiced             LabialPalatal                  Approximant        PulmonicEgressive) = Just "ɥ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Epiglottal                     Fricative          PulmonicEgressive) = Just "ʜ" 
-constructIPARecursive _ _ (Consonant  Voiced             Epiglottal                     Fricative          PulmonicEgressive) = Just "ʢ" 
-constructIPARecursive _ _ (Consonant  Voiceless          Epiglottal                     Plosive            PulmonicEgressive) = Just "ʡ"-- Is the epiglottal plosive voiceless? The IPA chart does not specify.  
-constructIPARecursive _ _ (Consonant  Voiceless          AlveoloPalatal                 Fricative          PulmonicEgressive) = Just "ɕ" 
-constructIPARecursive _ _ (Consonant  Voiced             AlveoloPalatal                 Fricative          PulmonicEgressive) = Just "ʑ" 
-constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       LateralFlap        PulmonicEgressive) = Just "ɺ" 
+constructIPARecursive _ _ (Consonant  Voiced             LabialVelar                    Approximant        PulmonicEgressive) = Just "w"
+constructIPARecursive _ _ (Consonant  Voiceless          LabialVelar                    Fricative          PulmonicEgressive) = Just "ʍ"
+constructIPARecursive _ _ (Consonant  Voiced             LabialPalatal                  Approximant        PulmonicEgressive) = Just "ɥ"
+constructIPARecursive _ _ (Consonant  Voiceless          Epiglottal                     Fricative          PulmonicEgressive) = Just "ʜ"
+constructIPARecursive _ _ (Consonant  Voiced             Epiglottal                     Fricative          PulmonicEgressive) = Just "ʢ"
+constructIPARecursive _ _ (Consonant  Voiceless          Epiglottal                     Plosive            PulmonicEgressive) = Just "ʡ"-- Is the epiglottal plosive voiceless? The IPA chart does not specify.
+constructIPARecursive _ _ (Consonant  Voiceless          AlveoloPalatal                 Fricative          PulmonicEgressive) = Just "ɕ"
+constructIPARecursive _ _ (Consonant  Voiced             AlveoloPalatal                 Fricative          PulmonicEgressive) = Just "ʑ"
+constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       LateralFlap        PulmonicEgressive) = Just "ɺ"
 constructIPARecursive _ _ (Consonant  Voiceless          (Places [PostAlveolar, Velar]) Fricative          PulmonicEgressive) = Just "ɧ" -- Other Consonants:
 constructIPARecursive _ _ (Consonant  Voiceless          Bilabial                       Plosive            Click            ) = Just "ʘ"
 constructIPARecursive _ _ (Consonant  Voiceless          Dental                         Plosive            Click            ) = Just "ǀ"
@@ -939,7 +966,7 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant  x PostAlveolar 
 -- Add the small circle diacritic to consonants to make them voiceless.
 constructIPARecursive recursionLimit recursionLevel  (Consonant Voiceless x y z)
   | recursionLevel <  recursionLimit
-    = case constructIPARecursive recursionLimit (1 + recursionLevel)  (Consonant Voiced x y z) of 
+    = case constructIPARecursive recursionLimit (1 + recursionLevel)  (Consonant Voiced x y z) of
            Nothing → Nothing
            Just regularIPA → Just (regularIPA ⧺ "̥") -- add diacritic for voiceless
 
@@ -955,14 +982,14 @@ constructIPARecursive recursionLimit recursionLevel (Vowel x y z Voiceless)
 -- the voiceless counterpart.
 constructIPARecursive recursionLimit recursionLevel  (Consonant Voiced x y z)
   | recursionLevel <  recursionLimit
-    = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of 
+    = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of
            Nothing → Nothing
            Just regularIPA → Just (regularIPA ⧺ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  (Vowel x y z Voiced)
   | recursionLevel <  recursionLimit
-    = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiceless) of 
-           Nothing → Nothing 
+    = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiceless) of
+           Nothing → Nothing
            Just regularIPA → Just (regularIPA ⧺ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicedAspirated _ _ PulmonicEgressive)
@@ -973,7 +1000,7 @@ constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicedAspirate
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicelessAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
-    = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of 
+    = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
            Just regularIPA → Just (regularIPA ⧺ "ʰ")
 
@@ -1001,10 +1028,10 @@ deaspirate x = x
 
 
 constructDeconstruct ∷ (Phonet → Phonet) → IPAText → IPAText
-constructDeconstruct func x = 
-  let something = analyzeIPA x 
-  in case something of 
-       Nothing → "∅" 
+constructDeconstruct func x =
+  let something = analyzeIPA x
+  in case something of
+       Nothing → "∅"
        Just phonet → constructIPA (func phonet)
 
 voicedIPA ∷ IPAText → IPAText
@@ -1036,20 +1063,20 @@ describeIPA = show ∘ analyzeIPA
 -- They don't have to be the same polarity.
 -- For example, [+voice] and [−voice] are mutually relevant features.
 --   As are [+sonorant] and [+sonorant].
---   But [+sonorant] and [+voice] are not relevant because 
+--   But [+sonorant] and [+voice] are not relevant because
 -- "voice" and "sonorant" are different.
 relevantBinary ∷ (Polarity → PhonemeFeature) → PhonemeFeature → Bool
-relevantBinary feature otherFeature = 
+relevantBinary feature otherFeature =
   otherFeature ≡ feature Plus ∨ otherFeature ≡ feature Minus
 
 binaryDifference ::
-          (Polarity → PhonemeFeature) 
-                    → [PhonemeFeature] 
-                    → [PhonemeFeature] 
+          (Polarity → PhonemeFeature)
+                    → [PhonemeFeature]
+                    → [PhonemeFeature]
                     → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 binaryDifference feature list1 list2
   | null list1Relevant ∧ null list2Relevant
-       ∨ (not (null list1Relevant) ∧ not (null list2Relevant) 
+       ∨ (not (null list1Relevant) ∧ not (null list2Relevant)
        ∧ head list1Relevant ≡ head list2Relevant)
   = (Nothing, Nothing)
   | not (null list1Relevant) ∧ not (null list2Relevant)
@@ -1064,8 +1091,8 @@ binaryDifference feature list1 list2
 
 
 unaryDifference ∷ PhonemeFeature
-                → [PhonemeFeature] 
-                → [PhonemeFeature] 
+                → [PhonemeFeature]
+                → [PhonemeFeature]
                 → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 unaryDifference feature list1 list2
   | elem feature list1 ≡ elem feature list2    = (Nothing, Nothing)
@@ -1179,10 +1206,11 @@ Glides are [+continuant].
 (Source: page 258)
 
   Aside: we do not define lateral approximants for [+/-continuant] because the
-  textbook puts it in parentheses. Usually this means, it depends on the language
-  under study or
+  textbook puts it in parentheses. Usually this means, it depends on
+  the language under study or
   it depends on the linguist.
-  Lateral approximants may be considered [+continuant]. (arguable) (see chart on page 259))
+  Lateral approximants may be considered [+continuant]. (arguable)
+  (see chart on page 259))
 
 |-}
 continuant ∷ Phonet → Maybe PhonemeFeature
@@ -1406,7 +1434,8 @@ All other affricates are [-strident], also.
 
 All other segments are undefined for [+/-strident].
 
-(Source: page 266, under [+/-strident] heading, under the subsection "Natural classes".)
+(Source: page 266, under [+/-strident] heading, under the subsection
+"Natural classes".)
 |-}
 strident ∷ Phonet → Maybe PhonemeFeature
 strident (Consonant _ Alveolar     Fricative _) = Just (StridentFeature Plus)
@@ -1565,4 +1594,3 @@ toTextFeatures ∷ Phonet → String
 toTextFeatures phonete =
   let features = analyzeFeatures phonete
   in showFeatures features
-
