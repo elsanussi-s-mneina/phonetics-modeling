@@ -11,13 +11,14 @@ import Lib
   , UnmarkablePlace(UnmarkedPlace)
   , UnmarkableManner(UnmarkedManner)
   , UnmarkableAirstream(MarkedAirstream)
+  , analyzeIPA
+  , constructIPA
   , generateFromUnmarked
   )
 
 import Prelude (String, map, show, (++))
 
 import Data.List (intercalate)
-import InternationalPhoneticAlphabet (analyzeIPA, constructIPA)
 
 codeGenConstructIPAHaskell :: Phonet -> String 
 codeGenConstructIPAHaskell p =

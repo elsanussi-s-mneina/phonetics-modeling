@@ -8,9 +8,10 @@ import Prelude.Unicode
   )
 
 import System.IO (hFlush, stdout)
-import InternationalPhoneticAlphabet (showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA)
-import English (englishPhonetInventory)
-import PhonemeFeature (analyzeFeatures, showFeatures)
+import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
+           , englishPhonetInventory
+           , analyzeFeatures, showFeatures
+           )
 import DeveloperMode (developerMain)
 
 menu ∷ String
