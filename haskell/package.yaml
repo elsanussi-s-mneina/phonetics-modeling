@@ -37,7 +37,6 @@ library:
   - -Wno-missing-import-lists
   dependencies:
   - base-unicode-symbols
-  # - ds-kanren  # Needed for the miniKanren experiment. Not needed for any important functionality.
 
 executables:
   phonetics-modeling-exe:
