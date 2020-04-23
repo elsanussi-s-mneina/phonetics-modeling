@@ -14,7 +14,6 @@ import Prelude
   , not                    , notElem   , null
   , otherwise
   , (>)                    , (+)       , (<)
-  , ($)
   )
 
 import Data.List
@@ -620,87 +619,87 @@ analyzeIPA  ∷ IPAText → Maybe Phonet
 -- | to its analyzed form (its phonetic features)
 -- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
 -- Plosives:
-analyzeIPA "p"  = Just $ Consonant  Voiceless Bilabial  Plosive PulmonicEgressive
-analyzeIPA "b"  = Just $ Consonant  Voiced    Bilabial  Plosive PulmonicEgressive
-analyzeIPA "t"  = Just $ Consonant  Voiceless Alveolar  Plosive PulmonicEgressive
-analyzeIPA "d"  = Just $ Consonant  Voiced    Alveolar  Plosive PulmonicEgressive
-analyzeIPA "ʈ"  = Just $ Consonant  Voiceless Retroflex Plosive PulmonicEgressive
-analyzeIPA "ɖ"  = Just $ Consonant  Voiced    Retroflex Plosive PulmonicEgressive
-analyzeIPA "c"  = Just $ Consonant  Voiceless Palatal   Plosive PulmonicEgressive
-analyzeIPA "ɟ"  = Just $ Consonant  Voiced    Palatal   Plosive PulmonicEgressive
-analyzeIPA "k"  = Just $ Consonant  Voiceless Velar     Plosive PulmonicEgressive
-analyzeIPA "g"  = Just $ Consonant  Voiced    Velar     Plosive PulmonicEgressive
-analyzeIPA "q"  = Just $ Consonant  Voiceless Uvular    Plosive PulmonicEgressive
-analyzeIPA "ɢ"  = Just $ Consonant  Voiced    Uvular    Plosive PulmonicEgressive
-analyzeIPA "ʔ"  = Just $ Consonant  Voiceless Glottal   Plosive PulmonicEgressive
+analyzeIPA "p"  = Just (Consonant  Voiceless Bilabial  Plosive PulmonicEgressive)
+analyzeIPA "b"  = Just (Consonant  Voiced    Bilabial  Plosive PulmonicEgressive)
+analyzeIPA "t"  = Just (Consonant  Voiceless Alveolar  Plosive PulmonicEgressive)
+analyzeIPA "d"  = Just (Consonant  Voiced    Alveolar  Plosive PulmonicEgressive)
+analyzeIPA "ʈ"  = Just (Consonant  Voiceless Retroflex Plosive PulmonicEgressive)
+analyzeIPA "ɖ"  = Just (Consonant  Voiced    Retroflex Plosive PulmonicEgressive)
+analyzeIPA "c"  = Just (Consonant  Voiceless Palatal   Plosive PulmonicEgressive)
+analyzeIPA "ɟ"  = Just (Consonant  Voiced    Palatal   Plosive PulmonicEgressive)
+analyzeIPA "k"  = Just (Consonant  Voiceless Velar     Plosive PulmonicEgressive)
+analyzeIPA "g"  = Just (Consonant  Voiced    Velar     Plosive PulmonicEgressive)
+analyzeIPA "q"  = Just (Consonant  Voiceless Uvular    Plosive PulmonicEgressive)
+analyzeIPA "ɢ"  = Just (Consonant  Voiced    Uvular    Plosive PulmonicEgressive)
+analyzeIPA "ʔ"  = Just (Consonant  Voiceless Glottal   Plosive PulmonicEgressive)
 
 -- Nasals:
-analyzeIPA "m"  = Just $ Consonant  Voiced Bilabial    Nasal PulmonicEgressive
-analyzeIPA "ɱ"  = Just $ Consonant  Voiced LabioDental Nasal PulmonicEgressive
-analyzeIPA "n"  = Just $ Consonant  Voiced Alveolar    Nasal PulmonicEgressive
-analyzeIPA "ɳ"  = Just $ Consonant  Voiced Retroflex   Nasal PulmonicEgressive
-analyzeIPA "ɲ"  = Just $ Consonant  Voiced Palatal     Nasal PulmonicEgressive
-analyzeIPA "ŋ"  = Just $ Consonant  Voiced Velar       Nasal PulmonicEgressive
-analyzeIPA "ɴ"  = Just $ Consonant  Voiced Uvular      Nasal PulmonicEgressive
+analyzeIPA "m"  = Just (Consonant  Voiced Bilabial    Nasal PulmonicEgressive)
+analyzeIPA "ɱ"  = Just (Consonant  Voiced LabioDental Nasal PulmonicEgressive)
+analyzeIPA "n"  = Just (Consonant  Voiced Alveolar    Nasal PulmonicEgressive)
+analyzeIPA "ɳ"  = Just (Consonant  Voiced Retroflex   Nasal PulmonicEgressive)
+analyzeIPA "ɲ"  = Just (Consonant  Voiced Palatal     Nasal PulmonicEgressive)
+analyzeIPA "ŋ"  = Just (Consonant  Voiced Velar       Nasal PulmonicEgressive)
+analyzeIPA "ɴ"  = Just (Consonant  Voiced Uvular      Nasal PulmonicEgressive)
 
 -- Trills:
-analyzeIPA "ʙ"  = Just $ Consonant  Voiced Bilabial Trill PulmonicEgressive
-analyzeIPA "r"  = Just $ Consonant  Voiced Alveolar Trill PulmonicEgressive
-analyzeIPA "ʀ"  = Just $ Consonant  Voiced Uvular   Trill PulmonicEgressive
+analyzeIPA "ʙ"  = Just (Consonant  Voiced Bilabial Trill PulmonicEgressive)
+analyzeIPA "r"  = Just (Consonant  Voiced Alveolar Trill PulmonicEgressive)
+analyzeIPA "ʀ"  = Just (Consonant  Voiced Uvular   Trill PulmonicEgressive)
 
 -- Taps or flaps:
-analyzeIPA "ⱱ"  = Just $ Consonant  Voiced LabioDental TapOrFlap PulmonicEgressive
-analyzeIPA "ɾ"  = Just $ Consonant  Voiced Alveolar    TapOrFlap PulmonicEgressive
-analyzeIPA "ɽ"  = Just $ Consonant  Voiced Retroflex   TapOrFlap PulmonicEgressive
+analyzeIPA "ⱱ"  = Just (Consonant  Voiced LabioDental TapOrFlap PulmonicEgressive)
+analyzeIPA "ɾ"  = Just (Consonant  Voiced Alveolar    TapOrFlap PulmonicEgressive)
+analyzeIPA "ɽ"  = Just (Consonant  Voiced Retroflex   TapOrFlap PulmonicEgressive)
 
 -- Fricatives:
-analyzeIPA "ɸ"  = Just $ Consonant  Voiceless Bilabial     Fricative PulmonicEgressive
-analyzeIPA "β"  = Just $ Consonant  Voiced    Bilabial     Fricative PulmonicEgressive
-analyzeIPA "f"  = Just $ Consonant  Voiceless LabioDental  Fricative PulmonicEgressive
-analyzeIPA "v"  = Just $ Consonant  Voiced    LabioDental  Fricative PulmonicEgressive
-analyzeIPA "θ"  = Just $ Consonant  Voiceless Dental       Fricative PulmonicEgressive
-analyzeIPA "ð"  = Just $ Consonant  Voiced    Dental       Fricative PulmonicEgressive
-analyzeIPA "s"  = Just $ Consonant  Voiceless Alveolar     Fricative PulmonicEgressive
-analyzeIPA "z"  = Just $ Consonant  Voiced    Alveolar     Fricative PulmonicEgressive
-analyzeIPA "ʃ"  = Just $ Consonant  Voiceless PostAlveolar Fricative PulmonicEgressive
-analyzeIPA "ʒ"  = Just $ Consonant  Voiced    PostAlveolar Fricative PulmonicEgressive
-analyzeIPA "ʂ"  = Just $ Consonant  Voiceless Retroflex    Fricative PulmonicEgressive
-analyzeIPA "ʐ"  = Just $ Consonant  Voiced    Retroflex    Fricative PulmonicEgressive
-analyzeIPA "ç"  = Just $ Consonant  Voiceless Palatal      Fricative PulmonicEgressive
-analyzeIPA "ʝ"  = Just $ Consonant  Voiced    Palatal      Fricative PulmonicEgressive
-analyzeIPA "x"  = Just $ Consonant  Voiceless Velar        Fricative PulmonicEgressive
-analyzeIPA "ɣ"  = Just $ Consonant  Voiced    Velar        Fricative PulmonicEgressive
-analyzeIPA "χ"  = Just $ Consonant  Voiceless Uvular       Fricative PulmonicEgressive
-analyzeIPA "ʁ"  = Just $ Consonant  Voiced    Uvular       Fricative PulmonicEgressive
-analyzeIPA "ħ"  = Just $ Consonant  Voiceless Pharyngeal   Fricative PulmonicEgressive
-analyzeIPA "ʕ"  = Just $ Consonant  Voiced    Pharyngeal   Fricative PulmonicEgressive
-analyzeIPA "h"  = Just $ Consonant  Voiceless Glottal      Fricative PulmonicEgressive
-analyzeIPA "ɦ"  = Just $ Consonant  Voiced    Glottal      Fricative PulmonicEgressive
+analyzeIPA "ɸ"  = Just (Consonant  Voiceless Bilabial     Fricative PulmonicEgressive)
+analyzeIPA "β"  = Just (Consonant  Voiced    Bilabial     Fricative PulmonicEgressive)
+analyzeIPA "f"  = Just (Consonant  Voiceless LabioDental  Fricative PulmonicEgressive)
+analyzeIPA "v"  = Just (Consonant  Voiced    LabioDental  Fricative PulmonicEgressive)
+analyzeIPA "θ"  = Just (Consonant  Voiceless Dental       Fricative PulmonicEgressive)
+analyzeIPA "ð"  = Just (Consonant  Voiced    Dental       Fricative PulmonicEgressive)
+analyzeIPA "s"  = Just (Consonant  Voiceless Alveolar     Fricative PulmonicEgressive)
+analyzeIPA "z"  = Just (Consonant  Voiced    Alveolar     Fricative PulmonicEgressive)
+analyzeIPA "ʃ"  = Just (Consonant  Voiceless PostAlveolar Fricative PulmonicEgressive)
+analyzeIPA "ʒ"  = Just (Consonant  Voiced    PostAlveolar Fricative PulmonicEgressive)
+analyzeIPA "ʂ"  = Just (Consonant  Voiceless Retroflex    Fricative PulmonicEgressive)
+analyzeIPA "ʐ"  = Just (Consonant  Voiced    Retroflex    Fricative PulmonicEgressive)
+analyzeIPA "ç"  = Just (Consonant  Voiceless Palatal      Fricative PulmonicEgressive)
+analyzeIPA "ʝ"  = Just (Consonant  Voiced    Palatal      Fricative PulmonicEgressive)
+analyzeIPA "x"  = Just (Consonant  Voiceless Velar        Fricative PulmonicEgressive)
+analyzeIPA "ɣ"  = Just (Consonant  Voiced    Velar        Fricative PulmonicEgressive)
+analyzeIPA "χ"  = Just (Consonant  Voiceless Uvular       Fricative PulmonicEgressive)
+analyzeIPA "ʁ"  = Just (Consonant  Voiced    Uvular       Fricative PulmonicEgressive)
+analyzeIPA "ħ"  = Just (Consonant  Voiceless Pharyngeal   Fricative PulmonicEgressive)
+analyzeIPA "ʕ"  = Just (Consonant  Voiced    Pharyngeal   Fricative PulmonicEgressive)
+analyzeIPA "h"  = Just (Consonant  Voiceless Glottal      Fricative PulmonicEgressive)
+analyzeIPA "ɦ"  = Just (Consonant  Voiced    Glottal      Fricative PulmonicEgressive)
 
 
 -- Lateral Fricatives:
-analyzeIPA "ɬ" = Just $ Consonant  Voiceless Alveolar LateralFricative PulmonicEgressive
-analyzeIPA "ɮ" = Just $ Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive
+analyzeIPA "ɬ" = Just (Consonant  Voiceless Alveolar LateralFricative PulmonicEgressive)
+analyzeIPA "ɮ" = Just (Consonant  Voiced    Alveolar LateralFricative PulmonicEgressive)
 
 
 -- Approximants:
-analyzeIPA "ʋ"  = Just $ Consonant  Voiced LabioDental  Approximant PulmonicEgressive
-analyzeIPA "ɹ"  = Just $ Consonant  Voiced Alveolar     Approximant PulmonicEgressive
-analyzeIPA "ɻ"  = Just $ Consonant  Voiced Retroflex    Approximant PulmonicEgressive
-analyzeIPA "j"  = Just $ Consonant  Voiced Palatal      Approximant PulmonicEgressive
-analyzeIPA "ɰ"  = Just $ Consonant  Voiced Velar        Approximant PulmonicEgressive
+analyzeIPA "ʋ"  = Just (Consonant  Voiced LabioDental  Approximant PulmonicEgressive)
+analyzeIPA "ɹ"  = Just (Consonant  Voiced Alveolar     Approximant PulmonicEgressive)
+analyzeIPA "ɻ"  = Just (Consonant  Voiced Retroflex    Approximant PulmonicEgressive)
+analyzeIPA "j"  = Just (Consonant  Voiced Palatal      Approximant PulmonicEgressive)
+analyzeIPA "ɰ"  = Just (Consonant  Voiced Velar        Approximant PulmonicEgressive)
 
 -- Lateral Approximants:
-analyzeIPA "l"  = Just $ Consonant  Voiced Alveolar  LateralApproximant PulmonicEgressive
-analyzeIPA "ɭ"  = Just $ Consonant  Voiced Retroflex LateralApproximant PulmonicEgressive
-analyzeIPA "ʎ"  = Just $ Consonant  Voiced Palatal   LateralApproximant PulmonicEgressive
-analyzeIPA "ʟ"  = Just $ Consonant  Voiced Velar     LateralApproximant PulmonicEgressive
+analyzeIPA "l"  = Just (Consonant  Voiced Alveolar  LateralApproximant PulmonicEgressive)
+analyzeIPA "ɭ"  = Just (Consonant  Voiced Retroflex LateralApproximant PulmonicEgressive)
+analyzeIPA "ʎ"  = Just (Consonant  Voiced Palatal   LateralApproximant PulmonicEgressive)
+analyzeIPA "ʟ"  = Just (Consonant  Voiced Velar     LateralApproximant PulmonicEgressive)
 
 
 
 -- Affricates
-analyzeIPA "t͡ʃ" = Just $ Consonant  Voiceless PostAlveolar Affricate PulmonicEgressive
-analyzeIPA "d͡ʒ" = Just $ Consonant  Voiced    PostAlveolar Affricate PulmonicEgressive
+analyzeIPA "t͡ʃ" = Just (Consonant  Voiceless PostAlveolar Affricate PulmonicEgressive)
+analyzeIPA "d͡ʒ" = Just (Consonant  Voiced    PostAlveolar Affricate PulmonicEgressive)
 -- We should probably enforce use of the tie-bar underneath, otherwise
 -- it would not be deterministic to determine whether two graphemes here
 -- represent affricates or a plosive followed by a fricative.
@@ -710,72 +709,72 @@ analyzeIPA "d͡ʒ" = Just $ Consonant  Voiced    PostAlveolar Affricate Pulmonic
 
 -- Under the Other Symbols part of the IPA chart:
 
-analyzeIPA "w" = Just $ Consonant Voiced    LabialVelar    Approximant PulmonicEgressive
-analyzeIPA "ʍ" = Just $ Consonant Voiceless LabialVelar    Fricative   PulmonicEgressive
-analyzeIPA "ɥ" = Just $ Consonant Voiced    LabialPalatal  Approximant PulmonicEgressive
-analyzeIPA "ʜ" = Just $ Consonant Voiceless Epiglottal     Fricative   PulmonicEgressive
-analyzeIPA "ʢ" = Just $ Consonant Voiced    Epiglottal     Fricative   PulmonicEgressive
-analyzeIPA "ʡ" = Just $ Consonant Voiceless Epiglottal     Plosive     PulmonicEgressive -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
-analyzeIPA "ɕ" = Just $ Consonant Voiceless AlveoloPalatal Fricative   PulmonicEgressive
-analyzeIPA "ʑ" = Just $ Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive
-analyzeIPA "ɺ" = Just $ Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive
+analyzeIPA "w" = Just (Consonant Voiced    LabialVelar    Approximant PulmonicEgressive)
+analyzeIPA "ʍ" = Just (Consonant Voiceless LabialVelar    Fricative   PulmonicEgressive)
+analyzeIPA "ɥ" = Just (Consonant Voiced    LabialPalatal  Approximant PulmonicEgressive)
+analyzeIPA "ʜ" = Just (Consonant Voiceless Epiglottal     Fricative   PulmonicEgressive)
+analyzeIPA "ʢ" = Just (Consonant Voiced    Epiglottal     Fricative   PulmonicEgressive)
+analyzeIPA "ʡ" = Just (Consonant Voiceless Epiglottal     Plosive     PulmonicEgressive) -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
+analyzeIPA "ɕ" = Just (Consonant Voiceless AlveoloPalatal Fricative   PulmonicEgressive)
+analyzeIPA "ʑ" = Just (Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive)
+analyzeIPA "ɺ" = Just (Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive)
 
-analyzeIPA "ɧ" = Just $ Consonant Voiceless (Places [PostAlveolar, Velar]) Fricative PulmonicEgressive
+analyzeIPA "ɧ" = Just (Consonant Voiceless (Places [PostAlveolar, Velar]) Fricative PulmonicEgressive)
 
 -- Other Consonants:
-analyzeIPA "ʘ" = Just $ Consonant Voiceless          Bilabial       Plosive        Click
-analyzeIPA "ǀ" = Just $ Consonant Voiceless          Dental         Plosive        Click
-analyzeIPA "ǃ" = Just $ Consonant Voiceless          Alveolar       Plosive        Click -- Or it could be PostAlveolar.
-analyzeIPA "ǂ" = Just $ Consonant Voiceless          PalatoAlveolar Plosive        Click
-analyzeIPA "ǁ" = Just $ Consonant Voiceless          Alveolar       Lateral        Click
-analyzeIPA "ɓ" = Just $ Consonant Voiced             Bilabial       Plosive        Implosive
-analyzeIPA "ɗ" = Just $ Consonant Voiced             Dental         Plosive        Implosive  -- Or Alveolar
-analyzeIPA "ʄ" = Just $ Consonant Voiced             Palatal        Plosive        Implosive
-analyzeIPA "ɠ" = Just $ Consonant Voiced             Velar          Plosive        Implosive
-analyzeIPA "ʛ" = Just $ Consonant Voiced             Uvular         Plosive        Implosive
+analyzeIPA "ʘ" = Just (Consonant Voiceless          Bilabial       Plosive        Click    )
+analyzeIPA "ǀ" = Just (Consonant Voiceless          Dental         Plosive        Click    )
+analyzeIPA "ǃ" = Just (Consonant Voiceless          Alveolar       Plosive        Click    ) -- Or it could be PostAlveolar.
+analyzeIPA "ǂ" = Just (Consonant Voiceless          PalatoAlveolar Plosive        Click    )
+analyzeIPA "ǁ" = Just (Consonant Voiceless          Alveolar       Lateral        Click    )
+analyzeIPA "ɓ" = Just (Consonant Voiced             Bilabial       Plosive        Implosive)
+analyzeIPA "ɗ" = Just (Consonant Voiced             Dental         Plosive        Implosive)  -- Or Alveolar
+analyzeIPA "ʄ" = Just (Consonant Voiced             Palatal        Plosive        Implosive)
+analyzeIPA "ɠ" = Just (Consonant Voiced             Velar          Plosive        Implosive)
+analyzeIPA "ʛ" = Just (Consonant Voiced             Uvular         Plosive        Implosive)
 
 -- Close Vowels:
-analyzeIPA "i"  = Just $ Vowel  Close Front   Unrounded Voiced
-analyzeIPA "y"  = Just $ Vowel  Close Front   Rounded   Voiced
-analyzeIPA "ɨ"  = Just $ Vowel  Close Central Unrounded Voiced
-analyzeIPA "ʉ"  = Just $ Vowel  Close Central Rounded   Voiced
-analyzeIPA "ɯ"  = Just $ Vowel  Close Back    Unrounded Voiced
-analyzeIPA "u"  = Just $ Vowel  Close Back    Rounded   Voiced
+analyzeIPA "i"  = Just (Vowel  Close Front   Unrounded Voiced)
+analyzeIPA "y"  = Just (Vowel  Close Front   Rounded   Voiced)
+analyzeIPA "ɨ"  = Just (Vowel  Close Central Unrounded Voiced)
+analyzeIPA "ʉ"  = Just (Vowel  Close Central Rounded   Voiced)
+analyzeIPA "ɯ"  = Just (Vowel  Close Back    Unrounded Voiced)
+analyzeIPA "u"  = Just (Vowel  Close Back    Rounded   Voiced)
 
 -- Near-close Vowels:
-analyzeIPA "ɪ"  = Just $ Vowel NearClose Front Unrounded Voiced
-analyzeIPA "ʏ"  = Just $ Vowel NearClose Front Rounded   Voiced
-analyzeIPA "ʊ"  = Just $ Vowel NearClose Back  Rounded   Voiced
+analyzeIPA "ɪ"  = Just (Vowel NearClose Front Unrounded Voiced)
+analyzeIPA "ʏ"  = Just (Vowel NearClose Front Rounded   Voiced)
+analyzeIPA "ʊ"  = Just (Vowel NearClose Back  Rounded   Voiced)
 
 -- Close-mid Vowels:
-analyzeIPA "e"  = Just $ Vowel  CloseMid Front   Unrounded Voiced
-analyzeIPA "ø"  = Just $ Vowel  CloseMid Front   Rounded   Voiced
-analyzeIPA "ɘ"  = Just $ Vowel  CloseMid Central Unrounded Voiced
-analyzeIPA "ɵ"  = Just $ Vowel  CloseMid Central Rounded   Voiced
-analyzeIPA "ɤ"  = Just $ Vowel  CloseMid Back    Unrounded Voiced
-analyzeIPA "o"  = Just $ Vowel  CloseMid Back    Rounded   Voiced
+analyzeIPA "e"  = Just (Vowel  CloseMid Front   Unrounded Voiced)
+analyzeIPA "ø"  = Just (Vowel  CloseMid Front   Rounded   Voiced)
+analyzeIPA "ɘ"  = Just (Vowel  CloseMid Central Unrounded Voiced)
+analyzeIPA "ɵ"  = Just (Vowel  CloseMid Central Rounded   Voiced)
+analyzeIPA "ɤ"  = Just (Vowel  CloseMid Back    Unrounded Voiced)
+analyzeIPA "o"  = Just (Vowel  CloseMid Back    Rounded   Voiced)
 
 -- Mid Vowels:
-analyzeIPA "ə"  = Just $ Vowel Mid Central Unrounded Voiced
+analyzeIPA "ə"  = Just (Vowel Mid Central Unrounded Voiced)
 
 
 -- Open-mid Vowels:
-analyzeIPA "ɛ"  = Just $ Vowel  OpenMid Front   Unrounded Voiced
-analyzeIPA "œ"  = Just $ Vowel  OpenMid Front   Rounded   Voiced
-analyzeIPA "ɜ"  = Just $ Vowel  OpenMid Central Unrounded Voiced
-analyzeIPA "ɞ"  = Just $ Vowel  OpenMid Central Rounded   Voiced
-analyzeIPA "ʌ"  = Just $ Vowel  OpenMid Back    Unrounded Voiced
-analyzeIPA "ɔ"  = Just $ Vowel  OpenMid Back    Rounded   Voiced
+analyzeIPA "ɛ"  = Just (Vowel  OpenMid Front   Unrounded Voiced)
+analyzeIPA "œ"  = Just (Vowel  OpenMid Front   Rounded   Voiced)
+analyzeIPA "ɜ"  = Just (Vowel  OpenMid Central Unrounded Voiced)
+analyzeIPA "ɞ"  = Just (Vowel  OpenMid Central Rounded   Voiced)
+analyzeIPA "ʌ"  = Just (Vowel  OpenMid Back    Unrounded Voiced)
+analyzeIPA "ɔ"  = Just (Vowel  OpenMid Back    Rounded   Voiced)
 
 -- Near-open
-analyzeIPA "æ"  = Just $ Vowel  NearOpen Front   Unrounded Voiced
-analyzeIPA "ɐ"  = Just $ Vowel  NearOpen Central Unrounded  Voiced
+analyzeIPA "æ"  = Just (Vowel  NearOpen Front   Unrounded  Voiced)
+analyzeIPA "ɐ"  = Just (Vowel  NearOpen Central Unrounded  Voiced)
 
 -- Open Vowels:
-analyzeIPA "a"  = Just $ Vowel  Open Front Unrounded Voiced
-analyzeIPA "ɶ"  = Just $ Vowel  Open Front Rounded   Voiced
-analyzeIPA "ɑ"  = Just $ Vowel  Open Back  Unrounded Voiced
-analyzeIPA "ɒ"  = Just $ Vowel  Open Back  Rounded   Voiced
+analyzeIPA "a"  = Just (Vowel  Open Front Unrounded Voiced)
+analyzeIPA "ɶ"  = Just (Vowel  Open Front Rounded   Voiced)
+analyzeIPA "ɑ"  = Just (Vowel  Open Back  Unrounded Voiced)
+analyzeIPA "ɒ"  = Just (Vowel  Open Back  Rounded   Voiced)
 
 
 
@@ -785,22 +784,22 @@ analyzeIPA ipaText =
     "̥" →
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
-              Just (Consonant _ place manner airstream)    → Just $ Consonant Voiceless place manner airstream
-              Just (Vowel height backness rounding _  )    → Just $ Vowel height backness rounding Voiceless
+              Just (Consonant _ place manner airstream)    → Just (Consonant Voiceless place manner airstream)
+              Just (Vowel height backness rounding _  )    → Just (Vowel height backness rounding Voiceless)
               _                                            → Nothing
     "̬" →
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
-              Just (Consonant _ place manner airstream)    → Just $ Consonant Voiced place manner airstream
-              Just (Vowel height backness rounding _  )    → Just $ Vowel height backness rounding Voiced
+              Just (Consonant _ place manner airstream)    → Just (Consonant Voiced place manner airstream)
+              Just (Vowel height backness rounding _  )    → Just (Vowel height backness rounding Voiced)
               _                                            → Nothing
 
     "ʰ" →
       let fullGrapheme = analyzeIPA (init ipaText)
       in case fullGrapheme of
-              Just (Consonant Voiced place manner airstream   ) → Just $ Consonant VoicedAspirated place manner airstream
-              Just (Consonant Voiceless place manner airstream) → Just $ Consonant VoicelessAspirated place manner airstream
-              Just (Vowel height backness rounding voicing    ) → Just $ Vowel height backness rounding voicing
+              Just (Consonant Voiced place manner airstream   ) → Just (Consonant VoicedAspirated    place manner airstream)
+              Just (Consonant Voiceless place manner airstream) → Just (Consonant VoicelessAspirated place manner airstream)
+              Just (Vowel height backness rounding voicing    ) → Just (Vowel height backness rounding voicing             )
               anythingElse                                      → anythingElse
               -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
               -- since we have no way to represent it in the type system. to do: determine
