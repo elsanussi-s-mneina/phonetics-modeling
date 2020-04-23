@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8c698b90e29bb7136ab89091477eeb2bd51740fd014722f77a816b4a6ad12b27
+-- hash: ebbd4b1aa29d6c49c7fa30e86b6cfacce5d8908c0695831ab9200af3f2d92e2d
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -24,30 +24,17 @@ source-repository head
   type: git
   location: https://github.com/githubuser/phonetics-modeling
 
-library
-  exposed-modules:
-      Lib
-      Lib_Functions
-      Lib_Types
-  other-modules:
-      Paths_phonetics_modeling
-  hs-source-dirs:
-      src
-  ghc-options: -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Winaccessible-code -Wno-missing-export-lists -Wno-missing-import-lists
-  build-depends:
-      base >=4.7 && <5
-    , base-unicode-symbols
-  default-language: Haskell2010
-
 executable phonetics-modeling-exe
   main-is: Main.hs
   other-modules:
+      Lib
+      Lib_Functions
+      Lib_Types
       Paths_phonetics_modeling
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
   build-depends:
       base >=4.7 && <5
     , base-unicode-symbols
-    , phonetics-modeling
   default-language: Haskell2010

@@ -22,22 +22,6 @@ description:         Please see the README on GitHub at <https://github.com/elsa
 dependencies:
 - base >= 4.7 && < 5
 
-library:
-  source-dirs:
-  - src
-  ghc-options:
-  - -Weverything
-  - -Werror
-  - -Wunsafe
-  - -Wno-safe
-  - -fwarn-incomplete-patterns
-  - -fwarn-incomplete-uni-patterns
-  - -Winaccessible-code
-  - -Wno-missing-export-lists
-  - -Wno-missing-import-lists
-  dependencies:
-  - base-unicode-symbols
-
 executables:
   phonetics-modeling-exe:
     main:                Main.hs
@@ -53,6 +37,7 @@ executables:
     - -Wno-safe
     - -fwarn-incomplete-patterns
     - -fwarn-incomplete-uni-patterns
+    - -Wno-missing-export-lists
+    - -Wno-missing-import-lists
     dependencies:
     - base-unicode-symbols
-    - phonetics-modeling
