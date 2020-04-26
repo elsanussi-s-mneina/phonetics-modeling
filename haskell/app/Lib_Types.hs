@@ -231,7 +231,7 @@ vocalFoldStates
     , CreakyVoiced
     ]
 
-data PhonetInventory = PhonetInventory [Phonet]
+newtype PhonetInventory = PhonetInventory [Phonet]
 
 
 

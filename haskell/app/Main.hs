@@ -11,7 +11,7 @@ import Data.Monoid.Unicode
 import Prelude.Unicode ((∘))
 
 import qualified Data.Text as T (append)
-import System.IO (hFlush, stdout)
+import System.IO (hFlush)
 import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            , englishPhonetInventory
            , analyzeFeatures, showFeatures
@@ -96,10 +96,7 @@ main =
 
 doAnalyzeIPA ∷ Text → Text
 doAnalyzeIPA x = 
-  let maybeResult = analyzeIPA x
-  in case maybeResult of
-        Nothing → "No analysis found!"
-        Just y  → showPhonet y
+  maybe "No analysis found!" showPhonet (analyzeIPA x)
 
 doConstructIPA ∷ Phonet → IO ()
 doConstructIPA = putTextLn ∘ constructIPA

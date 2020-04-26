@@ -8,7 +8,7 @@ import Lib_Types
 import Prelude (head)
 import Relude
   ( Bool(False, True)      , Int       , Maybe(Just, Nothing)
-  , Text
+  , Text                   , catMaybes
   , concat                 , elem
   , filter                 , length    , map
   , not                    , notElem   , null
@@ -18,10 +18,6 @@ import Relude
 
 import qualified Data.Text as T
 
-
-import Data.Maybe
-  ( catMaybes
-  )
 
 import Prelude.Unicode
   ( (≡) , (∧) , (∨)
@@ -51,7 +47,7 @@ retractedPlace same         = same
 
 
 englishDescription ∷ Phonet → Text
-englishDescription x = showPhonet x
+englishDescription = showPhonet
 
 
 -- | A function that given an IPA symbol will convert it to the voiced equivalent.
@@ -130,7 +126,7 @@ unmarkDifferences (Vowel _ _ _ voice1) (Consonant voice2 _ _ _) =
   in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
 
-unmarkDifferences c@(Consonant _ _ _ _) v@(Vowel _ _ _ _) =
+unmarkDifferences c@Consonant {} v@Vowel {} =
   unmarkDifferences v c -- Change the order of arguments
 
 
@@ -418,8 +414,8 @@ preventProhibitedCombination noChange
   | T.length noChange ≡ 0 = ""
   | T.length noChange ≡ 1 = noChange
   | otherwise = 
-     let x = T.singleton (T.head noChange)
-         y = T.singleton (T.index noChange 1)
+     let x = one (T.head noChange)
+         y = one (T.index noChange 1)
          z = T.tail (T.tail noChange)
      in
       if isAscender x ∧ isDiacriticAbove y
@@ -799,9 +795,7 @@ analyzeIPA ipaText =
 
 constructIPA ∷ Phonet → IPAText
 constructIPA phoneme =
-  case constructIPARecursive 3 0 phoneme of
-    Just graphemes → graphemes
-    Nothing        → "∅"
+  fromMaybe "∅" (constructIPARecursive 3 0 phoneme)
 
 constructIPARecursive ∷ Int → Int → Phonet → Maybe IPAText
 constructIPARecursive recursionLimit recursionLevel _
@@ -1008,10 +1002,10 @@ constructIPARecursive _ _ _
 
 deaspirate ∷ Phonet → Phonet
 deaspirate (Consonant VoicedAspirated place manner airstream) =
-  (Consonant Voiced place manner airstream)
+  Consonant Voiced place manner airstream
 
 deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
-  (Consonant Voiceless place1 manner1 airstream1)
+  Consonant Voiceless place1 manner1 airstream1
 
 deaspirate x = x
 
@@ -1040,10 +1034,7 @@ international phonetic alphabet.
   |-}
 describeIPA ∷ IPAText → Text
 describeIPA x = 
-  let analysis = analyzeIPA x 
-  in case analysis of 
-    Nothing → "(no English description found.)"
-    Just y  → showPhonet y
+  maybe "(no English description found.)" showPhonet (analyzeIPA x)
 
 
 
@@ -1134,8 +1125,8 @@ Consonants (glides included) are [-syllabic].
 (Source: page 258)
 |-}
 syllabic ∷ Phonet → Maybe PhonemeFeature
-syllabic (Vowel     _ _ _ _) = Just (SyllabicFeature Plus)
-syllabic (Consonant _ _ _ _) = Just (SyllabicFeature Minus)
+syllabic Vowel {}     = Just (SyllabicFeature Plus)
+syllabic Consonant {} = Just (SyllabicFeature Minus)
 
 {-|
 Whether a segment is a glide.
@@ -1155,8 +1146,8 @@ Consonants (that are not glides) are [+consonantal].
 (Source: page 258)
 |-}
 consonantal ∷ Phonet → Maybe PhonemeFeature
-consonantal (Vowel _ _ _ _) = Just (ConsonantalFeature Minus)
-consonantal consonant@(Consonant _ _ _ _)
+consonantal Vowel {}  = Just (ConsonantalFeature Minus)
+consonantal consonant@Consonant {}
   | isGlide consonant = Just (ConsonantalFeature Minus)
   | otherwise         = Just (ConsonantalFeature Plus)
 
@@ -1180,8 +1171,8 @@ sonorant (Consonant _ _ Fricative   _) = Just (SonorantFeature Minus)
 sonorant (Consonant _ _ Nasal       _) = Just (SonorantFeature Plus)
 sonorant (Consonant _ _ Approximant _) = Just (SonorantFeature Plus)
 sonorant (Consonant _ _ Lateral     _) = Just (SonorantFeature Plus)
-sonorant (Vowel               _ _ _ _) = Just (SonorantFeature Plus)
-sonorant consonant@(Consonant _ _ _ _)
+sonorant Vowel {}                      = Just (SonorantFeature Plus)
+sonorant consonant@Consonant {}
   | isGlide consonant = Just (SonorantFeature Plus)
   | otherwise         = Just (SonorantFeature Minus)
 
@@ -1209,8 +1200,8 @@ continuant (Consonant _ _ Plosive            _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Nasal              _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Affricate          _) = Just (ContinuantFeature Minus)
 continuant (Consonant _ _ Approximant        _) = Just (ContinuantFeature Plus)
-continuant (Vowel     _ _ _                  _) = Just (ContinuantFeature Plus)
-continuant consonant@(Consonant _ _ _ _)
+continuant Vowel {}                             = Just (ContinuantFeature Plus)
+continuant consonant@Consonant {}
   | isGlide consonant = Just (ContinuantFeature Plus)
   | otherwise         = Nothing
 
@@ -1460,10 +1451,10 @@ high (Consonant _ Palatal        _ _) = Just (HighFeature Plus)
 high (Consonant _ AlveoloPalatal _ _) = Just (HighFeature Plus)
 high (Consonant _ Velar          _ _) = Just (HighFeature Plus)
 high (Consonant _ Uvular         _ _) = Just (HighFeature Minus)
-high (Consonant _ _              _ _) = Nothing
+high Consonant {}                     = Nothing
 high (Vowel Close              _ _ _) = Just (HighFeature Plus)
 high (Vowel NearClose          _ _ _) = Just (HighFeature Plus)
-high (Vowel _                  _ _ _) = Just (HighFeature Minus)
+high Vowel {}                         = Just (HighFeature Minus)
 
 
 {-|
@@ -1479,10 +1470,10 @@ low ∷ Phonet → Maybe PhonemeFeature
 low (Consonant _ Uvular     _ _) = Just (LowFeature Plus)
 low (Consonant _ Pharyngeal _ _) = Just (LowFeature Plus)
 low (Consonant _ Glottal    _ _) = Just (LowFeature Plus)
-low (Consonant _ _          _ _) = Nothing
+low Consonant {}                 = Nothing
 low (Vowel Open _           _ _) = Just (LowFeature Plus)
 low (Vowel NearOpen _       _ _) = Just (LowFeature Plus)
-low (Vowel _ _              _ _) = Just (LowFeature Minus)
+low Vowel {}                     = Just (LowFeature Minus)
 
 
 {-|
@@ -1505,7 +1496,7 @@ All other segments are [-round].
 |-}
 round ∷ Phonet → Maybe PhonemeFeature
 round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
-round (Vowel _ _ _       _) = Just (RoundFeature Minus)
+round Vowel {}              = Just (RoundFeature Minus)
 round _                     = Just (RoundFeature Minus)
 
 {-|
