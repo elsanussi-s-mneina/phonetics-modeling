@@ -11,7 +11,7 @@ import Relude
   , Text                   , catMaybes , one
   , concat              
   , filter                 , fromMaybe, length    , map  , maybe
-  , not                    , null
+  , null
   , otherwise              , unwords
   , (>)                    , (+)       , (<)
   )
@@ -21,7 +21,7 @@ import qualified Data.Text as T
 
 import Prelude.Unicode
   ( (≡) , (∧) , (∨)
-  , (∈) , (∉)
+  , (∈) , (∉) , (¬)
   )
 
 import Data.Monoid.Unicode
@@ -1063,7 +1063,7 @@ binaryDifference ::
 binaryDifference feature list1 list2
   | list1Relevant ≡ list2Relevant
   = (Nothing, Nothing)
-  | not (null list1Relevant) ∧ not (null list2Relevant)
+  | (¬) (null list1Relevant) ∧ (¬) (null list2Relevant)
   = (Just (head list1Relevant), Just (head list2Relevant))
   | length list1Relevant > length list2Relevant
   = (Just (head list1Relevant), Nothing)
