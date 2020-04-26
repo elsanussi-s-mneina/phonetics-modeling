@@ -30,18 +30,20 @@ import Data.Monoid.Unicode
 
 
 retractedPlace ∷ Place → Place
-retractedPlace Bilabial     = LabioDental
-retractedPlace LabioDental  = Dental
-retractedPlace Dental       = Alveolar
-retractedPlace Alveolar     = PostAlveolar
-retractedPlace PostAlveolar = Retroflex
-retractedPlace Retroflex    = Palatal
-retractedPlace Palatal      = Velar
-retractedPlace Velar        = Uvular
-retractedPlace Uvular       = Pharyngeal
-retractedPlace Pharyngeal   = Glottal
-retractedPlace Glottal      = Epiglottal
-retractedPlace same         = same
+retractedPlace place =
+  case place of
+    Bilabial     → LabioDental
+    LabioDental  → Dental
+    Dental       → Alveolar
+    Alveolar     → PostAlveolar
+    PostAlveolar → Retroflex
+    Retroflex    → Palatal
+    Palatal      → Velar
+    Velar        → Uvular
+    Uvular       → Pharyngeal
+    Pharyngeal   → Glottal
+    Glottal      → Epiglottal
+    same         → same
 
 
 
@@ -1569,7 +1571,7 @@ analyzeFeatures phonete =
 
 showFeatures ∷ [PhonemeFeature] → Text
 showFeatures features =
-  let featuresStrings :: [Text]
+  let featuresStrings ∷ [Text]
       featuresStrings = map showPhonemeFeature features
   in "[" ⊕ T.intercalate "; " featuresStrings ⊕ "]"
 
@@ -1598,13 +1600,15 @@ showBackness Back             = "back"
 
 
 showHeight ∷ Height → Text
-showHeight Close          = "close"
-showHeight NearClose      = "near-close"
-showHeight CloseMid       = "close-mid"
-showHeight Mid            = "mid"
-showHeight OpenMid        = "open-mid"
-showHeight NearOpen       = "near-open"
-showHeight Open           = "open"
+showHeight height =
+  case height of
+    Close     → "close"
+    NearClose → "near-close"
+    CloseMid  → "close-mid"
+    Mid       → "mid"
+    OpenMid   → "open-mid"
+    NearOpen  → "near-open"
+    Open      → "open"
 
 
 showRounding ∷ Rounding → Text
@@ -1677,26 +1681,28 @@ showPolarity Minus = "-"
 
 
 showPhonemeFeature ∷ PhonemeFeature → Text
-showPhonemeFeature (SyllabicFeature polarity)           = showPolarity polarity ⊕ "syllabic"
-showPhonemeFeature (ConsonantalFeature polarity)        = showPolarity polarity ⊕ "consonantal"
-showPhonemeFeature (SonorantFeature polarity)           = showPolarity polarity ⊕ "sonorant"
-showPhonemeFeature (ContinuantFeature polarity)         = showPolarity polarity ⊕ "continuant"
-showPhonemeFeature (VoiceFeature polarity)              = showPolarity polarity ⊕ "voice"
-showPhonemeFeature (AdvancedTongueRootFeature polarity) = showPolarity polarity ⊕ "ATR"
-showPhonemeFeature NasalFeature                         =                         "nasal"
-showPhonemeFeature LateralFeature                       =                         "lateral"
-showPhonemeFeature DelayedReleaseFeature                =                         "delayed release"
-showPhonemeFeature SpreadGlottisFeature                 =                         "spread glottis"
-showPhonemeFeature ConstrictedGlottisFeature            =                         "constricted glottis"
-showPhonemeFeature LabialFeature                        =                         "labial"
-showPhonemeFeature CoronalFeature                       =                         "coronal"
-showPhonemeFeature DorsalFeature                        =                         "dorsal"
-showPhonemeFeature PharyngealFeature                    =                         "pharyngeal"
-showPhonemeFeature LaryngealFeature                     =                         "laryngeal"
-showPhonemeFeature (RoundFeature polarity)              = showPolarity polarity ⊕ "round"
-showPhonemeFeature (AnteriorFeature polarity)           = showPolarity polarity ⊕ "anterior"
-showPhonemeFeature (DistributedFeature polarity)        = showPolarity polarity ⊕ "distributed"
-showPhonemeFeature (StridentFeature polarity)           = showPolarity polarity ⊕ "strident"
-showPhonemeFeature (HighFeature polarity)               = showPolarity polarity ⊕ "high"
-showPhonemeFeature (LowFeature polarity)                = showPolarity polarity ⊕ "low"
-showPhonemeFeature (BackFeature polarity)               = showPolarity polarity ⊕ "back"
+showPhonemeFeature phonemeFeature =
+  case phonemeFeature of
+    (SyllabicFeature polarity)           → showPolarity polarity ⊕ "syllabic"
+    (ConsonantalFeature polarity)        → showPolarity polarity ⊕ "consonantal"
+    (SonorantFeature polarity)           → showPolarity polarity ⊕ "sonorant"
+    (ContinuantFeature polarity)         → showPolarity polarity ⊕ "continuant"
+    (VoiceFeature polarity)              → showPolarity polarity ⊕ "voice"
+    (AdvancedTongueRootFeature polarity) → showPolarity polarity ⊕ "ATR"
+    NasalFeature                         →                         "nasal"
+    LateralFeature                       →                         "lateral"
+    DelayedReleaseFeature                →                         "delayed release"
+    SpreadGlottisFeature                 →                         "spread glottis"
+    ConstrictedGlottisFeature            →                         "constricted glottis"
+    LabialFeature                        →                         "labial"
+    CoronalFeature                       →                         "coronal"
+    DorsalFeature                        →                         "dorsal"
+    PharyngealFeature                    →                         "pharyngeal"
+    LaryngealFeature                     →                         "laryngeal"
+    (RoundFeature polarity)              → showPolarity polarity ⊕ "round"
+    (AnteriorFeature polarity)           → showPolarity polarity ⊕ "anterior"
+    (DistributedFeature polarity)        → showPolarity polarity ⊕ "distributed"
+    (StridentFeature polarity)           → showPolarity polarity ⊕ "strident"
+    (HighFeature polarity)               → showPolarity polarity ⊕ "high"
+    (LowFeature polarity)                → showPolarity polarity ⊕ "low"
+    (BackFeature polarity)               → showPolarity polarity ⊕ "back"
