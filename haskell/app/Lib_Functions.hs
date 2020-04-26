@@ -9,9 +9,9 @@ import Prelude (head)
 import Relude
   ( Bool(False, True)      , Int       , Maybe(Just, Nothing)
   , Text                   , catMaybes , one
-  , concat                 , elem
+  , concat              
   , filter                 , fromMaybe, length    , map  , maybe
-  , not                    , notElem   , null
+  , not                    , null
   , otherwise              , unwords
   , (>)                    , (+)       , (<)
   )
@@ -21,7 +21,7 @@ import qualified Data.Text as T
 
 import Prelude.Unicode
   ( (≡) , (∧) , (∨)
-  , (∈)
+  , (∈) , (∉)
   )
 
 import Data.Monoid.Unicode
@@ -1079,9 +1079,9 @@ unaryDifference ∷ PhonemeFeature
                 → [PhonemeFeature]
                 → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 unaryDifference feature list1 list2
-  | elem feature list1 ≡ elem feature list2    = (Nothing, Nothing)
-  | elem feature list1 ∧ notElem feature list2 = (Just feature, Nothing)
-  | otherwise                                   = (Nothing, Just feature)
+  | (feature ∈ list1) ≡ (feature ∈ list2) = (Nothing, Nothing)
+  | feature ∈ list1 ∧ feature ∉ list2     = (Just feature, Nothing)
+  | otherwise                             = (Nothing, Just feature)
 
 
 
