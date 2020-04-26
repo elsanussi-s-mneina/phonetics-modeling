@@ -9,7 +9,7 @@ import Prelude (head)
 import Relude
   ( Bool(False, True)      , Int       , Maybe(Just, Nothing)
   , Text                   , catMaybes , one
-  , concat              
+  , sconcat
   , filter                 , fmap      , fromMaybe, fromList, length    , map  , maybe
   , null
   , otherwise              , unwords 
@@ -445,25 +445,34 @@ graphemesOfIPA = consonantsPulmonic
 
 -- CONSONANTS (PULMONIC)
 consonantsPulmonic ∷ NonEmpty IPAText
-consonantsPulmonic = fromList (concat consonantsPulmonicTable)
+consonantsPulmonic 
+   = plosivePulmonic
+   ◇ nasalPulmonic
+   ◇ trillPulmonic
+   ◇ tapOrFlapPulmonic
+   ◇ fricativePulmonic
+   ◇ lateralFricativePulmonic
+   ◇ approximantPulmonic
+   ◇ lateralApproximantPulmonic
+   
 
-plosivePulmonic ∷ NonEmpty Text
+plosivePulmonic ∷ NonEmpty IPAText
 plosivePulmonic            = fromList 
                              [ "p", "b",                     "t", "d"
                              , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ"
                              , "ʔ"
                              ] -- Plosive
 
-nasalPulmonic ∷ NonEmpty Text
+nasalPulmonic ∷ NonEmpty IPAText
 nasalPulmonic              = fromList ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"] -- Nasal
 
-trillPulmonic ∷ NonEmpty Text
+trillPulmonic ∷ NonEmpty IPAText
 trillPulmonic              = fromList [ "ʙ", "r", "ʀ"] -- Trill
 
-tapOrFlapPulmonic ∷ NonEmpty Text
+tapOrFlapPulmonic ∷ NonEmpty IPAText
 tapOrFlapPulmonic          = fromList [ "ⱱ", "ɾ", "ɽ"] -- Tap or Flap
 
-fricativePulmonic ∷ NonEmpty Text
+fricativePulmonic ∷ NonEmpty IPAText
 fricativePulmonic          
   = fromList 
   [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
@@ -471,29 +480,16 @@ fricativePulmonic
   , "h", "ɦ"
   ]  -- Fricative
 
-lateralFricativePulmonic ∷ NonEmpty Text
+lateralFricativePulmonic ∷ NonEmpty IPAText
 lateralFricativePulmonic   = fromList [ "ɬ", "ɮ" ] -- Lateral fricative
 
-approximantPulmonic ∷ NonEmpty Text
+approximantPulmonic ∷ NonEmpty IPAText
 approximantPulmonic        = fromList [ "ʋ", "ɻ", "j", "ɰ" ] -- Approximant
 
-lateralApproximantPulmonic ∷ NonEmpty Text
+lateralApproximantPulmonic ∷ NonEmpty IPAText
 lateralApproximantPulmonic = fromList [ "l", "ɭ", "ʎ", "ʟ" ] -- Lateral approximant
 
 
-
-
-consonantsPulmonicTable ∷ [[IPAText]]
-consonantsPulmonicTable =
- [ toList plosivePulmonic
- , toList nasalPulmonic
- , toList trillPulmonic
- , toList tapOrFlapPulmonic
- , toList fricativePulmonic
- , toList lateralFricativePulmonic
- , toList approximantPulmonic
- , toList lateralApproximantPulmonic
- ]
 
 
 consonantsNonPulmonic ∷ NonEmpty IPAText
@@ -597,7 +593,7 @@ diacriticsAndSuprasegmentals = fromList
   ]
 
 showIPA ∷ PhonetInventory → IPAText
-showIPA (PhonetInventory phonetes) = T.concat (map constructIPA (toList phonetes))
+showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
 
 
 
@@ -1677,7 +1673,7 @@ showVocalFolds vocalFolds1 =
 
 showPhonetInventory ∷ PhonetInventory → Text
 showPhonetInventory (PhonetInventory phonetes)
-  = T.concat (map showPhonet (toList phonetes))
+  = sconcat (fmap showPhonet phonetes)
 
 
 showPolarity ∷ Polarity → Text
