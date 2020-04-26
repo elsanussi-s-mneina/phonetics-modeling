@@ -2,10 +2,10 @@
 {-# LANGUAGE DerivingStrategies #-}
 
 module Lib_Types where
-import Relude (Bool(True, False), Eq((==)), NonEmpty, Text, fromList, toList)
+import Relude (Bool(True, False), Eq((==)), NonEmpty, Text, fromList)
 import Prelude ()
 
-import Prelude.Unicode ((∈))
+import Data.Foldable.Unicode ((∈))
 -- The data type Phonet, represents a linguistics
 -- phoneme or phonete.
 -- It can be a consonant, or a vowel.
@@ -248,7 +248,7 @@ instance Eq Place where
   Pharyngeal   == Pharyngeal          = True
   Glottal      == Glottal             = True
   Epiglottal   == Epiglottal          = True
-  x            == Places pList        = x ∈ toList pList
+  x            == Places pList        = x ∈ pList
   Places x     == y                   = y == Places x
   _            == _                   = False
 
