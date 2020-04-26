@@ -21,11 +21,12 @@ import qualified Data.Text as T
 
 import Prelude.Unicode
   ( (≡) , (∧) , (∨)
-  , (∈) , (∉) , (¬)
+  , (¬)
   )
 
 
 import MyLocal_Data_Semigroup_Unicode ((◇))
+import Data.Foldable.Unicode ((∈) , (∉))
 
 
 retractedPlace ∷ Place → Place
@@ -322,7 +323,7 @@ like how exponents of a power are written
 in mathematical notation.
 |-}
 isExponential ∷ IPAText → Bool
-isExponential character = character ∈ toList exponentials
+isExponential character = character ∈ exponentials
 {-|
 Whether a diacritic goes above
 the character it is placed on.
@@ -379,7 +380,7 @@ ascenders = fromList
 
 
 isAscender ∷ IPAText → Bool
-isAscender character = character ∈ toList ascenders
+isAscender character = character ∈ ascenders
 
 descenders ∷ NonEmpty IPAText
 descenders = fromList
@@ -398,7 +399,7 @@ where to put diacritics so that
 they are readable.
 |-}
 isDescender ∷ IPAText → Bool
-isDescender character = character ∈ toList descenders
+isDescender character = character ∈ descenders
 
 
 {-|
