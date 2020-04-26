@@ -10,10 +10,10 @@ import Relude
   ( Bool(False, True)      , Int       , Maybe(Just, Nothing)
   , Text                   , catMaybes , one
   , concat              
-  , filter                 , fromMaybe, length    , map  , maybe
+  , filter                 , fmap      , fromMaybe, fromList, length    , map  , maybe
   , null
-  , otherwise              , unwords
-  , (>)                    , (+)       , (<)
+  , otherwise              , unwords 
+  , (>)                    , (+)       , (<), NonEmpty((:|)), toList
   )
 
 import qualified Data.Text as T
@@ -24,9 +24,8 @@ import Prelude.Unicode
   , (∈) , (∉) , (¬)
   )
 
-import Data.Monoid.Unicode
-  ( (⊕)
-  )
+
+import MyLocal_Data_Semigroup_Unicode ((◇))
 
 
 retractedPlace ∷ Place → Place
@@ -138,62 +137,62 @@ unmarkDifferences c@Consonant {} v@Vowel {} =
 -- and returns a list with all possibilities for that attribute.
 generateFromUnmarked ∷ UnmarkablePhonet → [Phonet]
 generateFromUnmarked (UnmarkableConsonant voice1 place1 manner1 airstream1) =
-  let voice'     = unmarkableVoiceToList     voice1
-      place'     = unmarkablePlaceToList     place1
-      manner'    = unmarkableMannerToList    manner1
-      airstream' = unmarkableAirstreamToList airstream1
+  let voice'     = toList (unmarkableVoiceToList     voice1    )
+      place'     = toList (unmarkablePlaceToList     place1    )
+      manner'    = toList (unmarkableMannerToList    manner1   )
+      airstream' = toList (unmarkableAirstreamToList airstream1)
   in [Consonant v p m a | p ← place', v ← voice',  m ← manner', a ← airstream']
 
 generateFromUnmarked (UnmarkableVowel height1 backness1 rounding1 voice1) =
-  let voice'    = unmarkableVoiceToList    voice1
-      height'   = unmarkableHeightToList   height1
-      backness' = unmarkableBacknessToList backness1
-      rounding' = unmarkableRoundingToList rounding1
+  let voice'    = toList (unmarkableVoiceToList    voice1   )
+      height'   = toList (unmarkableHeightToList   height1  )
+      backness' = toList (unmarkableBacknessToList backness1)
+      rounding' = toList (unmarkableRoundingToList rounding1)
   in [Vowel h b r v | h ← height', b ← backness', r ← rounding', v ← voice']
 
 
-unmarkableVoiceToList ∷ UnmarkableVocalFolds → [VocalFolds]
+unmarkableVoiceToList ∷ UnmarkableVocalFolds → NonEmpty VocalFolds
 unmarkableVoiceToList voice1 =
   case voice1 of
-       MarkedVocalFolds x → [x]
+       MarkedVocalFolds x → one x
        UnmarkedVocalFolds → vocalFoldStates
 
-unmarkablePlaceToList ∷ UnmarkablePlace → [Place]
+unmarkablePlaceToList ∷ UnmarkablePlace → NonEmpty Place
 unmarkablePlaceToList place1 =
   case place1 of
-       MarkedPlace x → [x]
+       MarkedPlace x → one x
        UnmarkedPlace → placeStates
 
 
-unmarkableMannerToList ∷ UnmarkableManner → [Manner]
+unmarkableMannerToList ∷ UnmarkableManner → NonEmpty Manner
 unmarkableMannerToList manner1 =
   case manner1 of
-       MarkedManner x → [x]
+       MarkedManner x → one x
        UnmarkedManner → mannerStates
 
-unmarkableAirstreamToList ∷ UnmarkableAirstream → [Airstream]
+unmarkableAirstreamToList ∷ UnmarkableAirstream → NonEmpty Airstream
 unmarkableAirstreamToList airstream1 =
   case airstream1 of
-       MarkedAirstream x → [x]
+       MarkedAirstream x → one x
        UnmarkedAirstream → airstreamStates
 
 
-unmarkableHeightToList ∷ UnmarkableHeight → [Height]
+unmarkableHeightToList ∷ UnmarkableHeight → NonEmpty Height
 unmarkableHeightToList height1 =
   case height1 of
-       MarkedHeight x → [x]
+       MarkedHeight x → one x
        UnmarkedHeight → heightStates
 
-unmarkableBacknessToList ∷ UnmarkableBackness → [Backness]
+unmarkableBacknessToList ∷ UnmarkableBackness → NonEmpty Backness
 unmarkableBacknessToList backness1 =
   case backness1 of
-       MarkedBackness x → [x]
+       MarkedBackness x → one x
        UnmarkedBackness → backnessStates
 
-unmarkableRoundingToList ∷ UnmarkableRounding → [Rounding]
+unmarkableRoundingToList ∷ UnmarkableRounding → NonEmpty Rounding
 unmarkableRoundingToList rounding1 =
   case rounding1 of
-       MarkedRounding x → [x]
+       MarkedRounding x → one x
        UnmarkedRounding → roundingStates
 
 -- The following function returns whether an articulation is
@@ -225,7 +224,7 @@ impossible _ = False -- Everything else is assumed to be possible.
 -- | This following sound inventory of English is from page 20 of
 -- | (2013, Elizabeth C. Zsiga, The Sounds of Language)
 englishPhonetInventory ∷ PhonetInventory
-englishPhonetInventory = PhonetInventory
+englishPhonetInventory = PhonetInventory (fromList
   [
   Consonant  Voiced    Bilabial      Plosive   PulmonicEgressive,
   Consonant  Voiceless Bilabial      Plosive   PulmonicEgressive,
@@ -309,11 +308,12 @@ englishPhonetInventory = PhonetInventory
   -- To do: Get better information on English vowels from a more reliable source.
   -- To do: model separate dialects of English or only one.
   ]
+  )
 
 
 
-exponentials ∷ [IPAText]
-exponentials = ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ⁿ" , "ˡ"]
+exponentials ∷ NonEmpty IPAText
+exponentials = fromList ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ⁿ" , "ˡ"]
 
 {-|
 Whether an IPA character is written above the base line
@@ -322,7 +322,7 @@ like how exponents of a power are written
 in mathematical notation.
 |-}
 isExponential ∷ IPAText → Bool
-isExponential character = character ∈ exponentials
+isExponential character = character ∈ toList exponentials
 {-|
 Whether a diacritic goes above
 the character it is placed on.
@@ -371,18 +371,18 @@ This could be useful later for determining
 where to put diacritics so that
 they are readable.
 |-}
-ascenders ∷ [IPAText]
-ascenders =
+ascenders ∷ NonEmpty IPAText
+ascenders = fromList
   ["b", "t", "d", "k", "ʔ", "f", "θ", "ð", "ħ", "ʕ", "h", "ɦ", "ɬ", "l", "ʎ",
   "ʘ", "ɓ", "ǀ", "ɗ", "ǃ", "ǂ", "ɠ", "ʄ", "ǁ", "ʛ", "ɺ", "ʢ", "ʡ", "ɤ", "ʈ", "ɖ",
   "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
 
 
 isAscender ∷ IPAText → Bool
-isAscender character = character ∈ ascenders
+isAscender character = character ∈ toList ascenders
 
-descenders ∷ [IPAText]
-descenders =
+descenders ∷ NonEmpty IPAText
+descenders = fromList
   ["p", "ɟ", "g", "q", "ɱ", "ɽ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "ɣ", "χ", "ɻ", "j",
    "ɰ", "ɥ", "y", "ɳ", "ɲ", "ʈ", "ɖ", "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
 
@@ -398,7 +398,7 @@ where to put diacritics so that
 they are readable.
 |-}
 isDescender ∷ IPAText → Bool
-isDescender character = character ∈ descenders
+isDescender character = character ∈ toList descenders
 
 
 {-|
@@ -421,9 +421,9 @@ preventProhibitedCombination ss
          rest = T.tail (T.tail ss)
      in
       if isAscender x ∧ isDiacriticAbove y
-      then x ⊕ lowerDiacritic y ⊕ rest
+      then x ◇ lowerDiacritic y ◇ rest
       else if isDescender x ∧ isDiacriticBelow y
-      then x ⊕ raiseDiacritic y ⊕ rest
+      then x ◇ raiseDiacritic y ◇ rest
       else ss
 
 
@@ -431,69 +431,72 @@ preventProhibitedCombination ss
 
 
 
-graphemesOfIPA ∷ [IPAText]
+graphemesOfIPA ∷ NonEmpty IPAText
 graphemesOfIPA = consonantsPulmonic
-  ⊕ consonantsNonPulmonic
-  ⊕ otherSymbols
-  ⊕ vowels
-  ⊕ suprasegmentals
-  ⊕ toneAndWordAccents
-  ⊕ diacriticsAndSuprasegmentals
+  ◇ consonantsNonPulmonic
+  ◇ otherSymbols
+  ◇ vowels
+  ◇ suprasegmentals
+  ◇ toneAndWordAccents
+  ◇ diacriticsAndSuprasegmentals
 -- See: https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
 -- For the source of this information..
 
 -- CONSONANTS (PULMONIC)
-consonantsPulmonic ∷ [IPAText]
-consonantsPulmonic = concat consonantsPulmonicTable
+consonantsPulmonic ∷ NonEmpty IPAText
+consonantsPulmonic = fromList (concat consonantsPulmonicTable)
 
-plosivePulmonic ∷ [Text]
-plosivePulmonic            = [ "p", "b",                     "t", "d"
+plosivePulmonic ∷ NonEmpty Text
+plosivePulmonic            = fromList 
+                             [ "p", "b",                     "t", "d"
                              , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ"
                              , "ʔ"
                              ] -- Plosive
 
-nasalPulmonic ∷ [Text]
-nasalPulmonic              = ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"] -- Nasal
+nasalPulmonic ∷ NonEmpty Text
+nasalPulmonic              = fromList ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"] -- Nasal
 
-trillPulmonic ∷ [Text]
-trillPulmonic              = [ "ʙ", "r", "ʀ"] -- Trill
+trillPulmonic ∷ NonEmpty Text
+trillPulmonic              = fromList [ "ʙ", "r", "ʀ"] -- Trill
 
-tapOrFlapPulmonic ∷ [Text]
-tapOrFlapPulmonic          = [ "ⱱ", "ɾ", "ɽ"] -- Tap or Flap
+tapOrFlapPulmonic ∷ NonEmpty Text
+tapOrFlapPulmonic          = fromList [ "ⱱ", "ɾ", "ɽ"] -- Tap or Flap
 
-fricativePulmonic ∷ [Text]
-fricativePulmonic          = [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
-                             , "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ"
-                             , "h", "ɦ"
-                             ]  -- Fricative
+fricativePulmonic ∷ NonEmpty Text
+fricativePulmonic          
+  = fromList 
+  [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
+  , "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ"
+  , "h", "ɦ"
+  ]  -- Fricative
 
-lateralFricativePulmonic ∷ [Text]
-lateralFricativePulmonic   = [ "ɬ", "ɮ" ] -- Lateral fricative
+lateralFricativePulmonic ∷ NonEmpty Text
+lateralFricativePulmonic   = fromList [ "ɬ", "ɮ" ] -- Lateral fricative
 
-approximantPulmonic ∷ [Text]
-approximantPulmonic        = [ "ʋ", "ɻ", "j", "ɰ" ] -- Approximant
+approximantPulmonic ∷ NonEmpty Text
+approximantPulmonic        = fromList [ "ʋ", "ɻ", "j", "ɰ" ] -- Approximant
 
-lateralApproximantPulmonic ∷ [Text]
-lateralApproximantPulmonic = [ "l", "ɭ", "ʎ", "ʟ" ] -- Lateral approximant
+lateralApproximantPulmonic ∷ NonEmpty Text
+lateralApproximantPulmonic = fromList [ "l", "ɭ", "ʎ", "ʟ" ] -- Lateral approximant
 
 
 
 
 consonantsPulmonicTable ∷ [[IPAText]]
 consonantsPulmonicTable =
- [ plosivePulmonic
- , nasalPulmonic
- , trillPulmonic
- , tapOrFlapPulmonic
- , fricativePulmonic
- , lateralFricativePulmonic
- , approximantPulmonic
- , lateralApproximantPulmonic
+ [ toList plosivePulmonic
+ , toList nasalPulmonic
+ , toList trillPulmonic
+ , toList tapOrFlapPulmonic
+ , toList fricativePulmonic
+ , toList lateralFricativePulmonic
+ , toList approximantPulmonic
+ , toList lateralApproximantPulmonic
  ]
 
 
-consonantsNonPulmonic ∷ [IPAText]
-consonantsNonPulmonic =
+consonantsNonPulmonic ∷ NonEmpty IPAText
+consonantsNonPulmonic = fromList
 -- Clicks   Voiced implosives
  [ "ʘ",     "ɓ" -- Bilabial
  , "ǀ", {- Dental -}    "ɗ" -- Dental/alveolar
@@ -502,8 +505,8 @@ consonantsNonPulmonic =
  , "ǁ",  "ʛ"
  ]
 
-otherSymbols ∷ [IPAText]
-otherSymbols =
+otherSymbols ∷ NonEmpty IPAText
+otherSymbols = fromList
   ["ʍ",  "ɕ"
   ,"w",  "ʑ"
   ,"ɥ",  "ɺ"
@@ -512,8 +515,8 @@ otherSymbols =
   ,"ʡ"
   ]
 
-vowels ∷ [IPAText]
-vowels =
+vowels ∷ NonEmpty IPAText
+vowels = fromList
   ["i", "y",   "ɨ", "ʉ",   "ɯ", "u"   -- Close
   ,"ɪ", "ʏ",            "ʊ"
   ,"e", "ø",   "ɘ", "ɵ",   "ɤ", "o"   -- Close-mid
@@ -523,8 +526,8 @@ vowels =
   , "a", "ɶ",              "ɑ", "ɒ"  -- Open
   ]
 
-suprasegmentals ∷ [IPAText]
-suprasegmentals =
+suprasegmentals ∷ NonEmpty IPAText
+suprasegmentals = fromList
   [ "ˈ"   -- Primary stress
   , "ˌ"   -- Secondary stress
   , "ː"   -- Long
@@ -538,8 +541,8 @@ suprasegmentals =
   ]
 
 
-toneAndWordAccents ∷ [IPAText]
-toneAndWordAccents =
+toneAndWordAccents ∷ NonEmpty IPAText
+toneAndWordAccents = fromList
 {- Level -}
   [ "˥", "̋"  -- Extra high
   , "˦", "́"  -- High
@@ -559,8 +562,8 @@ toneAndWordAccents =
   , "↘" -- Global fall
   ]
 
-diacriticsAndSuprasegmentals ∷ [IPAText]
-diacriticsAndSuprasegmentals =
+diacriticsAndSuprasegmentals ∷ NonEmpty IPAText
+diacriticsAndSuprasegmentals = fromList
   [ "ʰ"  -- Aspirated
   , "ʷ"  -- Labialised
   , "ʲ"  -- Palatalised
@@ -593,7 +596,7 @@ diacriticsAndSuprasegmentals =
   ]
 
 showIPA ∷ PhonetInventory → IPAText
-showIPA (PhonetInventory phonetes) = T.concat (map constructIPA phonetes)
+showIPA (PhonetInventory phonetes) = T.concat (map constructIPA (toList phonetes))
 
 
 
@@ -707,7 +710,7 @@ analyzeIPA "ɕ" = Just (Consonant Voiceless AlveoloPalatal Fricative   PulmonicE
 analyzeIPA "ʑ" = Just (Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive)
 analyzeIPA "ɺ" = Just (Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive)
 
-analyzeIPA "ɧ" = Just (Consonant Voiceless (Places [PostAlveolar, Velar]) Fricative PulmonicEgressive)
+analyzeIPA "ɧ" = Just (Consonant Voiceless (Places (PostAlveolar :| [Velar])) Fricative PulmonicEgressive)
 
 -- Other Consonants:
 analyzeIPA "ʘ" = Just (Consonant Voiceless          Bilabial       Plosive        Click    )
@@ -879,7 +882,7 @@ constructIPARecursive _ _ (Consonant  Voiceless          Epiglottal             
 constructIPARecursive _ _ (Consonant  Voiceless          AlveoloPalatal                 Fricative          PulmonicEgressive) = Just "ɕ"
 constructIPARecursive _ _ (Consonant  Voiced             AlveoloPalatal                 Fricative          PulmonicEgressive) = Just "ʑ"
 constructIPARecursive _ _ (Consonant  Voiced             Alveolar                       LateralFlap        PulmonicEgressive) = Just "ɺ"
-constructIPARecursive _ _ (Consonant  Voiceless          (Places [PostAlveolar, Velar]) Fricative          PulmonicEgressive) = Just "ɧ" -- Other Consonants:
+constructIPARecursive _ _ (Consonant  Voiceless          (Places (PostAlveolar :| [Velar])) Fricative          PulmonicEgressive) = Just "ɧ" -- Other Consonants:
 constructIPARecursive _ _ (Consonant  Voiceless          Bilabial                       Plosive            Click            ) = Just "ʘ"
 constructIPARecursive _ _ (Consonant  Voiceless          Dental                         Plosive            Click            ) = Just "ǀ"
 constructIPARecursive _ _ (Consonant  Voiceless          Alveolar                       Plosive            Click            ) = Just "ǃ" -- Or it could be PostAlveolar.
@@ -940,7 +943,7 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant  x PostAlveolar 
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant x Alveolar y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "̠")  -- Add the diacritic for "retracted"
+           Just regularIPA → Just (regularIPA ◇ "̠")  -- Add the diacritic for "retracted"
 
 
 
@@ -953,14 +956,14 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant Voiceless x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel)  (Consonant Voiced x y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "̥") -- add diacritic for voiceless
+           Just regularIPA → Just (regularIPA ◇ "̥") -- add diacritic for voiceless
 
 -- Add the small circle diacritic to vowels to make them voiceless.
 constructIPARecursive recursionLimit recursionLevel (Vowel x y z Voiceless)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiced) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "̥")
+           Just regularIPA → Just (regularIPA ◇ "̥")
 
 -- If there is no way to express a voiced consonant in a single
 -- grapheme add a diacritic to the grapheme that represents
@@ -969,31 +972,31 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant Voiced x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "̬")
+           Just regularIPA → Just (regularIPA ◇ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  (Vowel x y z Voiced)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiceless) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "̬")
+           Just regularIPA → Just (regularIPA ◇ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicedAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "ʰ")
+           Just regularIPA → Just (regularIPA ◇ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicelessAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "ʰ")
+           Just regularIPA → Just (regularIPA ◇ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant CreakyVoiced _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "̰")
+           Just regularIPA → Just (regularIPA ◇ "̰")
 
 
 constructIPARecursive _ _ _
@@ -1573,7 +1576,7 @@ showFeatures ∷ [PhonemeFeature] → Text
 showFeatures features =
   let featuresStrings ∷ [Text]
       featuresStrings = map showPhonemeFeature features
-  in "[" ⊕ T.intercalate "; " featuresStrings ⊕ "]"
+  in "[" ◇ T.intercalate "; " featuresStrings ◇ "]"
 
 toTextFeatures ∷ Phonet → Text
 toTextFeatures phonete =
@@ -1585,10 +1588,10 @@ toTextFeatures phonete =
 showPhonet ∷ Phonet → Text
 showPhonet phonet =
   case phonet of
-    Consonant v p m a → showVocalFolds v ⊕ " " ⊕ showPlace p ⊕ " " ⊕ showManner m ⊕ " " ⊕ showAirstream a
-                               ⊕ " consonant"
-    Vowel h b r v     → showVocalFolds v ⊕ " " ⊕ showRounding r ⊕ " " ⊕ showHeight h ⊕ " " ⊕ showBackness b
-                               ⊕ " vowel"
+    Consonant v p m a → showVocalFolds v ◇ " " ◇ showPlace p ◇ " " ◇ showManner m ◇ " " ◇ showAirstream a
+                               ◇ " consonant"
+    Vowel h b r v     → showVocalFolds v ◇ " " ◇ showRounding r ◇ " " ◇ showHeight h ◇ " " ◇ showBackness b
+                               ◇ " vowel"
 
 
 
@@ -1636,7 +1639,7 @@ showPlace place1 =
     LabialPalatal  → "labial-palatal"
     AlveoloPalatal → "alveolo-palatal"
     PalatoAlveolar → "palato-alveolar"
-    Places ps      → unwords (map showPlace ps)
+    Places ps      → unwords (toList (fmap showPlace ps))
 
 showManner ∷ Manner → Text
 showManner manner1 =
@@ -1672,7 +1675,8 @@ showVocalFolds vocalFolds1 =
     CreakyVoiced       → "creaky voiced"
 
 showPhonetInventory ∷ PhonetInventory → Text
-showPhonetInventory (PhonetInventory phonetes) = T.concat (map showPhonet phonetes)
+showPhonetInventory (PhonetInventory phonetes)
+  = T.concat (map showPhonet (toList phonetes))
 
 
 showPolarity ∷ Polarity → Text
@@ -1683,12 +1687,12 @@ showPolarity Minus = "-"
 showPhonemeFeature ∷ PhonemeFeature → Text
 showPhonemeFeature phonemeFeature =
   case phonemeFeature of
-    (SyllabicFeature polarity)           → showPolarity polarity ⊕ "syllabic"
-    (ConsonantalFeature polarity)        → showPolarity polarity ⊕ "consonantal"
-    (SonorantFeature polarity)           → showPolarity polarity ⊕ "sonorant"
-    (ContinuantFeature polarity)         → showPolarity polarity ⊕ "continuant"
-    (VoiceFeature polarity)              → showPolarity polarity ⊕ "voice"
-    (AdvancedTongueRootFeature polarity) → showPolarity polarity ⊕ "ATR"
+    (SyllabicFeature polarity)           → showPolarity polarity ◇ "syllabic"
+    (ConsonantalFeature polarity)        → showPolarity polarity ◇ "consonantal"
+    (SonorantFeature polarity)           → showPolarity polarity ◇ "sonorant"
+    (ContinuantFeature polarity)         → showPolarity polarity ◇ "continuant"
+    (VoiceFeature polarity)              → showPolarity polarity ◇ "voice"
+    (AdvancedTongueRootFeature polarity) → showPolarity polarity ◇ "ATR"
     NasalFeature                         →                         "nasal"
     LateralFeature                       →                         "lateral"
     DelayedReleaseFeature                →                         "delayed release"
@@ -1699,10 +1703,10 @@ showPhonemeFeature phonemeFeature =
     DorsalFeature                        →                         "dorsal"
     PharyngealFeature                    →                         "pharyngeal"
     LaryngealFeature                     →                         "laryngeal"
-    (RoundFeature polarity)              → showPolarity polarity ⊕ "round"
-    (AnteriorFeature polarity)           → showPolarity polarity ⊕ "anterior"
-    (DistributedFeature polarity)        → showPolarity polarity ⊕ "distributed"
-    (StridentFeature polarity)           → showPolarity polarity ⊕ "strident"
-    (HighFeature polarity)               → showPolarity polarity ⊕ "high"
-    (LowFeature polarity)                → showPolarity polarity ⊕ "low"
-    (BackFeature polarity)               → showPolarity polarity ⊕ "back"
+    (RoundFeature polarity)              → showPolarity polarity ◇ "round"
+    (AnteriorFeature polarity)           → showPolarity polarity ◇ "anterior"
+    (DistributedFeature polarity)        → showPolarity polarity ◇ "distributed"
+    (StridentFeature polarity)           → showPolarity polarity ◇ "strident"
+    (HighFeature polarity)               → showPolarity polarity ◇ "high"
+    (LowFeature polarity)                → showPolarity polarity ◇ "low"
+    (BackFeature polarity)               → showPolarity polarity ◇ "back"

@@ -1,7 +1,7 @@
 {-# LANGUAGE UnicodeSyntax #-}
 
 module Lib_Types where
-import Relude (Bool(True, False), Eq((==)), Text)
+import Relude (Bool(True, False), Eq((==)), NonEmpty, Text, fromList, toList)
 import Prelude
   ( 
   )
@@ -60,8 +60,8 @@ data Backness = Front
                 deriving Eq
 
 
-backnessStates ∷ [Backness]
-backnessStates = [Front, Central, Back]
+backnessStates ∷ NonEmpty Backness
+backnessStates = fromList [Front, Central, Back]
 
 
 data UnmarkableBackness
@@ -84,8 +84,8 @@ data UnmarkableHeight
 
 
 
-heightStates ∷ [Height]
-heightStates =
+heightStates ∷ NonEmpty Height
+heightStates = fromList
              [ Close
              , NearClose
              , CloseMid
@@ -106,8 +106,8 @@ data UnmarkableRounding
 
 
 
-roundingStates ∷ [Rounding]
-roundingStates = [Rounded, Unrounded]
+roundingStates ∷ NonEmpty Rounding
+roundingStates = fromList [Rounded, Unrounded]
 
 data Place = Bilabial
            | LabioDental
@@ -128,7 +128,7 @@ data Place = Bilabial
            | AlveoloPalatal
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
-           | Places [Place]
+           | Places (NonEmpty Place)
 
 data UnmarkablePlace
   = UnmarkedPlace
@@ -136,8 +136,9 @@ data UnmarkablePlace
 
 
 
-placeStates ∷ [Place]
-placeStates = [ Bilabial
+placeStates ∷ NonEmpty Place
+placeStates = fromList
+              [ Bilabial
               , LabioDental
               , Dental
               , Alveolar
@@ -176,8 +177,9 @@ data UnmarkableManner
 
 
 
-mannerStates ∷ [Manner]
-mannerStates = [ Plosive
+mannerStates ∷ NonEmpty Manner
+mannerStates = fromList 
+               [ Plosive
                , Nasal
                , Trill
                , TapOrFlap
@@ -201,8 +203,9 @@ data UnmarkableAirstream
 
 
 
-airstreamStates ∷ [Airstream]
-airstreamStates = [ PulmonicEgressive
+airstreamStates ∷ NonEmpty Airstream
+airstreamStates = fromList
+                  [ PulmonicEgressive
                   , Click
                   , Implosive
                   ]
@@ -218,16 +221,17 @@ data UnmarkableVocalFolds
   = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
 
 
-vocalFoldStates ∷ [VocalFolds]
+vocalFoldStates ∷ NonEmpty VocalFolds
 vocalFoldStates
-  = [ Voiceless
+  = fromList
+    [ Voiceless
     , Voiced
     , VoicedAspirated
     , VoicelessAspirated
     , CreakyVoiced
     ]
 
-newtype PhonetInventory = PhonetInventory [Phonet]
+newtype PhonetInventory = PhonetInventory (NonEmpty Phonet)
 
 
 
@@ -244,7 +248,7 @@ instance Eq Place where
   Pharyngeal   == Pharyngeal          = True
   Glottal      == Glottal             = True
   Epiglottal   == Epiglottal          = True
-  x            == Places pList        = x ∈ pList
+  x            == Places pList        = x ∈ toList pList
   Places x     == y                   = y == Places x
   _            == _                   = False
 

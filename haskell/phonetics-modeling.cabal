@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 675147cedeb28226951d8c20a26557e79bace849484168907b405aaed6ed56bb
+-- hash: db51111cff007769161be9ca2aca415b7322ab3d5dc69dca2122a284c9f89422
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -30,6 +30,7 @@ executable phonetics-modeling-exe
       Lib
       Lib_Functions
       Lib_Types
+      MyLocal_Data_Semigroup_Unicode
       Paths_phonetics_modeling
   hs-source-dirs:
       app
