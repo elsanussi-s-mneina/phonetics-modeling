@@ -8,11 +8,11 @@ import Lib_Types
 import Prelude (head)
 import Relude
   ( Bool(False, True)      , Int       , Maybe(Just, Nothing)
-  , Text                   , catMaybes
+  , Text                   , catMaybes , one
   , concat                 , elem
-  , filter                 , length    , map
+  , filter                 , fromMaybe, length    , map  , maybe
   , not                    , notElem   , null
-  , otherwise
+  , otherwise              , unwords
   , (>)                    , (+)       , (<)
   )
 
@@ -409,20 +409,20 @@ And vice-versa (above - below).
 
 Only support the voiceless diacritic so far.
   |-}
-preventProhibitedCombination :: IPAText → IPAText
-preventProhibitedCombination noChange
-  | T.length noChange ≡ 0 = ""
-  | T.length noChange ≡ 1 = noChange
+preventProhibitedCombination ∷ IPAText → IPAText
+preventProhibitedCombination ss
+  | T.length ss ≡ 0 = ""
+  | T.length ss ≡ 1 = ss
   | otherwise = 
-     let x = one (T.head noChange)
-         y = one (T.index noChange 1)
-         z = T.tail (T.tail noChange)
+     let x = one (T.head ss) ∷ Text
+         y = one (T.index ss 1) ∷ Text
+         rest = T.tail (T.tail ss)
      in
       if isAscender x ∧ isDiacriticAbove y
-      then x ⊕ lowerDiacritic y ⊕ z
+      then x ⊕ lowerDiacritic y ⊕ rest
       else if isDescender x ∧ isDiacriticBelow y
-      then x ⊕ raiseDiacritic y ⊕ z
-      else noChange
+      then x ⊕ raiseDiacritic y ⊕ rest
+      else ss
 
 
 
@@ -1577,3 +1577,126 @@ toTextFeatures ∷ Phonet → Text
 toTextFeatures phonete =
   let features = analyzeFeatures phonete
   in showFeatures features
+
+
+
+showPhonet ∷ Phonet → Text
+showPhonet phonet =
+  case phonet of
+    Consonant v p m a → showVocalFolds v ⊕ " " ⊕ showPlace p ⊕ " " ⊕ showManner m ⊕ " " ⊕ showAirstream a
+                               ⊕ " consonant"
+    Vowel h b r v     → showVocalFolds v ⊕ " " ⊕ showRounding r ⊕ " " ⊕ showHeight h ⊕ " " ⊕ showBackness b
+                               ⊕ " vowel"
+
+
+
+
+showBackness ∷ Backness → Text
+showBackness Front            = "front"
+showBackness Central          = "central"
+showBackness Back             = "back"
+
+
+showHeight ∷ Height → Text
+showHeight Close          = "close"
+showHeight NearClose      = "near-close"
+showHeight CloseMid       = "close-mid"
+showHeight Mid            = "mid"
+showHeight OpenMid        = "open-mid"
+showHeight NearOpen       = "near-open"
+showHeight Open           = "open"
+
+
+showRounding ∷ Rounding → Text
+showRounding Rounded          = "rounded"
+showRounding Unrounded        = "unrounded"
+
+
+
+showPlace ∷ Place → Text
+showPlace place1 =
+  case place1 of
+    Bilabial       → "bilabial"
+    LabioDental    → "labio-dental"
+    Dental         → "dental"
+    Alveolar       → "alveolar"
+    PostAlveolar   → "post-alveolar"
+    Retroflex      → "retroflex"
+    Palatal        → "palatal"
+    Velar          → "velar"
+    Uvular         → "uvular"
+    Pharyngeal     → "pharyngeal"
+    Glottal        → "glottal"
+    Epiglottal     → "epiglottal"
+    LabialVelar    → "labial-velar"
+    LabialPalatal  → "labial-palatal"
+    AlveoloPalatal → "alveolo-palatal"
+    PalatoAlveolar → "palato-alveolar"
+    Places ps      → unwords (map showPlace ps)
+
+showManner ∷ Manner → Text
+showManner manner1 =
+  case manner1 of
+    Plosive            → "plosive"
+    Nasal              → "nasal"
+    Trill              → "trill"
+    TapOrFlap          → "tap or flap"
+    Approximant        → "approximant"
+    Fricative          → "fricative"
+    Affricate          → "affricate"
+    LateralFricative   → "lateral fricative"
+    LateralApproximant → "lateral approximant"
+    LateralFlap        → "lateral flap"
+    Lateral            → "lateral"
+
+
+showAirstream ∷ Airstream → Text
+showAirstream airstream1 =
+  case airstream1 of
+    PulmonicEgressive → "pulmonic egressive"
+    Click             → "click"
+    Implosive         → "implosive"
+
+
+showVocalFolds ∷ VocalFolds → Text
+showVocalFolds vocalFolds1 =
+  case vocalFolds1 of
+    Voiced             → "voiced"
+    Voiceless          → "voiceless"
+    VoicedAspirated    → "voiced aspirated"
+    VoicelessAspirated → "voiceless aspirated"
+    CreakyVoiced       → "creaky voiced"
+
+showPhonetInventory ∷ PhonetInventory → Text
+showPhonetInventory (PhonetInventory phonetes) = T.concat (map showPhonet phonetes)
+
+
+showPolarity ∷ Polarity → Text
+showPolarity Plus = "+"
+showPolarity Minus = "-"
+
+
+showPhonemeFeature ∷ PhonemeFeature → Text
+showPhonemeFeature (SyllabicFeature polarity)           = showPolarity polarity ⊕ "syllabic"
+showPhonemeFeature (ConsonantalFeature polarity)        = showPolarity polarity ⊕ "consonantal"
+showPhonemeFeature (SonorantFeature polarity)           = showPolarity polarity ⊕ "sonorant"
+showPhonemeFeature (ContinuantFeature polarity)         = showPolarity polarity ⊕ "continuant"
+showPhonemeFeature (VoiceFeature polarity)              = showPolarity polarity ⊕ "voice"
+showPhonemeFeature (AdvancedTongueRootFeature polarity) = showPolarity polarity ⊕ "ATR"
+showPhonemeFeature NasalFeature                         =                                "nasal"
+showPhonemeFeature LateralFeature                       =                                "lateral"
+showPhonemeFeature DelayedReleaseFeature                =                                "delayed release"
+showPhonemeFeature SpreadGlottisFeature                 =                                "spread glottis"
+showPhonemeFeature ConstrictedGlottisFeature            =                                "constricted glottis"
+showPhonemeFeature LabialFeature                        =                                "labial"
+showPhonemeFeature CoronalFeature                       =                                "coronal"
+showPhonemeFeature DorsalFeature                        =                                "dorsal"
+showPhonemeFeature PharyngealFeature                    =                                "pharyngeal"
+showPhonemeFeature LaryngealFeature                     =                                "laryngeal"
+showPhonemeFeature (RoundFeature polarity)              = showPolarity polarity ⊕ "round"
+showPhonemeFeature (AnteriorFeature polarity)           = showPolarity polarity ⊕ "anterior"
+showPhonemeFeature (DistributedFeature polarity)        = showPolarity polarity ⊕ "distributed"
+showPhonemeFeature (StridentFeature polarity)           = showPolarity polarity ⊕ "strident"
+showPhonemeFeature (HighFeature polarity)               = showPolarity polarity ⊕ "high"
+showPhonemeFeature (LowFeature polarity)                = showPolarity polarity ⊕ "low"
+showPhonemeFeature (BackFeature polarity)               = showPolarity polarity ⊕ "back"

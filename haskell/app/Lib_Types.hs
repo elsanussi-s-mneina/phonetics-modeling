@@ -1,15 +1,11 @@
 {-# LANGUAGE UnicodeSyntax #-}
-{-# LANGUAGE OverloadedStrings #-}
 
 module Lib_Types where
-import Relude (Text, unwords)
+import Relude (Bool(True, False), Eq((==)), Text)
 import Prelude
-  ( Bool(False, True)
-  , Eq((==))
-  , map
+  ( 
   )
 import Prelude.Unicode ((∈))
-import Data.Text (append, concat)
 -- The data type Phonet, represents a linguistics
 -- phoneme or phonete.
 -- It can be a consonant, or a vowel.
@@ -235,37 +231,6 @@ newtype PhonetInventory = PhonetInventory [Phonet]
 
 
 
-showPhonet ∷ Phonet → Text
-showPhonet phonet =
-  case phonet of
-    Consonant v p m a → showVocalFolds v `append` " " `append` showPlace p `append` " " `append` showManner m `append` " " `append` showAirstream a
-                               `append` " consonant"
-    Vowel h b r v     → showVocalFolds v `append` " " `append` showRounding r `append` " " `append` showHeight h `append` " " `append` showBackness b
-                               `append` " vowel"
-
-
-showBackness ∷ Backness → Text
-showBackness Front            = "front"
-showBackness Central          = "central"
-showBackness Back             = "back"
-
-
-showHeight ∷ Height → Text
-showHeight Close          = "close"
-showHeight NearClose      = "near-close"
-showHeight CloseMid       = "close-mid"
-showHeight Mid            = "mid"
-showHeight OpenMid        = "open-mid"
-showHeight NearOpen       = "near-open"
-showHeight Open           = "open"
-
-
-showRounding ∷ Rounding → Text
-showRounding Rounded          = "rounded"
-showRounding Unrounded        = "unrounded"
-
-
-
 instance Eq Place where
   Bilabial     == Bilabial            = True
   LabioDental  == LabioDental         = True
@@ -283,63 +248,6 @@ instance Eq Place where
   Places x     == y                   = y == Places x
   _            == _                   = False
 
-showPlace ∷ Place → Text
-showPlace place1 =
-  case place1 of
-    Bilabial       → "bilabial"
-    LabioDental    → "labio-dental"
-    Dental         → "dental"
-    Alveolar       → "alveolar"
-    PostAlveolar   → "post-alveolar"
-    Retroflex      → "retroflex"
-    Palatal        → "palatal"
-    Velar          → "velar"
-    Uvular         → "uvular"
-    Pharyngeal     → "pharyngeal"
-    Glottal        → "glottal"
-    Epiglottal     → "epiglottal"
-    LabialVelar    → "labial-velar"
-    LabialPalatal  → "labial-palatal"
-    AlveoloPalatal → "alveolo-palatal"
-    PalatoAlveolar → "palato-alveolar"
-    Places ps      → unwords (map showPlace ps)
-
-showManner ∷ Manner → Text
-showManner manner1 =
-  case manner1 of
-    Plosive            → "plosive"
-    Nasal              → "nasal"
-    Trill              → "trill"
-    TapOrFlap          → "tap or flap"
-    Approximant        → "approximant"
-    Fricative          → "fricative"
-    Affricate          → "affricate"
-    LateralFricative   → "lateral fricative"
-    LateralApproximant → "lateral approximant"
-    LateralFlap        → "lateral flap"
-    Lateral            → "lateral"
-
-
-showAirstream ∷ Airstream → Text
-showAirstream airstream1 =
-  case airstream1 of
-    PulmonicEgressive → "pulmonic egressive"
-    Click             → "click"
-    Implosive         → "implosive"
-
-
-showVocalFolds ∷ VocalFolds → Text
-showVocalFolds vocalFolds1 =
-  case vocalFolds1 of
-    Voiced             → "voiced"
-    Voiceless          → "voiceless"
-    VoicedAspirated    → "voiced aspirated"
-    VoicelessAspirated → "voiceless aspirated"
-    CreakyVoiced       → "creaky voiced"
-
-showPhonetInventory ∷ PhonetInventory → Text
-showPhonetInventory (PhonetInventory phonetes) = concat (map showPhonet phonetes)
-
 
 
 type IPAText = Text
@@ -353,10 +261,6 @@ type IPAText = Text
 |-}
 data Polarity = Plus | Minus
                 deriving Eq
-
-showPolarity ∷ Polarity → Text
-showPolarity Plus = "+"
-showPolarity Minus = "-"
 
 
 
@@ -446,27 +350,5 @@ data PhonemeFeature = SyllabicFeature Polarity
                     | BackFeature Polarity
                     deriving Eq
 
-showPhonemeFeature ∷ PhonemeFeature → Text
-showPhonemeFeature (SyllabicFeature polarity)           = showPolarity polarity `append` "syllabic"
-showPhonemeFeature (ConsonantalFeature polarity)        = showPolarity polarity `append` "consonantal"
-showPhonemeFeature (SonorantFeature polarity)           = showPolarity polarity `append` "sonorant"
-showPhonemeFeature (ContinuantFeature polarity)         = showPolarity polarity `append` "continuant"
-showPhonemeFeature (VoiceFeature polarity)              = showPolarity polarity `append` "voice"
-showPhonemeFeature (AdvancedTongueRootFeature polarity) = showPolarity polarity `append` "ATR"
-showPhonemeFeature NasalFeature                         =                                "nasal"
-showPhonemeFeature LateralFeature                       =                                "lateral"
-showPhonemeFeature DelayedReleaseFeature                =                                "delayed release"
-showPhonemeFeature SpreadGlottisFeature                 =                                "spread glottis"
-showPhonemeFeature ConstrictedGlottisFeature            =                                "constricted glottis"
-showPhonemeFeature LabialFeature                        =                                "labial"
-showPhonemeFeature CoronalFeature                       =                                "coronal"
-showPhonemeFeature DorsalFeature                        =                                "dorsal"
-showPhonemeFeature PharyngealFeature                    =                                "pharyngeal"
-showPhonemeFeature LaryngealFeature                     =                                "laryngeal"
-showPhonemeFeature (RoundFeature polarity)              = showPolarity polarity `append` "round"
-showPhonemeFeature (AnteriorFeature polarity)           = showPolarity polarity `append` "anterior"
-showPhonemeFeature (DistributedFeature polarity)        = showPolarity polarity `append` "distributed"
-showPhonemeFeature (StridentFeature polarity)           = showPolarity polarity `append` "strident"
-showPhonemeFeature (HighFeature polarity)               = showPolarity polarity `append` "high"
-showPhonemeFeature (LowFeature polarity)                = showPolarity polarity `append` "low"
-showPhonemeFeature (BackFeature polarity)               = showPolarity polarity `append` "back"
+
+
