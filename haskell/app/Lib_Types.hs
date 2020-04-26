@@ -1,30 +1,50 @@
 {-# LANGUAGE UnicodeSyntax #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Lib_Types where
-
-import Prelude 
-  ( String
-  , Bool(False, True)
+import Relude (Text, unwords)
+import Prelude
+  ( Bool(False, True)
   , Eq((==))
-  , Show(show)
-  , concatMap, map
-  , unwords
+  , map
   )
-
-import Prelude.Unicode ((⧺), (∈))
-
+import Prelude.Unicode ((∈))
+import Data.Text (append, concat)
+-- The data type Phonet, represents a linguistics
+-- phoneme or phonete.
+-- It can be a consonant, or a vowel.
+-- A consonant is specified by
+--    the configuration of the vocal folds,
+--    the place of articulation,
+--    the manner of articulation, and
+--    an airstream mechanism.
+-- A vowel is specified by
+--    the height   (height of the tongue),
+--    the backness (how far back in the mouth),
+--    the rounding (rounding of lips), and
+--    the configuration of the vocal folds.
+-- Note: The Phonet datatype does not represent
+-- any marked/unmarked distinction.
 data Phonet = Consonant VocalFolds
                         Place   -- | Place of articulation
-                        Manner -- | Manner of articulation
+                        Manner  -- | Manner of articulation
                         Airstream
-                        
+
             | Vowel Height
                     Backness
                     Rounding
                     VocalFolds
                     deriving Eq
 
-data UnmarkablePhonet 
+-- The data type UnmarkablePhonet was originally intended
+-- to represent a phoneme, or a phonete but with the additional
+-- ability to have unmarked properties, such as unmarked voicing.
+-- So far, though it has not been used in a way consistent with
+-- linguistics, instead it has been used to represent all values of a property.
+-- So for example, we would use unmarked voicing to represent all
+-- possible vocal fold configurations. We would use unmarked place to
+-- to reprsent all possible places of articulation.
+data UnmarkablePhonet
   = UnmarkableConsonant
       UnmarkableVocalFolds
       UnmarkablePlace
@@ -84,7 +104,7 @@ data Rounding = Rounded
               | Unrounded
                 deriving Eq
 
-data UnmarkableRounding 
+data UnmarkableRounding
   = UnmarkedRounding
   | MarkedRounding Rounding
 
@@ -114,7 +134,7 @@ data Place = Bilabial
            -- is between alveolopalatal, and palatoalveolar
            | Places [Place]
 
-data UnmarkablePlace 
+data UnmarkablePlace
   = UnmarkedPlace
   | MarkedPlace Place
 
@@ -151,11 +171,11 @@ data Manner = Plosive
             | LateralFricative
             | LateralApproximant
             | LateralFlap  -- There are very few IPA symbols for lateral flaps
-            | Lateral -- we need this one for the lateral click.
+            | Lateral      -- we need this one for the lateral click.
               deriving Eq
 
-data UnmarkableManner 
-  = UnmarkedManner 
+data UnmarkableManner
+  = UnmarkedManner
   | MarkedManner Manner
 
 
@@ -179,7 +199,7 @@ data Airstream = PulmonicEgressive
                | Implosive
                  deriving Eq
 
-data UnmarkableAirstream 
+data UnmarkableAirstream
   = UnmarkedAirstream
   | MarkedAirstream Airstream
 
@@ -198,47 +218,51 @@ data VocalFolds = Voiced
                 | CreakyVoiced
                   deriving Eq
 
-data UnmarkableVocalFolds 
+data UnmarkableVocalFolds
   = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
 
 
 vocalFoldStates ∷ [VocalFolds]
-vocalFoldStates = [Voiceless, Voiced, VoicedAspirated, VoicelessAspirated, CreakyVoiced]
+vocalFoldStates
+  = [ Voiceless
+    , Voiced
+    , VoicedAspirated
+    , VoicelessAspirated
+    , CreakyVoiced
+    ]
 
 data PhonetInventory = PhonetInventory [Phonet]
 
 
 
-
-instance Show Phonet where
-  show phonet =
-    case phonet of
-      Consonant v p m a → show v ⧺ " " ⧺ show p ⧺ " " ⧺ show m ⧺ " " ⧺ show a ⧺ " consonant"
-      Vowel h b r v   → show v ⧺ " " ⧺ show r ⧺ " " ⧺ show h ⧺ " " ⧺ show b ⧺ " vowel"
-
-
-
-instance Show Backness where
-  show Front            = "front"
-  show Central          = "central"
-  show Back             = "back"
+showPhonet ∷ Phonet → Text
+showPhonet phonet =
+  case phonet of
+    Consonant v p m a → showVocalFolds v `append` " " `append` showPlace p `append` " " `append` showManner m `append` " " `append` showAirstream a
+                               `append` " consonant"
+    Vowel h b r v     → showVocalFolds v `append` " " `append` showRounding r `append` " " `append` showHeight h `append` " " `append` showBackness b
+                               `append` " vowel"
 
 
-
-instance Show Height where
-  show Close          = "close"
-  show NearClose      = "near-close"
-  show CloseMid       = "close-mid"
-  show Mid            = "mid"
-  show OpenMid        = "open-mid"
-  show NearOpen       = "near-open"
-  show Open           = "open"
+showBackness ∷ Backness → Text
+showBackness Front            = "front"
+showBackness Central          = "central"
+showBackness Back             = "back"
 
 
+showHeight ∷ Height → Text
+showHeight Close          = "close"
+showHeight NearClose      = "near-close"
+showHeight CloseMid       = "close-mid"
+showHeight Mid            = "mid"
+showHeight OpenMid        = "open-mid"
+showHeight NearOpen       = "near-open"
+showHeight Open           = "open"
 
-instance Show Rounding where
-  show Rounded          = "rounded"
-  show Unrounded        = "unrounded"
+
+showRounding ∷ Rounding → Text
+showRounding Rounded          = "rounded"
+showRounding Unrounded        = "unrounded"
 
 
 
@@ -259,71 +283,66 @@ instance Eq Place where
   Places x     == y                   = y == Places x
   _            == _                   = False
 
+showPlace ∷ Place → Text
+showPlace place1 =
+  case place1 of
+    Bilabial       → "bilabial"
+    LabioDental    → "labio-dental"
+    Dental         → "dental"
+    Alveolar       → "alveolar"
+    PostAlveolar   → "post-alveolar"
+    Retroflex      → "retroflex"
+    Palatal        → "palatal"
+    Velar          → "velar"
+    Uvular         → "uvular"
+    Pharyngeal     → "pharyngeal"
+    Glottal        → "glottal"
+    Epiglottal     → "epiglottal"
+    LabialVelar    → "labial-velar"
+    LabialPalatal  → "labial-palatal"
+    AlveoloPalatal → "alveolo-palatal"
+    PalatoAlveolar → "palato-alveolar"
+    Places ps      → unwords (map showPlace ps)
 
-instance Show Place where
-  show place1 =
-    case place1 of
-      Bilabial       → "bilabial"
-      LabioDental    → "labio-dental"
-      Dental         → "dental"
-      Alveolar       → "alveolar"
-      PostAlveolar   → "post-alveolar"
-      Retroflex      → "retroflex"
-      Palatal        → "palatal"
-      Velar          → "velar"
-      Uvular         → "uvular"
-      Pharyngeal     → "pharyngeal"
-      Glottal        → "glottal"
-      Epiglottal     → "epiglottal"
-      LabialVelar    → "labial-velar"
-      LabialPalatal  → "labial-palatal"
-      AlveoloPalatal → "alveolo-palatal"
-      PalatoAlveolar → "palato-alveolar"
-      Places ps      → unwords (map show ps)
-
-
-instance Show Manner where
-  show manner1 =
-    case manner1 of
-      Plosive            → "plosive"
-      Nasal              → "nasal"
-      Trill              → "trill"
-      TapOrFlap          → "tap or flap"
-      Approximant        → "approximant"
-      Fricative          → "fricative"
-      Affricate          → "affricate"
-      LateralFricative   → "lateral fricative"
-      LateralApproximant → "lateral approximant"
-      LateralFlap        → "lateral flap"
-      Lateral            → "lateral"
+showManner ∷ Manner → Text
+showManner manner1 =
+  case manner1 of
+    Plosive            → "plosive"
+    Nasal              → "nasal"
+    Trill              → "trill"
+    TapOrFlap          → "tap or flap"
+    Approximant        → "approximant"
+    Fricative          → "fricative"
+    Affricate          → "affricate"
+    LateralFricative   → "lateral fricative"
+    LateralApproximant → "lateral approximant"
+    LateralFlap        → "lateral flap"
+    Lateral            → "lateral"
 
 
-
-instance Show Airstream where
-  show airstream1 =
-    case airstream1 of
-      PulmonicEgressive → "pulmonic egressive"
-      Click             → "click"
-      Implosive         → "implosive"
-
+showAirstream ∷ Airstream → Text
+showAirstream airstream1 =
+  case airstream1 of
+    PulmonicEgressive → "pulmonic egressive"
+    Click             → "click"
+    Implosive         → "implosive"
 
 
-instance Show VocalFolds where
-  show vocalFolds1 =
-    case vocalFolds1 of
-      Voiced             → "voiced"
-      Voiceless          → "voiceless"
-      VoicedAspirated    → "voiced aspirated"
-      VoicelessAspirated → "voiceless aspirated"
-      CreakyVoiced       → "creaky voiced"
+showVocalFolds ∷ VocalFolds → Text
+showVocalFolds vocalFolds1 =
+  case vocalFolds1 of
+    Voiced             → "voiced"
+    Voiceless          → "voiceless"
+    VoicedAspirated    → "voiced aspirated"
+    VoicelessAspirated → "voiceless aspirated"
+    CreakyVoiced       → "creaky voiced"
 
-
-instance Show PhonetInventory where
-    show (PhonetInventory phonetes) = concatMap show phonetes
+showPhonetInventory ∷ PhonetInventory → Text
+showPhonetInventory (PhonetInventory phonetes) = concat (map showPhonet phonetes)
 
 
 
-type IPAText = String
+type IPAText = Text
 -- For storing text meant to be interpreted as International phonetic alphabet
 
 
@@ -335,10 +354,9 @@ type IPAText = String
 data Polarity = Plus | Minus
                 deriving Eq
 
-
-instance Show Polarity where
-  show Plus = "+"
-  show Minus = "-"
+showPolarity ∷ Polarity → Text
+showPolarity Plus = "+"
+showPolarity Minus = "-"
 
 
 
@@ -352,7 +370,7 @@ instance Show Polarity where
  analyzed as a set of features. One phoneme
  will have one set of features, and a different
  phoneme will have a different set of features.
- 
+
  These features are well known in phonology, and
  are limited in number. There are two kinds of
  features, unary features, and binary features. The
@@ -365,20 +383,20 @@ instance Show Polarity where
  Voice is a binary feature, a phoneme can be
  [+voice] (can be pronounced: "plus voice")
  or [-voice] (can be pronounced: "minus voice").
- 
+
  Because linguists represent phonemic features in these
  two different ways. We represent these as two
  different kinds of types.
- 
+
  So [nasal] which is a unary feature would be
  represented by a value `NasalFeature` of type `PhonemeFeature`.
  And [+voice] which is a binary feature would
  be represented by a value `VoiceFeature Plus` of type
  `PhonemeFeature`.
- 
+
  We represent the plus or minus symbol by
  the type Polarity.
- 
+
  Notice that: Linguists write a set of features
  as a 2D matrix with one column, roughly like this:
  ⎡ +voice    ⎤
@@ -428,29 +446,27 @@ data PhonemeFeature = SyllabicFeature Polarity
                     | BackFeature Polarity
                     deriving Eq
 
-
-instance Show PhonemeFeature where
-  show (SyllabicFeature polarity)           = show polarity ⧺ "syllabic"
-  show (ConsonantalFeature polarity)        = show polarity ⧺ "consonantal"
-  show (SonorantFeature polarity)           = show polarity ⧺ "sonorant"
-  show (ContinuantFeature polarity)         = show polarity ⧺ "continuant"
-  show (VoiceFeature polarity)              = show polarity ⧺ "voice"
-  show (AdvancedTongueRootFeature polarity) = show polarity ⧺ "ATR"
-  show NasalFeature                         =                  "nasal"
-  show LateralFeature                       =                  "lateral"
-  show DelayedReleaseFeature                =                  "delayed release"
-  show SpreadGlottisFeature                 =                  "spread glottis"
-  show ConstrictedGlottisFeature            =                  "constricted glottis"
-  show LabialFeature                        =                  "labial"
-  show CoronalFeature                       =                  "coronal"
-  show DorsalFeature                        =                  "dorsal"
-  show PharyngealFeature                    =                  "pharyngeal"
-  show LaryngealFeature                     =                  "laryngeal"
-  show (RoundFeature polarity)              = show polarity ⧺ "round"
-  show (AnteriorFeature polarity)           = show polarity ⧺ "anterior"
-  show (DistributedFeature polarity)        = show polarity ⧺ "distributed"
-  show (StridentFeature polarity)           = show polarity ⧺ "strident"
-  show (HighFeature polarity)               = show polarity ⧺ "high"
-  show (LowFeature polarity)                = show polarity ⧺ "low"
-  show (BackFeature polarity)               = show polarity ⧺ "back"
-
+showPhonemeFeature ∷ PhonemeFeature → Text
+showPhonemeFeature (SyllabicFeature polarity)           = showPolarity polarity `append` "syllabic"
+showPhonemeFeature (ConsonantalFeature polarity)        = showPolarity polarity `append` "consonantal"
+showPhonemeFeature (SonorantFeature polarity)           = showPolarity polarity `append` "sonorant"
+showPhonemeFeature (ContinuantFeature polarity)         = showPolarity polarity `append` "continuant"
+showPhonemeFeature (VoiceFeature polarity)              = showPolarity polarity `append` "voice"
+showPhonemeFeature (AdvancedTongueRootFeature polarity) = showPolarity polarity `append` "ATR"
+showPhonemeFeature NasalFeature                         =                                "nasal"
+showPhonemeFeature LateralFeature                       =                                "lateral"
+showPhonemeFeature DelayedReleaseFeature                =                                "delayed release"
+showPhonemeFeature SpreadGlottisFeature                 =                                "spread glottis"
+showPhonemeFeature ConstrictedGlottisFeature            =                                "constricted glottis"
+showPhonemeFeature LabialFeature                        =                                "labial"
+showPhonemeFeature CoronalFeature                       =                                "coronal"
+showPhonemeFeature DorsalFeature                        =                                "dorsal"
+showPhonemeFeature PharyngealFeature                    =                                "pharyngeal"
+showPhonemeFeature LaryngealFeature                     =                                "laryngeal"
+showPhonemeFeature (RoundFeature polarity)              = showPolarity polarity `append` "round"
+showPhonemeFeature (AnteriorFeature polarity)           = showPolarity polarity `append` "anterior"
+showPhonemeFeature (DistributedFeature polarity)        = showPolarity polarity `append` "distributed"
+showPhonemeFeature (StridentFeature polarity)           = showPolarity polarity `append` "strident"
+showPhonemeFeature (HighFeature polarity)               = showPolarity polarity `append` "high"
+showPhonemeFeature (LowFeature polarity)                = showPolarity polarity `append` "low"
+showPhonemeFeature (BackFeature polarity)               = showPolarity polarity `append` "back"

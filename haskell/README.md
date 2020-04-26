@@ -40,21 +40,21 @@ directory (where this README file is)  and type
 To start an interactive environment where you will be able to execute the
 code:
 
-`stack -- ghci`
+`stack -- ghci --ghci-options -XOverloadedStrings`
 
 
 You can then type in code like the following (starting after the ">", you do not have to type the part before the first ">" symbol on each line.):
 
-`*Main> map analyzeIPA ["ð", "ə"]
+`*Main> doAnalyzeIPA "ð"
 `
 And you get the following in response.
 
-`[Consonant {vocalFolds = Voiced, place = Dental, manner = Fricative, airstream = PulmonicEgressive},Vowel {height = Mid, backness = Central, rounding = UnmarkedRounding, vocalFolds = Voiced}]`
+`"voiced dental fricative pulmonic egressive consonant"`
 
 
 Then to go the other direction (to IPA symbols):
 
-`*Main> putStrLn $ constructIPA (Consonant Voiceless Alveolar LateralApproximant PulmonicEgressive)`
+`*Main> doConstructIPA (Consonant Voiceless Alveolar LateralApproximant PulmonicEgressive)`
 
 `l̥`
 
@@ -63,58 +63,29 @@ Then to go the other direction (to IPA symbols):
 
 To go from voiceless to voiced (from IPA symbol to IPA symbol):
 
-`*Main> putStrLn $ voicedIPA "s"`
+`*Main> putTextLn $ voicedIPA "s"`
 
 `z`
 
 
-`*Main> putStrLn $ devoicedIPA "z"`
+`*Main> putTextLn $ devoicedIPA "z"`
 
 `s`
 
-`*Main> putStrLn $ voicedIPA "ʔ"`
+`*Main> putTextLn $ voicedIPA "ʔ"`
 
 `ʔ̼`
 
 
 `To show the English phoneme inventory:`
 
-`*Main Lib> putStr $ showIPA englishPhonetInventory`
+`*Main Lib> putTextLn $ showIPA englishPhonetInventory`
 
 `bpdtgkʔvfðθzsʒʃhd͡ʒt͡ʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
 
 
-To show where two consonants differ in their properties (not SPE features, because are not implemented yet):
 
-`unmarkDifferences (Consonant Voiced Alveolar Fricative PulmonicEgressive) (Consonant Voiced Palatal Fricative PulmonicEgressive)`
-
-`Consonant {vocalFolds = Voiced, place = UnmarkedPlace, manner = Fricative, airstream = PulmonicEgressive}`̠
-
-
-To list all the fricatives in IPA:
-
-Type the following line to define the fricatives:
-
-`*Main Lib> fricatives = generateFromUnmarked (Consonant UnmarkedVocalFolds UnmarkedPlace Fricative PulmonicEgressive)`
-
-Type the following to print out the fricatives together:
-
-`*Main Lib> putStrLn $ concatMap constructIPA fricatives`
-
-`ɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦʜʢʍʍ̼∅̥∅̼ɕʑ∅̥∅̼`
-
-Type the following to print out the difference in features between two
-phonemes:
-
-
-`*Main English InternationalPhoneticAlphabet Lib PhonemeFeature> featureDifference "z" "s"`
-
-
-`"[+ voice; ]"`
-
-
-
-Note: that the strange zero like symbols at the end represent phones 
+Note: that the strange zero like symbols (Actually the symbol for the empty set) (∅) at the end represent phones 
 that do not have IPA graphemes for the purposes of this program until I can
 fix it to provide more useful output. This is not a conventional use of this symbol
 for Linguistics!
@@ -127,9 +98,6 @@ To run the executable type:
 
 `stack run`
 
-To run the tests:
-
-`stack test`
 
 ## How to compile the code
 

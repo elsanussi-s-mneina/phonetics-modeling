@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ebbd4b1aa29d6c49c7fa30e86b6cfacce5d8908c0695831ab9200af3f2d92e2d
+-- hash: 675147cedeb28226951d8c20a26557e79bace849484168907b405aaed6ed56bb
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -37,4 +37,6 @@ executable phonetics-modeling-exe
   build-depends:
       base >=4.7 && <5
     , base-unicode-symbols
+    , relude
+    , text
   default-language: Haskell2010
