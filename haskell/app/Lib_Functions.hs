@@ -1494,10 +1494,10 @@ Rounded vowels are [+round].
 All other vowels are [-round].
 All other segments are [-round].
 |-}
-round ∷ Phonet → Maybe PhonemeFeature
-round (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
-round Vowel {}              = Just (RoundFeature Minus)
-round _                     = Just (RoundFeature Minus)
+lipRound ∷ Phonet → Maybe PhonemeFeature
+lipRound (Vowel _ _ Rounded _) = Just (RoundFeature Plus)
+lipRound Vowel {}              = Just (RoundFeature Minus)
+lipRound _                     = Just (RoundFeature Minus)
 
 {-|
 Advanced tongue root
@@ -1552,7 +1552,7 @@ featureMatrix phonete
     , pharyngeal           phonete
     , laryngeal            phonete
     , back                 phonete
-    , round                phonete
+    , lipRound             phonete
     , voice                phonete
     , atr                  phonete
     , spreadGlottis        phonete
