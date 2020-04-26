@@ -1,10 +1,10 @@
 {-# LANGUAGE UnicodeSyntax #-}
+{-# LANGUAGE DerivingStrategies #-}
 
 module Lib_Types where
 import Relude (Bool(True, False), Eq((==)), NonEmpty, Text, fromList, toList)
-import Prelude
-  ( 
-  )
+import Prelude ()
+
 import Prelude.Unicode ((∈))
 -- The data type Phonet, represents a linguistics
 -- phoneme or phonete.
@@ -30,7 +30,7 @@ data Phonet = Consonant VocalFolds
                     Backness
                     Rounding
                     VocalFolds
-                    deriving Eq
+                    deriving stock Eq
 
 -- The data type UnmarkablePhonet was originally intended
 -- to represent a phoneme, or a phonete but with the additional
@@ -57,7 +57,7 @@ data UnmarkablePhonet
 data Backness = Front
               | Central
               | Back
-                deriving Eq
+                deriving stock Eq
 
 
 backnessStates ∷ NonEmpty Backness
@@ -77,7 +77,7 @@ data Height = Close
             | OpenMid
             | NearOpen
             | Open
-              deriving Eq
+              deriving stock Eq
 
 data UnmarkableHeight
   = UnmarkedHeight | MarkedHeight Height
@@ -98,7 +98,7 @@ heightStates = fromList
 
 data Rounding = Rounded
               | Unrounded
-                deriving Eq
+                deriving stock Eq
 
 data UnmarkableRounding
   = UnmarkedRounding
@@ -169,7 +169,7 @@ data Manner = Plosive
             | LateralApproximant
             | LateralFlap  -- There are very few IPA symbols for lateral flaps
             | Lateral      -- we need this one for the lateral click.
-              deriving Eq
+              deriving stock Eq
 
 data UnmarkableManner
   = UnmarkedManner
@@ -195,7 +195,7 @@ mannerStates = fromList
 data Airstream = PulmonicEgressive
                | Click
                | Implosive
-                 deriving Eq
+                 deriving stock Eq
 
 data UnmarkableAirstream
   = UnmarkedAirstream
@@ -215,7 +215,7 @@ data VocalFolds = Voiced
                 | VoicedAspirated
                 | VoicelessAspirated
                 | CreakyVoiced
-                  deriving Eq
+                  deriving stock Eq
 
 data UnmarkableVocalFolds
   = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
@@ -264,7 +264,7 @@ type IPAText = Text
  [-sonorant]
 |-}
 data Polarity = Plus | Minus
-                deriving Eq
+                deriving stock Eq
 
 
 
@@ -352,7 +352,7 @@ data PhonemeFeature = SyllabicFeature Polarity
                     | HighFeature Polarity
                     | LowFeature Polarity
                     | BackFeature Polarity
-                    deriving Eq
+                    deriving stock Eq
 
 
 

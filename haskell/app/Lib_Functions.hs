@@ -5,24 +5,20 @@ module Lib_Functions where
 
 import Lib_Types
 
-import Prelude (head)
+import Prelude ()
 import Relude
-  ( Bool(False, True)      , Int       , Maybe(Just, Nothing)
-  , Text                   , catMaybes , one
-  , sconcat
-  , filter                 , fmap      , fromMaybe, fromList, length    , map  , maybe
-  , null
-  , otherwise              , unwords 
-  , (>)                    , (+)       , (<), NonEmpty((:|)), toList
+  ( Bool(False, True)      , Int       , Maybe(Just, Nothing) , NonEmpty((:|)), Text                   
+  , catMaybes , one , sconcat
+  , filter                 , fmap      , fromMaybe, fromList, map  , maybe
+  , otherwise              , toList, unwords 
+  , (+), (!!?), (<)
   )
 
 import qualified Data.Text as T
 
 
 import Prelude.Unicode
-  ( (≡) , (∧) , (∨)
-  , (¬)
-  )
+  ( (≡) , (∧) , (∨) )
 
 
 import MyLocal_Data_Semigroup_Unicode ((◇))
@@ -1063,12 +1059,8 @@ binaryDifference ::
 binaryDifference feature list1 list2
   | list1Relevant ≡ list2Relevant
   = (Nothing, Nothing)
-  | (¬) (null list1Relevant) ∧ (¬) (null list2Relevant)
-  = (Just (head list1Relevant), Just (head list2Relevant))
-  | length list1Relevant > length list2Relevant
-  = (Just (head list1Relevant), Nothing)
   | otherwise
-  = (Nothing, Just (head list2Relevant))
+  = (list1Relevant !!? 0, list2Relevant !!? 0)
    where
    list1Relevant = filter (relevantBinary feature) list1
    list2Relevant = filter (relevantBinary feature) list2
