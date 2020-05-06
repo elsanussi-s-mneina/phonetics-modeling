@@ -20,6 +20,8 @@ import qualified Data.Text as T
 import Prelude.Unicode
   ( (≡) , (∧) , (∨) )
 
+import Data.Monoid.Unicode ( (⊕) )
+
 
 import MyLocal_Data_Semigroup_Unicode ((◇))
 import Data.Foldable.Unicode ((∈) , (∉))
@@ -417,9 +419,9 @@ preventProhibitedCombination ss
          rest = T.tail (T.tail ss)
      in
       if isAscender x ∧ isDiacriticAbove y
-      then x ◇ lowerDiacritic y ◇ rest
+      then x ⊕ lowerDiacritic y ⊕ rest
       else if isDescender x ∧ isDiacriticBelow y
-      then x ◇ raiseDiacritic y ◇ rest
+      then x ⊕ raiseDiacritic y ⊕ rest
       else ss
 
 
@@ -935,7 +937,7 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant  x PostAlveolar 
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant x Alveolar y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ◇ "̠")  -- Add the diacritic for "retracted"
+           Just regularIPA → Just (regularIPA ⊕ "̠")  -- Add the diacritic for "retracted"
 
 
 
@@ -948,14 +950,14 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant Voiceless x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel)  (Consonant Voiced x y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ◇ "̥") -- add diacritic for voiceless
+           Just regularIPA → Just (regularIPA ⊕ "̥") -- add diacritic for voiceless
 
 -- Add the small circle diacritic to vowels to make them voiceless.
 constructIPARecursive recursionLimit recursionLevel (Vowel x y z Voiceless)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiced) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ◇ "̥")
+           Just regularIPA → Just (regularIPA ⊕ "̥")
 
 -- If there is no way to express a voiced consonant in a single
 -- grapheme add a diacritic to the grapheme that represents
@@ -964,31 +966,31 @@ constructIPARecursive recursionLimit recursionLevel  (Consonant Voiced x y z)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ◇ "̬")
+           Just regularIPA → Just (regularIPA ⊕ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  (Vowel x y z Voiced)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiceless) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ◇ "̬")
+           Just regularIPA → Just (regularIPA ⊕ "̬")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicedAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ◇ "ʰ")
+           Just regularIPA → Just (regularIPA ⊕ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant VoicelessAspirated _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ◇ "ʰ")
+           Just regularIPA → Just (regularIPA ⊕ "ʰ")
 
 constructIPARecursive recursionLimit recursionLevel  c@(Consonant CreakyVoiced _ _ PulmonicEgressive)
   | recursionLevel <  recursionLimit
     = case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
            Nothing         → Nothing
-           Just regularIPA → Just (regularIPA ◇ "̰")
+           Just regularIPA → Just (regularIPA ⊕ "̰")
 
 
 constructIPARecursive _ _ _
@@ -1564,7 +1566,7 @@ showFeatures ∷ [PhonemeFeature] → Text
 showFeatures features =
   let featuresStrings ∷ [Text]
       featuresStrings = map showPhonemeFeature features
-  in "[" ◇ T.intercalate "; " featuresStrings ◇ "]"
+  in "[" ⊕ T.intercalate "; " featuresStrings ⊕ "]"
 
 toTextFeatures ∷ Phonet → Text
 toTextFeatures phonete =
@@ -1576,10 +1578,10 @@ toTextFeatures phonete =
 showPhonet ∷ Phonet → Text
 showPhonet phonet =
   case phonet of
-    Consonant v p m a → showVocalFolds v ◇ " " ◇ showPlace p ◇ " " ◇ showManner m ◇ " " ◇ showAirstream a
-                               ◇ " consonant"
-    Vowel h b r v     → showVocalFolds v ◇ " " ◇ showRounding r ◇ " " ◇ showHeight h ◇ " " ◇ showBackness b
-                               ◇ " vowel"
+    Consonant v p m a → showVocalFolds v ⊕ " " ⊕ showPlace p ⊕ " " ⊕ showManner m ⊕ " " ⊕ showAirstream a
+                               ⊕ " consonant"
+    Vowel h b r v     → showVocalFolds v ⊕ " " ⊕ showRounding r ⊕ " " ⊕ showHeight h ⊕ " " ⊕ showBackness b
+                               ⊕ " vowel"
 
 
 
@@ -1675,12 +1677,12 @@ showPolarity Minus = "-"
 showPhonemeFeature ∷ PhonemeFeature → Text
 showPhonemeFeature phonemeFeature =
   case phonemeFeature of
-    (SyllabicFeature polarity)           → showPolarity polarity ◇ "syllabic"
-    (ConsonantalFeature polarity)        → showPolarity polarity ◇ "consonantal"
-    (SonorantFeature polarity)           → showPolarity polarity ◇ "sonorant"
-    (ContinuantFeature polarity)         → showPolarity polarity ◇ "continuant"
-    (VoiceFeature polarity)              → showPolarity polarity ◇ "voice"
-    (AdvancedTongueRootFeature polarity) → showPolarity polarity ◇ "ATR"
+    (SyllabicFeature polarity)           → showPolarity polarity ⊕ "syllabic"
+    (ConsonantalFeature polarity)        → showPolarity polarity ⊕ "consonantal"
+    (SonorantFeature polarity)           → showPolarity polarity ⊕ "sonorant"
+    (ContinuantFeature polarity)         → showPolarity polarity ⊕ "continuant"
+    (VoiceFeature polarity)              → showPolarity polarity ⊕ "voice"
+    (AdvancedTongueRootFeature polarity) → showPolarity polarity ⊕ "ATR"
     NasalFeature                         →                         "nasal"
     LateralFeature                       →                         "lateral"
     DelayedReleaseFeature                →                         "delayed release"
@@ -1691,10 +1693,10 @@ showPhonemeFeature phonemeFeature =
     DorsalFeature                        →                         "dorsal"
     PharyngealFeature                    →                         "pharyngeal"
     LaryngealFeature                     →                         "laryngeal"
-    (RoundFeature polarity)              → showPolarity polarity ◇ "round"
-    (AnteriorFeature polarity)           → showPolarity polarity ◇ "anterior"
-    (DistributedFeature polarity)        → showPolarity polarity ◇ "distributed"
-    (StridentFeature polarity)           → showPolarity polarity ◇ "strident"
-    (HighFeature polarity)               → showPolarity polarity ◇ "high"
-    (LowFeature polarity)                → showPolarity polarity ◇ "low"
-    (BackFeature polarity)               → showPolarity polarity ◇ "back"
+    (RoundFeature polarity)              → showPolarity polarity ⊕ "round"
+    (AnteriorFeature polarity)           → showPolarity polarity ⊕ "anterior"
+    (DistributedFeature polarity)        → showPolarity polarity ⊕ "distributed"
+    (StridentFeature polarity)           → showPolarity polarity ⊕ "strident"
+    (HighFeature polarity)               → showPolarity polarity ⊕ "high"
+    (LowFeature polarity)                → showPolarity polarity ⊕ "low"
+    (BackFeature polarity)               → showPolarity polarity ⊕ "back"
