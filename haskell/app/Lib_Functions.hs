@@ -257,23 +257,14 @@ englishPhonetInventory = PhonetInventory (fromList
 
 
   Vowel  Close Front   Unrounded Voiced, -- "i"
-  -- English lacks the following vowel: (Vowel  Close Front   Rounded   Voiced) "y"
-  -- English lacks (Vowel  Close Central Unrounded Voiced) "ɨ"
-  -- constructIPA (Vowel  Close Central Rounded   Voiced) = "ʉ"
-  -- English lacks constructIPA (Vowel  Close Back    Unrounded Voiced) = "ɯ"
   Vowel  Close Back    Rounded   Voiced, -- "u"
 
   -- Near-close Vowels:
   Vowel NearClose Front Unrounded Voiced, -- "ɪ"
-  -- English lacks: constructIPA (Vowel NearClose Front Rounded   Voiced) = "ʏ"
   Vowel NearClose Back  Rounded   Voiced, --  "ʊ"
 
   -- Close-mid Vowels:
   Vowel  CloseMid Front   Unrounded Voiced, -- "e"
-  -- English lacks:  Vowel  CloseMid Front   Rounded   Voiced -- "ø"
-  -- English lacks:  Vowel  CloseMid Central Unrounded Voiced -- "ɘ"
-  -- English lacks: Vowel  CloseMid Central Rounded   Voiced --  "ɵ"
-  -- English lacks:  Vowel  CloseMid Back    Unrounded Voiced --  "ɤ"
   Vowel  CloseMid Back    Rounded   Voiced, -- "o"
 
   -- Mid Vowels:
@@ -282,9 +273,7 @@ englishPhonetInventory = PhonetInventory (fromList
 
   -- Open-mid Vowels:
   Vowel  OpenMid Front   Unrounded Voiced, -- "ɛ"
-  -- English lacks: constructIPA (Vowel  OpenMid Front   Rounded   Voiced) = "œ"
   Vowel  OpenMid Central Unrounded Voiced, -- "ɜ"
-  --  Vowel  OpenMid Central Rounded   Voiced -- "ɞ"
   Vowel  OpenMid Back    Unrounded Voiced, --  "ʌ"
   Vowel  OpenMid Back    Rounded   Voiced, -- "ɔ"
 
@@ -293,8 +282,6 @@ englishPhonetInventory = PhonetInventory (fromList
   Vowel  NearOpen Central Unrounded  Voiced, -- "ɐ"
 
   -- Open Vowels:
-  -- English lacks: Vowel  Open Front Unrounded Voiced -- "a"
-  -- English lacks: Vowel  Open Front Rounded   Voiced --"ɶ"
   Vowel  Open Back  Unrounded Voiced, -- "ɑ"
   Vowel  Open Back  Rounded   Voiced -- "ɒ"
 
