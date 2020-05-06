@@ -972,7 +972,7 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
 
   c@(Consonant CreakyVoiced _ _ PulmonicEgressive) 
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
+    → case constructIPARecursive recursionLimit (1 + recursionLevel) (decreak c) of
         Just regularIPA → Just (regularIPA ⊕ "̰")
         Nothing         → Nothing
   _                        → Nothing
@@ -989,6 +989,10 @@ deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
 
 deaspirate x = x
 
+decreak ∷ Phonet → Phonet
+decreak (Consonant CreakyVoiced place manner airstream) = 
+  Consonant Voiced place manner airstream
+decreak x = x
 
 constructDeconstruct ∷ (Phonet → Phonet) → Text → Text
 constructDeconstruct func x =
