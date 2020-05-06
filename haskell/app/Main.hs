@@ -50,10 +50,9 @@ analyzeIPAToSPE ipaText =
 
 promptForPhonemeAndApply ∷ (Text → Text) → Text → IO ()
 promptForPhonemeAndApply func instructions =
-  do
-    putTextLn instructions
-    putPrompt
-    phoneme ← getLine
+    putTextLn instructions >>
+    putPrompt >>
+    getLine >>= \phoneme ->
     putTextLn (func phoneme)
 
 promptForPhonemeToDevoice ∷ IO ()
@@ -76,21 +75,24 @@ promptForPhonemeToCalculateSPEFeaturesFrom =
 
 main ∷ IO ()
 main =
-  do
     putTextLn "Please read README.md file for instructions on how to use."
-    putText menu
-    putPrompt
-    selection ← getLine
-    putTextLn ("The user selected: " ⊕ selection ⊕ "\n")
-    case selection of
-                   "1" → putText (showIPA englishPhonetInventory)
-                   "2" → promptForPhonemeToVoice
-                   "3" → promptForPhonemeToDevoice
-                   "4" → promptForPhonemeToDescribe
-                   "5" → promptForPhonemeToCalculateSPEFeaturesFrom
-                   _ → putStrLn "Unrecognized selection. No action taken."
+    >> putText menu
+    >> putPrompt
+    >> getLine
+    >>= handleSelection
+    >> putTextLn "\nProgram terminated normally.\n\n"
 
-    putTextLn "\nProgram terminated normally.\n\n"
+handleSelection ∷ Text → IO ()
+handleSelection selection =
+  putTextLn ("The user selected: " ⊕ selection ⊕ "\n")
+  >> case selection of
+          "1" → putText (showIPA englishPhonetInventory)
+          "2" → promptForPhonemeToVoice
+          "3" → promptForPhonemeToDevoice
+          "4" → promptForPhonemeToDescribe
+          "5" → promptForPhonemeToCalculateSPEFeaturesFrom
+          _ → putStrLn "Unrecognized selection. No action taken."
+
 
 
 doAnalyzeIPA ∷ Text → Text
