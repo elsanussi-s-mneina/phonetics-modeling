@@ -86,47 +86,45 @@ spirantizedPhonet p = case p of
 
 
 unmarkDifferences ∷ Phonet → Phonet → UnmarkablePhonet
-unmarkDifferences (Consonant voice1 place1 manner1 airstream1)
-                  (Consonant voice2 place2 manner2 airstream2) =
-  let voice'     = if voice1     ≡ voice2
-                     then MarkedVocalFolds voice1
-                     else UnmarkedVocalFolds
-      place'     = if place1     ≡ place2
-                     then MarkedPlace      place1
-                     else UnmarkedPlace
-      manner'    = if manner1    ≡ manner2
-                     then MarkedManner     manner1
-                     else UnmarkedManner
-      airstream' = if airstream1 ≡ airstream2
-                     then MarkedAirstream  airstream1
-                     else UnmarkedAirstream
-  in UnmarkableConsonant voice' place' manner' airstream'
+unmarkDifferences p1 p2 = case (p1, p2) of
+  (Consonant voice1 place1 manner1 airstream1, Consonant voice2 place2 manner2 airstream2) →
+    let voice'     = if voice1     ≡ voice2
+                      then MarkedVocalFolds voice1
+                      else UnmarkedVocalFolds
+        place'     = if place1     ≡ place2
+                      then MarkedPlace      place1
+                      else UnmarkedPlace
+        manner'    = if manner1    ≡ manner2
+                      then MarkedManner     manner1
+                      else UnmarkedManner
+        airstream' = if airstream1 ≡ airstream2
+                      then MarkedAirstream  airstream1
+                      else UnmarkedAirstream
+    in UnmarkableConsonant voice' place' manner' airstream'
 
-unmarkDifferences (Vowel height1 backness1 rounding1 voice1)
-                  (Vowel height2 backness2 rounding2 voice2) =
-  let voice'    = if voice1    ≡ voice2
-                    then MarkedVocalFolds voice1
-                    else UnmarkedVocalFolds
-      height'   = if height1   ≡ height2
-                    then MarkedHeight     height1
-                    else UnmarkedHeight
-      backness' = if backness1 ≡ backness2
-                    then MarkedBackness   backness1
-                    else UnmarkedBackness
-      rounding' = if rounding1 ≡ rounding2
-                    then MarkedRounding   rounding1
-                    else UnmarkedRounding
-  in UnmarkableVowel height' backness' rounding' voice'
+  (Vowel height1 backness1 rounding1 voice1, Vowel height2 backness2 rounding2 voice2) →
+    let voice'    = if voice1    ≡ voice2
+                      then MarkedVocalFolds voice1
+                      else UnmarkedVocalFolds
+        height'   = if height1   ≡ height2
+                      then MarkedHeight     height1
+                      else UnmarkedHeight
+        backness' = if backness1 ≡ backness2
+                      then MarkedBackness   backness1
+                      else UnmarkedBackness
+        rounding' = if rounding1 ≡ rounding2
+                      then MarkedRounding   rounding1
+                      else UnmarkedRounding
+    in UnmarkableVowel height' backness' rounding' voice'
 
-unmarkDifferences (Vowel _ _ _ voice1) (Consonant voice2 _ _ _) =
-  let voice' = if voice1 ≡ voice2
-                 then MarkedVocalFolds voice1
-                 else UnmarkedVocalFolds
-  in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
+  (Vowel _ _ _ voice1, Consonant voice2 _ _ _) →
+    let voice' = if voice1 ≡ voice2
+                   then MarkedVocalFolds voice1
+                   else UnmarkedVocalFolds
+    in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
-
-unmarkDifferences c@Consonant {} v@Vowel {} =
-  unmarkDifferences v c -- Change the order of arguments
+  (Consonant {}, Vowel {}) → 
+    unmarkDifferences p2 p1 -- Change the order of arguments
 
 
 
@@ -958,21 +956,21 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
            Nothing → Nothing
            Just regularIPA → Just (regularIPA ⊕ "̬")
 
-  c@(Consonant VoicedAspirated _ _ PulmonicEgressive)
+  (Consonant VoicedAspirated _ _ PulmonicEgressive)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
+    → case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate p) of
            Nothing         → Nothing
            Just regularIPA → Just (regularIPA ⊕ "ʰ")
 
-  c@(Consonant VoicelessAspirated _ _ PulmonicEgressive)
+  (Consonant VoicelessAspirated _ _ PulmonicEgressive)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate c) of
+    → case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate p) of
            Nothing         → Nothing
            Just regularIPA → Just (regularIPA ⊕ "ʰ")
 
-  c@(Consonant CreakyVoiced _ _ PulmonicEgressive) 
+  (Consonant CreakyVoiced _ _ PulmonicEgressive) 
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (decreak c) of
+    → case constructIPARecursive recursionLimit (1 + recursionLevel) (decreak p) of
         Just regularIPA → Just (regularIPA ⊕ "̰")
         Nothing         → Nothing
   _                        → Nothing
@@ -1127,10 +1125,11 @@ Consonants (that are not glides) are [+consonantal].
 (Source: page 258)
 |-}
 consonantal ∷ Phonet → Maybe PhonemeFeature
-consonantal Vowel {}  = Just (ConsonantalFeature Minus)
-consonantal consonant@Consonant {}
-  | isGlide consonant = Just (ConsonantalFeature Minus)
-  | otherwise         = Just (ConsonantalFeature Plus)
+consonantal p = case p of
+  Vowel {}      → Just (ConsonantalFeature Minus)
+  Consonant {}
+    | isGlide p → Just (ConsonantalFeature Minus)
+    | otherwise → Just (ConsonantalFeature Plus)
 
 
 {-|
@@ -1154,8 +1153,8 @@ sonorant p = case p of
   (Consonant _ _ Approximant _) → Just (SonorantFeature Plus)
   (Consonant _ _ Lateral     _) → Just (SonorantFeature Plus)
   Vowel {}                      → Just (SonorantFeature Plus)
-  consonant@Consonant {}
-            | isGlide consonant → Just (SonorantFeature Plus)
+  Consonant {}
+            | isGlide p         → Just (SonorantFeature Plus)
             | otherwise         → Just (SonorantFeature Minus)
 
 {-|
@@ -1184,9 +1183,9 @@ continuant p = case p of
   (Consonant _ _ Affricate          _) → Just (ContinuantFeature Minus)
   (Consonant _ _ Approximant        _) → Just (ContinuantFeature Plus)
   Vowel {}                             → Just (ContinuantFeature Plus)
-  consonant@Consonant {}
-                   | isGlide consonant → Just (ContinuantFeature Plus)
-                   | otherwise         → Nothing
+  Consonant {}
+    | isGlide p                        → Just (ContinuantFeature Plus)
+    | otherwise                        → Nothing
 
 {-|
 Nasal consonants are [nasal].
@@ -1341,17 +1340,19 @@ Creaky voiced sonorants have the feature [constricted glottis].
 (Source: page 262)
 |-}
 constrictedGlottis ∷ Phonet → Maybe PhonemeFeature
-constrictedGlottis (Consonant _ Glottal Plosive _) =
-  Just ConstrictedGlottisFeature
-constrictedGlottis consonant@(Consonant CreakyVoiced _ _ _) =
-  if sonorant consonant ≡ Just (SonorantFeature Plus)
-    then Just ConstrictedGlottisFeature
-    else Nothing
-constrictedGlottis vowel@(Vowel _ _ _ CreakyVoiced) =
-  if sonorant vowel ≡ Just (SonorantFeature Plus)
-    then Just ConstrictedGlottisFeature
-    else Nothing
-constrictedGlottis _  = Nothing
+constrictedGlottis p = case p of
+  (Consonant _ Glottal Plosive _) →
+    Just ConstrictedGlottisFeature
+  (Consonant CreakyVoiced _ _ _) →
+    if sonorant p ≡ Just (SonorantFeature Plus)
+      then Just ConstrictedGlottisFeature
+      else Nothing
+  (Vowel _ _ _ CreakyVoiced) →
+    if sonorant p ≡ Just (SonorantFeature Plus)
+      then Just ConstrictedGlottisFeature
+      else Nothing
+  _ → 
+    Nothing
 
 {-|
 Dentals are [+anterior].
