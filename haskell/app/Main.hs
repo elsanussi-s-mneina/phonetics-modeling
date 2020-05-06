@@ -5,9 +5,7 @@ module Main (main, doAnalyzeIPA, doConstructIPA) where
 
 import Prelude ()
 import Relude
-import Data.Monoid.Unicode
-  ( (⊕)
-  )
+import Data.Monoid.Unicode ( (⊕) )
 import Prelude.Unicode ((∘))
 
 import System.IO (hFlush)
@@ -75,23 +73,23 @@ promptForPhonemeToCalculateSPEFeaturesFrom =
 
 main ∷ IO ()
 main =
-    putTextLn "Please read README.md file for instructions on how to use."
-    >> putText menu
-    >> putPrompt
-    >> getLine
-    >>= handleSelection
-    >> putTextLn "\nProgram terminated normally.\n\n"
+  putTextLn "Please read README.md file for instructions on how to use."
+  >>  putText menu
+  >>  putPrompt
+  >>  getLine
+  >>= handleSelection
+  >>  putTextLn "\nProgram terminated normally.\n\n"
 
 handleSelection ∷ Text → IO ()
 handleSelection selection =
   putTextLn ("The user selected: " ⊕ selection ⊕ "\n")
   >> case selection of
-          "1" → putText (showIPA englishPhonetInventory)
-          "2" → promptForPhonemeToVoice
-          "3" → promptForPhonemeToDevoice
-          "4" → promptForPhonemeToDescribe
-          "5" → promptForPhonemeToCalculateSPEFeaturesFrom
-          _ → putStrLn "Unrecognized selection. No action taken."
+       "1" → putText (showIPA englishPhonetInventory)
+       "2" → promptForPhonemeToVoice
+       "3" → promptForPhonemeToDevoice
+       "4" → promptForPhonemeToDescribe
+       "5" → promptForPhonemeToCalculateSPEFeaturesFrom
+       _ → putStrLn "Unrecognized selection. No action taken."
 
 
 
