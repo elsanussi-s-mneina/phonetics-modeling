@@ -34,9 +34,9 @@ prompt = "(PROMPT:) "
 
 
 putPrompt ∷ IO ()
-putPrompt = do
-    putText prompt
-    hFlush stdout
+putPrompt =
+  putText prompt >>
+  hFlush stdout
 
 analyzeIPAToSPE ∷ Text → Text
 analyzeIPAToSPE ipaText =
