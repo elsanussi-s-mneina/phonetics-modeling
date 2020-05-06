@@ -1051,7 +1051,7 @@ relevantBinary ∷ (Polarity → PhonemeFeature) → PhonemeFeature → Bool
 relevantBinary feature otherFeature =
   otherFeature ≡ feature Plus ∨ otherFeature ≡ feature Minus
 
-binaryDifference ::
+binaryDifference ∷
           (Polarity → PhonemeFeature)
                     → [PhonemeFeature]
                     → [PhonemeFeature]
