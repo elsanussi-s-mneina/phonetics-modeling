@@ -435,7 +435,7 @@ Only support the voiceless diacritic so far.
   |-}
 preventProhibitedCombination ∷ Text → Text
 preventProhibitedCombination ss
-  | T.length ss ≡ 0 = ""
+  | T.null ss = ""
   | T.length ss ≡ 1 = ss
   | otherwise =
      let x = one (T.head ss) ∷ Text
