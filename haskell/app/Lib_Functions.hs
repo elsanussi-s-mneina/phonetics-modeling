@@ -84,47 +84,63 @@ spirantizedPhonet p = case p of
   other                            → other
 
 
-
 unmarkDifferences ∷ Phonet → Phonet → UnmarkablePhonet
 unmarkDifferences p1 p2 = case (p1, p2) of
   (Consonant voice1 place1 manner1 airstream1, Consonant voice2 place2 manner2 airstream2) →
-    let voice'     = if voice1     ≡ voice2
-                      then MarkedVocalFolds voice1
-                      else UnmarkedVocalFolds
-        place'     = if place1     ≡ place2
-                      then MarkedPlace      place1
-                      else UnmarkedPlace
-        manner'    = if manner1    ≡ manner2
-                      then MarkedManner     manner1
-                      else UnmarkedManner
-        airstream' = if airstream1 ≡ airstream2
-                      then MarkedAirstream  airstream1
-                      else UnmarkedAirstream
+    let voice'     = unmarkVoice voice1 voice2
+        place'     = unmarkPlace place1 place2
+        manner'    = unmarkManner manner1 manner2
+        airstream' = unmarkAirstream airstream1 airstream2
     in UnmarkableConsonant voice' place' manner' airstream'
 
   (Vowel height1 backness1 rounding1 voice1, Vowel height2 backness2 rounding2 voice2) →
-    let voice'    = if voice1    ≡ voice2
-                      then MarkedVocalFolds voice1
-                      else UnmarkedVocalFolds
-        height'   = if height1   ≡ height2
-                      then MarkedHeight     height1
-                      else UnmarkedHeight
-        backness' = if backness1 ≡ backness2
-                      then MarkedBackness   backness1
-                      else UnmarkedBackness
-        rounding' = if rounding1 ≡ rounding2
-                      then MarkedRounding   rounding1
-                      else UnmarkedRounding
+    let voice'    = unmarkVoice voice1 voice2
+        height'   = unmarkHeight height1 height2
+        backness' = unmarkBackness backness1 backness2
+        rounding' = unmarkRounding rounding1 rounding2
     in UnmarkableVowel height' backness' rounding' voice'
 
   (Vowel _ _ _ voice1, Consonant voice2 _ _ _) →
-    let voice' = if voice1 ≡ voice2
-                   then MarkedVocalFolds voice1
-                   else UnmarkedVocalFolds
+    let voice' = unmarkVoice voice1 voice2
     in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
   (Consonant {}, Vowel {}) → 
     unmarkDifferences p2 p1 -- Change the order of arguments
+  where 
+    unmarkVoice voice1 voice2 = 
+      if voice1 ≡ voice2
+        then MarkedVocalFolds voice1
+        else UnmarkedVocalFolds
+
+    unmarkPlace place1 place2 =
+      if place1 ≡ place2
+        then MarkedPlace place1
+        else UnmarkedPlace
+
+    unmarkManner manner1 manner2 =
+      if manner1 ≡ manner2
+        then MarkedManner manner1
+        else UnmarkedManner
+
+    unmarkAirstream airstream1 airstream2 =
+      if airstream1 ≡ airstream2
+        then MarkedAirstream  airstream1
+        else UnmarkedAirstream
+
+    unmarkHeight height1 height2 = 
+      if height1   ≡ height2
+        then MarkedHeight     height1
+        else UnmarkedHeight
+
+    unmarkBackness backness1 backness2 =
+      if backness1 ≡ backness2
+        then MarkedBackness   backness1
+        else UnmarkedBackness
+
+    unmarkRounding rounding1 rounding2 =
+      if rounding1 ≡ rounding2
+        then MarkedRounding   rounding1
+        else UnmarkedRounding
 
 
 
