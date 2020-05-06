@@ -7,7 +7,7 @@ import Lib_Types
 
 import Prelude ()
 import Relude
-  ( Bool(False, True)      , Int       , Maybe(Just, Nothing) , NonEmpty((:|)), Text
+  ( Bool(False, True), Natural, Maybe(Just, Nothing) , NonEmpty((:|)), Text
   , catMaybes , one , sconcat
   , filter                 , fmap      , fromMaybe, fromList, map  , maybe
   , otherwise              , toList, unwords
@@ -780,7 +780,7 @@ constructIPA ∷ Phonet → Text
 constructIPA phoneme =
   fromMaybe "∅" (constructIPARecursive 3 0 phoneme)
 
-constructIPARecursive ∷ Int → Int → Phonet → Maybe Text
+constructIPARecursive ∷ Natural → Natural → Phonet → Maybe Text
 -- Plosives:
 constructIPARecursive recursionLimit recursionLevel p = case p of
   _ | recursionLevel ≡ recursionLimit → Nothing
