@@ -297,7 +297,7 @@ englishPhonetInventory = PhonetInventory (fromList
 
 
 
-exponentials ∷ NonEmpty IPAText
+exponentials ∷ NonEmpty Text
 exponentials = fromList ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ⁿ" , "ˡ"]
 
 {-|
@@ -306,13 +306,13 @@ and to the right of the previous character,
 like how exponents of a power are written
 in mathematical notation.
 |-}
-isExponential ∷ IPAText → Bool
+isExponential ∷ Text → Bool
 isExponential character = character ∈ exponentials
 {-|
 Whether a diacritic goes above
 the character it is placed on.
 |-}
-isDiacriticAbove ∷ IPAText → Bool
+isDiacriticAbove ∷ Text → Bool
 isDiacriticAbove "̊" = True
 isDiacriticAbove  _  = False
 
@@ -320,7 +320,7 @@ isDiacriticAbove  _  = False
 Whether a diacritic goes below
 the character which it is placed on.
 |-}
-isDiacriticBelow ∷ IPAText → Bool
+isDiacriticBelow ∷ Text → Bool
 isDiacriticBelow "̥" = True
 isDiacriticBelow  _  = False
 
@@ -330,7 +330,7 @@ replaces it with one that goes below,
 and has the same meaning.
 otherwise does nothing.
   |-}
-lowerDiacritic ∷ IPAText → IPAText
+lowerDiacritic ∷ Text → Text
 lowerDiacritic "̊" = "̥"
 lowerDiacritic x  = x
 
@@ -341,7 +341,7 @@ replaces it with one that goes below, and
 has the same meaning;
 otherwise it does nothing.
   |-}
-raiseDiacritic ∷ IPAText → IPAText
+raiseDiacritic ∷ Text → Text
 raiseDiacritic "̥" = "̊"
 raiseDiacritic x  = x
 
@@ -356,17 +356,17 @@ This could be useful later for determining
 where to put diacritics so that
 they are readable.
 |-}
-ascenders ∷ NonEmpty IPAText
+ascenders ∷ NonEmpty Text
 ascenders = fromList
   ["b", "t", "d", "k", "ʔ", "f", "θ", "ð", "ħ", "ʕ", "h", "ɦ", "ɬ", "l", "ʎ",
   "ʘ", "ɓ", "ǀ", "ɗ", "ǃ", "ǂ", "ɠ", "ʄ", "ǁ", "ʛ", "ɺ", "ʢ", "ʡ", "ɤ", "ʈ", "ɖ",
   "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
 
 
-isAscender ∷ IPAText → Bool
+isAscender ∷ Text → Bool
 isAscender character = character ∈ ascenders
 
-descenders ∷ NonEmpty IPAText
+descenders ∷ NonEmpty Text
 descenders = fromList
   ["p", "ɟ", "g", "q", "ɱ", "ɽ", "ʒ", "ʂ", "ʐ", "ç", "ʝ", "ɣ", "χ", "ɻ", "j",
    "ɰ", "ɥ", "y", "ɳ", "ɲ", "ʈ", "ɖ", "ɸ", "β", "ʃ", "ɮ", "ɭ", "ɧ"]
@@ -382,7 +382,7 @@ This could be useful later for determining
 where to put diacritics so that
 they are readable.
 |-}
-isDescender ∷ IPAText → Bool
+isDescender ∷ Text → Bool
 isDescender character = character ∈ descenders
 
 
@@ -396,7 +396,7 @@ And vice-versa (above - below).
 
 Only support the voiceless diacritic so far.
   |-}
-preventProhibitedCombination ∷ IPAText → IPAText
+preventProhibitedCombination ∷ Text → Text
 preventProhibitedCombination ss
   | T.length ss ≡ 0 = ""
   | T.length ss ≡ 1 = ss
@@ -416,7 +416,7 @@ preventProhibitedCombination ss
 
 
 
-graphemesOfIPA ∷ NonEmpty IPAText
+graphemesOfIPA ∷ NonEmpty Text
 graphemesOfIPA = consonantsPulmonic
   ◇ consonantsNonPulmonic
   ◇ otherSymbols
@@ -428,7 +428,7 @@ graphemesOfIPA = consonantsPulmonic
 -- For the source of this information..
 
 -- CONSONANTS (PULMONIC)
-consonantsPulmonic ∷ NonEmpty IPAText
+consonantsPulmonic ∷ NonEmpty Text
 consonantsPulmonic
    = plosivePulmonic
    ◇ nasalPulmonic
@@ -440,23 +440,23 @@ consonantsPulmonic
    ◇ lateralApproximantPulmonic
 
 
-plosivePulmonic ∷ NonEmpty IPAText
+plosivePulmonic ∷ NonEmpty Text
 plosivePulmonic            = fromList
                              [ "p", "b",                     "t", "d"
                              , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ"
                              , "ʔ"
                              ] -- Plosive
 
-nasalPulmonic ∷ NonEmpty IPAText
+nasalPulmonic ∷ NonEmpty Text
 nasalPulmonic              = fromList ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"] -- Nasal
 
-trillPulmonic ∷ NonEmpty IPAText
+trillPulmonic ∷ NonEmpty Text
 trillPulmonic              = fromList [ "ʙ", "r", "ʀ"] -- Trill
 
-tapOrFlapPulmonic ∷ NonEmpty IPAText
+tapOrFlapPulmonic ∷ NonEmpty Text
 tapOrFlapPulmonic          = fromList [ "ⱱ", "ɾ", "ɽ"] -- Tap or Flap
 
-fricativePulmonic ∷ NonEmpty IPAText
+fricativePulmonic ∷ NonEmpty Text
 fricativePulmonic
   = fromList
   [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
@@ -464,19 +464,19 @@ fricativePulmonic
   , "h", "ɦ"
   ]  -- Fricative
 
-lateralFricativePulmonic ∷ NonEmpty IPAText
+lateralFricativePulmonic ∷ NonEmpty Text
 lateralFricativePulmonic   = fromList [ "ɬ", "ɮ" ] -- Lateral fricative
 
-approximantPulmonic ∷ NonEmpty IPAText
+approximantPulmonic ∷ NonEmpty Text
 approximantPulmonic        = fromList [ "ʋ", "ɻ", "j", "ɰ" ] -- Approximant
 
-lateralApproximantPulmonic ∷ NonEmpty IPAText
+lateralApproximantPulmonic ∷ NonEmpty Text
 lateralApproximantPulmonic = fromList [ "l", "ɭ", "ʎ", "ʟ" ] -- Lateral approximant
 
 
 
 
-consonantsNonPulmonic ∷ NonEmpty IPAText
+consonantsNonPulmonic ∷ NonEmpty Text
 consonantsNonPulmonic = fromList
 -- Clicks   Voiced implosives
  [ "ʘ",     "ɓ" -- Bilabial
@@ -486,7 +486,7 @@ consonantsNonPulmonic = fromList
  , "ǁ",  "ʛ"
  ]
 
-otherSymbols ∷ NonEmpty IPAText
+otherSymbols ∷ NonEmpty Text
 otherSymbols = fromList
   ["ʍ",  "ɕ"
   ,"w",  "ʑ"
@@ -496,7 +496,7 @@ otherSymbols = fromList
   ,"ʡ"
   ]
 
-vowels ∷ NonEmpty IPAText
+vowels ∷ NonEmpty Text
 vowels = fromList
   ["i", "y",   "ɨ", "ʉ",   "ɯ", "u"   -- Close
   ,"ɪ", "ʏ",            "ʊ"
@@ -507,7 +507,7 @@ vowels = fromList
   , "a", "ɶ",              "ɑ", "ɒ"  -- Open
   ]
 
-suprasegmentals ∷ NonEmpty IPAText
+suprasegmentals ∷ NonEmpty Text
 suprasegmentals = fromList
   [ "ˈ"   -- Primary stress
   , "ˌ"   -- Secondary stress
@@ -522,7 +522,7 @@ suprasegmentals = fromList
   ]
 
 
-toneAndWordAccents ∷ NonEmpty IPAText
+toneAndWordAccents ∷ NonEmpty Text
 toneAndWordAccents = fromList
 {- Level -}
   [ "˥", "̋"  -- Extra high
@@ -543,7 +543,7 @@ toneAndWordAccents = fromList
   , "↘" -- Global fall
   ]
 
-diacriticsAndSuprasegmentals ∷ NonEmpty IPAText
+diacriticsAndSuprasegmentals ∷ NonEmpty Text
 diacriticsAndSuprasegmentals = fromList
   [ "ʰ"  -- Aspirated
   , "ʷ"  -- Labialised
@@ -576,7 +576,7 @@ diacriticsAndSuprasegmentals = fromList
   , "̇"    -- Palatalization/Centralization
   ]
 
-showIPA ∷ PhonetInventory → IPAText
+showIPA ∷ PhonetInventory → Text
 showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
 
 
@@ -584,7 +584,7 @@ showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
 -- | This function will allow us to convert an IPA symbol
 -- | to its analyzed form (its phonetic features)
 -- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
-analyzeIPA  ∷ IPAText → Maybe Phonet
+analyzeIPA  ∷ Text → Maybe Phonet
 
 
 -- | This function will allow us to convert an IPA symbol
@@ -779,11 +779,11 @@ analyzeIPA ipaText =
     _ → Nothing -- not recognized.
 
 
-constructIPA ∷ Phonet → IPAText
+constructIPA ∷ Phonet → Text
 constructIPA phoneme =
   fromMaybe "∅" (constructIPARecursive 3 0 phoneme)
 
-constructIPARecursive ∷ Int → Int → Phonet → Maybe IPAText
+constructIPARecursive ∷ Int → Int → Phonet → Maybe Text
 constructIPARecursive recursionLimit recursionLevel _
   | recursionLevel ≡ recursionLimit = Nothing
 
@@ -996,20 +996,20 @@ deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
 deaspirate x = x
 
 
-constructDeconstruct ∷ (Phonet → Phonet) → IPAText → IPAText
+constructDeconstruct ∷ (Phonet → Phonet) → Text → Text
 constructDeconstruct func x =
   let something = analyzeIPA x
   in case something of
        Nothing → "∅"
        Just phonet → constructIPA (func phonet)
 
-voicedIPA ∷ IPAText → IPAText
+voicedIPA ∷ Text → Text
 voicedIPA = constructDeconstruct voicedPhonet
 
-devoicedIPA ∷ IPAText → IPAText
+devoicedIPA ∷ Text → Text
 devoicedIPA = constructDeconstruct devoicedPhonet
 
-spirantizedIPA ∷ IPAText → IPAText
+spirantizedIPA ∷ Text → Text
 spirantizedIPA = constructDeconstruct spirantizedPhonet
 
 
@@ -1018,7 +1018,7 @@ Return an english description of a phoneme,
 given a phoneme's representation in the
 international phonetic alphabet.
   |-}
-describeIPA ∷ IPAText → Text
+describeIPA ∷ Text → Text
 describeIPA x =
   maybe "(no English description found.)" showPhonet (analyzeIPA x)
 

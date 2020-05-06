@@ -2,7 +2,7 @@
 {-# LANGUAGE DerivingStrategies #-}
 
 module Lib_Types where
-import Relude (Bool(True, False), Eq((==)), NonEmpty, Text, fromList)
+import Relude (Bool(True, False), Eq((==)), NonEmpty, fromList)
 import Prelude ()
 
 import Data.Foldable.Unicode ((∈))
@@ -178,7 +178,7 @@ data UnmarkableManner
 
 
 mannerStates ∷ NonEmpty Manner
-mannerStates = fromList 
+mannerStates = fromList
                [ Plosive
                , Nasal
                , Trill
@@ -252,10 +252,6 @@ instance Eq Place where
   Places x     == y                   = y == Places x
   _            == _                   = False
 
-
-
-type IPAText = Text
--- For storing text meant to be interpreted as International phonetic alphabet
 
 
 {-|
@@ -353,6 +349,3 @@ data PhonemeFeature = SyllabicFeature Polarity
                     | LowFeature Polarity
                     | BackFeature Polarity
                     deriving stock Eq
-
-
-
