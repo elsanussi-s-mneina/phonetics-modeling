@@ -98,7 +98,7 @@ handleSelection selection =
        "3" → promptForPhonemeToDevoice
        "4" → promptForPhonemeToDescribe
        "5" → promptForPhonemeToCalculateSPEFeaturesFrom
-       _ → putStrLn "Unrecognized selection. No action taken."
+       _ → putTextLn "Unrecognized selection. No action taken."
 
 
 
