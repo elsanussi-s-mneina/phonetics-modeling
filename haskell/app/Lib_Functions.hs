@@ -49,7 +49,8 @@ englishDescription ∷ Phonet → Text
 englishDescription = showPhonet
 
 
--- | A function that given an IPA symbol will convert it to the voiced equivalent.
+-- | A function that given an IPA symbol will convert it to the voiced
+-- |equivalent.
 voicedPhonet ∷ Phonet → Phonet
 voicedPhonet p = case p of
   (Consonant   VoicelessAspirated x y z) → Consonant   VoicedAspirated x y z
@@ -59,7 +60,8 @@ voicedPhonet p = case p of
   (Consonant   _                  x y z) → Consonant   Voiced x y z
   (Vowel x y z _                       ) → Vowel x y z Voiced
 
--- | A function that given an IPA symbol will convert it to the voiceless equivalent.
+-- | A function that given an IPA symbol will convert it to the voiceless
+-- | equivalent.
 devoicedPhonet ∷ Phonet → Phonet
 devoicedPhonet p = case p of
   (Consonant   Voiced             x y z) → Consonant   Voiceless          x y z
@@ -75,7 +77,8 @@ spirantizedPhonet ∷ Phonet → Phonet
 
 -- The following is inelegant, but there is no other way in the system,
 -- right now. The part that is inelegant is that,
--- a [t] which is considered alveolar, when spirantized becomes [θ] which is dental.
+-- a [t] which is considered alveolar, when spirantized becomes [θ]
+-- which is dental.
 -- So the following line implements this
 -- change in place of articulation.
 spirantizedPhonet p = case p of
@@ -86,28 +89,32 @@ spirantizedPhonet p = case p of
 
 unmarkDifferences ∷ Phonet → Phonet → UnmarkablePhonet
 unmarkDifferences p1 p2 = case (p1, p2) of
-  (Consonant voice1 place1 manner1 airstream1, Consonant voice2 place2 manner2 airstream2) →
+  ( Consonant voice1 place1 manner1 airstream1
+    , Consonant voice2 place2 manner2 airstream2) →
     let voice'     = unmarkVoice voice1 voice2
         place'     = unmarkPlace place1 place2
         manner'    = unmarkManner manner1 manner2
         airstream' = unmarkAirstream airstream1 airstream2
     in UnmarkableConsonant voice' place' manner' airstream'
 
-  (Vowel height1 backness1 rounding1 voice1, Vowel height2 backness2 rounding2 voice2) →
+  ( Vowel height1 backness1 rounding1 voice1
+    , Vowel height2 backness2 rounding2 voice2) →
     let voice'    = unmarkVoice voice1 voice2
         height'   = unmarkHeight height1 height2
         backness' = unmarkBackness backness1 backness2
         rounding' = unmarkRounding rounding1 rounding2
     in UnmarkableVowel height' backness' rounding' voice'
 
-  (Vowel _ _ _ voice1, Consonant voice2 _ _ _) →
+  ( Vowel _ _ _ voice1
+    , Consonant voice2 _ _ _) →
     let voice' = unmarkVoice voice1 voice2
     in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
-  (Consonant {}, Vowel {}) → 
+  ( Consonant {}
+    , Vowel {}) →
     unmarkDifferences p2 p1 -- Change the order of arguments
-  where 
-    unmarkVoice voice1 voice2 = 
+  where
+    unmarkVoice voice1 voice2 =
       if voice1 ≡ voice2
         then MarkedVocalFolds voice1
         else UnmarkedVocalFolds
@@ -127,7 +134,7 @@ unmarkDifferences p1 p2 = case (p1, p2) of
         then MarkedAirstream  airstream1
         else UnmarkedAirstream
 
-    unmarkHeight height1 height2 = 
+    unmarkHeight height1 height2 =
       if height1   ≡ height2
         then MarkedHeight     height1
         else UnmarkedHeight
@@ -212,21 +219,36 @@ unmarkableRoundingToList rounding1 =
 -- Does not work for other values.
 impossible ∷ Phonet → Bool
 impossible p = case p of
-  (Consonant Voiced          Pharyngeal  Plosive            PulmonicEgressive) → True
-  (Consonant VoicedAspirated Pharyngeal  Plosive            PulmonicEgressive) → True
-  (Consonant Voiceless       Glottal     Plosive            PulmonicEgressive) → False  -- [ʔ] is not impossible.
-  (Consonant _               Glottal     Fricative          PulmonicEgressive) → False  -- [h] and [ɦ] are not impossible.
-  (Consonant _               Glottal     _                  PulmonicEgressive) → True   -- all other pulmonary egressive consonants are impossible..
-  (Consonant _               Pharyngeal  Nasal              PulmonicEgressive) → True
-  (Consonant _               Pharyngeal  LateralFricative   PulmonicEgressive) → True
-  (Consonant _               Pharyngeal  LateralApproximant PulmonicEgressive) → True
-  (Consonant _               Velar       Trill              PulmonicEgressive) → True
-  (Consonant _               Velar       TapOrFlap          PulmonicEgressive) → True
-  (Consonant _               Bilabial    LateralFricative   PulmonicEgressive) → True
-  (Consonant _               Bilabial    LateralApproximant PulmonicEgressive) → True
-  (Consonant _               LabioDental LateralFricative   PulmonicEgressive) → True
-  (Consonant _               LabioDental LateralApproximant PulmonicEgressive) → True
-  _                                                                            → False -- Everything else is assumed to be possible.
+  (Consonant Voiced          Pharyngeal  Plosive            PulmonicEgressive)
+    → True
+  (Consonant VoicedAspirated Pharyngeal  Plosive            PulmonicEgressive)
+    → True
+  (Consonant Voiceless       Glottal     Plosive            PulmonicEgressive)
+    → False  -- [ʔ] is not impossible.
+  (Consonant _               Glottal     Fricative          PulmonicEgressive)
+    → False  -- [h] and [ɦ] are not impossible.
+  (Consonant _               Glottal     _                  PulmonicEgressive)
+    → True   -- all other pulmonary egressive consonants are impossible..
+  (Consonant _               Pharyngeal  Nasal              PulmonicEgressive)
+    → True
+  (Consonant _               Pharyngeal  LateralFricative   PulmonicEgressive)
+    → True
+  (Consonant _               Pharyngeal  LateralApproximant PulmonicEgressive)
+    → True
+  (Consonant _               Velar       Trill              PulmonicEgressive)
+    → True
+  (Consonant _               Velar       TapOrFlap          PulmonicEgressive)
+    → True
+  (Consonant _               Bilabial    LateralFricative   PulmonicEgressive)
+    → True
+  (Consonant _               Bilabial    LateralApproximant PulmonicEgressive)
+    → True
+  (Consonant _               LabioDental LateralFricative   PulmonicEgressive)
+    → True
+  (Consonant _               LabioDental LateralApproximant PulmonicEgressive)
+    → True
+  _
+    → False -- Everything else is assumed to be possible.
 
 
 
@@ -299,16 +321,16 @@ englishPhonetInventory = PhonetInventory (fromList
   -- Open Vowels:
   Vowel  Open Back  Unrounded Voiced, -- "ɑ"
   Vowel  Open Back  Rounded   Voiced -- "ɒ"
-
-  -- I added some English vowels. I did not choose any specific dialect.
-  -- I got all my information from the Wikipedia page titled
-  -- "English Phonology"
-  -- at the following URL: https://en.wikipedia.org/wiki/English_phonology#Vowels
-  -- on Monday, February 24, 2020.
-  -- To do: Get better information on English vowels from a more reliable source.
-  -- To do: model separate dialects of English or only one.
   ]
   )
+-- I added some English vowels. I did not choose any specific dialect.
+-- I got all my information from the Wikipedia page titled
+-- "English Phonology"
+-- at the following URL: https://en.wikipedia.org/wiki/English_phonology#Vowels
+-- on Monday, February 24, 2020.
+-- To do: Get better information on English vowels from a more reliable source.
+-- To do: model separate dialects of English or only one.
+
 
 
 
@@ -439,7 +461,8 @@ graphemesOfIPA = consonantsPulmonic
   ◇ suprasegmentals
   ◇ toneAndWordAccents
   ◇ diacriticsAndSuprasegmentals
--- See: https://www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
+-- See:
+--www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
 -- For the source of this information..
 
 -- CONSONANTS (PULMONIC)
@@ -460,16 +483,16 @@ plosivePulmonic            = fromList
                              [ "p", "b",                     "t", "d"
                              , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ"
                              , "ʔ"
-                             ] -- Plosive
+                             ]
 
 nasalPulmonic ∷ NonEmpty Text
-nasalPulmonic              = fromList ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"] -- Nasal
+nasalPulmonic              = fromList ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"]
 
 trillPulmonic ∷ NonEmpty Text
-trillPulmonic              = fromList [ "ʙ", "r", "ʀ"] -- Trill
+trillPulmonic              = fromList [ "ʙ", "r", "ʀ"]
 
 tapOrFlapPulmonic ∷ NonEmpty Text
-tapOrFlapPulmonic          = fromList [ "ⱱ", "ɾ", "ɽ"] -- Tap or Flap
+tapOrFlapPulmonic          = fromList [ "ⱱ", "ɾ", "ɽ"]
 
 fricativePulmonic ∷ NonEmpty Text
 fricativePulmonic
@@ -477,16 +500,16 @@ fricativePulmonic
   [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
   , "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ"
   , "h", "ɦ"
-  ]  -- Fricative
+  ]
 
 lateralFricativePulmonic ∷ NonEmpty Text
-lateralFricativePulmonic   = fromList [ "ɬ", "ɮ" ] -- Lateral fricative
+lateralFricativePulmonic   = fromList [ "ɬ", "ɮ" ]
 
 approximantPulmonic ∷ NonEmpty Text
-approximantPulmonic        = fromList [ "ʋ", "ɻ", "j", "ɰ" ] -- Approximant
+approximantPulmonic        = fromList [ "ʋ", "ɻ", "j", "ɰ" ]
 
 lateralApproximantPulmonic ∷ NonEmpty Text
-lateralApproximantPulmonic = fromList [ "l", "ɭ", "ʎ", "ʟ" ] -- Lateral approximant
+lateralApproximantPulmonic = fromList [ "l", "ɭ", "ʎ", "ʟ" ]
 
 
 
@@ -702,23 +725,27 @@ analyzeIPA p = case p of
   "ɥ" → Just (Consonant Voiced    LabialPalatal  Approximant PulmonicEgressive)
   "ʜ" → Just (Consonant Voiceless Epiglottal     Fricative   PulmonicEgressive)
   "ʢ" → Just (Consonant Voiced    Epiglottal     Fricative   PulmonicEgressive)
-  "ʡ" → Just (Consonant Voiceless Epiglottal     Plosive     PulmonicEgressive) -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
+  "ʡ" → Just (Consonant Voiceless Epiglottal     Plosive     PulmonicEgressive)
+  -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
   "ɕ" → Just (Consonant Voiceless AlveoloPalatal Fricative   PulmonicEgressive)
   "ʑ" → Just (Consonant Voiced    AlveoloPalatal Fricative   PulmonicEgressive)
   "ɺ" → Just (Consonant Voiced    Alveolar       LateralFlap PulmonicEgressive)
-  "ɧ" → Just (Consonant Voiceless (Places (PostAlveolar :| [Velar])) Fricative PulmonicEgressive)
+  "ɧ" → Just (Consonant Voiceless (Places (PostAlveolar :| [Velar]))
+              Fricative PulmonicEgressive)
 
 -- Other Consonants:
-  "ʘ" → Just (Consonant Voiceless          Bilabial       Plosive        Click    )
-  "ǀ" → Just (Consonant Voiceless          Dental         Plosive        Click    )
-  "ǃ" → Just (Consonant Voiceless          Alveolar       Plosive        Click    ) -- Or it could be PostAlveolar.
-  "ǂ" → Just (Consonant Voiceless          PalatoAlveolar Plosive        Click    )
-  "ǁ" → Just (Consonant Voiceless          Alveolar       Lateral        Click    )
-  "ɓ" → Just (Consonant Voiced             Bilabial       Plosive        Implosive)
-  "ɗ" → Just (Consonant Voiced             Dental         Plosive        Implosive)  -- Or Alveolar
-  "ʄ" → Just (Consonant Voiced             Palatal        Plosive        Implosive)
-  "ɠ" → Just (Consonant Voiced             Velar          Plosive        Implosive)
-  "ʛ" → Just (Consonant Voiced             Uvular         Plosive        Implosive)
+  "ʘ" → Just (Consonant Voiceless Bilabial       Plosive  Click    )
+  "ǀ" → Just (Consonant Voiceless  Dental         Plosive  Click    )
+  "ǃ" → Just (Consonant Voiceless  Alveolar       Plosive  Click    )
+  --  "ǃ" could also be PostAlveolar.
+  "ǂ" → Just (Consonant Voiceless PalatoAlveolar Plosive  Click    )
+  "ǁ" → Just (Consonant Voiceless  Alveolar       Lateral  Click    )
+  "ɓ" → Just (Consonant Voiced     Bilabial      Plosive  Implosive)
+  "ɗ" → Just (Consonant Voiced     Dental        Plosive  Implosive)
+  -- "ɗ" could also be Alveolar
+  "ʄ" → Just (Consonant Voiced     Palatal       Plosive  Implosive)
+  "ɠ" → Just (Consonant Voiced     Velar         Plosive  Implosive)
+  "ʛ" → Just (Consonant Voiced     Uvular        Plosive  Implosive)
 
 -- Close Vowels:
   "i"  → Just (Vowel  Close Front   Unrounded Voiced)
@@ -769,25 +796,37 @@ analyzeIPA p = case p of
       "̥" →
         let fullGrapheme = analyzeIPA (T.init ipaText)
         in case fullGrapheme of
-                Just (Consonant _ place manner airstream)    → Just (Consonant Voiceless place manner airstream)
-                Just (Vowel height backness rounding _  )    → Just (Vowel height backness rounding Voiceless)
-                _                                            → Nothing
+                Just (Consonant _ place manner airstream)
+                  → Just (Consonant Voiceless place manner airstream)
+                Just (Vowel height backness rounding _  )
+                  → Just (Vowel height backness rounding Voiceless)
+                _
+                  → Nothing
       "̬" →
         let fullGrapheme = analyzeIPA (T.init ipaText)
         in case fullGrapheme of
-                Just (Consonant _ place manner airstream)    → Just (Consonant Voiced place manner airstream)
-                Just (Vowel height backness rounding _  )    → Just (Vowel height backness rounding Voiced)
-                _                                            → Nothing
+                Just (Consonant _ place manner airstream)
+                  → Just (Consonant Voiced place manner airstream)
+                Just (Vowel height backness rounding _  )
+                  → Just (Vowel height backness rounding Voiced)
+                _
+                  → Nothing
 
       "ʰ" →
         let fullGrapheme = analyzeIPA (T.init ipaText)
         in case fullGrapheme of
-                Just (Consonant Voiced place manner airstream   ) → Just (Consonant VoicedAspirated    place manner airstream)
-                Just (Consonant Voiceless place manner airstream) → Just (Consonant VoicelessAspirated place manner airstream)
-                Just (Vowel height backness rounding voicing    ) → Just (Vowel height backness rounding voicing             )
-                anythingElse                                      → anythingElse
-                -- (About the preceding line:) It is strange but we will just do nothing if they give us an aspirated vowel.
-                -- since we have no way to represent it in the type system. to do: determine
+                Just (Consonant Voiced place manner airstream   )
+                  → Just (Consonant VoicedAspirated    place manner airstream)
+                Just (Consonant Voiceless place manner airstream)
+                  → Just (Consonant VoicelessAspirated place manner airstream)
+                Just (Vowel height backness rounding voicing    )
+                  → Just (Vowel height backness rounding voicing             )
+                anythingElse
+                  → anythingElse
+                -- (About the preceding line:) It is strange but we will just
+                -- do nothing if they give us an aspirated vowel.
+                -- since we have no way to represent it in the type system.
+                -- to do: determine
                 -- if the idea of an aspirated vowel makes sense
       _ → Nothing -- not recognized.
 
@@ -800,127 +839,246 @@ constructIPARecursive ∷ Natural → Natural → Phonet → Maybe Text
 -- Plosives:
 constructIPARecursive recursionLimit recursionLevel p = case p of
   _ | recursionLevel ≡ recursionLimit → Nothing
-  (Consonant  Voiceless          Bilabial                       Plosive            PulmonicEgressive) → Just "p"
-  (Consonant  Voiced             Bilabial                       Plosive            PulmonicEgressive) → Just "b"
-  (Consonant  Voiceless          Alveolar                       Plosive            PulmonicEgressive) → Just "t"
-  (Consonant  Voiced             Alveolar                       Plosive            PulmonicEgressive) → Just "d"
-  (Consonant  Voiceless          Retroflex                      Plosive            PulmonicEgressive) → Just "ʈ"
-  (Consonant  Voiced             Retroflex                      Plosive            PulmonicEgressive) → Just "ɖ"
-  (Consonant  Voiceless          Palatal                        Plosive            PulmonicEgressive) → Just "c"
-  (Consonant  Voiced             Palatal                        Plosive            PulmonicEgressive) → Just "ɟ"
-  (Consonant  Voiceless          Velar                          Plosive            PulmonicEgressive) → Just "k"
-  (Consonant  Voiced             Velar                          Plosive            PulmonicEgressive) → Just "g"
-  (Consonant  Voiceless          Uvular                         Plosive            PulmonicEgressive) → Just "q"
-  (Consonant  Voiced             Uvular                         Plosive            PulmonicEgressive) → Just "ɢ"
-  (Consonant  Voiceless          Glottal                        Plosive            PulmonicEgressive) → Just "ʔ"  -- Nasals (next line):
-  (Consonant  Voiced             Bilabial                       Nasal              PulmonicEgressive) → Just "m"
-  (Consonant  Voiced             LabioDental                    Nasal              PulmonicEgressive) → Just "ɱ"
-  (Consonant  Voiced             Alveolar                       Nasal              PulmonicEgressive) → Just "n"
-  (Consonant  Voiced             Retroflex                      Nasal              PulmonicEgressive) → Just "ɳ"
-  (Consonant  Voiced             Palatal                        Nasal              PulmonicEgressive) → Just "ɲ"
-  (Consonant  Voiced             Velar                          Nasal              PulmonicEgressive) → Just "ŋ"
-  (Consonant  Voiced             Uvular                         Nasal              PulmonicEgressive) → Just "ɴ"  -- Trills (next line):
-  (Consonant  Voiced             Bilabial                       Trill              PulmonicEgressive) → Just "ʙ"
-  (Consonant  Voiced             Alveolar                       Trill              PulmonicEgressive) → Just "r"
-  (Consonant  Voiced             Uvular                         Trill              PulmonicEgressive) → Just "ʀ"  -- Taps or flaps (next line):
-  (Consonant  Voiced             LabioDental                    TapOrFlap          PulmonicEgressive) → Just "ⱱ"
-  (Consonant  Voiced             Alveolar                       TapOrFlap          PulmonicEgressive) → Just "ɾ"
-  (Consonant  Voiced             Retroflex                      TapOrFlap          PulmonicEgressive) → Just "ɽ"  -- Fricatives (next line):
-  (Consonant  Voiceless          Bilabial                       Fricative          PulmonicEgressive) → Just "ɸ"
-  (Consonant  Voiced             Bilabial                       Fricative          PulmonicEgressive) → Just "β"
-  (Consonant  Voiceless          LabioDental                    Fricative          PulmonicEgressive) → Just "f"
-  (Consonant  Voiced             LabioDental                    Fricative          PulmonicEgressive) → Just "v"
-  (Consonant  Voiceless          Dental                         Fricative          PulmonicEgressive) → Just "θ"
-  (Consonant  Voiced             Dental                         Fricative          PulmonicEgressive) → Just "ð"
-  (Consonant  Voiceless          Alveolar                       Fricative          PulmonicEgressive) → Just "s"
-  (Consonant  Voiced             Alveolar                       Fricative          PulmonicEgressive) → Just "z"
-  (Consonant  Voiceless          PostAlveolar                   Fricative          PulmonicEgressive) → Just "ʃ"
-  (Consonant  Voiced             PostAlveolar                   Fricative          PulmonicEgressive) → Just "ʒ"
-  (Consonant  Voiceless          Retroflex                      Fricative          PulmonicEgressive) → Just "ʂ"
-  (Consonant  Voiced             Retroflex                      Fricative          PulmonicEgressive) → Just "ʐ"
-  (Consonant  Voiceless          Palatal                        Fricative          PulmonicEgressive) → Just "ç"
-  (Consonant  Voiced             Palatal                        Fricative          PulmonicEgressive) → Just "ʝ"
-  (Consonant  Voiceless          Velar                          Fricative          PulmonicEgressive) → Just "x"
-  (Consonant  Voiced             Velar                          Fricative          PulmonicEgressive) → Just "ɣ"
-  (Consonant  Voiceless          Uvular                         Fricative          PulmonicEgressive) → Just "χ"
-  (Consonant  Voiced             Uvular                         Fricative          PulmonicEgressive) → Just "ʁ"
-  (Consonant  Voiceless          Pharyngeal                     Fricative          PulmonicEgressive) → Just "ħ"
-  (Consonant  Voiced             Pharyngeal                     Fricative          PulmonicEgressive) → Just "ʕ"
-  (Consonant  Voiceless          Glottal                        Fricative          PulmonicEgressive) → Just "h"
-  (Consonant  Voiced             Glottal                        Fricative          PulmonicEgressive) → Just "ɦ"  -- Lateral Fricatives (next line):
-  (Consonant  Voiceless          Alveolar                       LateralFricative   PulmonicEgressive) → Just "ɬ"
-  (Consonant  Voiced             Alveolar                       LateralFricative   PulmonicEgressive) → Just "ɮ" -- Approximants (next line):
-  (Consonant  Voiced             LabioDental                    Approximant        PulmonicEgressive) → Just "ʋ"
-  (Consonant  Voiced             Alveolar                       Approximant        PulmonicEgressive) → Just "ɹ"
-  (Consonant  Voiced             Retroflex                      Approximant        PulmonicEgressive) → Just "ɻ"
-  (Consonant  Voiced             Palatal                        Approximant        PulmonicEgressive) → Just "j"
-  (Consonant  Voiced             Velar                          Approximant        PulmonicEgressive) → Just "ɰ"  -- Lateral Approximants (next line):
-  (Consonant  Voiced             Alveolar                       LateralApproximant PulmonicEgressive) → Just "l"
-  (Consonant  Voiced             Retroflex                      LateralApproximant PulmonicEgressive) → Just "ɭ"
-  (Consonant  Voiced             Palatal                        LateralApproximant PulmonicEgressive) → Just "ʎ"
-  (Consonant  Voiced             Velar                          LateralApproximant PulmonicEgressive) → Just "ʟ" -- Affricates (next line)
-  (Consonant  Voiceless          PostAlveolar                   Affricate          PulmonicEgressive) → Just "t͡ʃ"
-  (Consonant  Voiced             PostAlveolar                   Affricate          PulmonicEgressive) → Just "d͡ʒ"
-  (Consonant  Voiceless          Bilabial                       Affricate          PulmonicEgressive) → Just "p͡ɸ"
-  (Consonant  Voiceless          Alveolar                       Affricate          PulmonicEgressive) → Just "t͜s"
-  (Consonant  Voiced             Alveolar                       Affricate          PulmonicEgressive) → Just "d͡z"
-  (Consonant  Voiceless          Velar                          Affricate          PulmonicEgressive) → Just "k͡x"
-  (Consonant  Voiceless          Uvular                         Affricate          PulmonicEgressive) → Just "q͡χ" -- Under the Other Symbols part of the IPA chart:
-  (Consonant  Voiced             LabialVelar                    Approximant        PulmonicEgressive) → Just "w"
-  (Consonant  Voiceless          LabialVelar                    Fricative          PulmonicEgressive) → Just "ʍ"
-  (Consonant  Voiced             LabialPalatal                  Approximant        PulmonicEgressive) → Just "ɥ"
-  (Consonant  Voiceless          Epiglottal                     Fricative          PulmonicEgressive) → Just "ʜ"
-  (Consonant  Voiced             Epiglottal                     Fricative          PulmonicEgressive) → Just "ʢ"
-  (Consonant  Voiceless          Epiglottal                     Plosive            PulmonicEgressive) → Just "ʡ"-- Is the epiglottal plosive voiceless? The IPA chart does not specify.
-  (Consonant  Voiceless          AlveoloPalatal                 Fricative          PulmonicEgressive) → Just "ɕ"
-  (Consonant  Voiced             AlveoloPalatal                 Fricative          PulmonicEgressive) → Just "ʑ"
-  (Consonant  Voiced             Alveolar                       LateralFlap        PulmonicEgressive) → Just "ɺ"
-  (Consonant  Voiceless          (Places (PostAlveolar :| [Velar])) Fricative          PulmonicEgressive) → Just "ɧ" -- Other Consonants:
-  (Consonant  Voiceless          Bilabial                       Plosive            Click            ) → Just "ʘ"
-  (Consonant  Voiceless          Dental                         Plosive            Click            ) → Just "ǀ"
-  (Consonant  Voiceless          Alveolar                       Plosive            Click            ) → Just "ǃ" -- Or it could be PostAlveolar.
-  (Consonant  Voiceless          PalatoAlveolar                 Plosive            Click            ) → Just "ǂ"
-  (Consonant  Voiceless          Alveolar                       Lateral            Click            ) → Just "ǁ"
-  (Consonant  Voiced             Bilabial                       Plosive            Implosive        ) → Just "ɓ"
-  (Consonant  Voiced             Dental                         Plosive            Implosive        ) → Just "ɗ"  -- Or Alveolar
-  (Consonant  Voiced             Palatal                        Plosive            Implosive        ) → Just "ʄ"
-  (Consonant  Voiced             Velar                          Plosive            Implosive        ) → Just "ɠ"
-  (Consonant  Voiced             Uvular                         Plosive            Implosive        ) → Just "ʛ" -- Close Vowels (next line):
-  (Vowel      Close              Front                          Unrounded          Voiced           ) → Just "i"
-  (Vowel      Close              Front                          Rounded            Voiced           ) → Just "y"
-  (Vowel      Close              Central                        Unrounded          Voiced           ) → Just "ɨ"
-  (Vowel      Close              Central                        Rounded            Voiced           ) → Just "ʉ"
-  (Vowel      Close              Back                           Unrounded          Voiced           ) → Just "ɯ"
-  (Vowel      Close              Back                           Rounded            Voiced           ) → Just "u" -- Near-close Vowels (next line):
-  (Vowel      NearClose          Front                          Unrounded          Voiced           ) → Just "ɪ"
-  (Vowel      NearClose          Front                          Rounded            Voiced           ) → Just "ʏ"
-  (Vowel      NearClose          Back                           Rounded            Voiced           ) → Just "ʊ" -- Close-mid Vowels (next line):
-  (Vowel      CloseMid           Front                          Unrounded          Voiced           ) → Just "e"
-  (Vowel      CloseMid           Front                          Rounded            Voiced           ) → Just "ø"
-  (Vowel      CloseMid           Central                        Unrounded          Voiced           ) → Just "ɘ"
-  (Vowel      CloseMid           Central                        Rounded            Voiced           ) → Just "ɵ"
-  (Vowel      CloseMid           Back                           Unrounded          Voiced           ) → Just "ɤ"
-  (Vowel      CloseMid           Back                           Rounded            Voiced           ) → Just "o" -- Mid Vowels (next line):
-  (Vowel      Mid                Central                        Unrounded          Voiced           ) → Just "ə" -- Open-mid Vowels (next line):
-  (Vowel      OpenMid            Front                          Unrounded          Voiced           ) → Just "ɛ"
-  (Vowel      OpenMid            Front                          Rounded            Voiced           ) → Just "œ"
-  (Vowel      OpenMid            Central                        Unrounded          Voiced           ) → Just "ɜ"
-  (Vowel      OpenMid            Central                        Rounded            Voiced           ) → Just "ɞ"
-  (Vowel      OpenMid            Back                           Unrounded          Voiced           ) → Just "ʌ"
-  (Vowel      OpenMid            Back                           Rounded            Voiced           ) → Just "ɔ" -- Near-open (next line)
-  (Vowel      NearOpen           Front                          Unrounded          Voiced           ) → Just "æ"
-  (Vowel      NearOpen           Central                        Unrounded          Voiced           ) → Just "ɐ" -- Open Vowels (next line):
-  (Vowel      Open               Front                          Unrounded          Voiced           ) → Just "a"
-  (Vowel      Open               Front                          Rounded            Voiced           ) → Just "ɶ"
-  (Vowel      Open               Back                           Unrounded          Voiced           ) → Just "ɑ"
-  (Vowel      Open               Back                           Rounded            Voiced           ) → Just "ɒ"
+  (Consonant  Voiceless  Bilabial       Plosive            PulmonicEgressive)
+    → Just "p"
+  (Consonant  Voiced     Bilabial       Plosive            PulmonicEgressive)
+    → Just "b"
+  (Consonant  Voiceless  Alveolar       Plosive            PulmonicEgressive)
+    → Just "t"
+  (Consonant  Voiced     Alveolar       Plosive            PulmonicEgressive)
+    → Just "d"
+  (Consonant  Voiceless  Retroflex      Plosive            PulmonicEgressive)
+    → Just "ʈ"
+  (Consonant  Voiced     Retroflex      Plosive            PulmonicEgressive)
+    → Just "ɖ"
+  (Consonant  Voiceless  Palatal        Plosive            PulmonicEgressive)
+    → Just "c"
+  (Consonant  Voiced     Palatal        Plosive            PulmonicEgressive)
+    → Just "ɟ"
+  (Consonant  Voiceless  Velar          Plosive            PulmonicEgressive)
+    → Just "k"
+  (Consonant  Voiced     Velar          Plosive            PulmonicEgressive)
+    → Just "g"
+  (Consonant  Voiceless  Uvular         Plosive            PulmonicEgressive)
+    → Just "q"
+  (Consonant  Voiced     Uvular         Plosive            PulmonicEgressive)
+    → Just "ɢ"
+  (Consonant  Voiceless  Glottal        Plosive            PulmonicEgressive)
+    → Just "ʔ"  -- Nasals (next line):
+  (Consonant  Voiced     Bilabial       Nasal              PulmonicEgressive)
+    → Just "m"
+  (Consonant  Voiced     LabioDental    Nasal              PulmonicEgressive)
+    → Just "ɱ"
+  (Consonant  Voiced     Alveolar       Nasal              PulmonicEgressive)
+    → Just "n"
+  (Consonant  Voiced     Retroflex      Nasal              PulmonicEgressive)
+    → Just "ɳ"
+  (Consonant  Voiced     Palatal        Nasal              PulmonicEgressive)
+    → Just "ɲ"
+  (Consonant  Voiced     Velar          Nasal              PulmonicEgressive)
+    → Just "ŋ"
+  (Consonant  Voiced     Uvular         Nasal              PulmonicEgressive)
+    → Just "ɴ"  -- Trills (next line):
+  (Consonant  Voiced     Bilabial       Trill              PulmonicEgressive)
+    → Just "ʙ"
+  (Consonant  Voiced     Alveolar       Trill              PulmonicEgressive)
+    → Just "r"
+  (Consonant  Voiced     Uvular         Trill              PulmonicEgressive)
+    → Just "ʀ"  -- Taps or flaps (next line):
+  (Consonant  Voiced     LabioDental    TapOrFlap          PulmonicEgressive)
+    → Just "ⱱ"
+  (Consonant  Voiced     Alveolar       TapOrFlap          PulmonicEgressive)
+    → Just "ɾ"
+  (Consonant  Voiced     Retroflex      TapOrFlap          PulmonicEgressive)
+    → Just "ɽ"  -- Fricatives (next line):
+  (Consonant  Voiceless  Bilabial       Fricative          PulmonicEgressive)
+    → Just "ɸ"
+  (Consonant  Voiced     Bilabial       Fricative          PulmonicEgressive)
+    → Just "β"
+  (Consonant  Voiceless  LabioDental    Fricative          PulmonicEgressive)
+    → Just "f"
+  (Consonant  Voiced     LabioDental    Fricative          PulmonicEgressive)
+    → Just "v"
+  (Consonant  Voiceless  Dental         Fricative          PulmonicEgressive)
+    → Just "θ"
+  (Consonant  Voiced     Dental         Fricative          PulmonicEgressive)
+    → Just "ð"
+  (Consonant  Voiceless  Alveolar       Fricative          PulmonicEgressive)
+    → Just "s"
+  (Consonant  Voiced     Alveolar       Fricative          PulmonicEgressive)
+    → Just "z"
+  (Consonant  Voiceless  PostAlveolar   Fricative          PulmonicEgressive)
+    → Just "ʃ"
+  (Consonant  Voiced     PostAlveolar   Fricative          PulmonicEgressive)
+    → Just "ʒ"
+  (Consonant  Voiceless  Retroflex      Fricative          PulmonicEgressive)
+    → Just "ʂ"
+  (Consonant  Voiced     Retroflex      Fricative          PulmonicEgressive)
+    → Just "ʐ"
+  (Consonant  Voiceless  Palatal        Fricative          PulmonicEgressive)
+    → Just "ç"
+  (Consonant  Voiced     Palatal        Fricative          PulmonicEgressive)
+    → Just "ʝ"
+  (Consonant  Voiceless  Velar          Fricative          PulmonicEgressive)
+    → Just "x"
+  (Consonant  Voiced     Velar          Fricative          PulmonicEgressive)
+    → Just "ɣ"
+  (Consonant  Voiceless  Uvular         Fricative          PulmonicEgressive)
+    → Just "χ"
+  (Consonant  Voiced     Uvular         Fricative          PulmonicEgressive)
+    → Just "ʁ"
+  (Consonant  Voiceless  Pharyngeal     Fricative          PulmonicEgressive)
+    → Just "ħ"
+  (Consonant  Voiced     Pharyngeal     Fricative          PulmonicEgressive)
+    → Just "ʕ"
+  (Consonant  Voiceless  Glottal        Fricative          PulmonicEgressive)
+    → Just "h"
+  (Consonant  Voiced     Glottal        Fricative          PulmonicEgressive)
+    → Just "ɦ"  -- Lateral Fricatives (next line):
+  (Consonant  Voiceless  Alveolar       LateralFricative   PulmonicEgressive)
+    → Just "ɬ"
+  (Consonant  Voiced     Alveolar       LateralFricative   PulmonicEgressive)
+    → Just "ɮ" -- Approximants (next line):
+  (Consonant  Voiced     LabioDental    Approximant        PulmonicEgressive)
+    → Just "ʋ"
+  (Consonant  Voiced     Alveolar       Approximant        PulmonicEgressive)
+    → Just "ɹ"
+  (Consonant  Voiced     Retroflex      Approximant        PulmonicEgressive)
+    → Just "ɻ"
+  (Consonant  Voiced     Palatal        Approximant        PulmonicEgressive)
+    → Just "j"
+  (Consonant  Voiced     Velar          Approximant        PulmonicEgressive)
+    → Just "ɰ"  -- Lateral Approximants (next line):
+  (Consonant  Voiced     Alveolar       LateralApproximant PulmonicEgressive)
+    → Just "l"
+  (Consonant  Voiced     Retroflex      LateralApproximant PulmonicEgressive)
+    → Just "ɭ"
+  (Consonant  Voiced     Palatal        LateralApproximant PulmonicEgressive)
+    → Just "ʎ"
+  (Consonant  Voiced     Velar          LateralApproximant PulmonicEgressive)
+    → Just "ʟ" -- Affricates (next line)
+  (Consonant  Voiceless  PostAlveolar   Affricate          PulmonicEgressive)
+    → Just "t͡ʃ"
+  (Consonant  Voiced     PostAlveolar   Affricate          PulmonicEgressive)
+    → Just "d͡ʒ"
+  (Consonant  Voiceless  Bilabial       Affricate          PulmonicEgressive)
+    → Just "p͡ɸ"
+  (Consonant  Voiceless  Alveolar       Affricate          PulmonicEgressive)
+    → Just "t͜s"
+  (Consonant  Voiced     Alveolar       Affricate          PulmonicEgressive)
+    → Just "d͡z"
+  (Consonant  Voiceless  Velar          Affricate          PulmonicEgressive)
+    → Just "k͡x"
+  (Consonant  Voiceless  Uvular         Affricate          PulmonicEgressive)
+    → Just "q͡χ" -- Under the Other Symbols part of the IPA chart:
+  (Consonant  Voiced     LabialVelar    Approximant        PulmonicEgressive)
+    → Just "w"
+  (Consonant  Voiceless  LabialVelar    Fricative          PulmonicEgressive)
+    → Just "ʍ"
+  (Consonant  Voiced     LabialPalatal  Approximant        PulmonicEgressive)
+    → Just "ɥ"
+  (Consonant  Voiceless  Epiglottal     Fricative          PulmonicEgressive)
+    → Just "ʜ"
+  (Consonant  Voiced     Epiglottal     Fricative          PulmonicEgressive)
+    → Just "ʢ"
+  (Consonant  Voiceless  Epiglottal     Plosive            PulmonicEgressive)
+    → Just "ʡ" -- Is the epiglottal plosive voiceless? The IPA chart
+               -- does not specify.
+  (Consonant  Voiceless  AlveoloPalatal Fricative          PulmonicEgressive)
+    → Just "ɕ"
+  (Consonant  Voiced     AlveoloPalatal Fricative          PulmonicEgressive)
+    → Just "ʑ"
+  (Consonant  Voiced     Alveolar       LateralFlap        PulmonicEgressive)
+    → Just "ɺ"
+  (Consonant  Voiceless  (Places (PostAlveolar :| [Velar]))
+                                        Fricative  PulmonicEgressive)
+    → Just "ɧ" -- Other Consonants:
+  (Consonant  Voiceless  Bilabial       Plosive            Click            )
+    → Just "ʘ"
+  (Consonant  Voiceless  Dental         Plosive            Click            )
+    → Just "ǀ"
+  (Consonant  Voiceless  Alveolar       Plosive            Click            )
+    → Just "ǃ" -- Or it could be PostAlveolar.
+  (Consonant  Voiceless  PalatoAlveolar Plosive            Click            )
+    → Just "ǂ"
+  (Consonant  Voiceless  Alveolar       Lateral            Click            )
+    → Just "ǁ"
+  (Consonant  Voiced     Bilabial       Plosive            Implosive        )
+    → Just "ɓ"
+  (Consonant  Voiced     Dental         Plosive            Implosive        )
+    → Just "ɗ"  -- Or Alveolar
+  (Consonant  Voiced     Palatal        Plosive            Implosive        )
+    → Just "ʄ"
+  (Consonant  Voiced     Velar          Plosive            Implosive        )
+    → Just "ɠ"
+  (Consonant  Voiced     Uvular         Plosive            Implosive        )
+    → Just "ʛ" -- Close Vowels (next line):
+  (Vowel      Close      Front          Unrounded          Voiced           )
+    → Just "i"
+  (Vowel      Close      Front          Rounded            Voiced           )
+    → Just "y"
+  (Vowel      Close      Central        Unrounded          Voiced           )
+    → Just "ɨ"
+  (Vowel      Close      Central        Rounded            Voiced           )
+    → Just "ʉ"
+  (Vowel      Close      Back           Unrounded          Voiced           )
+    → Just "ɯ"
+  (Vowel      Close      Back           Rounded            Voiced           )
+    → Just "u" -- Near-close Vowels (next line):
+  (Vowel      NearClose  Front          Unrounded          Voiced           )
+    → Just "ɪ"
+  (Vowel      NearClose  Front          Rounded            Voiced           )
+    → Just "ʏ"
+  (Vowel      NearClose  Back           Rounded            Voiced           )
+    → Just "ʊ" -- Close-mid Vowels (next line):
+  (Vowel      CloseMid   Front          Unrounded          Voiced           )
+    → Just "e"
+  (Vowel      CloseMid   Front          Rounded            Voiced           )
+    → Just "ø"
+  (Vowel      CloseMid   Central        Unrounded          Voiced           )
+    → Just "ɘ"
+  (Vowel      CloseMid   Central        Rounded            Voiced           )
+    → Just "ɵ"
+  (Vowel      CloseMid   Back           Unrounded          Voiced           )
+    → Just "ɤ"
+  (Vowel      CloseMid   Back           Rounded            Voiced           )
+    → Just "o" -- Mid Vowels (next line):
+  (Vowel      Mid        Central        Unrounded          Voiced           )
+    → Just "ə" -- Open-mid Vowels (next line):
+  (Vowel      OpenMid    Front          Unrounded          Voiced           )
+    → Just "ɛ"
+  (Vowel      OpenMid    Front          Rounded            Voiced           )
+    → Just "œ"
+  (Vowel      OpenMid    Central        Unrounded          Voiced           )
+    → Just "ɜ"
+  (Vowel      OpenMid    Central        Rounded            Voiced           )
+    → Just "ɞ"
+  (Vowel      OpenMid    Back           Unrounded          Voiced           )
+    → Just "ʌ"
+  (Vowel      OpenMid    Back           Rounded            Voiced           )
+    → Just "ɔ" -- Near-open (next line)
+  (Vowel      NearOpen   Front          Unrounded          Voiced           )
+    → Just "æ"
+  (Vowel      NearOpen   Central        Unrounded          Voiced           )
+    → Just "ɐ" -- Open Vowels (next line):
+  (Vowel      Open       Front          Unrounded          Voiced           )
+    → Just "a"
+  (Vowel      Open       Front          Rounded            Voiced           )
+    → Just "ɶ"
+  (Vowel      Open       Back           Unrounded          Voiced           )
+    → Just "ɑ"
+  (Vowel      Open       Back           Rounded            Voiced           )
+    → Just "ɒ"
 
 
 
 
--- The following two lines are commented out, because I am unsure about their place of articulation:
--- constructIPARecursive _ _ (Consonant  Voiceless LabialVelar? Affricate PulmonicEgressive) = "k͡p"
--- constructIPARecursive _ _ (Consonant  Voiceless Palatal (or AlveolaPalatal?) Affricate PulmonicEgressive) = "c͡ɕ"
+-- The following two lines are commented out, because I am unsure
+-- about their place of articulation:
+-- constructIPARecursive _ _ (Consonant  Voiceless LabialVelar? Affricate
+--     PulmonicEgressive) = "k͡p"
+-- constructIPARecursive _ _ (Consonant  Voiceless Palatal (or AlveolaPalatal?)
+--     Affricate PulmonicEgressive) = "c͡ɕ"
 
 
 
@@ -931,11 +1089,13 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
   -- it will try to represent it in IPA with more than
   -- one character
 
-  (Consonant  x PostAlveolar y z) 
-    | recursionLevel <  recursionLimit → 
-    case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant x Alveolar y z) of
+  (Consonant  x PostAlveolar y z)
+    | recursionLevel < recursionLimit →
+    case constructIPARecursive recursionLimit
+           (1 + recursionLevel) (Consonant x Alveolar y z) of
       Nothing → Nothing
-      Just regularIPA → Just (regularIPA ⊕ "̠")  -- Add the diacritic for "retracted"
+      Just regularIPA → Just (regularIPA ⊕ "̠")
+      -- Add the diacritic for "retracted"
 
 
 
@@ -944,16 +1104,19 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
 -- and then put that diacritic that means voiceless after.
 -- (The following two definitions are intended to implement that)
 -- Add the small circle diacritic to consonants to make them voiceless.
-  (Consonant Voiceless x y z) 
+  (Consonant Voiceless x y z)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel)  (Consonant Voiced x y z) of
+    → case constructIPARecursive recursionLimit
+             (1 + recursionLevel)  (Consonant Voiced x y z) of
            Nothing → Nothing
-           Just regularIPA → Just (regularIPA ⊕ "̥") -- add diacritic for voiceless
+           Just regularIPA → Just (regularIPA ⊕ "̥")
+           -- add diacritic for voiceless
 
 -- Add the small circle diacritic to vowels to make them voiceless.
   (Vowel x y z Voiceless)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiced) of
+    → case constructIPARecursive recursionLimit
+             (1 + recursionLevel) (Vowel x y z Voiced) of
            Nothing → Nothing
            Just regularIPA → Just (regularIPA ⊕ "̥")
 
@@ -962,34 +1125,42 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
 -- the voiceless counterpart.
   (Consonant Voiced x y z)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of
+    → case constructIPARecursive
+             recursionLimit (1 + recursionLevel) (Consonant Voiceless x y z) of
            Nothing → Nothing
            Just regularIPA → Just (regularIPA ⊕ "̬")
 
   (Vowel x y z Voiced)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (Vowel x y z Voiceless) of
+    → case constructIPARecursive recursionLimit
+             (1 + recursionLevel) (Vowel x y z Voiceless) of
            Nothing → Nothing
            Just regularIPA → Just (regularIPA ⊕ "̬")
 
   (Consonant VoicedAspirated _ _ PulmonicEgressive)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate p) of
+    → let result = constructIPARecursive
+                     recursionLimit (1 + recursionLevel) (deaspirate p)
+      in case result of
            Nothing         → Nothing
            Just regularIPA → Just (regularIPA ⊕ "ʰ")
 
   (Consonant VoicelessAspirated _ _ PulmonicEgressive)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (deaspirate p) of
+    → let result = constructIPARecursive
+                     recursionLimit (1 + recursionLevel) (deaspirate p)
+      in case result of
            Nothing         → Nothing
            Just regularIPA → Just (regularIPA ⊕ "ʰ")
 
-  (Consonant CreakyVoiced _ _ PulmonicEgressive) 
+  (Consonant CreakyVoiced _ _ PulmonicEgressive)
     | recursionLevel <  recursionLimit
-    → case constructIPARecursive recursionLimit (1 + recursionLevel) (decreak p) of
-        Just regularIPA → Just (regularIPA ⊕ "̰")
-        Nothing         → Nothing
-  _                        → Nothing
+    → let result = constructIPARecursive
+                     recursionLimit (1 + recursionLevel) (decreak p)
+      in case result of
+           Just regularIPA → Just (regularIPA ⊕ "̰")
+           Nothing         → Nothing
+  _                          → Nothing
 
 
 
@@ -1004,7 +1175,7 @@ deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
 deaspirate x = x
 
 decreak ∷ Phonet → Phonet
-decreak (Consonant CreakyVoiced place manner airstream) = 
+decreak (Consonant CreakyVoiced place manner airstream) =
   Consonant Voiced place manner airstream
 decreak x = x
 
@@ -1329,12 +1500,16 @@ All other segments are [-voice].
 |-}
 voice ∷ Phonet → Maybe PhonemeFeature
 voice p = case p of
-  (Consonant Voiceless Glottal Plosive PulmonicEgressive) → Just (VoiceFeature Minus) 
-  -- The voiceless glottal plosive is [-voice]
-  (Consonant VoicedAspirated _ _ _)                       → Just (VoiceFeature Plus)
-  (Consonant Voiced          _ _ _)                       → Just (VoiceFeature Plus)
-  (Vowel _ _ _               Voiced)                      → Just (VoiceFeature Plus)
-  _                                                       → Just (VoiceFeature Minus)
+  (Consonant Voiceless Glottal Plosive PulmonicEgressive)
+    → Just (VoiceFeature Minus) -- The voiceless glottal plosive is [-voice]
+  (Consonant VoicedAspirated _ _ _)
+    → Just (VoiceFeature Plus)
+  (Consonant Voiced          _ _ _)
+    → Just (VoiceFeature Plus)
+  (Vowel _ _ _               Voiced)
+    → Just (VoiceFeature Plus)
+  _
+    → Just (VoiceFeature Minus)
 
 {-|
 Voiceless aspirated plosives are [spread glottis].
@@ -1343,9 +1518,10 @@ All other segments are not defined for [spread glottis].
 (Source: page 262)
 |-}
 spreadGlottis ∷ Phonet → Maybe PhonemeFeature
-spreadGlottis (Consonant VoicelessAspirated _ Plosive _) = Just SpreadGlottisFeature
-spreadGlottis (Consonant VoicedAspirated    _ Plosive _) = Just SpreadGlottisFeature
-spreadGlottis _                                          = Nothing
+spreadGlottis p = case p of
+  (Consonant VoicelessAspirated _ Plosive _) → Just SpreadGlottisFeature
+  (Consonant VoicedAspirated    _ Plosive _) → Just SpreadGlottisFeature
+  _                                          → Nothing
 
 
 {-|
@@ -1367,7 +1543,7 @@ constrictedGlottis p = case p of
     if sonorant p ≡ Just (SonorantFeature Plus)
       then Just ConstrictedGlottisFeature
       else Nothing
-  _ → 
+  _ →
     Nothing
 
 {-|
@@ -1512,21 +1688,36 @@ Advanced tongue root
 |-}
 atr ∷ Phonet → Maybe PhonemeFeature
 atr p = case p of
-  (Vowel  Close     Front   Unrounded Voiced) → Just (AdvancedTongueRootFeature Plus)
-  (Vowel  CloseMid  Front   Unrounded Voiced) → Just (AdvancedTongueRootFeature Plus)
-  (Vowel  Close     Back    Rounded   Voiced) → Just (AdvancedTongueRootFeature Plus)
-  (Vowel  CloseMid  Front   Rounded   Voiced) → Just (AdvancedTongueRootFeature Plus)
-  (Vowel  CloseMid  Back    Rounded   Voiced) → Just (AdvancedTongueRootFeature Plus)
-  (Vowel  Close     Front   Rounded   Voiced) → Just (AdvancedTongueRootFeature Plus)
-  (Vowel  NearOpen  Front   Unrounded Voiced) → Just (AdvancedTongueRootFeature Minus)
-  (Vowel  Open      Back    Unrounded Voiced) → Just (AdvancedTongueRootFeature Minus)
-  (Vowel  Close     Central Unrounded Voiced) → Just (AdvancedTongueRootFeature Minus)
-  (Vowel  OpenMid   Back    Unrounded Voiced) → Just (AdvancedTongueRootFeature Minus)
-  (Vowel  NearClose Front   Unrounded Voiced) → Just (AdvancedTongueRootFeature Minus)
-  (Vowel  NearClose Back    Rounded   Voiced) → Just (AdvancedTongueRootFeature Minus)
-  (Vowel  OpenMid   Front   Unrounded Voiced) → Just (AdvancedTongueRootFeature Minus)
-  (Vowel  OpenMid   Back    Rounded   Voiced) → Just (AdvancedTongueRootFeature Minus)
-  _                                           → Nothing
+  (Vowel  Close     Front   Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Plus)
+  (Vowel  CloseMid  Front   Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Plus)
+  (Vowel  Close     Back    Rounded   Voiced)
+    → Just (AdvancedTongueRootFeature Plus)
+  (Vowel  CloseMid  Front   Rounded   Voiced)
+    → Just (AdvancedTongueRootFeature Plus)
+  (Vowel  CloseMid  Back    Rounded   Voiced)
+    → Just (AdvancedTongueRootFeature Plus)
+  (Vowel  Close     Front   Rounded   Voiced)
+    → Just (AdvancedTongueRootFeature Plus)
+  (Vowel  NearOpen  Front   Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  (Vowel  Open      Back    Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  (Vowel  Close     Central Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  (Vowel  OpenMid   Back    Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  (Vowel  NearClose Front   Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  (Vowel  NearClose Back    Rounded   Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  (Vowel  OpenMid   Front   Unrounded Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  (Vowel  OpenMid   Back    Rounded   Voiced)
+    → Just (AdvancedTongueRootFeature Minus)
+  _
+    → Nothing
 
 
 {-|
@@ -1592,10 +1783,10 @@ toTextFeatures phonete =
 showPhonet ∷ Phonet → Text
 showPhonet phonet =
   case phonet of
-    Consonant v p m a → showVocalFolds v ⊕ " " ⊕ showPlace p ⊕ " " ⊕ showManner m ⊕ " " ⊕ showAirstream a
-                               ⊕ " consonant"
-    Vowel h b r v     → showVocalFolds v ⊕ " " ⊕ showRounding r ⊕ " " ⊕ showHeight h ⊕ " " ⊕ showBackness b
-                               ⊕ " vowel"
+    Consonant v p m a → showVocalFolds v ⊕ " " ⊕ showPlace p     ⊕ " "
+                      ⊕ showManner m     ⊕ " " ⊕ showAirstream a ⊕ " consonant"
+    Vowel h b r v     → showVocalFolds v ⊕ " " ⊕ showRounding r  ⊕ " "
+                      ⊕ showHeight h     ⊕ " " ⊕ showBackness b  ⊕ " vowel"
 
 
 
@@ -1689,28 +1880,28 @@ showPolarity Minus = "-"
 
 
 showPhonemeFeature ∷ PhonemeFeature → Text
-showPhonemeFeature phonemeFeature =
-  case phonemeFeature of
-    (SyllabicFeature polarity)           → showPolarity polarity ⊕ "syllabic"
-    (ConsonantalFeature polarity)        → showPolarity polarity ⊕ "consonantal"
-    (SonorantFeature polarity)           → showPolarity polarity ⊕ "sonorant"
-    (ContinuantFeature polarity)         → showPolarity polarity ⊕ "continuant"
-    (VoiceFeature polarity)              → showPolarity polarity ⊕ "voice"
-    (AdvancedTongueRootFeature polarity) → showPolarity polarity ⊕ "ATR"
-    NasalFeature                         →                         "nasal"
-    LateralFeature                       →                         "lateral"
-    DelayedReleaseFeature                →                         "delayed release"
-    SpreadGlottisFeature                 →                         "spread glottis"
-    ConstrictedGlottisFeature            →                         "constricted glottis"
-    LabialFeature                        →                         "labial"
-    CoronalFeature                       →                         "coronal"
-    DorsalFeature                        →                         "dorsal"
-    PharyngealFeature                    →                         "pharyngeal"
-    LaryngealFeature                     →                         "laryngeal"
-    (RoundFeature polarity)              → showPolarity polarity ⊕ "round"
-    (AnteriorFeature polarity)           → showPolarity polarity ⊕ "anterior"
-    (DistributedFeature polarity)        → showPolarity polarity ⊕ "distributed"
-    (StridentFeature polarity)           → showPolarity polarity ⊕ "strident"
-    (HighFeature polarity)               → showPolarity polarity ⊕ "high"
-    (LowFeature polarity)                → showPolarity polarity ⊕ "low"
-    (BackFeature polarity)               → showPolarity polarity ⊕ "back"
+showPhonemeFeature pf =
+  case pf of
+    (SyllabicFeature p)           → showPolarity p ⊕ "syllabic"
+    (ConsonantalFeature p)        → showPolarity p ⊕ "consonantal"
+    (SonorantFeature p)           → showPolarity p ⊕ "sonorant"
+    (ContinuantFeature p)         → showPolarity p ⊕ "continuant"
+    (VoiceFeature p)              → showPolarity p ⊕ "voice"
+    (AdvancedTongueRootFeature p) → showPolarity p ⊕ "ATR"
+    NasalFeature                  →                  "nasal"
+    LateralFeature                →                  "lateral"
+    DelayedReleaseFeature         →                  "delayed release"
+    SpreadGlottisFeature          →                  "spread glottis"
+    ConstrictedGlottisFeature     →                  "constricted glottis"
+    LabialFeature                 →                  "labial"
+    CoronalFeature                →                  "coronal"
+    DorsalFeature                 →                  "dorsal"
+    PharyngealFeature             →                  "pharyngeal"
+    LaryngealFeature              →                  "laryngeal"
+    (RoundFeature p)              → showPolarity p ⊕ "round"
+    (AnteriorFeature p)           → showPolarity p ⊕ "anterior"
+    (DistributedFeature p)        → showPolarity p ⊕ "distributed"
+    (StridentFeature p)           → showPolarity p ⊕ "strident"
+    (HighFeature p)               → showPolarity p ⊕ "high"
+    (LowFeature p)                → showPolarity p ⊕ "low"
+    (BackFeature p)               → showPolarity p ⊕ "back"

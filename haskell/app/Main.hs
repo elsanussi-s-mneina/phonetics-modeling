@@ -53,22 +53,31 @@ promptForPhonemeAndApply func instructions =
     getLine >>= \phoneme ->
     putTextLn (func phoneme)
 
+typeAPhoneme ∷  Text
+typeAPhoneme
+  = "Type a phoneme using IPA symbols, and then press the enter key,"
+  ⊕ " and the computer will display"
+
 promptForPhonemeToDevoice ∷ IO ()
 promptForPhonemeToDevoice =
-  promptForPhonemeAndApply devoicedIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display the devoiced counterpart (on the subsequent line):"
+  promptForPhonemeAndApply devoicedIPA
+    (typeAPhoneme ⊕ " the devoiced counterpart (on the subsequent line):")
 
 promptForPhonemeToVoice ∷ IO ()
 promptForPhonemeToVoice =
-  promptForPhonemeAndApply voicedIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display the voiced counterpart (on the subsequent line):"
+  promptForPhonemeAndApply voicedIPA
+    (typeAPhoneme ⊕ " the voiced counterpart (on the subsequent line):")
 
 promptForPhonemeToDescribe ∷ IO ()
 promptForPhonemeToDescribe =
-  promptForPhonemeAndApply describeIPA "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its English description (on the subsequent line):"
+  promptForPhonemeAndApply describeIPA
+    (typeAPhoneme ⊕ " its English description (on the subsequent line):")
 
 
 promptForPhonemeToCalculateSPEFeaturesFrom ∷ IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
-  promptForPhonemeAndApply analyzeIPAToSPE "Type a phoneme using IPA symbols, and then press the enter key, and the computer will display its SPE features (on the subsequent line):"
+  promptForPhonemeAndApply analyzeIPAToSPE
+    (typeAPhoneme ⊕ " its SPE features (on the subsequent line):")
 
 
 main ∷ IO ()
