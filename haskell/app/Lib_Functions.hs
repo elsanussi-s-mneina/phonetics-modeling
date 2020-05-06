@@ -7,11 +7,11 @@ import Lib_Types
 
 import Prelude ()
 import Relude
-  ( Bool(False, True)      , Int       , Maybe(Just, Nothing) , NonEmpty((:|)), Text                   
+  ( Bool(False, True)      , Int       , Maybe(Just, Nothing) , NonEmpty((:|)), Text
   , catMaybes , one , sconcat
   , filter                 , fmap      , fromMaybe, fromList, map  , maybe
-  , otherwise              , toList, unwords 
-  , (+), (!!?), (<)
+  , otherwise              , toList, unwords
+  , (+), (<), (!!?)
   )
 
 import qualified Data.Text as T
@@ -23,7 +23,6 @@ import Prelude.Unicode
 
 import MyLocal_Data_Semigroup_Unicode ((◇))
 import Data.Foldable.Unicode ((∈) , (∉))
-
 
 retractedPlace ∷ Place → Place
 retractedPlace place =
@@ -412,7 +411,7 @@ preventProhibitedCombination ∷ IPAText → IPAText
 preventProhibitedCombination ss
   | T.length ss ≡ 0 = ""
   | T.length ss ≡ 1 = ss
-  | otherwise = 
+  | otherwise =
      let x = one (T.head ss) ∷ Text
          y = one (T.index ss 1) ∷ Text
          rest = T.tail (T.tail ss)
@@ -441,7 +440,7 @@ graphemesOfIPA = consonantsPulmonic
 
 -- CONSONANTS (PULMONIC)
 consonantsPulmonic ∷ NonEmpty IPAText
-consonantsPulmonic 
+consonantsPulmonic
    = plosivePulmonic
    ◇ nasalPulmonic
    ◇ trillPulmonic
@@ -450,10 +449,10 @@ consonantsPulmonic
    ◇ lateralFricativePulmonic
    ◇ approximantPulmonic
    ◇ lateralApproximantPulmonic
-   
+
 
 plosivePulmonic ∷ NonEmpty IPAText
-plosivePulmonic            = fromList 
+plosivePulmonic            = fromList
                              [ "p", "b",                     "t", "d"
                              , "ʈ", "ɖ", "c", "ɟ", "k", "g", "q", "ɢ"
                              , "ʔ"
@@ -469,8 +468,8 @@ tapOrFlapPulmonic ∷ NonEmpty IPAText
 tapOrFlapPulmonic          = fromList [ "ⱱ", "ɾ", "ɽ"] -- Tap or Flap
 
 fricativePulmonic ∷ NonEmpty IPAText
-fricativePulmonic          
-  = fromList 
+fricativePulmonic
+  = fromList
   [ "ɸ", "β", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ"
   , "ʂ", "ʐ", "ç", "ʝ", "x", "ɣ", "χ", "ʁ", "ħ", "ʕ"
   , "h", "ɦ"
@@ -1031,7 +1030,7 @@ given a phoneme's representation in the
 international phonetic alphabet.
   |-}
 describeIPA ∷ IPAText → Text
-describeIPA x = 
+describeIPA x =
   maybe "(no English description found.)" showPhonet (analyzeIPA x)
 
 

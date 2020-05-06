@@ -10,7 +10,6 @@ import Data.Monoid.Unicode
   )
 import Prelude.Unicode ((∘))
 
-import qualified Data.Text as T (append)
 import System.IO (hFlush)
 import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            , englishPhonetInventory
@@ -82,7 +81,7 @@ main =
     putText menu
     putPrompt
     selection ← getLine
-    putTextLn ("The user selected: " `T.append` selection `T.append` "\n")
+    putTextLn ("The user selected: " ⊕ selection ⊕ "\n")
     case selection of
                    "1" → putText (showIPA englishPhonetInventory)
                    "2" → promptForPhonemeToVoice
@@ -95,7 +94,7 @@ main =
 
 
 doAnalyzeIPA ∷ Text → Text
-doAnalyzeIPA x = 
+doAnalyzeIPA x =
   maybe "No analysis found!" showPhonet (analyzeIPA x)
 
 doConstructIPA ∷ Phonet → IO ()
