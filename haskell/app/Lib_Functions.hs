@@ -17,12 +17,8 @@ import Relude
 import qualified Data.Text as T
 
 
-import Prelude.Unicode
-  ( (≡) , (∧) , (∨) )
-
+import Prelude.Unicode ( (≡) , (∧) , (∨) )
 import Data.Monoid.Unicode ( (⊕) )
-
-
 import MyLocal_Data_Semigroup_Unicode ((◇))
 import Data.Foldable.Unicode ((∈) , (∉))
 
