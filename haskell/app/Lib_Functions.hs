@@ -79,70 +79,70 @@ spirantizedPhonet ∷ Phonet → Phonet
 -- change in place of articulation.
 spirantizedPhonet p = case p of
   (Consonant x Alveolar Plosive z) → Consonant x Dental Fricative z
-  (Consonant x place1 Plosive z)   → Consonant x place1 Fricative z
+  (Consonant x place₁ Plosive z)   → Consonant x place₁ Fricative z
   other                            → other
 
 
 unmarkDifferences ∷ Phonet → Phonet → UnmarkablePhonet
-unmarkDifferences p1 p2 = case (p1, p2) of
-  ( Consonant voice1 place1 manner1 airstream1
-    , Consonant voice2 place2 manner2 airstream2) →
-    let voice'     = unmarkVoice voice1 voice2
-        place'     = unmarkPlace place1 place2
-        manner'    = unmarkManner manner1 manner2
-        airstream' = unmarkAirstream airstream1 airstream2
+unmarkDifferences p₁ p₂ = case (p₁, p₂) of
+  ( Consonant voice₁ place₁ manner₁ airstream₁
+    , Consonant voice₂ place₂ manner₂ airstream₂) →
+    let voice'     = unmarkVoice voice₁ voice₂
+        place'     = unmarkPlace place₁ place₂
+        manner'    = unmarkManner manner₁ manner₂
+        airstream' = unmarkAirstream airstream₁ airstream₂
     in UnmarkableConsonant voice' place' manner' airstream'
 
-  ( Vowel height1 backness1 rounding1 voice1
-    , Vowel height2 backness2 rounding2 voice2) →
-    let voice'    = unmarkVoice voice1 voice2
-        height'   = unmarkHeight height1 height2
-        backness' = unmarkBackness backness1 backness2
-        rounding' = unmarkRounding rounding1 rounding2
+  ( Vowel height₁ backness₁ rounding₁ voice₁
+    , Vowel height₂ backness₂ rounding₂ voice₂) →
+    let voice'    = unmarkVoice voice₁ voice₂
+        height'   = unmarkHeight height₁ height₂
+        backness' = unmarkBackness backness₁ backness₂
+        rounding' = unmarkRounding rounding₁ rounding₂
     in UnmarkableVowel height' backness' rounding' voice'
 
-  ( Vowel _ _ _ voice1
-    , Consonant voice2 _ _ _) →
-    let voice' = unmarkVoice voice1 voice2
+  ( Vowel _ _ _ voice₁
+    , Consonant voice₂ _ _ _) →
+    let voice' = unmarkVoice voice₁ voice₂
     in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
 
   ( Consonant {}
     , Vowel {}) →
-    unmarkDifferences p2 p1 -- Change the order of arguments
+    unmarkDifferences p₂ p₁ -- Change the order of arguments
   where
-    unmarkVoice voice1 voice2 =
-      if voice1 ≡ voice2
-        then MarkedVocalFolds voice1
+    unmarkVoice voice₁ voice₂ =
+      if voice₁ ≡ voice₂
+        then MarkedVocalFolds voice₁
         else UnmarkedVocalFolds
 
-    unmarkPlace place1 place2 =
-      if place1 ≡ place2
-        then MarkedPlace place1
+    unmarkPlace place₁ place₂ =
+      if place₁ ≡ place₂
+        then MarkedPlace place₁
         else UnmarkedPlace
 
-    unmarkManner manner1 manner2 =
-      if manner1 ≡ manner2
-        then MarkedManner manner1
+    unmarkManner manner₁ manner₂ =
+      if manner₁ ≡ manner₂
+        then MarkedManner manner₁
         else UnmarkedManner
 
-    unmarkAirstream airstream1 airstream2 =
-      if airstream1 ≡ airstream2
-        then MarkedAirstream  airstream1
+    unmarkAirstream airstream₁ airstream₂ =
+      if airstream₁ ≡ airstream₂
+        then MarkedAirstream  airstream₁
         else UnmarkedAirstream
 
-    unmarkHeight height1 height2 =
-      if height1   ≡ height2
-        then MarkedHeight     height1
+    unmarkHeight height₁ height₂ =
+      if height₁   ≡ height₂
+        then MarkedHeight     height₁
         else UnmarkedHeight
 
-    unmarkBackness backness1 backness2 =
-      if backness1 ≡ backness2
-        then MarkedBackness   backness1
+    unmarkBackness backness₁ backness₂ =
+      if backness₁ ≡ backness₂
+        then MarkedBackness   backness₁
         else UnmarkedBackness
 
-    unmarkRounding rounding1 rounding2 =
-      if rounding1 ≡ rounding2
-        then MarkedRounding   rounding1
+    unmarkRounding rounding₁ rounding₂ =
+      if rounding₁ ≡ rounding₂
+        then MarkedRounding   rounding₁
         else UnmarkedRounding
 
 
@@ -151,62 +151,62 @@ unmarkDifferences p1 p2 = case (p1, p2) of
 -- takes any unmarked attributes in the phoneme definition,
 -- and returns a list with all possibilities for that attribute.
 generateFromUnmarked ∷ UnmarkablePhonet → [Phonet]
-generateFromUnmarked (UnmarkableConsonant voice1 place1 manner1 airstream1) =
-  let voice'     = toList (unmarkableVoiceToList     voice1    )
-      place'     = toList (unmarkablePlaceToList     place1    )
-      manner'    = toList (unmarkableMannerToList    manner1   )
-      airstream' = toList (unmarkableAirstreamToList airstream1)
+generateFromUnmarked (UnmarkableConsonant voice₁ place₁ manner₁ airstream₁) =
+  let voice'     = toList (unmarkableVoiceToList     voice₁    )
+      place'     = toList (unmarkablePlaceToList     place₁    )
+      manner'    = toList (unmarkableMannerToList    manner₁   )
+      airstream' = toList (unmarkableAirstreamToList airstream₁)
   in [Consonant v p m a | p ← place', v ← voice',  m ← manner', a ← airstream']
 
-generateFromUnmarked (UnmarkableVowel height1 backness1 rounding1 voice1) =
-  let voice'    = toList (unmarkableVoiceToList    voice1   )
-      height'   = toList (unmarkableHeightToList   height1  )
-      backness' = toList (unmarkableBacknessToList backness1)
-      rounding' = toList (unmarkableRoundingToList rounding1)
+generateFromUnmarked (UnmarkableVowel height₁ backness₁ rounding₁ voice₁) =
+  let voice'    = toList (unmarkableVoiceToList    voice₁   )
+      height'   = toList (unmarkableHeightToList   height₁  )
+      backness' = toList (unmarkableBacknessToList backness₁)
+      rounding' = toList (unmarkableRoundingToList rounding₁)
   in [Vowel h b r v | h ← height', b ← backness', r ← rounding', v ← voice']
 
 
 unmarkableVoiceToList ∷ UnmarkableVocalFolds → NonEmpty VocalFolds
-unmarkableVoiceToList voice1 =
-  case voice1 of
+unmarkableVoiceToList voice₁ =
+  case voice₁ of
        MarkedVocalFolds x → one x
        UnmarkedVocalFolds → vocalFoldStates
 
 unmarkablePlaceToList ∷ UnmarkablePlace → NonEmpty Place
-unmarkablePlaceToList place1 =
-  case place1 of
+unmarkablePlaceToList place₁ =
+  case place₁ of
        MarkedPlace x → one x
        UnmarkedPlace → placeStates
 
 
 unmarkableMannerToList ∷ UnmarkableManner → NonEmpty Manner
-unmarkableMannerToList manner1 =
-  case manner1 of
+unmarkableMannerToList manner₁ =
+  case manner₁ of
        MarkedManner x → one x
        UnmarkedManner → mannerStates
 
 unmarkableAirstreamToList ∷ UnmarkableAirstream → NonEmpty Airstream
-unmarkableAirstreamToList airstream1 =
-  case airstream1 of
+unmarkableAirstreamToList airstream₁ =
+  case airstream₁ of
        MarkedAirstream x → one x
        UnmarkedAirstream → airstreamStates
 
 
 unmarkableHeightToList ∷ UnmarkableHeight → NonEmpty Height
-unmarkableHeightToList height1 =
-  case height1 of
+unmarkableHeightToList height₁ =
+  case height₁ of
        MarkedHeight x → one x
        UnmarkedHeight → heightStates
 
 unmarkableBacknessToList ∷ UnmarkableBackness → NonEmpty Backness
-unmarkableBacknessToList backness1 =
-  case backness1 of
+unmarkableBacknessToList backness₁ =
+  case backness₁ of
        MarkedBackness x → one x
        UnmarkedBackness → backnessStates
 
 unmarkableRoundingToList ∷ UnmarkableRounding → NonEmpty Rounding
-unmarkableRoundingToList rounding1 =
-  case rounding1 of
+unmarkableRoundingToList rounding₁ =
+  case rounding₁ of
        MarkedRounding x → one x
        UnmarkedRounding → roundingStates
 
@@ -1165,8 +1165,8 @@ deaspirate ∷ Phonet → Phonet
 deaspirate (Consonant VoicedAspirated place manner airstream) =
   Consonant Voiced place manner airstream
 
-deaspirate (Consonant VoicelessAspirated place1 manner1 airstream1) =
-  Consonant Voiceless place1 manner1 airstream1
+deaspirate (Consonant VoicelessAspirated place₁ manner₁ airstream₁) =
+  Consonant Voiceless place₁ manner₁ airstream₁
 
 deaspirate x = x
 
@@ -1223,23 +1223,23 @@ binaryDifference ∷
                     → [PhonemeFeature]
                     → [PhonemeFeature]
                     → (Maybe PhonemeFeature, Maybe PhonemeFeature)
-binaryDifference feature list1 list2
-  | list1Relevant ≡ list2Relevant
+binaryDifference feature list₁ list₂
+  | list₁Relevant ≡ list₂Relevant
   = (Nothing, Nothing)
   | otherwise
-  = (list1Relevant !!? 0, list2Relevant !!? 0)
+  = (list₁Relevant !!? 0, list₂Relevant !!? 0)
    where
-   list1Relevant = filter (relevantBinary feature) list1
-   list2Relevant = filter (relevantBinary feature) list2
+   list₁Relevant = filter (relevantBinary feature) list₁
+   list₂Relevant = filter (relevantBinary feature) list₂
 
 
 unaryDifference ∷ PhonemeFeature
                 → [PhonemeFeature]
                 → [PhonemeFeature]
                 → (Maybe PhonemeFeature, Maybe PhonemeFeature)
-unaryDifference feature list1 list2
-  | (feature ∈ list1) ≡ (feature ∈ list2) = (Nothing, Nothing)
-  | feature ∈ list1 ∧ feature ∉ list2     = (Just feature, Nothing)
+unaryDifference feature list₁ list₂
+  | (feature ∈ list₁) ≡ (feature ∈ list₂) = (Nothing, Nothing)
+  | feature ∈ list₁ ∧ feature ∉ list₂     = (Just feature, Nothing)
   | otherwise                             = (Nothing, Just feature)
 
 
@@ -1253,30 +1253,30 @@ unaryDifference feature list1 list2
 difference ∷ [PhonemeFeature]
            → [PhonemeFeature]
            → [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
-difference list1 list2 =
-  [ binaryDifference SyllabicFeature           list1 list2
-  , binaryDifference ConsonantalFeature        list1 list2
-  , binaryDifference SonorantFeature           list1 list2
-  , binaryDifference ContinuantFeature         list1 list2
-  , binaryDifference VoiceFeature              list1 list2
-  , binaryDifference AdvancedTongueRootFeature list1 list2
-  , unaryDifference  NasalFeature              list1 list2
-  , unaryDifference  LateralFeature            list1 list2
-  , unaryDifference  DelayedReleaseFeature     list1 list2
-  , unaryDifference  SpreadGlottisFeature      list1 list2
-  , unaryDifference  ConstrictedGlottisFeature list1 list2
-  , unaryDifference  LabialFeature             list1 list2
-  , unaryDifference  CoronalFeature            list1 list2
-  , unaryDifference  DorsalFeature             list1 list2
-  , unaryDifference  PharyngealFeature         list1 list2
-  , unaryDifference  LaryngealFeature          list1 list2
-  , binaryDifference RoundFeature              list1 list2
-  , binaryDifference AnteriorFeature           list1 list2
-  , binaryDifference DistributedFeature        list1 list2
-  , binaryDifference StridentFeature           list1 list2
-  , binaryDifference HighFeature               list1 list2
-  , binaryDifference LowFeature                list1 list2
-  , binaryDifference BackFeature               list1 list2
+difference list₁ list₂ =
+  [ binaryDifference SyllabicFeature           list₁ list₂
+  , binaryDifference ConsonantalFeature        list₁ list₂
+  , binaryDifference SonorantFeature           list₁ list₂
+  , binaryDifference ContinuantFeature         list₁ list₂
+  , binaryDifference VoiceFeature              list₁ list₂
+  , binaryDifference AdvancedTongueRootFeature list₁ list₂
+  , unaryDifference  NasalFeature              list₁ list₂
+  , unaryDifference  LateralFeature            list₁ list₂
+  , unaryDifference  DelayedReleaseFeature     list₁ list₂
+  , unaryDifference  SpreadGlottisFeature      list₁ list₂
+  , unaryDifference  ConstrictedGlottisFeature list₁ list₂
+  , unaryDifference  LabialFeature             list₁ list₂
+  , unaryDifference  CoronalFeature            list₁ list₂
+  , unaryDifference  DorsalFeature             list₁ list₂
+  , unaryDifference  PharyngealFeature         list₁ list₂
+  , unaryDifference  LaryngealFeature          list₁ list₂
+  , binaryDifference RoundFeature              list₁ list₂
+  , binaryDifference AnteriorFeature           list₁ list₂
+  , binaryDifference DistributedFeature        list₁ list₂
+  , binaryDifference StridentFeature           list₁ list₂
+  , binaryDifference HighFeature               list₁ list₂
+  , binaryDifference LowFeature                list₁ list₂
+  , binaryDifference BackFeature               list₁ list₂
   ]
 
 {-|
@@ -1812,8 +1812,8 @@ showRounding Unrounded        = "unrounded"
 
 
 showPlace ∷ Place → Text
-showPlace place1 =
-  case place1 of
+showPlace place₁ =
+  case place₁ of
     Bilabial       → "bilabial"
     LabioDental    → "labio-dental"
     Dental         → "dental"
@@ -1833,8 +1833,8 @@ showPlace place1 =
     Places ps      → unwords (toList (fmap showPlace ps))
 
 showManner ∷ Manner → Text
-showManner manner1 =
-  case manner1 of
+showManner manner₁ =
+  case manner₁ of
     Plosive            → "plosive"
     Nasal              → "nasal"
     Trill              → "trill"
@@ -1849,16 +1849,16 @@ showManner manner1 =
 
 
 showAirstream ∷ Airstream → Text
-showAirstream airstream1 =
-  case airstream1 of
+showAirstream airstream₁ =
+  case airstream₁ of
     PulmonicEgressive → "pulmonic egressive"
     Click             → "click"
     Implosive         → "implosive"
 
 
 showVocalFolds ∷ VocalFolds → Text
-showVocalFolds vocalFolds1 =
-  case vocalFolds1 of
+showVocalFolds vocalFolds₁ =
+  case vocalFolds₁ of
     Voiced             → "voiced"
     Voiceless          → "voiceless"
     VoicedAspirated    → "voiced aspirated"
