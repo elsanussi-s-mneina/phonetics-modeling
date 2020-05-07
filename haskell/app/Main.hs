@@ -35,11 +35,9 @@ putPrompt =
   >> hFlush stdout
 
 analyzeIPAToSPE ∷ Text → Text
-analyzeIPAToSPE ipaText =
-  let maybePhonet = analyzeIPA ipaText
-  in case maybePhonet of
-       Nothing → "Sorry, unable to calculate answer with that input."
-       Just phonet → showFeatures (analyzeFeatures phonet)
+analyzeIPAToSPE ipaText = 
+  maybe "Sorry, unable to calculate answer with that input." (showFeatures ∘ analyzeFeatures) (analyzeIPA ipaText)
+
 
 promptForPhonemeAndApply ∷ (Text → Text) → Text → IO ()
 promptForPhonemeAndApply func instructions =
