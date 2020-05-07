@@ -4,8 +4,7 @@ module Main (main, doAnalyzeIPA, doConstructIPA) where
 
 import Prelude ()
 import Relude
-import Data.Monoid.Unicode ( (⊕) )
-import Prelude.Unicode ((∘))
+import Prelude.Unicode ((∘), (≡))
 import System.IO (hFlush)
 import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            , englishPhonetInventory
@@ -14,24 +13,10 @@ import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            , showPhonet
            , Phonet
            )
+import Data.Monoid.Unicode ( (⊕) )
 
-menu ∷ Text
-menu = unlines
-     ["What do you want to accomplish?"
-     , "1) view the English phoneme inventory (as IPA graphemes)."
-     , "2) make a phoneme voiced."
-     , "3) make a phoneme unvoiced."
-     , "4) describe a phoneme in English."
-     , "5) describe a phoneme in SPE Features."
-     , ""
-     , "Enter the number representing your selection below, "
-     , "after the prompt, and press enter/return."
-     , ""
-     , ""
-     ]
+import EnglishUSText
 
-prompt ∷ Text
-prompt = "(PROMPT:) "
 
 putPrompt ∷ IO ()
 putPrompt =
@@ -40,7 +25,7 @@ putPrompt =
 
 analyzeIPAToSPE ∷ Text → Text
 analyzeIPAToSPE ipaText =
-  maybe "Sorry, unable to calculate answer with that input." (showFeatures ∘ analyzeFeatures) (analyzeIPA ipaText)
+  maybe sorryUnableToCalculate (showFeatures ∘ analyzeFeatures) (analyzeIPA ipaText)
 
 putBlankLine ∷ IO ()
 putBlankLine = putTextLn ""
@@ -55,57 +40,49 @@ promptForPhonemeAndApply func instructions =
     >> getLine
     >>= \phoneme -> putTextLn (func phoneme)
 
-typeAPhoneme ∷  Text
-typeAPhoneme
-  = "Type a phoneme using IPA symbols, and then press the enter key,"
-  ⊕ " and the computer will display"
 
 promptForPhonemeToDevoice ∷ IO ()
 promptForPhonemeToDevoice =
-  promptForPhonemeAndApply devoicedIPA
-    (typeAPhoneme ⊕ " the devoiced counterpart (on the subsequent line):")
+  promptForPhonemeAndApply devoicedIPA phonemeToDevoiceMessage
 
 promptForPhonemeToVoice ∷ IO ()
 promptForPhonemeToVoice =
-  promptForPhonemeAndApply voicedIPA
-    (typeAPhoneme ⊕ " the voiced counterpart (on the subsequent line):")
+  promptForPhonemeAndApply voicedIPA phonemeToVoiceMessage
 
 promptForPhonemeToDescribe ∷ IO ()
 promptForPhonemeToDescribe =
-  promptForPhonemeAndApply describeIPA
-    (typeAPhoneme ⊕ " its English description (on the subsequent line):")
+  promptForPhonemeAndApply describeIPA phonemeToDescribeMessage
 
 promptForPhonemeToCalculateSPEFeaturesFrom ∷ IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
-  promptForPhonemeAndApply analyzeIPAToSPE
-    (typeAPhoneme ⊕ " its SPE features (on the subsequent line):")
+  promptForPhonemeAndApply analyzeIPAToSPE phonemeToCalculateSPEMessage
 
 main ∷ IO ()
 main =
-  putTextLn "Please read README.md file for instructions on how to use."
+  putTextLn pleaseReadReadmeMessage
   >>  putText menu
   >>  putPrompt
   >>  getLine
   >>= handleSelection
   >>  putBlankLine
-  >>  putTextLn "Program terminated normally."
+  >>  putTextLn programTerminatedNormallyMessage
   >>  putBlankLines 2
 
 handleSelection ∷ Text → IO ()
 handleSelection selection =
-  putTextLn ("The user selected: " ⊕ selection)
+  putTextLn (userSelectedMessage ⊕ selection)
   >> putTextLn ""
   >> case selection of
-       "1" → putText (showIPA englishPhonetInventory)
-       "2" → promptForPhonemeToVoice
-       "3" → promptForPhonemeToDevoice
-       "4" → promptForPhonemeToDescribe
-       "5" → promptForPhonemeToCalculateSPEFeaturesFrom
-       _   → putTextLn "Unrecognized selection. No action taken."
+       _ | selection ≡ userInput_viewEnglishPhonemeInventory → putText (showIPA englishPhonetInventory)
+       _ | selection ≡ userInput_makeAPhonemeVoiced          → promptForPhonemeToVoice
+       _ | selection ≡ userInput_makeAPhonemeUnvoiced        → promptForPhonemeToDevoice
+       _ | selection ≡ userInput_describeAPhonemeInEnglish   → promptForPhonemeToDescribe
+       _ | selection ≡ userInput_describeAPhonemeInSPE       → promptForPhonemeToCalculateSPEFeaturesFrom
+       _                                                     → putTextLn unrecognizedSelectionMessage
 
 doAnalyzeIPA ∷ Text → Text
 doAnalyzeIPA x =
-  maybe "No analysis found!" showPhonet (analyzeIPA x)
+  maybe noAnalysisFoundMessage showPhonet (analyzeIPA x)
 
 doConstructIPA ∷ Phonet → IO ()
 doConstructIPA = putTextLn ∘ constructIPA
