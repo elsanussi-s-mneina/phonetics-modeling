@@ -420,11 +420,11 @@ isDescender character = character ∈ descenders
 
 
 {-|
-Prevent placement of diacrtic's below a full-width
+Prevent placement of diacritics below a full-width
 character,
 when doing so would likely make the result
 difficult to read, whenever there is another
-diacrtiic with the same meaning, but can go above.
+diacritic with the same meaning, but can go above.
 And vice-versa (above - below).
 
 Only support the voiceless diacritic so far.
