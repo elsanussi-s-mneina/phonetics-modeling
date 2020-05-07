@@ -16,15 +16,19 @@ import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            )
 
 menu ∷ Text
-menu = "What do you want to accomplish?\n\n"
-     ⊕ "1) view the English phoneme inventory (as IPA graphemes).\n"
-     ⊕ "2) make a phoneme voiced.\n"
-     ⊕ "3) make a phoneme unvoiced.\n"
-     ⊕ "4) describe a phoneme in English.\n"
-     ⊕ "5) describe a phoneme in SPE Features.\n"
-     ⊕ "\n"
-     ⊕ "Enter the number representing your selection below, "
-     ⊕ "after the prompt, and press enter/return.\n\n\n"
+menu = unlines
+     ["What do you want to accomplish?"
+     , "1) view the English phoneme inventory (as IPA graphemes)."
+     , "2) make a phoneme voiced."
+     , "3) make a phoneme unvoiced."
+     , "4) describe a phoneme in English."
+     , "5) describe a phoneme in SPE Features."
+     , ""
+     , "Enter the number representing your selection below, "
+     , "after the prompt, and press enter/return."
+     , ""
+     , ""
+     ]
 
 prompt ∷ Text
 prompt = "(PROMPT:) "
@@ -35,9 +39,14 @@ putPrompt =
   >> hFlush stdout
 
 analyzeIPAToSPE ∷ Text → Text
-analyzeIPAToSPE ipaText = 
+analyzeIPAToSPE ipaText =
   maybe "Sorry, unable to calculate answer with that input." (showFeatures ∘ analyzeFeatures) (analyzeIPA ipaText)
 
+putBlankLine ∷ IO ()
+putBlankLine = putTextLn ""
+
+putBlankLines ∷ Int → IO ()
+putBlankLines n = replicateM_ n putBlankLine
 
 promptForPhonemeAndApply ∷ (Text → Text) → Text → IO ()
 promptForPhonemeAndApply func instructions =
@@ -78,11 +87,14 @@ main =
   >>  putPrompt
   >>  getLine
   >>= handleSelection
-  >>  putTextLn "\nProgram terminated normally.\n\n"
+  >>  putBlankLine
+  >>  putTextLn "Program terminated normally."
+  >>  putBlankLines 2
 
 handleSelection ∷ Text → IO ()
 handleSelection selection =
-  putTextLn ("The user selected: " ⊕ selection ⊕ "\n")
+  putTextLn ("The user selected: " ⊕ selection)
+  >> putTextLn ""
   >> case selection of
        "1" → putText (showIPA englishPhonetInventory)
        "2" → promptForPhonemeToVoice
