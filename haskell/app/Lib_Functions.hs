@@ -21,6 +21,7 @@ import Prelude.Unicode ( (≡) , (∧) , (∨) )
 import Data.Monoid.Unicode ( (⊕) )
 import MyLocal_Data_Semigroup_Unicode ((◇))
 import Data.Foldable.Unicode ((∈) , (∉))
+import EnglishUSText
 
 retractedPlace ∷ Place → Place
 retractedPlace place =
@@ -1196,8 +1197,7 @@ international phonetic alphabet.
   |-}
 describeIPA ∷ Text → Text
 describeIPA x =
-  maybe "(no English description found.)" showPhonet (analyzeIPA x)
-
+  maybe noEnglishDescriptionFound_message showPhonet (analyzeIPA x)
 
 
 -- Go to Section 12.2 of the textbook to understand
@@ -1772,95 +1772,100 @@ toTextFeatures phonete =
   in showFeatures features
 
 
-
 showPhonet ∷ Phonet → Text
 showPhonet phonet =
   case phonet of
     Consonant v p m a → showVocalFolds v ⊕ " " ⊕ showPlace p     ⊕ " "
-                      ⊕ showManner m     ⊕ " " ⊕ showAirstream a ⊕ " consonant"
+                      ⊕ showManner m     ⊕ " " ⊕ showAirstream a ⊕ " " ⊕ consonant_Text
     Vowel h b r v     → showVocalFolds v ⊕ " " ⊕ showRounding r  ⊕ " "
-                      ⊕ showHeight h     ⊕ " " ⊕ showBackness b  ⊕ " vowel"
+                      ⊕ showHeight h     ⊕ " " ⊕ showBackness b  ⊕ " " ⊕ vowel_Text
 
 
 
 
 showBackness ∷ Backness → Text
-showBackness Front            = "front"
-showBackness Central          = "central"
-showBackness Back             = "back"
+showBackness Front            = front_BacknessText
+showBackness Central          = central_BacknessText
+showBackness Back             = back_BacknessText
+
+
 
 
 showHeight ∷ Height → Text
 showHeight height =
   case height of
-    Close     → "close"
-    NearClose → "near-close"
-    CloseMid  → "close-mid"
-    Mid       → "mid"
-    OpenMid   → "open-mid"
-    NearOpen  → "near-open"
-    Open      → "open"
+    Close     → close_HeightText
+    NearClose → nearClose_HeightText
+    CloseMid  → closeMid_HeightText
+    Mid       → mid_HeightText
+    OpenMid   → openMid_HeightText
+    NearOpen  → nearOpen_HeightText
+    Open      → open_HeightText
 
 
 showRounding ∷ Rounding → Text
-showRounding Rounded          = "rounded"
-showRounding Unrounded        = "unrounded"
+showRounding Rounded          = rounded_RoundingText
+showRounding Unrounded        = unrounded_RoundingText
+
 
 
 
 showPlace ∷ Place → Text
 showPlace place₁ =
   case place₁ of
-    Bilabial       → "bilabial"
-    LabioDental    → "labio-dental"
-    Dental         → "dental"
-    Alveolar       → "alveolar"
-    PostAlveolar   → "post-alveolar"
-    Retroflex      → "retroflex"
-    Palatal        → "palatal"
-    Velar          → "velar"
-    Uvular         → "uvular"
-    Pharyngeal     → "pharyngeal"
-    Glottal        → "glottal"
-    Epiglottal     → "epiglottal"
-    LabialVelar    → "labial-velar"
-    LabialPalatal  → "labial-palatal"
-    AlveoloPalatal → "alveolo-palatal"
-    PalatoAlveolar → "palato-alveolar"
+    Bilabial       → bilabial_PlaceText
+    LabioDental    → labioDental_PlaceText
+    Dental         → dental_PlaceText
+    Alveolar       → alveolar_PlaceText
+    PostAlveolar   → postAlveolar_PlaceText
+    Retroflex      → retroflex_PlaceText
+    Palatal        → palatal_PlaceText
+    Velar          → velar_PlaceText
+    Uvular         → uvular_PlaceText
+    Pharyngeal     → pharyngeal_PlaceText
+    Glottal        → glottal_PlaceText
+    Epiglottal     → epiglottal_PlaceText
+    LabialVelar    → labialVelar_PlaceText
+    LabialPalatal  → labialPalatal_PlaceText
+    AlveoloPalatal → alveoloPalatal_PlaceText
+    PalatoAlveolar → palatoAlveolar_PlaceText
     Places ps      → unwords (toList (fmap showPlace ps))
+
+
 
 showManner ∷ Manner → Text
 showManner manner₁ =
   case manner₁ of
-    Plosive            → "plosive"
-    Nasal              → "nasal"
-    Trill              → "trill"
-    TapOrFlap          → "tap or flap"
-    Approximant        → "approximant"
-    Fricative          → "fricative"
-    Affricate          → "affricate"
-    LateralFricative   → "lateral fricative"
-    LateralApproximant → "lateral approximant"
-    LateralFlap        → "lateral flap"
-    Lateral            → "lateral"
+    Plosive            → plosive_MannerText
+    Nasal              → nasal_MannerText
+    Trill              → trill_MannerText
+    TapOrFlap          → tapOrFlap_MannerText
+    Approximant        → approximant_MannerText
+    Fricative          → fricative_MannerText
+    Affricate          → affricate_MannerText
+    LateralFricative   → lateralFricative_MannerText
+    LateralApproximant → lateralApproximant_MannerText
+    LateralFlap        → lateralFlap_MannerText
+    Lateral            → lateral_MannerText
+
 
 
 showAirstream ∷ Airstream → Text
 showAirstream airstream₁ =
   case airstream₁ of
-    PulmonicEgressive → "pulmonic egressive"
-    Click             → "click"
-    Implosive         → "implosive"
+    PulmonicEgressive → pulmonicEgressive_AirstreamText
+    Click             → click_AirstreamText
+    Implosive         → implosive_AirstreamText
 
 
 showVocalFolds ∷ VocalFolds → Text
 showVocalFolds vocalFolds₁ =
   case vocalFolds₁ of
-    Voiced             → "voiced"
-    Voiceless          → "voiceless"
-    VoicedAspirated    → "voiced aspirated"
-    VoicelessAspirated → "voiceless aspirated"
-    CreakyVoiced       → "creaky voiced"
+    Voiced             → voiced_VocalFoldsText
+    Voiceless          → voiceless_VocalFoldsText
+    VoicedAspirated    → voicedAspirated_VocalFoldsText
+    VoicelessAspirated → voicelessAspirated_VocalFoldsText
+    CreakyVoiced       → creakyVoiced_VocalFoldsText
 
 showPhonetInventory ∷ PhonetInventory → Text
 showPhonetInventory (PhonetInventory phonetes)
@@ -1875,26 +1880,26 @@ showPolarity Minus = "-"
 showPhonemeFeature ∷ PhonemeFeature → Text
 showPhonemeFeature pf =
   case pf of
-    (SyllabicFeature p)           → showPolarity p ⊕ "syllabic"
-    (ConsonantalFeature p)        → showPolarity p ⊕ "consonantal"
-    (SonorantFeature p)           → showPolarity p ⊕ "sonorant"
-    (ContinuantFeature p)         → showPolarity p ⊕ "continuant"
-    (VoiceFeature p)              → showPolarity p ⊕ "voice"
-    (AdvancedTongueRootFeature p) → showPolarity p ⊕ "ATR"
-    NasalFeature                  →                  "nasal"
-    LateralFeature                →                  "lateral"
-    DelayedReleaseFeature         →                  "delayed release"
-    SpreadGlottisFeature          →                  "spread glottis"
-    ConstrictedGlottisFeature     →                  "constricted glottis"
-    LabialFeature                 →                  "labial"
-    CoronalFeature                →                  "coronal"
-    DorsalFeature                 →                  "dorsal"
-    PharyngealFeature             →                  "pharyngeal"
-    LaryngealFeature              →                  "laryngeal"
-    (RoundFeature p)              → showPolarity p ⊕ "round"
-    (AnteriorFeature p)           → showPolarity p ⊕ "anterior"
-    (DistributedFeature p)        → showPolarity p ⊕ "distributed"
-    (StridentFeature p)           → showPolarity p ⊕ "strident"
-    (HighFeature p)               → showPolarity p ⊕ "high"
-    (LowFeature p)                → showPolarity p ⊕ "low"
-    (BackFeature p)               → showPolarity p ⊕ "back"
+    (SyllabicFeature p)           → showPolarity p ⊕ syllabic_PhonemeFeatureText
+    (ConsonantalFeature p)        → showPolarity p ⊕ consonantal_PhonemeFeatureText
+    (SonorantFeature p)           → showPolarity p ⊕ sonorant_PhonemeFeatureText
+    (ContinuantFeature p)         → showPolarity p ⊕ continuant_PhonemeFeatureText
+    (VoiceFeature p)              → showPolarity p ⊕ voice_PhonemeFeatureText
+    (AdvancedTongueRootFeature p) → showPolarity p ⊕ atr_PhonemeFeatureText
+    NasalFeature                  →                  nasal_PhonemeFeatureText
+    LateralFeature                →                  lateral_PhonemeFeatureText
+    DelayedReleaseFeature         →                  delayedRelease_PhonemeFeatureText
+    SpreadGlottisFeature          →                  spreadGlottis_PhonemeFeatureText
+    ConstrictedGlottisFeature     →                  constrictedGlottis_PhonemeFeatureText
+    LabialFeature                 →                  labial_PhonemeFeatureText
+    CoronalFeature                →                  coronal_PhonemeFeatureText
+    DorsalFeature                 →                  dorsal_PhonemeFeatureText
+    PharyngealFeature             →                  pharyngeal_PhonemeFeatureText
+    LaryngealFeature              →                  laryngeal_PhonemeFeatureText
+    (RoundFeature p)              → showPolarity p ⊕ round_PhonemeFeatureText
+    (AnteriorFeature p)           → showPolarity p ⊕ anterior_PhonemeFeatureText
+    (DistributedFeature p)        → showPolarity p ⊕ distributed_PhonemeFeatureText
+    (StridentFeature p)           → showPolarity p ⊕ strident_PhonemeFeatureText
+    (HighFeature p)               → showPolarity p ⊕ high_PhonemeFeatureText
+    (LowFeature p)                → showPolarity p ⊕ low_PhonemeFeatureText
+    (BackFeature p)               → showPolarity p ⊕ back_PhonemeFeatureText
