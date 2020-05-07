@@ -281,7 +281,7 @@ data Polarity = Plus | Minus
  difference is obvious in how they are represented in
  the notation that linguists use. Unary features,
  are either present or absent. Binary features
- can be positve or negative. For example, Nasal
+ can be positive or negative. For example, Nasal
  is a unary feature. A phoneme is either nasal,
  or it isn't. i.e. [nasal] or not. For example,
  Voice is a binary feature, a phoneme can be
