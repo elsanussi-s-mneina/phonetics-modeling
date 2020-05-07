@@ -28,3 +28,5 @@ rust/phon-mod/target/
 elm/elm-stuff/
 elm/index.html
 haskell/.hlint.yaml
+haskell/.idea
+haskell/phonetics-modeling.iml
