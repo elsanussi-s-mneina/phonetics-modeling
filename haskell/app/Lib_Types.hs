@@ -39,7 +39,7 @@ data Phonet = Consonant VocalFolds
 -- linguistics, instead it has been used to represent all values of a property.
 -- So for example, we would use unmarked voicing to represent all
 -- possible vocal fold configurations. We would use unmarked place to
--- to reprsent all possible places of articulation.
+-- to represent all possible places of articulation.
 data UnmarkablePhonet
   = UnmarkableConsonant
       UnmarkableVocalFolds
@@ -312,7 +312,7 @@ syntactically. For example a phoneme cannot be
 [+voice] and [-voice].
 
 TODO: implement checking whether a set of phonemes
-contains non-existant pairs (+ and − for the same
+contains non-existent pairs (+ and − for the same
 name of feature).
 
  Note that some analyses

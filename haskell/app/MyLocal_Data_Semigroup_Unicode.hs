@@ -5,7 +5,7 @@
 -- follows the template of the source code inside
 -- Base Unicode Symbols package.
 -- I made sure that the operator precedence
--- of <> opeartor and its replacement are the same.
+-- of <> operator and its replacement are the same.
 
 
 module MyLocal_Data_Semigroup_Unicode ((◇))

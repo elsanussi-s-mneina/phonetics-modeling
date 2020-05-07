@@ -1073,7 +1073,7 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
 -- about their place of articulation:
 -- constructIPARecursive _ _ (Consonant  Voiceless LabialVelar? Affricate
 --     PulmonicEgressive) = "k͡p"
--- constructIPARecursive _ _ (Consonant  Voiceless Palatal (or AlveolaPalatal?)
+-- constructIPARecursive _ _ (Consonant  Voiceless Palatal (or AlveoloPalatal?)
 --     Affricate PulmonicEgressive) = "c͡ɕ"
 
 
