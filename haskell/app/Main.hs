@@ -71,7 +71,7 @@ main =
 handleSelection ∷ Text → IO ()
 handleSelection selection =
   putTextLn (userSelectedMessage ⊕ selection)
-  >> putTextLn ""
+  >> putBlankLine
   >> respondToSelection selection
 
 respondToSelection ∷ Text → IO ()
