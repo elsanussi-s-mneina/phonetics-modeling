@@ -618,7 +618,6 @@ showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
 
 -- | This function will allow us to convert an IPA symbol
 -- | to its analyzed form (its phonetic features)
--- Currently, only the consonants (pulmonic) in the 2005 IPA chart are included.
 analyzeIPA  ∷ Text → Maybe Phonet
 
 
