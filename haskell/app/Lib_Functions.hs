@@ -1774,10 +1774,10 @@ toTextFeatures phonete =
 showPhonet ∷ Phonet → Text
 showPhonet phonet =
   case phonet of
-    Consonant v p m a → showVocalFolds v ⊕ " " ⊕ showPlace p     ⊕ " "
-                      ⊕ showManner m     ⊕ " " ⊕ showAirstream a ⊕ " " ⊕ consonant_Text
-    Vowel h b r v     → showVocalFolds v ⊕ " " ⊕ showRounding r  ⊕ " "
-                      ⊕ showHeight h     ⊕ " " ⊕ showBackness b  ⊕ " " ⊕ vowel_Text
+    Consonant v p m a → unwords [showVocalFolds v, showPlace p
+                      , showManner m    , showAirstream a, consonant_Text]
+    Vowel h b r v     → unwords [showVocalFolds v, showRounding r
+                      , showHeight h    , showBackness b , vowel_Text]
 
 
 
