@@ -1,4 +1,4 @@
-{-# LANGUAGE UnicodeSyntax #-}
+
 {-# LANGUAGE DerivingStrategies #-}
 
 module Lib_Types where
@@ -59,7 +59,7 @@ data Backness = Front
                 deriving stock Eq
 
 
-backnessStates ∷ NonEmpty Backness
+backnessStates :: NonEmpty Backness
 backnessStates = fromList [Front, Central, Back]
 
 
@@ -83,7 +83,7 @@ data UnmarkableHeight
 
 
 
-heightStates ∷ NonEmpty Height
+heightStates :: NonEmpty Height
 heightStates = fromList
              [ Close
              , NearClose
@@ -105,7 +105,7 @@ data UnmarkableRounding
 
 
 
-roundingStates ∷ NonEmpty Rounding
+roundingStates :: NonEmpty Rounding
 roundingStates = fromList [Rounded, Unrounded]
 
 data Place = Bilabial
@@ -136,7 +136,7 @@ data UnmarkablePlace
 
 
 
-placeStates ∷ NonEmpty Place
+placeStates :: NonEmpty Place
 placeStates = fromList
               [ Bilabial
               , LabioDental
@@ -177,7 +177,7 @@ data UnmarkableManner
 
 
 
-mannerStates ∷ NonEmpty Manner
+mannerStates :: NonEmpty Manner
 mannerStates = fromList
                [ Plosive
                , Nasal
@@ -203,7 +203,7 @@ data UnmarkableAirstream
 
 
 
-airstreamStates ∷ NonEmpty Airstream
+airstreamStates :: NonEmpty Airstream
 airstreamStates = fromList
                   [ PulmonicEgressive
                   , Click
@@ -221,7 +221,7 @@ data UnmarkableVocalFolds
   = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
 
 
-vocalFoldStates ∷ NonEmpty VocalFolds
+vocalFoldStates :: NonEmpty VocalFolds
 vocalFoldStates
   = fromList
     [ Voiceless

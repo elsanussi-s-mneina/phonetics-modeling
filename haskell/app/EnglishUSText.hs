@@ -1,11 +1,10 @@
-{-# LANGUAGE UnicodeSyntax #-}
 {-# LANGUAGE OverloadedStrings #-}
 module EnglishUSText where
 
 import Prelude ()
 import Relude (Text)
 
-menu ∷ Text
+menu :: Text
 menu =
   "What do you want to accomplish? \n\
   \ 1) view the English phoneme inventory (as IPA graphemes). \n\
@@ -22,7 +21,7 @@ menu =
   \ \n" 
 
 userInput_viewEnglishPhonemeInventory, userInput_makeAPhonemeVoiced, userInput_makeAPhonemeUnvoiced,
-  userInput_describeAPhonemeInEnglish, userInput_describeAPhonemeInSPE, userInput_chunkIPAByPhoneme ∷ Text
+  userInput_describeAPhonemeInEnglish, userInput_describeAPhonemeInSPE, userInput_chunkIPAByPhoneme :: Text
 userInput_viewEnglishPhonemeInventory = "1"
 userInput_makeAPhonemeVoiced = "2"
 userInput_makeAPhonemeUnvoiced = "3"
@@ -30,15 +29,15 @@ userInput_describeAPhonemeInEnglish = "4"
 userInput_describeAPhonemeInSPE = "5"
 userInput_chunkIPAByPhoneme = "6"
 
-prompt ∷ Text
+prompt :: Text
 prompt = "(PROMPT:) "
 
 
 
-sorryUnableToCalculate ∷ Text
+sorryUnableToCalculate :: Text
 sorryUnableToCalculate = "Sorry, unable to calculate answer with that input."
 
-typeAPhoneme ∷  Text
+typeAPhoneme ::  Text
 typeAPhoneme =
   "Type a phoneme using IPA symbols, and then press the enter key, \
   \ and the computer will display"
@@ -46,7 +45,7 @@ typeAPhoneme =
 
 phonemeToDevoiceMessage, phonemeToVoiceMessage, phonemeToDescribeMessage, phonemeToCalculateSPEMessage,
   pleaseReadReadmeMessage, programTerminatedNormallyMessage, userSelectedMessage, unrecognizedSelectionMessage,
-  noAnalysisFoundMessage, ipaTextToDivideMessage ∷ Text
+  noAnalysisFoundMessage, ipaTextToDivideMessage :: Text
 phonemeToDevoiceMessage = 
   "Type a phoneme using IPA symbols, and then press the enter key,\
   \ and the computer will display\ 
@@ -80,7 +79,7 @@ noAnalysisFoundMessage = "No analysis found!"
 
 
 
-noEnglishDescriptionFound_message ∷ Text   
+noEnglishDescriptionFound_message :: Text
 noEnglishDescriptionFound_message = "(no English description found.)"
 
 
@@ -163,7 +162,7 @@ consonant_Text
   , strident_PhonemeFeatureText
   , high_PhonemeFeatureText
   , low_PhonemeFeatureText
-  , back_PhonemeFeatureText ∷ Text
+  , back_PhonemeFeatureText :: Text
 
 
 

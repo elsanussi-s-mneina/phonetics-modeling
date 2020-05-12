@@ -40,6 +40,5 @@ executables:
     - -Wno-missing-export-lists
     - -Wno-missing-import-lists
     dependencies:
-    - base-unicode-symbols
     - relude
     - text
