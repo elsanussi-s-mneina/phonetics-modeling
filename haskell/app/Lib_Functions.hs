@@ -148,65 +148,65 @@ unmarkDifferences p₁ p₂ = case (p₁, p₂) of
 
 
 
--- This function (I realize it is poorly named)
+-- This function
 -- takes any unmarked attributes in the phoneme definition,
--- and returns a list with all possibilities for that attribute.
-generateFromUnmarked ∷ UnmarkablePhonet → [Phonet]
-generateFromUnmarked (UnmarkableConsonant voice₁ place₁ manner₁ airstream₁) =
-  let voice'     = toList (unmarkableVoiceToList     voice₁    )
-      place'     = toList (unmarkablePlaceToList     place₁    )
-      manner'    = toList (unmarkableMannerToList    manner₁   )
-      airstream' = toList (unmarkableAirstreamToList airstream₁)
+-- and returns a list with all possible phonemes that have that attribute.
+similarPhonemesTo ∷ UnmarkablePhonet → [Phonet]
+similarPhonemesTo (UnmarkableConsonant voice₁ place₁ manner₁ airstream₁) =
+  let voice'     = toList (similarInVoice     voice₁    )
+      place'     = toList (similarInPlace     place₁    )
+      manner'    = toList (similarInManner    manner₁   )
+      airstream' = toList (similarInAirstream airstream₁)
   in [Consonant v p m a | p ← place', v ← voice',  m ← manner', a ← airstream']
 
-generateFromUnmarked (UnmarkableVowel height₁ backness₁ rounding₁ voice₁) =
-  let voice'    = toList (unmarkableVoiceToList    voice₁   )
-      height'   = toList (unmarkableHeightToList   height₁  )
-      backness' = toList (unmarkableBacknessToList backness₁)
-      rounding' = toList (unmarkableRoundingToList rounding₁)
+similarPhonemesTo (UnmarkableVowel height₁ backness₁ rounding₁ voice₁) =
+  let voice'    = toList (similarInVoice    voice₁   )
+      height'   = toList (similarInHeight   height₁  )
+      backness' = toList (similarInBackness backness₁)
+      rounding' = toList (similarInRounding rounding₁)
   in [Vowel h b r v | h ← height', b ← backness', r ← rounding', v ← voice']
 
 
-unmarkableVoiceToList ∷ UnmarkableVocalFolds → NonEmpty VocalFolds
-unmarkableVoiceToList voice₁ =
+similarInVoice ∷ UnmarkableVocalFolds → NonEmpty VocalFolds
+similarInVoice voice₁ =
   case voice₁ of
        MarkedVocalFolds x → one x
        UnmarkedVocalFolds → vocalFoldStates
 
-unmarkablePlaceToList ∷ UnmarkablePlace → NonEmpty Place
-unmarkablePlaceToList place₁ =
+similarInPlace ∷ UnmarkablePlace → NonEmpty Place
+similarInPlace place₁ =
   case place₁ of
        MarkedPlace x → one x
        UnmarkedPlace → placeStates
 
 
-unmarkableMannerToList ∷ UnmarkableManner → NonEmpty Manner
-unmarkableMannerToList manner₁ =
+similarInManner ∷ UnmarkableManner → NonEmpty Manner
+similarInManner manner₁ =
   case manner₁ of
        MarkedManner x → one x
        UnmarkedManner → mannerStates
 
-unmarkableAirstreamToList ∷ UnmarkableAirstream → NonEmpty Airstream
-unmarkableAirstreamToList airstream₁ =
+similarInAirstream ∷ UnmarkableAirstream → NonEmpty Airstream
+similarInAirstream airstream₁ =
   case airstream₁ of
        MarkedAirstream x → one x
        UnmarkedAirstream → airstreamStates
 
 
-unmarkableHeightToList ∷ UnmarkableHeight → NonEmpty Height
-unmarkableHeightToList height₁ =
+similarInHeight ∷ UnmarkableHeight → NonEmpty Height
+similarInHeight height₁ =
   case height₁ of
        MarkedHeight x → one x
        UnmarkedHeight → heightStates
 
-unmarkableBacknessToList ∷ UnmarkableBackness → NonEmpty Backness
-unmarkableBacknessToList backness₁ =
+similarInBackness ∷ UnmarkableBackness → NonEmpty Backness
+similarInBackness backness₁ =
   case backness₁ of
        MarkedBackness x → one x
        UnmarkedBackness → backnessStates
 
-unmarkableRoundingToList ∷ UnmarkableRounding → NonEmpty Rounding
-unmarkableRoundingToList rounding₁ =
+similarInRounding ∷ UnmarkableRounding → NonEmpty Rounding
+similarInRounding rounding₁ =
   case rounding₁ of
        MarkedRounding x → one x
        UnmarkedRounding → roundingStates
