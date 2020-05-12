@@ -36,9 +36,12 @@ promptForPhonemeAndApply ∷ (Text → Text) → Text → IO ()
 promptForPhonemeAndApply func instructions =
     putTextLn instructions
     >> putPrompt
-    >> getLine
-    >>= \phoneme -> putTextLn (func phoneme)
+    >> interact func
 
+interact ∷ (Text → Text) → IO ()
+interact func = 
+  getLine
+  >>= \userInput -> putTextLn (func userInput)
 
 promptForPhonemeToDevoice ∷ IO ()
 promptForPhonemeToDevoice =
