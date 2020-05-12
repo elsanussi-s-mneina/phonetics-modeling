@@ -435,14 +435,14 @@ preventProhibitedCombination ss
   | T.null ss = ""
   | T.length ss ≡ 1 = ss
   | otherwise =
-     let x = one (T.head ss) ∷ Text
-         y = one (T.index ss 1) ∷ Text
+     let firstCharacter = one (T.head ss) ∷ Text
+         secondCharacter = one (T.index ss 1) ∷ Text
          rest = T.tail (T.tail ss)
      in
-      if isAscender x ∧ isDiacriticAbove y
-      then x ⊕ lowerDiacritic y ⊕ rest
-      else if isDescender x ∧ isDiacriticBelow y
-      then x ⊕ raiseDiacritic y ⊕ rest
+      if isAscender firstCharacter ∧ isDiacriticAbove secondCharacter
+      then firstCharacter ⊕ lowerDiacritic secondCharacter ⊕ rest
+      else if isDescender firstCharacter ∧ isDiacriticBelow secondCharacter
+      then firstCharacter ⊕ raiseDiacritic secondCharacter ⊕ rest
       else ss
 
 
@@ -1221,13 +1221,13 @@ binaryDifference ∷
                     → [PhonemeFeature]
                     → (Maybe PhonemeFeature, Maybe PhonemeFeature)
 binaryDifference feature list₁ list₂
-  | list₁Relevant ≡ list₂Relevant
+  | relevantList₁ ≡ relevantList₂
   = (Nothing, Nothing)
   | otherwise
-  = (list₁Relevant !!? 0, list₂Relevant !!? 0)
+  = (relevantList₁ !!? 0, relevantList₂ !!? 0)
    where
-   list₁Relevant = filter (relevantBinary feature) list₁
-   list₂Relevant = filter (relevantBinary feature) list₂
+   relevantList₁ = filter (relevantBinary feature) list₁
+   relevantList₂ = filter (relevantBinary feature) list₂
 
 
 unaryDifference ∷ PhonemeFeature
