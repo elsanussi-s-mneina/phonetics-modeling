@@ -72,6 +72,8 @@ retractedPlace place =
     same         -> same
 
 
+englishPhonetInventoryReport :: Text
+englishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA englishPhonetInventory)
 
 
 englishDescription :: Phonet -> Text
@@ -120,7 +122,9 @@ splitByPhonetesNonDiacrtic text =
 nondiacriticParserFunction :: Text -> Maybe (Text, Text)
 nondiacriticParserFunction text =
   if not (T.null text) && isSegmental (T.head text)
-  then Just (T.take 1 text, T.drop 1 text)
+    then if isTieBarAt 1 text
+           then Just (T.take 3 text, T.drop 3 text)
+           else Just (T.take 1 text, T.drop 1 text)
   else Nothing
 
 isConsonantAt :: Int -> Text -> Bool
@@ -138,6 +142,9 @@ isSegmental = elemW strictSegmentals
 isExponentialAfterAt :: Int -> Text -> Bool
 isExponentialAfterAt = isSuchAt isExponentialAfter
 
+isTieBarAt :: Int -> Text -> Bool
+isTieBarAt = isSuchAt isTieBar
+
 isSuchAt :: (Char -> Bool) -> Int -> Text -> Bool
 isSuchAt function index text = index < T.length text && function (T.index text index)
 
@@ -146,6 +153,9 @@ isExponentialAfter = elemW exponentialsAfter
 
 isExponentialBefore :: Char -> Bool
 isExponentialBefore = elemW exponentialsBefore
+
+isTieBar :: Char -> Bool
+isTieBar x = x `elem` ['͜', '͡']
 
 -- Create a function that sees whether
 -- a character is equal to (the first character in) an element
@@ -158,8 +168,10 @@ prediacriticParserFunction :: Text -> Maybe (Text, Text)
 prediacriticParserFunction text =
   if not (T.null text) && isExponentialBefore (T.head text)
                        && isSegmentalAt 1 text
-  then Just (T.take 2 text, T.drop 2 text)
-  else Nothing
+    then if isTieBarAt 2 text
+           then Just (T.take 4 text, T.drop 4 text) -- include tie bar and character after it.
+           else Just (T.take 2 text, T.drop 2 text)
+    else Nothing
 
 prepostdiacriticParserFunction :: Text -> Maybe (Text, Text)
 prepostdiacriticParserFunction text =
@@ -178,13 +190,18 @@ prepostdiacriticParserFunction text =
 postdiacriticParserFunction :: Text -> Maybe (Text, Text)
 postdiacriticParserFunction text =
   if isSegmentalAt 0 text && isExponentialAfterAt 1 text
-  then let numberOfPostdiacritics = countPostDiacriticsInARow text 1
-           chunkLength = numberOfPostdiacritics  + 1
-  in Just (T.take chunkLength text, T.drop chunkLength text)
-  else Nothing
-  where countPostDiacriticsInARow  :: Text -> Int -> Int
-        countPostDiacriticsInARow sText startIndex =
-          if isExponentialAfterAt startIndex text
+    then let numberOfPostdiacritics = countPostDiacriticsInARow text 1
+             chunkLength = numberOfPostdiacritics  + 1
+         in Just (T.take chunkLength text, T.drop chunkLength text)
+    else if isSegmentalAt 0 text && isTieBarAt 1 text && isExponentialAfterAt 2 text
+           then let numberOfPostdiacritics = countPostDiacriticsInARow text 3
+                    chunkLength = numberOfPostdiacritics  + 3
+                in Just (T.take chunkLength text, T.drop chunkLength text)
+           else Nothing
+
+countPostDiacriticsInARow :: Text -> Int -> Int
+countPostDiacriticsInARow sText startIndex =
+          if isExponentialAfterAt startIndex sText
           then 1 + countPostDiacriticsInARow sText (startIndex + 1)
           else 0
 
@@ -783,6 +800,7 @@ diacriticsAndSuprasegmentals = fromList
   , "̇"    -- Palatalization/Centralization
   ]
 
+
 showIPA :: PhonetInventory -> Text
 showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
 
@@ -993,8 +1011,17 @@ analyzeIPA p = case p of
                 -- since we have no way to represent it in the type system.
                 -- to do: determine
                 -- if the idea of an aspirated vowel makes sense
+      "̠"  ->
+        let fullGrapheme = analyzeIPA (T.init ipaText)
+        in retractPhonet fullGrapheme
+
+
       _ -> Nothing -- not recognized.
   _ -> Nothing
+
+retractPhonet :: Maybe Phonet -> Maybe Phonet
+retractPhonet (Just (Consonant v p m a)) = Just (Consonant v (retractedPlace p) m a)
+retractPhonet _ = Nothing
 
 constructIPA :: Phonet -> Text
 constructIPA phoneme =
@@ -1253,7 +1280,6 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
   -- otherwise
   -- it will try to represent it in IPA with more than
   -- one character
-
   (Consonant  x PostAlveolar y z)
     | recursionLevel < recursionLimit ->
     case constructIPARecursive recursionLimit

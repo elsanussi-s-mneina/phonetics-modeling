@@ -4,8 +4,8 @@ module Main (main, doAnalyzeIPA, doConstructIPA) where
 import Prelude ()
 import Relude
 import System.IO (hFlush)
-import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
-           , englishPhonetInventory
+import Lib ( voicedIPA, devoicedIPA, describeIPA, analyzeIPA
+           , englishPhonetInventoryReport
            , analyzeFeatures, showFeatures
            , constructIPA
            , showPhonet, ipaTextToPhonetListReport
@@ -80,7 +80,7 @@ handleSelection selection =
 
 respondToSelection :: Text -> IO ()
 respondToSelection selection
-  | selection == userInput_viewEnglishPhonemeInventory = putText (showIPA englishPhonetInventory)
+  | selection == userInput_viewEnglishPhonemeInventory = putTextLn englishPhonetInventoryReport
   | selection == userInput_makeAPhonemeVoiced          = promptForPhonemeToVoice
   | selection == userInput_makeAPhonemeUnvoiced        = promptForPhonemeToDevoice
   | selection == userInput_describeAPhonemeInEnglish   = promptForPhonemeToDescribe
