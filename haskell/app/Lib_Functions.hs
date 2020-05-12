@@ -740,34 +740,45 @@ toneAndWordAccents = fromList
 
 diacriticsAndSuprasegmentals :: NonEmpty Text
 diacriticsAndSuprasegmentals = fromList
-  [ "ʰ"  -- Aspirated
-  , "ʷ"  -- Labialised
-  , "ʲ"  -- Palatalised
-  , "ˠ"  -- Velarised
-  , "ˤ"  -- Pharyngealised
-  , "ⁿ"  -- Pre/post nasalised
-  , "ˡ"  -- Lateral release
-
-  , "˞"  -- Rhoticity
-  , "ʼ"  -- Ejective
-  , "̚"   -- No audible release
-
-  , "̩"   -- Syllabic
-  , "̯"   -- Non-syllabic
-  , "̰"   -- Creaky voiced
-  , "̥"   -- Voiceless
-  , "̬"   -- Voiced
-  , "̤"   -- Breathy voiced
+  [ "̥"   -- Voiceless
   , "̊"   -- Voiceless (diacritic placed above symbol with descender)
+  , "̤"   -- Breathy voiced
+         -- End of first row.
+  , "̬"   -- Voiced
+  , "̰"   -- Creaky voiced
+  , "̺"   -- Apical
+         -- End of second row.
+  , "ʰ"  -- Aspirated
+  , "̼"   -- Linguolabial
+  , "̻"   -- Laminal
+         -- End of third row.
+  , "̹"   -- More rounded
+  , "ʷ"  -- Labialised
+  , "̃"   -- Nasalised
+         -- End of fourth row.
+  , "̜"   -- Less rounded
+  , "ʲ"  -- Palatalised
+  , "ⁿ"  -- Pre/post nasalised
+  , "̟"   -- Advanced
+  , "ˠ"  -- Velarised
+  , "ˡ"  -- Lateral release
+  , "̠"   -- Retracted
+  , "ˤ"  -- Pharyngealised
+  , "̚"   -- No audible release
+  , "̈"   -- Centralised
+   -- To do: Figure out if we cannot add a diacritic for "Velarized or Pharyngealized
+  , "̽"   -- Mid centralised
+  , "̝"   -- Raised
+  , "̩"   -- Syllabic
+  , "̞"   -- Lowered
+  , "̯"   -- Non-syllabic
+  , "̘"   -- Advanced tongue root
+  , "˞"  -- Rhoticity
+  , "̙"   -- Retracted tongue root
+  , "ʼ"  -- Ejective
   , "̍"   -- Syllabic (diacritic placed above)
   , "̪"   -- Dental
-  , "̺"   -- Apical
-  , "̻"   -- Laminal
-  , "̼"   -- Linguolabial
   , "̣"   -- Closer variety/Fricative
-  , "̃"   -- Nasalised
-  , "̈"   -- Centralised
-  , "̽"   -- Mid centralised
   , "̇"    -- Palatalization/Centralization
   ]
 
