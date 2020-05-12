@@ -10,7 +10,7 @@ import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            , englishPhonetInventory
            , analyzeFeatures, showFeatures
            , constructIPA
-           , showPhonet
+           , showPhonet, splitByPhonetes
            , Phonet
            )
 
@@ -83,6 +83,7 @@ respondToSelection selection
   | selection ≡ userInput_makeAPhonemeUnvoiced        = promptForPhonemeToDevoice
   | selection ≡ userInput_describeAPhonemeInEnglish   = promptForPhonemeToDescribe
   | selection ≡ userInput_describeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom
+  | selection ≡ userInput_chunkIPAByPhoneme           = interact (unlines ∘ splitByPhonetes)
   | otherwise                                         = putTextLn unrecognizedSelectionMessage
 
 doAnalyzeIPA ∷ Text → Text

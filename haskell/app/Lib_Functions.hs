@@ -65,6 +65,19 @@ englishDescription ∷ Phonet → Text
 englishDescription = showPhonet
 
 
+splitByPhonetes ∷ Text → [Text]
+splitByPhonetes text =
+  let result = prediacriticParserFunction text
+  in case result of
+    Nothing  → [text]
+    Just (a,b)   → [a,b]
+
+prediacriticParserFunction ∷ Text → Maybe (Text, Text)
+prediacriticParserFunction text =
+  if T.head text ∈ (fmap T.head exponentialsBefore) ∧ T.index text 1 ∈ (fmap T.head consonants) -- To do find a better way than "fmap T.head" to compare characters to strings
+  then Just (T.take 2 text, T.drop 2 text)
+  else Nothing
+
 -- | A function that given an IPA symbol will convert it to the voiced
 -- |equivalent.
 voicedPhonet ∷ Phonet → Phonet
@@ -348,10 +361,18 @@ englishPhonetInventory = PhonetInventory (fromList
 -- To do: model separate dialects of English or only one.
 
 
-
-
+-- To do: find a more suitable name than exponentials.
+-- They only look like exponentials if you consider how they
+-- look similar to mathematical notation for exponentials.
+-- Really, they should be named something different.
 exponentials ∷ NonEmpty Text
-exponentials = fromList ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ⁿ" , "ˡ"]
+exponentials = exponentialsBefore ◇ exponentialsAfter
+
+exponentialsBefore ∷ NonEmpty Text
+exponentialsBefore = fromList ["ⁿ"]
+
+exponentialsAfter ∷ NonEmpty Text
+exponentialsAfter = fromList ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ˡ"]
 
 {-|
 Whether an IPA character is written above the base line
@@ -480,6 +501,9 @@ graphemesOfIPA = consonantsPulmonic
 -- See:
 --www.internationalphoneticassociation.org/sites/default/files/IPA_Kiel_2015.pdf
 -- For the source of this information..
+
+consonants ∷ NonEmpty Text
+consonants = consonantsPulmonic ◇ consonantsNonPulmonic ◇ otherSymbols
 
 -- CONSONANTS (PULMONIC)
 consonantsPulmonic ∷ NonEmpty Text

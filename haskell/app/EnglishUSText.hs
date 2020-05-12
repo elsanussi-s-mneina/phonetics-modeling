@@ -21,12 +21,13 @@ menu =
   \ \n" 
 
 userInput_viewEnglishPhonemeInventory, userInput_makeAPhonemeVoiced, userInput_makeAPhonemeUnvoiced,
-  userInput_describeAPhonemeInEnglish, userInput_describeAPhonemeInSPE ∷ Text
+  userInput_describeAPhonemeInEnglish, userInput_describeAPhonemeInSPE, userInput_chunkIPAByPhoneme ∷ Text
 userInput_viewEnglishPhonemeInventory = "1"
 userInput_makeAPhonemeVoiced = "2"
 userInput_makeAPhonemeUnvoiced = "3"
 userInput_describeAPhonemeInEnglish = "4"
 userInput_describeAPhonemeInSPE = "5"
+userInput_chunkIPAByPhoneme = "Parse"
 
 prompt ∷ Text
 prompt = "(PROMPT:) "
