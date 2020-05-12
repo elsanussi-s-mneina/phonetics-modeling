@@ -568,7 +568,7 @@ toneAndWordAccents = fromList
   ,      "ꜜ"  -- Downstep
   ,      "ꜛ"  -- Upstep
 
-{- Countour -}
+{- Contour -}
   , "̌" -- Rising
   , "̂" -- Falling
   , "᷄" -- High rising
