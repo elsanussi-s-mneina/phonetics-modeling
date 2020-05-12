@@ -11,7 +11,7 @@ import Relude
   , catMaybes , one , sconcat
   , filter                 , fmap      , fromMaybe, fromList, map  , maybe, not
   , otherwise              , toList, unwords
-  , (+), (<), (!!?)
+  , (+), (<), (!!?), (-)
   )
 
 import qualified Data.Text as T
@@ -64,27 +64,45 @@ retractedPlace place =
 englishDescription ∷ Phonet → Text
 englishDescription = showPhonet
 
+-- begin parsing next character
+parseStart, splitByPhonetes ∷  Text → [Text]
+splitByPhonetes = parseStart
+parseStart = splitByPhonetesPrePostDiacrtic
 
-splitByPhonetes ∷ Text → [Text]
-splitByPhonetes text =
+splitByPhonetesPreDiacritic ∷ Text → [Text]
+splitByPhonetesPreDiacritic text =
   let result = prediacriticParserFunction text
   in case result of
     Nothing  → splitByPhonetesPostDiacrtic text
-    Just (a,b)   → [a] ◇ splitByPhonetes b
+    Just (a,b)   → [a] ◇ parseStart b
+
+
+-- Handle "ⁿdʰ", "ⁿdʷʰ" and other text strings
+-- where a phoneme is represented in IPA by
+-- a segmental preceded and followed by at least
+-- one diacritic
+splitByPhonetesPrePostDiacrtic ∷ Text → [Text]
+splitByPhonetesPrePostDiacrtic text =
+  let result = prepostdiacriticParserFunction text
+  in case result of
+    Nothing  → splitByPhonetesPreDiacritic text
+    Just (chunk, rest) → [chunk] ◇ parseStart rest
+
+
 
 splitByPhonetesPostDiacrtic ∷ Text → [Text]
 splitByPhonetesPostDiacrtic text =
   let result = postdiacriticParserFunction text
   in case result of
     Nothing  → splitByPhonetesNonDiacrtic text
-    Just (chunk, rest) → [chunk] ◇ splitByPhonetes rest
+    Just (chunk, rest) → [chunk] ◇ parseStart rest
 
 splitByPhonetesNonDiacrtic ∷ Text → [Text]
 splitByPhonetesNonDiacrtic text =
   let result = nondiacriticParserFunction text
   in case result of
     Nothing            → [text] -- stop parsing!
-    Just (chunk, rest) → [chunk] ◇ splitByPhonetes rest
+    Just (chunk, rest) → [chunk] ◇ parseStart rest
 
 nondiacriticParserFunction ∷ Text → Maybe (Text, Text)
 nondiacriticParserFunction text =
@@ -97,6 +115,9 @@ isConsonantAt = isSuchAt isConsonant
 
 isConsonant ∷ Char → Bool
 isConsonant = elemW consonants
+
+isSegmentalAt ∷ Int → Text → Bool
+isSegmentalAt = isSuchAt isSegmental
 
 isSegmental ∷ Char → Bool
 isSegmental = elemW strictSegmentals
@@ -122,16 +143,30 @@ elemW stringList = (∈ (fmap T.head stringList))
 
 prediacriticParserFunction ∷ Text → Maybe (Text, Text)
 prediacriticParserFunction text =
-  if not (T.null text) ∧ T.head text ∈ (fmap T.head exponentialsBefore)
-                       ∧ isConsonantAt 1 text
+  if not (T.null text) ∧ isExponentialBefore (T.head text)
+                       ∧ isSegmentalAt 1 text
   then Just (T.take 2 text, T.drop 2 text)
   else Nothing
 
+prepostdiacriticParserFunction ∷ Text → Maybe (Text, Text)
+prepostdiacriticParserFunction text =
+  let preResult = prediacriticParserFunction text
+  in case preResult of
+       Nothing → Nothing
+       Just (prePart, middle) → if isExponentialAfterAt 0 middle
+                                then let lengthOfFirst = T.length prePart
+                                         segmental = T.drop (lengthOfFirst - 1) prePart
+                                         postResult = postdiacriticParserFunction (segmental ⊕ middle)
+                                     in case postResult of
+                                         Nothing → Nothing
+                                         Just (postPart, rest) → Just (prePart ⊕ T.tail postPart, rest)
+                                else Nothing
+
 postdiacriticParserFunction ∷ Text → Maybe (Text, Text)
 postdiacriticParserFunction text =
-  if isConsonantAt 0 text ∧ isExponentialAfterAt 1 text
+  if isSegmentalAt 0 text ∧ isExponentialAfterAt 1 text
   then let numberOfPostdiacritics = countPostDiacriticsInARow text 1
-           chunkLength = numberOfPostdiacritics + 1
+           chunkLength = numberOfPostdiacritics  + 1
   in Just (T.take chunkLength text, T.drop chunkLength text)
   else Nothing
   where countPostDiacriticsInARow  ∷ Text → Int → Int
@@ -139,6 +174,8 @@ postdiacriticParserFunction text =
           if isExponentialAfterAt startIndex text
           then 1 + countPostDiacriticsInARow sText (startIndex + 1)
           else 0
+
+
 
 -- | A function that given an IPA symbol will convert it to the voiced
 -- |equivalent.

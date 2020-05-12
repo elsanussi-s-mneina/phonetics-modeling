@@ -32,8 +32,8 @@ putBlankLine = putTextLn ""
 putBlankLines ∷ Int → IO ()
 putBlankLines n = replicateM_ n putBlankLine
 
-promptForPhonemeAndApply ∷ (Text → Text) → Text → IO ()
-promptForPhonemeAndApply func instructions =
+promptForTextAndApply ∷ (Text → Text) → Text → IO ()
+promptForTextAndApply func instructions =
     putTextLn instructions
     >> putPrompt
     >> interact func
@@ -45,19 +45,23 @@ interact func =
 
 promptForPhonemeToDevoice ∷ IO ()
 promptForPhonemeToDevoice =
-  promptForPhonemeAndApply devoicedIPA phonemeToDevoiceMessage
+  promptForTextAndApply devoicedIPA phonemeToDevoiceMessage
 
 promptForPhonemeToVoice ∷ IO ()
 promptForPhonemeToVoice =
-  promptForPhonemeAndApply voicedIPA phonemeToVoiceMessage
+  promptForTextAndApply voicedIPA phonemeToVoiceMessage
 
 promptForPhonemeToDescribe ∷ IO ()
 promptForPhonemeToDescribe =
-  promptForPhonemeAndApply describeIPA phonemeToDescribeMessage
+  promptForTextAndApply describeIPA phonemeToDescribeMessage
 
 promptForPhonemeToCalculateSPEFeaturesFrom ∷ IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom =
-  promptForPhonemeAndApply analyzeIPAToSPE phonemeToCalculateSPEMessage
+  promptForTextAndApply analyzeIPAToSPE phonemeToCalculateSPEMessage
+
+promptForIPATextToSplit ∷ IO ()
+promptForIPATextToSplit =
+  promptForTextAndApply (unlines ∘ splitByPhonetes) ipaTextToDivideMessage
 
 main ∷ IO ()
 main =
@@ -83,7 +87,7 @@ respondToSelection selection
   | selection ≡ userInput_makeAPhonemeUnvoiced        = promptForPhonemeToDevoice
   | selection ≡ userInput_describeAPhonemeInEnglish   = promptForPhonemeToDescribe
   | selection ≡ userInput_describeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom
-  | selection ≡ userInput_chunkIPAByPhoneme           = interact (unlines ∘ splitByPhonetes)
+  | selection ≡ userInput_chunkIPAByPhoneme           = promptForIPATextToSplit
   | otherwise                                         = putTextLn unrecognizedSelectionMessage
 
 doAnalyzeIPA ∷ Text → Text

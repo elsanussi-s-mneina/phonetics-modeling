@@ -13,6 +13,7 @@ menu =
   \ 3) make a phoneme unvoiced. \n\
   \ 4) describe a phoneme in English. \n\
   \ 5) describe a phoneme in SPE Features. \n\
+  \ 6) divide IPA text into phonemes (chunk) \n\
   \  \n\
   \ Enter the number representing your selection below, \n\
   \ after the prompt, and press enter/return. \n\
@@ -27,7 +28,7 @@ userInput_makeAPhonemeVoiced = "2"
 userInput_makeAPhonemeUnvoiced = "3"
 userInput_describeAPhonemeInEnglish = "4"
 userInput_describeAPhonemeInSPE = "5"
-userInput_chunkIPAByPhoneme = "Parse"
+userInput_chunkIPAByPhoneme = "6"
 
 prompt ∷ Text
 prompt = "(PROMPT:) "
@@ -45,7 +46,7 @@ typeAPhoneme =
 
 phonemeToDevoiceMessage, phonemeToVoiceMessage, phonemeToDescribeMessage, phonemeToCalculateSPEMessage,
   pleaseReadReadmeMessage, programTerminatedNormallyMessage, userSelectedMessage, unrecognizedSelectionMessage,
-  noAnalysisFoundMessage ∷ Text
+  noAnalysisFoundMessage, ipaTextToDivideMessage ∷ Text
 phonemeToDevoiceMessage = 
   "Type a phoneme using IPA symbols, and then press the enter key,\
   \ and the computer will display\ 
@@ -65,6 +66,11 @@ phonemeToCalculateSPEMessage =
   "Type a phoneme using IPA symbols, and then press the enter key,\
   \ and the computer will display\ 
   \ its SPE features (on the subsequent line):"
+
+ipaTextToDivideMessage =
+  "Type text using IPA symbols, and then press the enter key,\
+  \ and the computer will display\
+  \ the text you entered with separate phonemes on separate lines:"
 
 pleaseReadReadmeMessage = "Please read README.md file for instructions on how to use."
 programTerminatedNormallyMessage = "Program terminated normally."
