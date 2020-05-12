@@ -484,7 +484,8 @@ exponentialsBefore :: NonEmpty Text
 exponentialsBefore = fromList ["ⁿ"]
 
 exponentialsAfter :: NonEmpty Text
-exponentialsAfter = fromList ["ʰ" , "ʷ" , "ʲ" , "ˠ" , "ˤ" , "ˡ"]
+exponentialsAfter = diacriticsAndSuprasegmentals <> fromList ["ː", "ˑ"]
+
 
 {-|
 Whether an IPA character is written above the base line
