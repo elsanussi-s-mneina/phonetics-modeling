@@ -23,6 +23,25 @@ import MyLocal_Data_Semigroup_Unicode ((◇))
 import Data.Foldable.Unicode ((∈) , (∉))
 import EnglishUSText
 
+
+equivalentInPlace ∷ Place → Place → Bool
+Bilabial     `equivalentInPlace` Bilabial            = True
+LabioDental  `equivalentInPlace` LabioDental         = True
+Dental       `equivalentInPlace` Dental              = True
+Alveolar     `equivalentInPlace` Alveolar            = True
+PostAlveolar `equivalentInPlace` PostAlveolar        = True
+Retroflex    `equivalentInPlace` Retroflex           = True
+Palatal      `equivalentInPlace` Palatal             = True
+Velar        `equivalentInPlace` Velar               = True
+Uvular       `equivalentInPlace` Uvular              = True
+Pharyngeal   `equivalentInPlace` Pharyngeal          = True
+Glottal      `equivalentInPlace` Glottal             = True
+Epiglottal   `equivalentInPlace` Epiglottal          = True
+x            `equivalentInPlace` Places pList        = x ∈ pList
+Places x     `equivalentInPlace` y                   = y `equivalentInPlace` Places x
+_            `equivalentInPlace` _                   = False
+
+
 retractedPlace ∷ Place → Place
 retractedPlace place =
   case place of
@@ -117,7 +136,7 @@ unmarkDifferences p₁ p₂ = case (p₁, p₂) of
         else UnmarkedVocalFolds
 
     unmarkPlace place₁ place₂ =
-      if place₁ ≡ place₂
+      if place₁ `equivalentInPlace` place₂
         then MarkedPlace place₁
         else UnmarkedPlace
 
