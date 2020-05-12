@@ -9,12 +9,32 @@ import Relude
   ( Bool(False, True), Char, Natural, Int, Maybe(Just, Nothing) , NonEmpty((:|)), Text
   , catMaybes , elem, one , sconcat
   , filter                 , fmap      , fromMaybe, fromList, map  , maybe, not, notElem
-  , otherwise              , toList, unwords
+  , otherwise              , toList, unwords, zip
   , (+), (<), (!!?), (-), (<>), (==), (||), (&&)
   )
 
 import qualified Data.Text as T
 import EnglishUSText
+
+ipaTextToPhonetListReport :: Text -> Text
+ipaTextToPhonetListReport text =
+  let listA = ipaTextToPhonetList text
+  in T.unlines (map ipaAndPhonetFormat listA)
+
+ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
+ipaAndPhonetFormat (ipaText, phonet) =
+  "/" <> ipaText <> "/" <> " " <> phonetSummary
+  where phonetSummary =
+          case phonet of
+            Nothing -> "(n/a)"
+            Just p  -> showPhonet p
+
+
+ipaTextToPhonetList :: Text -> [(Text, Maybe Phonet)]
+ipaTextToPhonetList text =
+  let ipaChunks = splitByPhonetes text
+      phonetes = map analyzeIPA ipaChunks
+  in zip ipaChunks phonetes
 
 
 equivalentInPlace :: Place -> Place -> Bool
@@ -924,7 +944,7 @@ analyzeIPA p = case p of
   "ɒ"  -> Just (Vowel  Open Back  Rounded   Voiced)
 
 -- Handle Diacritics:
-  ipaText ->
+  ipaText | not (T.null ipaText) ->
     case [T.last ipaText] of
       "̥" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
@@ -962,7 +982,7 @@ analyzeIPA p = case p of
                 -- to do: determine
                 -- if the idea of an aspirated vowel makes sense
       _ -> Nothing -- not recognized.
-
+  _ -> Nothing
 
 constructIPA :: Phonet -> Text
 constructIPA phoneme =

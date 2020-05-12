@@ -8,7 +8,7 @@ import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            , englishPhonetInventory
            , analyzeFeatures, showFeatures
            , constructIPA
-           , showPhonet, splitByPhonetes
+           , showPhonet, ipaTextToPhonetListReport
            , Phonet
            )
 
@@ -59,7 +59,7 @@ promptForPhonemeToCalculateSPEFeaturesFrom =
 
 promptForIPATextToSplit :: IO ()
 promptForIPATextToSplit =
-  promptForTextAndApply (unlines . splitByPhonetes) ipaTextToDivideMessage
+  promptForTextAndApply ipaTextToPhonetListReport ipaTextToDivideMessage
 
 main :: IO ()
 main =
