@@ -13,7 +13,6 @@ import Lib ( showIPA, voicedIPA, devoicedIPA, describeIPA, analyzeIPA
            , showPhonet
            , Phonet
            )
-import Data.Monoid.Unicode ( (⊕) )
 
 import EnglishUSText
 
@@ -70,7 +69,7 @@ main =
 
 handleSelection ∷ Text → IO ()
 handleSelection selection =
-  putTextLn (userSelectedMessage ⊕ selection)
+  putTextLn (unwords [userSelectedMessage, selection])
   >> putBlankLine
   >> respondToSelection selection
 

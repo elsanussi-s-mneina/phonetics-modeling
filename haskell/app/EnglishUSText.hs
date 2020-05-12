@@ -67,7 +67,7 @@ phonemeToCalculateSPEMessage =
 
 pleaseReadReadmeMessage = "Please read README.md file for instructions on how to use."
 programTerminatedNormallyMessage = "Program terminated normally."
-userSelectedMessage = "The user selected: "
+userSelectedMessage = "The user selected:"
 unrecognizedSelectionMessage =  "Unrecognized selection. No action taken."
 noAnalysisFoundMessage = "No analysis found!"
 
