@@ -7,7 +7,7 @@ import Lib_Types
 
 import Prelude ()
 import Relude
-  ( Bool(False, True), Natural, Int, Maybe(Just, Nothing) , NonEmpty((:|)), Text
+  ( Bool(False, True), Char, Natural, Int, Maybe(Just, Nothing) , NonEmpty((:|)), Text
   , catMaybes , one , sconcat
   , filter                 , fmap      , fromMaybe, fromList, map  , maybe, not
   , otherwise              , toList, unwords
@@ -77,7 +77,7 @@ splitByPhonetesPostDiacrtic text =
   let result = postdiacriticParserFunction text
   in case result of
     Nothing  → splitByPhonetesNonDiacrtic text
-    Just (chunk, rest)   → [chunk] ◇ splitByPhonetes rest
+    Just (chunk, rest) → [chunk] ◇ splitByPhonetes rest
 
 splitByPhonetesNonDiacrtic ∷ Text → [Text]
 splitByPhonetesNonDiacrtic text =
@@ -88,26 +88,55 @@ splitByPhonetesNonDiacrtic text =
 
 nondiacriticParserFunction ∷ Text → Maybe (Text, Text)
 nondiacriticParserFunction text =
-  if not (T.null text) ∧ T.head text ∈ (fmap T.head strictSegmentals)
+  if not (T.null text) ∧ isSegmental (T.head text)
   then Just (T.take 1 text, T.drop 1 text)
   else Nothing
 
+isConsonantAt ∷ Int → Text → Bool
+isConsonantAt = isSuchAt isConsonant
+
+isConsonant ∷ Char → Bool
+isConsonant = elemW consonants
+
+isSegmental ∷ Char → Bool
+isSegmental = elemW strictSegmentals
+
+isExponentialAfterAt ∷ Int → Text → Bool
+isExponentialAfterAt = isSuchAt isExponentialAfter
+
+isSuchAt ∷ (Char → Bool) → Int → Text → Bool
+isSuchAt function index text = index < T.length text ∧ function (T.index text index)
+
+isExponentialAfter ∷ Char → Bool
+isExponentialAfter = elemW exponentialsAfter
+
+isExponentialBefore ∷ Char → Bool
+isExponentialBefore = elemW exponentialsBefore
+
+-- Create a function that sees whether
+-- a character is equal to (the first character in) an element
+-- in a list of text
+elemW ∷ NonEmpty Text → (Char → Bool)
+elemW stringList = (∈ (fmap T.head stringList))
+
+
 prediacriticParserFunction ∷ Text → Maybe (Text, Text)
 prediacriticParserFunction text =
-  if not (T.null text) ∧ T.head text ∈ (fmap T.head exponentialsBefore) ∧ 1 < T.length text ∧ T.index text 1 ∈ (fmap T.head consonants) -- To do find a better way than "fmap T.head" to compare characters to strings
+  if not (T.null text) ∧ T.head text ∈ (fmap T.head exponentialsBefore)
+                       ∧ isConsonantAt 1 text
   then Just (T.take 2 text, T.drop 2 text)
   else Nothing
 
 postdiacriticParserFunction ∷ Text → Maybe (Text, Text)
 postdiacriticParserFunction text =
-  if not (T.null text) ∧ T.head text ∈ (fmap T.head consonants) ∧ 1 < T.length text ∧ T.index text 1 ∈ (fmap T.head exponentialsAfter)
+  if isConsonantAt 0 text ∧ isExponentialAfterAt 1 text
   then let numberOfPostdiacritics = countPostDiacriticsInARow text 1
            chunkLength = numberOfPostdiacritics + 1
   in Just (T.take chunkLength text, T.drop chunkLength text)
   else Nothing
   where countPostDiacriticsInARow  ∷ Text → Int → Int
         countPostDiacriticsInARow sText startIndex =
-          if startIndex < T.length text ∧ T.index text startIndex ∈ (fmap T.head exponentialsAfter)
+          if isExponentialAfterAt startIndex text
           then 1 + countPostDiacriticsInARow sText (startIndex + 1)
           else 0
 
