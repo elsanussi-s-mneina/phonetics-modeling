@@ -663,7 +663,7 @@ lateralFricativePulmonic :: NonEmpty Text
 lateralFricativePulmonic   = fromList [ "ɬ", "ɮ" ]
 
 approximantPulmonic :: NonEmpty Text
-approximantPulmonic        = fromList [ "ʋ", "ɻ", "j", "ɰ" ]
+approximantPulmonic        = fromList [ "ʋ", "ɹ", "ɻ", "j", "ɰ" ]
 
 lateralApproximantPulmonic :: NonEmpty Text
 lateralApproximantPulmonic = fromList [ "l", "ɭ", "ʎ", "ʟ" ]
