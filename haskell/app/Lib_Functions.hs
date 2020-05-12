@@ -7,7 +7,7 @@ import Lib_Types
 
 import Prelude ()
 import Relude
-  ( Bool(False, True), Natural, Maybe(Just, Nothing) , NonEmpty((:|)), Text
+  ( Bool(False, True), Natural, Int, Maybe(Just, Nothing) , NonEmpty((:|)), Text
   , catMaybes , one , sconcat
   , filter                 , fmap      , fromMaybe, fromList, map  , maybe
   , otherwise              , toList, unwords
@@ -69,14 +69,35 @@ splitByPhonetes ∷ Text → [Text]
 splitByPhonetes text =
   let result = prediacriticParserFunction text
   in case result of
+    Nothing  → splitByPhonetesPostDiacrtic text
+    Just (a,b)   → [a,b]
+
+splitByPhonetesPostDiacrtic ∷ Text → [Text]
+splitByPhonetesPostDiacrtic text =
+  let result = postdiacriticParserFunction text
+  in case result of
     Nothing  → [text]
     Just (a,b)   → [a,b]
+
 
 prediacriticParserFunction ∷ Text → Maybe (Text, Text)
 prediacriticParserFunction text =
   if T.head text ∈ (fmap T.head exponentialsBefore) ∧ T.index text 1 ∈ (fmap T.head consonants) -- To do find a better way than "fmap T.head" to compare characters to strings
   then Just (T.take 2 text, T.drop 2 text)
   else Nothing
+
+postdiacriticParserFunction ∷ Text → Maybe (Text, Text)
+postdiacriticParserFunction text =
+  if T.head text ∈ (fmap T.head consonants) ∧ T.index text 1 ∈ (fmap T.head exponentialsAfter)
+  then let numberOfPostdiacritics = countPostDiacriticsInARow text 1
+           chunkLength = numberOfPostdiacritics + 1
+  in Just (T.take chunkLength text, T.drop chunkLength text)
+  else Nothing
+  where countPostDiacriticsInARow  ∷ Text → Int → Int
+        countPostDiacriticsInARow sText startIndex =
+          if startIndex < T.length text ∧ T.index text startIndex ∈ (fmap T.head exponentialsAfter)
+          then 1 + countPostDiacriticsInARow sText (startIndex + 1)
+          else 0
 
 -- | A function that given an IPA symbol will convert it to the voiced
 -- |equivalent.
