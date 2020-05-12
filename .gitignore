@@ -31,3 +31,4 @@ haskell/.hlint.yaml
 haskell/.idea
 haskell/phonetics-modeling.iml
 haskell/out
+.idea/
