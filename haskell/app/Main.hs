@@ -72,13 +72,16 @@ handleSelection ∷ Text → IO ()
 handleSelection selection =
   putTextLn (userSelectedMessage ⊕ selection)
   >> putTextLn ""
-  >> case () of
-       _ | selection ≡ userInput_viewEnglishPhonemeInventory → putText (showIPA englishPhonetInventory)
-         | selection ≡ userInput_makeAPhonemeVoiced          → promptForPhonemeToVoice
-         | selection ≡ userInput_makeAPhonemeUnvoiced        → promptForPhonemeToDevoice
-         | selection ≡ userInput_describeAPhonemeInEnglish   → promptForPhonemeToDescribe
-         | selection ≡ userInput_describeAPhonemeInSPE       → promptForPhonemeToCalculateSPEFeaturesFrom
-         | otherwise                                         → putTextLn unrecognizedSelectionMessage
+  >> respondToSelection selection
+
+respondToSelection ∷ Text → IO ()
+respondToSelection selection
+  | selection ≡ userInput_viewEnglishPhonemeInventory = putText (showIPA englishPhonetInventory)
+  | selection ≡ userInput_makeAPhonemeVoiced          = promptForPhonemeToVoice
+  | selection ≡ userInput_makeAPhonemeUnvoiced        = promptForPhonemeToDevoice
+  | selection ≡ userInput_describeAPhonemeInEnglish   = promptForPhonemeToDescribe
+  | selection ≡ userInput_describeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom
+  | otherwise                                         = putTextLn unrecognizedSelectionMessage
 
 doAnalyzeIPA ∷ Text → Text
 doAnalyzeIPA x =
