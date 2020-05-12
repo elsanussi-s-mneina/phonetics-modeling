@@ -9,7 +9,7 @@ import Prelude ()
 import Relude
   ( Bool(False, True), Natural, Int, Maybe(Just, Nothing) , NonEmpty((:|)), Text
   , catMaybes , one , sconcat
-  , filter                 , fmap      , fromMaybe, fromList, map  , maybe
+  , filter                 , fmap      , fromMaybe, fromList, map  , maybe, not
   , otherwise              , toList, unwords
   , (+), (<), (!!?)
   )
@@ -70,25 +70,37 @@ splitByPhonetes text =
   let result = prediacriticParserFunction text
   in case result of
     Nothing  → splitByPhonetesPostDiacrtic text
-    Just (a,b)   → [a,b]
+    Just (a,b)   → [a] ◇ splitByPhonetes b
 
 splitByPhonetesPostDiacrtic ∷ Text → [Text]
 splitByPhonetesPostDiacrtic text =
   let result = postdiacriticParserFunction text
   in case result of
-    Nothing  → [text]
-    Just (a,b)   → [a,b]
+    Nothing  → splitByPhonetesNonDiacrtic text
+    Just (chunk, rest)   → [chunk] ◇ splitByPhonetes rest
 
+splitByPhonetesNonDiacrtic ∷ Text → [Text]
+splitByPhonetesNonDiacrtic text =
+  let result = nondiacriticParserFunction text
+  in case result of
+    Nothing            → [text] -- stop parsing!
+    Just (chunk, rest) → [chunk] ◇ splitByPhonetes rest
+
+nondiacriticParserFunction ∷ Text → Maybe (Text, Text)
+nondiacriticParserFunction text =
+  if not (T.null text) ∧ T.head text ∈ (fmap T.head strictSegmentals)
+  then Just (T.take 1 text, T.drop 1 text)
+  else Nothing
 
 prediacriticParserFunction ∷ Text → Maybe (Text, Text)
 prediacriticParserFunction text =
-  if T.head text ∈ (fmap T.head exponentialsBefore) ∧ T.index text 1 ∈ (fmap T.head consonants) -- To do find a better way than "fmap T.head" to compare characters to strings
+  if not (T.null text) ∧ T.head text ∈ (fmap T.head exponentialsBefore) ∧ 1 < T.length text ∧ T.index text 1 ∈ (fmap T.head consonants) -- To do find a better way than "fmap T.head" to compare characters to strings
   then Just (T.take 2 text, T.drop 2 text)
   else Nothing
 
 postdiacriticParserFunction ∷ Text → Maybe (Text, Text)
 postdiacriticParserFunction text =
-  if T.head text ∈ (fmap T.head consonants) ∧ T.index text 1 ∈ (fmap T.head exponentialsAfter)
+  if not (T.null text) ∧ T.head text ∈ (fmap T.head consonants) ∧ 1 < T.length text ∧ T.index text 1 ∈ (fmap T.head exponentialsAfter)
   then let numberOfPostdiacritics = countPostDiacriticsInARow text 1
            chunkLength = numberOfPostdiacritics + 1
   in Just (T.take chunkLength text, T.drop chunkLength text)
@@ -525,6 +537,11 @@ graphemesOfIPA = consonantsPulmonic
 
 consonants ∷ NonEmpty Text
 consonants = consonantsPulmonic ◇ consonantsNonPulmonic ◇ otherSymbols
+
+-- | IPA text that is not a semantic modifier to what is before or after it.
+-- | This includes vowels, and consonants. It excludes all diacritics.
+strictSegmentals ∷ NonEmpty Text
+strictSegmentals = consonants ◇ vowels
 
 -- CONSONANTS (PULMONIC)
 consonantsPulmonic ∷ NonEmpty Text
