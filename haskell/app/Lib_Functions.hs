@@ -25,9 +25,7 @@ ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
 ipaAndPhonetFormat (ipaText, phonet) =
   "/" <> ipaText <> "/" <> " " <> phonetSummary
   where phonetSummary =
-          case phonet of
-            Nothing -> "(n/a)"
-            Just p  -> showPhonet p
+          maybe "(n/a)" showPhonet phonet
 
 
 ipaTextToPhonetList :: Text -> [(Text, Maybe Phonet)]
