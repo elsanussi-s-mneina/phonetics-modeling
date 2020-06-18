@@ -104,3 +104,7 @@ To run the executable type:
 In the command line enter:
 
 `stack build --pedantic`
+
+
+## Known Issues
+- On Windows 8, the Command Prompt incorrectly displays non-ASCII characters.
