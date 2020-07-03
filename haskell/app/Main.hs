@@ -14,7 +14,9 @@ import Lib ( voicedIPA, devoicedIPA, describeIPA, analyzeIPA
 
 import EnglishUSText
 
-
+-- | Print characters to the terminal, so that the
+--   user knows that they are expected to enter
+--   some text.
 putPrompt :: IO ()
 putPrompt =
   putText prompt

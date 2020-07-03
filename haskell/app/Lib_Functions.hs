@@ -16,6 +16,10 @@ import Relude
 import qualified Data.Text as T
 import EnglishUSText
 
+-- | Given text containing international phonetic alphabet symbols
+--   returns text with every phonetic alphabet symbol or sequence
+--   of symbols for a sound
+--   followed by the description of the sound it represents.
 ipaTextToPhonetListReport :: Text -> Text
 ipaTextToPhonetListReport text =
   let listA = ipaTextToPhonetList text
