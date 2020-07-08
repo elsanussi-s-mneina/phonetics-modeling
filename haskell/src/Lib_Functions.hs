@@ -163,7 +163,7 @@ isTieBar x = x `elem` ['͜', '͡']
 -- a character is equal to (the first character in) an element
 -- in a list of text
 elemW :: NonEmpty Text -> (Char -> Bool)
-elemW stringList = (`elem` (fmap T.head stringList))
+elemW stringList = (`elem` fmap T.head stringList)
 
 
 prediacriticParserFunction :: Text -> Maybe (Text, Text)
@@ -190,16 +190,19 @@ prepostdiacriticParserFunction text =
                                 else Nothing
 
 postdiacriticParserFunction :: Text -> Maybe (Text, Text)
-postdiacriticParserFunction text =
-  if isSegmentalAt 0 text && isExponentialAfterAt 1 text
-    then let numberOfPostdiacritics = countPostDiacriticsInARow text 1
-             chunkLength = numberOfPostdiacritics  + 1
-         in Just (T.take chunkLength text, T.drop chunkLength text)
-    else if isSegmentalAt 0 text && isTieBarAt 1 text && isExponentialAfterAt 2 text
-           then let numberOfPostdiacritics = countPostDiacriticsInARow text 3
-                    chunkLength = numberOfPostdiacritics  + 3
-                in Just (T.take chunkLength text, T.drop chunkLength text)
-           else Nothing
+postdiacriticParserFunction text
+    | isSegmentalAt 0 text && isExponentialAfterAt 1 text
+    = let
+        numberOfPostdiacritics = countPostDiacriticsInARow text 1
+        chunkLength = numberOfPostdiacritics + 1
+      in Just (T.take chunkLength text, T.drop chunkLength text)
+    | isSegmentalAt 0 text
+        && isTieBarAt 1 text && isExponentialAfterAt 2 text
+    = let
+        numberOfPostdiacritics = countPostDiacriticsInARow text 3
+        chunkLength = numberOfPostdiacritics + 3
+      in Just (T.take chunkLength text, T.drop chunkLength text)
+    | otherwise = Nothing
 
 countPostDiacriticsInARow :: Text -> Int -> Int
 countPostDiacriticsInARow sText startIndex =
