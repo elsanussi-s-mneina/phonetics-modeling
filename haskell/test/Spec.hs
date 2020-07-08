@@ -1,10 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Spec(main) where
 
-import Data.Maybe (fromJust)
-import Test.Hspec (describe, hspec, it, shouldBe, Spec)
+import           Data.Maybe    (fromJust)
+import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 
-import Lib_Functions (analyzeIPA, isGlide)
+import           Lib_Functions (analyzeIPA, isGlide)
 
 
 main = do

@@ -1,18 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
-import Prelude ()
-import Relude
-import System.IO (hFlush)
-import Lib ( voicedIPA, devoicedIPA, describeIPA, analyzeIPA
-           , englishPhonetInventoryReport
-           , analyzeFeatures, showFeatures
-           , constructIPA
-           , showPhonet, ipaTextToPhonetListReport
-           , Phonet
-           )
+import           Lib           (Phonet, analyzeFeatures, analyzeIPA,
+                                constructIPA, describeIPA, devoicedIPA,
+                                englishPhonetInventoryReport,
+                                ipaTextToPhonetListReport, showFeatures,
+                                showPhonet, voicedIPA)
+import           Prelude       ()
+import           Relude
+import           System.IO     (hFlush)
 
-import EnglishUSText
+import           EnglishUSText
 
 -- | Print characters to the terminal, so that the
 --   user knows that they are expected to enter
@@ -39,7 +37,7 @@ promptForTextAndApply func instructions =
     >> interact func
 
 interact :: (Text -> Text) -> IO ()
-interact func = 
+interact func =
   getLine
   >>= \userInput -> putTextLn (func userInput)
 

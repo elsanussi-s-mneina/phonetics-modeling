@@ -2,8 +2,8 @@
 {-# LANGUAGE DerivingStrategies #-}
 
 module Lib_Types where
-import Prelude ()
-import Relude (Eq, NonEmpty, fromList)
+import           Prelude ()
+import           Relude  (Eq, NonEmpty, fromList)
 
 -- The data type Phonet, represents a linguistics
 -- phoneme or phonete.

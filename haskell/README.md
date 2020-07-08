@@ -113,6 +113,10 @@ In the command line enter:
 
 `stack haddock --open phonetics-modeling`
 
+## How to format source code.
+Use Stylish-Haskell to ensure that whitespace remains consistent.
+
+
 
 ## Known Issues
 - On Windows 8, the Command Prompt incorrectly displays non-ASCII characters.
