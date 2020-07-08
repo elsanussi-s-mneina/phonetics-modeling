@@ -42,3 +42,20 @@ executables:
     dependencies:
     - relude
     - text
+    - phonetics-modeling
+
+library:
+  source-dirs:
+  - src
+  ghc-options:
+  - -Weverything
+  - -Werror
+  - -Wunsafe
+  - -Wno-safe
+  - -fwarn-incomplete-patterns
+  - -fwarn-incomplete-uni-patterns
+  - -Wno-missing-export-lists
+  - -Wno-missing-import-lists
+  dependencies:
+  - relude
+  - text
