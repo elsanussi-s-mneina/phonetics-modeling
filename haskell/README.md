@@ -105,6 +105,9 @@ In the command line enter:
 
 `stack build --pedantic`
 
+## How to run the unit tests.
+`stack test`
+
 
 ## How to generate documentation for source code:
 

@@ -59,3 +59,15 @@ library:
   dependencies:
   - relude
   - text
+
+tests:
+  phonetics-modeling-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is Spec
+    dependencies:
+    - phonetics-modeling
