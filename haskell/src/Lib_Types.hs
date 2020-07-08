@@ -21,8 +21,8 @@ import Relude (Eq, NonEmpty, fromList)
 -- Note: The Phonet datatype does not represent
 -- any marked/unmarked distinction.
 data Phonet = Consonant VocalFolds
-                        Place   -- | Place of articulation
-                        Manner  -- | Manner of articulation
+                        Place   -- Place of articulation
+                        Manner  -- Manner of articulation
                         Airstream
 
             | Vowel Height
