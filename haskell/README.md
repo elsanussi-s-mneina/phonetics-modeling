@@ -106,5 +106,10 @@ In the command line enter:
 `stack build --pedantic`
 
 
+## How to generate documentation for source code:
+
+`stack haddock --open phonetics-modeling`
+
+
 ## Known Issues
 - On Windows 8, the Command Prompt incorrectly displays non-ASCII characters.
