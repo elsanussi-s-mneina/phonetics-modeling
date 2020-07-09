@@ -11,7 +11,7 @@ import           Relude        (Bool (False, True), Char, Int,
                                 Text, catMaybes, elem, filter, fmap, fromList,
                                 fromMaybe, map, maybe, not, notElem, one,
                                 otherwise, sconcat, toList, unwords, zip, (!!?),
-                                (&&), (+), (-), (<), (<>), (==), (||))
+                                (&&), (+), (-), (<), (<>), (==), (||), (/=))
 
 -- | Given text containing international phonetic alphabet symbols
 --   returns text with every phonetic alphabet symbol or sequence
@@ -77,7 +77,7 @@ englishDescription = showPhonet
 -- begin parsing next character
 parseStart, splitByPhonetes :: Text -> [Text]
 splitByPhonetes = parseStart
-parseStart = splitByPhonetesPrePostDiacrtic
+parseStart x = filter (/= "") (splitByPhonetesPrePostDiacrtic x)
 
 splitByPhonetesPreDiacritic :: Text -> [Text]
 splitByPhonetesPreDiacritic text =
