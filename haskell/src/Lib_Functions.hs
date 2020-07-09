@@ -2036,7 +2036,7 @@ showPhonet phonet =
           showPlace p,
           showManner m,
           showAirstream a,
-          consonant_Text
+          consonantUIText
         ]
     Vowel h b r v ->
       unwords
@@ -2044,80 +2044,80 @@ showPhonet phonet =
           showRounding r,
           showHeight h,
           showBackness b,
-          vowel_Text
+          vowelUIText
         ]
 
 showBackness :: Backness -> Text
-showBackness Front   = front_BacknessText
-showBackness Central = central_BacknessText
-showBackness Back    = back_BacknessText
+showBackness Front   = frontBacknessUIText
+showBackness Central = centralBacknessUIText
+showBackness Back    = backBacknessUIText
 
 showHeight :: Height -> Text
 showHeight height =
   case height of
-    Close     -> close_HeightText
-    NearClose -> nearClose_HeightText
-    CloseMid  -> closeMid_HeightText
-    Mid       -> mid_HeightText
-    OpenMid   -> openMid_HeightText
-    NearOpen  -> nearOpen_HeightText
-    Open      -> open_HeightText
+    Close     -> closeHeightUIText
+    NearClose -> nearCloseHeightUIText
+    CloseMid  -> closeMidHeightUIText
+    Mid       -> midHeightUIText
+    OpenMid   -> openMidHeightUIText
+    NearOpen  -> nearOpenHeightUIText
+    Open      -> openHeightUIText
 
 showRounding :: Rounding -> Text
-showRounding Rounded   = rounded_RoundingText
-showRounding Unrounded = unrounded_RoundingText
+showRounding Rounded   = roundedRoundingUIText
+showRounding Unrounded = unroundedRoundingUIText
 
 showPlace :: Place -> Text
 showPlace place_1 =
   case place_1 of
-    Bilabial       -> bilabial_PlaceText
-    LabioDental    -> labioDental_PlaceText
-    Dental         -> dental_PlaceText
-    Alveolar       -> alveolar_PlaceText
-    PostAlveolar   -> postAlveolar_PlaceText
-    Retroflex      -> retroflex_PlaceText
-    Palatal        -> palatal_PlaceText
-    Velar          -> velar_PlaceText
-    Uvular         -> uvular_PlaceText
-    Pharyngeal     -> pharyngeal_PlaceText
-    Glottal        -> glottal_PlaceText
-    Epiglottal     -> epiglottal_PlaceText
-    LabialVelar    -> labialVelar_PlaceText
-    LabialPalatal  -> labialPalatal_PlaceText
-    AlveoloPalatal -> alveoloPalatal_PlaceText
-    PalatoAlveolar -> palatoAlveolar_PlaceText
+    Bilabial       -> bilabialPlaceUIText
+    LabioDental    -> labioDentalPlaceUIText
+    Dental         -> dentalPlaceUIText
+    Alveolar       -> alveolarPlaceUIText
+    PostAlveolar   -> postAlveolarPlaceUIText
+    Retroflex      -> retroflexPlaceUIText
+    Palatal        -> palatalPlaceUIText
+    Velar          -> velarPlaceUIText
+    Uvular         -> uvularPlaceUIText
+    Pharyngeal     -> pharyngealPlaceUIText
+    Glottal        -> glottalPlaceUIText
+    Epiglottal     -> epiglottalPlaceUIText
+    LabialVelar    -> labialVelarPlaceUIText
+    LabialPalatal  -> labialPalatalPlaceUIText
+    AlveoloPalatal -> alveoloPalatalPlaceUIText
+    PalatoAlveolar -> palatoAlveolarPlaceUIText
     Places ps      -> unwords (toList (fmap showPlace ps))
 
 showManner :: Manner -> Text
 showManner manner_1 =
   case manner_1 of
-    Plosive            -> plosive_MannerText
-    Nasal              -> nasal_MannerText
-    Trill              -> trill_MannerText
-    TapOrFlap          -> tapOrFlap_MannerText
-    Approximant        -> approximant_MannerText
-    Fricative          -> fricative_MannerText
-    Affricate          -> affricate_MannerText
-    LateralFricative   -> lateralFricative_MannerText
-    LateralApproximant -> lateralApproximant_MannerText
-    LateralFlap        -> lateralFlap_MannerText
-    Lateral            -> lateral_MannerText
+    Plosive            -> plosiveMannerUIText
+    Nasal              -> nasalMannerUIText
+    Trill              -> trillMannerUIText
+    TapOrFlap          -> tapOrFlapMannerUIText
+    Approximant        -> approximantMannerUIText
+    Fricative          -> fricativeMannerUIText
+    Affricate          -> affricateMannerUIText
+    LateralFricative   -> lateralFricativeMannerUIText
+    LateralApproximant -> lateralApproximantMannerUIText
+    LateralFlap        -> lateralFlapMannerUIText
+    Lateral            -> lateralMannerUIText
 
 showAirstream :: Airstream -> Text
 showAirstream airstream_1 =
   case airstream_1 of
-    PulmonicEgressive -> pulmonicEgressive_AirstreamText
-    Click             -> click_AirstreamText
-    Implosive         -> implosive_AirstreamText
+    PulmonicEgressive -> pulmonicEgressiveAirstreamUIText
+    Click             -> clickAirstreamUIText
+    Implosive         -> implosiveAirstreamUIText
 
 showVocalFolds :: VocalFolds -> Text
 showVocalFolds vocalFolds_1 =
   case vocalFolds_1 of
-    Voiced             -> voiced_VocalFoldsText
-    Voiceless          -> voiceless_VocalFoldsText
-    VoicedAspirated    -> voicedAspirated_VocalFoldsText
-    VoicelessAspirated -> voicelessAspirated_VocalFoldsText
-    CreakyVoiced       -> creakyVoiced_VocalFoldsText
+    Voiced             -> voicedVocalFoldsUIText
+    Voiceless          -> voicelessVocalFoldsUIText
+    VoicedAspirated    -> voicedAspiratedVocalFoldsUIText
+    VoicelessAspirated -> voicelessAspiratedVocalFoldsUIText
+    CreakyVoiced       -> creakyVoicedVocalFoldsUIText
 
 showPhonetInventory :: PhonetInventory -> Text
 showPhonetInventory (PhonetInventory phonetes) =
@@ -2130,26 +2130,26 @@ showPolarity Minus = "-"
 showPhonemeFeature :: PhonemeFeature -> Text
 showPhonemeFeature pf =
   case pf of
-    (SyllabicFeature p) -> showPolarity p <> syllabic_PhonemeFeatureText
-    (ConsonantalFeature p) -> showPolarity p <> consonantal_PhonemeFeatureText
-    (SonorantFeature p) -> showPolarity p <> sonorant_PhonemeFeatureText
-    (ContinuantFeature p) -> showPolarity p <> continuant_PhonemeFeatureText
-    (VoiceFeature p) -> showPolarity p <> voice_PhonemeFeatureText
-    (AdvancedTongueRootFeature p) -> showPolarity p <> atr_PhonemeFeatureText
-    NasalFeature -> nasal_PhonemeFeatureText
-    LateralFeature -> lateral_PhonemeFeatureText
-    DelayedReleaseFeature -> delayedRelease_PhonemeFeatureText
-    SpreadGlottisFeature -> spreadGlottis_PhonemeFeatureText
-    ConstrictedGlottisFeature -> constrictedGlottis_PhonemeFeatureText
-    LabialFeature -> labial_PhonemeFeatureText
-    CoronalFeature -> coronal_PhonemeFeatureText
-    DorsalFeature -> dorsal_PhonemeFeatureText
-    PharyngealFeature -> pharyngeal_PhonemeFeatureText
-    LaryngealFeature -> laryngeal_PhonemeFeatureText
-    (RoundFeature p) -> showPolarity p <> round_PhonemeFeatureText
-    (AnteriorFeature p) -> showPolarity p <> anterior_PhonemeFeatureText
-    (DistributedFeature p) -> showPolarity p <> distributed_PhonemeFeatureText
-    (StridentFeature p) -> showPolarity p <> strident_PhonemeFeatureText
-    (HighFeature p) -> showPolarity p <> high_PhonemeFeatureText
-    (LowFeature p) -> showPolarity p <> low_PhonemeFeatureText
-    (BackFeature p) -> showPolarity p <> back_PhonemeFeatureText
+    (SyllabicFeature p) -> showPolarity p <> syllabicPhonemeFeatureUIText
+    (ConsonantalFeature p) -> showPolarity p <> consonantalPhonemeFeatureUIText
+    (SonorantFeature p) -> showPolarity p <> sonorantPhonemeFeatureUIText
+    (ContinuantFeature p) -> showPolarity p <> continuantPhonemeFeatureUIText
+    (VoiceFeature p) -> showPolarity p <> voicePhonemeFeatureUIText
+    (AdvancedTongueRootFeature p) -> showPolarity p <> atrPhonemeFeatureUIText
+    NasalFeature -> nasalPhonemeFeatureUIText
+    LateralFeature -> lateralPhonemeFeatureUIText
+    DelayedReleaseFeature -> delayedReleasePhonemeFeatureUIText
+    SpreadGlottisFeature -> spreadGlottisPhonemeFeatureUIText
+    ConstrictedGlottisFeature -> constrictedGlottisPhonemeFeatureUIText
+    LabialFeature -> labialPhonemeFeatureUIText
+    CoronalFeature -> coronalPhonemeFeatureUIText
+    DorsalFeature -> dorsalPhonemeFeatureUIText
+    PharyngealFeature -> pharyngealPhonemeFeatureUIText
+    LaryngealFeature -> laryngealPhonemeFeatureUIText
+    (RoundFeature p) -> showPolarity p <> roundPhonemeFeatureUIText
+    (AnteriorFeature p) -> showPolarity p <> anteriorPhonemeFeatureUIText
+    (DistributedFeature p) -> showPolarity p <> distributedPhonemeFeatureUIText
+    (StridentFeature p) -> showPolarity p <> stridentPhonemeFeatureUIText
+    (HighFeature p) -> showPolarity p <> highPhonemeFeatureUIText
+    (LowFeature p) -> showPolarity p <> lowPhonemeFeatureUIText
+    (BackFeature p) -> showPolarity p <> backPhonemeFeatureUIText

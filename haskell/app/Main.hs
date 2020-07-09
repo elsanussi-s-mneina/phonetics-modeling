@@ -80,12 +80,12 @@ handleSelection selection =
 
 respondToSelection :: Text -> IO ()
 respondToSelection selection
-  | selection == userInput_viewEnglishPhonemeInventory = putTextLn englishPhonetInventoryReport
-  | selection == userInput_makeAPhonemeVoiced          = promptForPhonemeToVoice
-  | selection == userInput_makeAPhonemeUnvoiced        = promptForPhonemeToDevoice
-  | selection == userInput_describeAPhonemeInEnglish   = promptForPhonemeToDescribe
-  | selection == userInput_describeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom
-  | selection == userInput_chunkIPAByPhoneme           = promptForIPATextToSplit
+  | selection == userInputViewEnglishPhonemeInventory = putTextLn englishPhonetInventoryReport
+  | selection == userInputMakeAPhonemeVoiced          = promptForPhonemeToVoice
+  | selection == userInputMakeAPhonemeUnvoiced        = promptForPhonemeToDevoice
+  | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe
+  | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom
+  | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit
   | otherwise                                         = putTextLn unrecognizedSelectionMessage
 
 doAnalyzeIPA :: Text -> Text
