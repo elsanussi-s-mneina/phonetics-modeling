@@ -1471,7 +1471,7 @@ spirantizedIPA = constructDeconstruct spirantizedPhonet
 --   |
 describeIPA :: Text -> Text
 describeIPA x =
-  maybe noEnglishDescriptionFound_message showPhonet (analyzeIPA x)
+  maybe noEnglishDescriptionFoundMessage showPhonet (analyzeIPA x)
 
 -- Go to Section 12.2 of the textbook to understand
 -- the concept of phonological features.
@@ -1648,7 +1648,7 @@ nasal _                       = Nothing
 
 -- |
 -- Lateral consonants are [lateral].
--- Lateral Approximant consonants are [lateral].
+-- Lateral approximant consonants are [lateral].
 -- Lateral fricative consonants are [lateral].
 -- Lateral flap consonants are [lateral].
 -- All other segments are not defined for [lateral].

@@ -83,8 +83,8 @@ userSelectedMessage = "The user selected:"
 unrecognizedSelectionMessage = "Unrecognized selection. No action taken."
 noAnalysisFoundMessage = "No analysis found!"
 
-noEnglishDescriptionFound_message :: Text
-noEnglishDescriptionFound_message = "(no English description found.)"
+noEnglishDescriptionFoundMessage :: Text
+noEnglishDescriptionFoundMessage = "(no English description found.)"
 
 consonantUIText,
   vowelUIText,
