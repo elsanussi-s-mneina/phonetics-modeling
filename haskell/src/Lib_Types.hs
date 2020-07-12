@@ -21,8 +21,8 @@ import           Relude  (Eq, NonEmpty, fromList)
 -- Note: The Phonet datatype does not represent
 -- any marked/unmarked distinction.
 data Phonet = Consonant VocalFolds
-                        Place   -- Place of articulation
-                        Manner  -- Manner of articulation
+                        Place   -- ^ Place of articulation
+                        Manner  -- ^ Manner of articulation
                         Airstream
 
             | Vowel Height
@@ -167,8 +167,8 @@ data Manner = Plosive
             | Affricate
             | LateralFricative
             | LateralApproximant
-            | LateralFlap  -- There are very few IPA symbols for lateral flaps
-            | Lateral      -- we need this one for the lateral click.
+            | LateralFlap  -- ^ There are very few IPA symbols for lateral flaps
+            | Lateral      -- ^ We need this one for the lateral click.
               deriving stock Eq
 
 data UnmarkableManner
@@ -238,7 +238,7 @@ newtype PhonetInventory = PhonetInventory (NonEmpty Phonet)
  Represents the '+' (plus) or '-' (minus)
  of a binary feature. e.g. [+sonorant],
  [-sonorant]
-|-}
+-}
 data Polarity = Plus | Minus
                 deriving stock Eq
 
@@ -250,7 +250,7 @@ data Polarity = Plus | Minus
 
 
 {-|
- According to Linguistics, phonemes can be
+ In Linguistics, phonemes can be
  analyzed as a set of features. One phoneme
  will have one set of features, and a different
  phoneme will have a different set of features.
@@ -304,7 +304,7 @@ vs French). This is not implemented here.
 TODO: model the ability to decide whether certain phonemes
 have certain features based on a language, or let the user
 decide.
-|-}
+-}
 data PhonemeFeature = SyllabicFeature Polarity
                     | ConsonantalFeature Polarity
                     | SonorantFeature Polarity
