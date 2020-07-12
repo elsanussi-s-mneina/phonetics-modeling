@@ -260,7 +260,7 @@ voicedPhonet p = case p of
   (Vowel x y z _)                      -> Vowel x y z Voiced
 
 -- | A function that given an IPA symbol will convert it to the voiceless
--- | equivalent.
+--   equivalent.
 devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet p = case p of
   (Consonant Voiced x y z)             -> Consonant Voiceless x y z
@@ -441,10 +441,10 @@ impossible p = case p of
     False -- Everything else is assumed to be possible.
 
 -- | This is a list of the sounds of English. Just the basic ones.
--- | It is somewhat more complicated in reality, but for now this will
--- | suffice.
--- | This following sound inventory of English is from page 20 of
--- | (2013, Elizabeth C. Zsiga, The Sounds of Language)
+--   It is somewhat more complicated in reality, but for now this will
+--   suffice.
+--   This following sound inventory of English is from page 20 of
+--   (2013, Elizabeth C. Zsiga, The Sounds of Language)
 englishPhonetInventory :: PhonetInventory
 englishPhonetInventory =
   PhonetInventory
@@ -534,14 +534,12 @@ exponentialsAfter = diacriticsAndSuprasegmentals <> fromList ["ː", "ˑ"]
 -- and to the right of the previous character,
 -- like how exponents of a power are written
 -- in mathematical notation.
--- |
 isExponential :: Text -> Bool
 isExponential character = character `elem` exponentials
 
 -- |
 -- Whether a diacritic goes above
 -- the character it is placed on.
--- |
 isDiacriticAbove :: Text -> Bool
 isDiacriticAbove "̊" = True
 isDiacriticAbove _   = False
@@ -549,7 +547,6 @@ isDiacriticAbove _   = False
 -- |
 -- Whether a diacritic goes below
 -- the character which it is placed on.
--- |
 isDiacriticBelow :: Text -> Bool
 isDiacriticBelow "̥" = True
 isDiacriticBelow _   = False
@@ -559,7 +556,6 @@ isDiacriticBelow _   = False
 -- replaces it with one that goes below,
 -- and has the same meaning.
 -- otherwise does nothing.
---   |
 lowerDiacritic :: Text -> Text
 lowerDiacritic "̊" = "̥"
 lowerDiacritic x   = x
@@ -569,7 +565,6 @@ lowerDiacritic x   = x
 -- replaces it with one that goes below, and
 -- has the same meaning;
 -- otherwise it does nothing.
---   |
 raiseDiacritic :: Text -> Text
 raiseDiacritic "̥" = "̊"
 raiseDiacritic x   = x
@@ -583,7 +578,6 @@ raiseDiacritic x   = x
 -- This could be useful later for determining
 -- where to put diacritics so that
 -- they are readable.
--- |
 ascenders :: NonEmpty Text
 ascenders =
   fromList
@@ -671,7 +665,6 @@ descenders =
 -- This could be useful later for determining
 -- where to put diacritics so that
 -- they are readable.
--- |
 isDescender :: Text -> Bool
 isDescender character = character `elem` descenders
 
@@ -684,7 +677,6 @@ isDescender character = character `elem` descenders
 -- And vice-versa (above - below).
 --
 -- Only support the voiceless diacritic so far.
---   |
 preventProhibitedCombination :: Text -> Text
 preventProhibitedCombination ss
   | T.null ss = ""
@@ -718,7 +710,7 @@ consonants :: NonEmpty Text
 consonants = consonantsPulmonic <> consonantsNonPulmonic <> otherSymbols
 
 -- | IPA text that is not a semantic modifier to what is before or after it.
--- | This includes vowels, and consonants. It excludes all diacritics.
+--   This includes vowels, and consonants. It excludes all diacritics.
 strictSegmentals :: NonEmpty Text
 strictSegmentals = consonants <> vowels
 
@@ -951,7 +943,7 @@ showIPA :: PhonetInventory -> Text
 showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
 
 -- | This function will allow us to convert an IPA symbol
--- | to its analyzed form (its phonetic features)
+--   to its analyzed form (its phonetic features)
 analyzeIPA :: Text -> Maybe Phonet
 -- Plosives:
 analyzeIPA p = case p of
@@ -1514,7 +1506,6 @@ spirantizedIPA = constructDeconstruct spirantizedPhonet
 -- Return an english description of a phoneme,
 -- given a phoneme's representation in the
 -- international phonetic alphabet.
---   |
 describeIPA :: Text -> Text
 describeIPA x =
   maybe noEnglishDescriptionFoundMessage showPhonet (analyzeIPA x)
@@ -1598,14 +1589,13 @@ difference list_1 list_2 =
 -- Consonants (glides included) are [-syllabic].
 --
 -- (Source: page 258)
--- |
+--
 syllabic :: Phonet -> Maybe PhonemeFeature
 syllabic Vowel {}     = Just (SyllabicFeature Plus)
 syllabic Consonant {} = Just (SyllabicFeature Minus)
 
 -- |
 -- Whether a segment is a glide.
--- |
 isGlide :: Phonet -> Bool
 isGlide p = case p of
   (Consonant _ Palatal Approximant PulmonicEgressive)       -> True
@@ -1620,7 +1610,6 @@ isGlide p = case p of
 -- Consonants (that are not glides) are [+consonantal].
 --
 -- (Source: page 258)
--- |
 consonantal :: Phonet -> Maybe PhonemeFeature
 consonantal p = case p of
   Vowel {} -> Just (ConsonantalFeature Minus)
@@ -1639,7 +1628,6 @@ consonantal p = case p of
 -- Glides are [+sonorant].
 --
 -- (Source: page 258)
--- |
 sonorant :: Phonet -> Maybe PhonemeFeature
 sonorant p = case p of
   (Consonant _ _ Plosive _) -> Just (SonorantFeature Minus)
@@ -1671,7 +1659,6 @@ sonorant p = case p of
 --   Lateral approximants may be considered [+continuant]. (arguable)
 --   (see chart on page 259))
 --
--- |
 continuant :: Phonet -> Maybe PhonemeFeature
 continuant p = case p of
   (Consonant _ _ Plosive _) -> Just (ContinuantFeature Minus)
@@ -1687,7 +1674,6 @@ continuant p = case p of
 -- Nasal consonants are [nasal].
 -- -- to do: add support for nasal vowels.
 -- All other segments are not defined for [nasal].
--- |
 nasal :: Phonet -> Maybe PhonemeFeature
 nasal (Consonant _ _ Nasal _) = Just NasalFeature
 nasal _                       = Nothing
@@ -1698,7 +1684,6 @@ nasal _                       = Nothing
 -- Lateral fricative consonants are [lateral].
 -- Lateral flap consonants are [lateral].
 -- All other segments are not defined for [lateral].
--- |
 lateral :: Phonet -> Maybe PhonemeFeature
 lateral p = case p of
   (Consonant _ _ Lateral _)            -> Just LateralFeature
