@@ -244,11 +244,6 @@ data Polarity = Plus | Minus
 
 
 
--- TODO: Determine if the "phoneme feature"
--- is the term used by linguists for the concept
--- being modeled in this module.
-
-
 {-|
  In Linguistics, phonemes can be
  analyzed as a set of features. One phoneme
@@ -291,19 +286,11 @@ Note that certain sets of features cannot coexist,
 syntactically. For example a phoneme cannot be
 [+voice] and [-voice].
 
-TODO: implement checking whether a set of phonemes
-contains non-existent pairs (+ and − for the same
-name of feature).
-
  Note that some analyses
 are language specific, so for some phonemes (not
 the usual case) whether it has feature X (say 'coronal')
 depends on the language (theoretical example: e.g. Swahili,
 vs French). This is not implemented here.
-
-TODO: model the ability to decide whether certain phonemes
-have certain features based on a language, or let the user
-decide.
 -}
 data PhonemeFeature = SyllabicFeature Polarity
                     | ConsonantalFeature Polarity

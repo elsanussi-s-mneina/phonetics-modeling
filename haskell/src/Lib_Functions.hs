@@ -1743,8 +1743,6 @@ coronal p = case p of
 --   Aside: alveolo-palatals do not seem to be dorsals,
 --   although the table 12.4 is confusing
 --   because it uses the IPA symbol for one.
---   TODO: find more information on whether
---   alveolo-palatals are [dorsal].
 --
 -- Velars are [dorsal].
 -- Uvulars are [dorsal].
