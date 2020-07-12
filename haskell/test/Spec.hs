@@ -4,13 +4,13 @@ module Spec(main) where
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 
-import           Lib_Functions (analyzeIPA, isGlide, ipaTextToPhonetListReport)
+import           Lib_Functions (analyzeIPA, isGlide, ipaTextToPhonetListReport, voicedIPA, devoicedIPA)
 
 
 main = do
   hspec glideSpec
   hspec ipaTextToPhonetListReportSpec
-
+  hspec voicingSpec
 
 glideSpec :: Spec
 glideSpec =
@@ -33,3 +33,17 @@ ipaTextToPhonetListReportSpec =
         ipaTextToPhonetListReport "j" `shouldBe` "/j/ voiced palatal approximant pulmonic egressive consonant\n"
     it "should be that [kc] has two lines" $ 
         ipaTextToPhonetListReport "kc" `shouldBe` "/k/ voiceless velar plosive pulmonic egressive consonant\n/c/ voiceless palatal plosive pulmonic egressive consonant\n"
+
+
+voicingSpec :: Spec
+voicingSpec =
+  describe "voicing and devoicing a phoneme" $ do
+    it "should be that: [t] voiced is [d]" $
+      voicedIPA "t" `shouldBe` "d"
+    it "should be that: [d] devoiced is [t]" $
+      devoicedIPA "d" `shouldBe` "t"
+    it "should be that: [s] voiced is [z]" $
+      voicedIPA "s" `shouldBe` "z"
+    it "should be that: [z] devoiced is [s]" $
+      devoicedIPA "z" `shouldBe` "s"
+
