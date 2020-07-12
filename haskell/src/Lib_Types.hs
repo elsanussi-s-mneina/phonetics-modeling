@@ -5,7 +5,7 @@ module Lib_Types where
 import           Prelude ()
 import           Relude  (Eq, NonEmpty, fromList)
 
--- The data type Phonet, represents a linguistics
+-- | The data type Phonet, represents a linguistics
 -- phoneme or phonete.
 -- It can be a consonant, or a vowel.
 -- A consonant is specified by
@@ -31,7 +31,7 @@ data Phonet = Consonant VocalFolds
                     VocalFolds
                     deriving stock Eq
 
--- The data type UnmarkablePhonet was originally intended
+-- | The data type UnmarkablePhonet was originally intended
 -- to represent a phoneme, or a phonete but with the additional
 -- ability to have unmarked properties, such as unmarked voicing.
 -- So far, though it has not been used in a way consistent with

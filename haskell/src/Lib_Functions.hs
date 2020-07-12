@@ -52,6 +52,10 @@ x `equivalentInPlace` Places pList = x `elem` pList
 Places x `equivalentInPlace` y = y `equivalentInPlace` Places x
 _ `equivalentInPlace` _ = False
 
+
+-- | Given a place of articulation,
+--   returns the place of articulation that is
+--   the next more retracted.
 retractedPlace :: Place -> Place
 retractedPlace place =
   case place of
@@ -71,11 +75,18 @@ retractedPlace place =
 englishPhonetInventoryReport :: Text
 englishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA englishPhonetInventory)
 
+-- | Gives the English description of a phone.
 englishDescription :: Phonet -> Text
 englishDescription = showPhonet
 
--- begin parsing next character
 parseStart, splitByPhonetes :: Text -> [Text]
+
+
+-- | Splits text in the International Phonetic Alphabet by
+--   phones. This is also called tokenization.
+--
+--   Note: it does not recognize affricates, unless a tie-bar
+--   is provided.
 splitByPhonetes = parseStart
 parseStart x = filter (/= "") (splitByPhonetesPrePostDiacrtic x)
 
@@ -86,10 +97,10 @@ splitByPhonetesPreDiacritic text =
         Nothing     -> splitByPhonetesPostDiacrtic text
         Just (a, b) -> [a] <> parseStart b
 
--- Handle "ⁿdʰ", "ⁿdʷʰ" and other text strings
--- where a phoneme is represented in IPA by
--- a segmental preceded and followed by at least
--- one diacritic
+-- | Handle "ⁿdʰ", "ⁿdʷʰ" and other text strings
+--   where a phoneme is represented in IPA by
+--   a segmental preceded and followed by at least
+--   one diacritic
 splitByPhonetesPrePostDiacrtic :: Text -> [Text]
 splitByPhonetesPrePostDiacrtic text =
   let result = prepostdiacriticParserFunction text
@@ -123,12 +134,23 @@ nondiacriticParserFunction text =
 isConsonantAt :: Int -> Text -> Bool
 isConsonantAt = isSuchAt isConsonant
 
+
+-- | Whether a character is one that is used in the
+--   International Phonetic Alphabet to represent a
+--   consonant.
 isConsonant :: Char -> Bool
 isConsonant = elemW consonants
 
+-- | Whether a character in some text, at a specific place
+--   within the text is a "segmental" (i.e. not a diacritic or modifier).
 isSegmentalAt :: Int -> Text -> Bool
 isSegmentalAt = isSuchAt isSegmental
 
+-- | Whether a character is one that is used in the
+--   International Phonetic Alphabet to represent something
+--   that is not a diacritic, and can stand on its own.
+--   This means characters that can represent a
+--   consonant or vowel.
 isSegmental :: Char -> Bool
 isSegmental = elemW strictSegmentals
 
@@ -141,21 +163,45 @@ isTieBarAt = isSuchAt isTieBar
 isSuchAt :: (Char -> Bool) -> Int -> Text -> Bool
 isSuchAt function index text = index < T.length text && function (T.index text index)
 
+
+-- | Whether a character is a superscript character, that
+--   often goes after a full character to modify the full
+--   character's meaning.
+--   For example in the International Phonetic Alphabet,
+--   a superscript `h` causes the phoneme represented by the
+--   previous character to
+--   be aspirated.
 isExponentialAfter :: Char -> Bool
 isExponentialAfter = elemW exponentialsAfter
 
+-- | Whether a character is a superscript character, that
+--   often goes before a full character to modify the
+--   full character's meaning.
+--   For example in the International Phonetic Alphabet,
+--   a superscript `n`.
 isExponentialBefore :: Char -> Bool
 isExponentialBefore = elemW exponentialsBefore
 
+
+-- | Whether a character is used to tie two characters in the
+--   international phonetic alphabet together. The tie bar is
+--   usually used to indicate an affricate, or double-articulation.
 isTieBar :: Char -> Bool
 isTieBar x = x `elem` ['͜', '͡']
 
--- Create a function that sees whether
+-- | Create a function that sees whether
 -- a character is equal to (the first character in) an element
 -- in a list of text
 elemW :: NonEmpty Text -> (Char -> Bool)
 elemW stringList = (`elem` fmap T.head stringList)
 
+-- | Gets a pre-diacritic exponential with a segmental,
+--   the segmental may have a tie bar.
+--   If it has a tie-bar the character after the tie-bar
+--   is also included. These
+--   are returned in the first part of the tuple.
+--   the text not yet parsed is in the second part
+--   of the tuple.
 prediacriticParserFunction :: Text -> Maybe (Text, Text)
 prediacriticParserFunction text =
   if not (T.null text) && isExponentialBefore (T.head text)
@@ -203,7 +249,7 @@ countPostDiacriticsInARow sText startIndex =
     else 0
 
 -- | A function that given an IPA symbol will convert it to the voiced
--- |equivalent.
+--   equivalent.
 voicedPhonet :: Phonet -> Phonet
 voicedPhonet p = case p of
   (Consonant VoicelessAspirated x y z) -> Consonant VoicedAspirated x y z
@@ -1666,7 +1712,6 @@ lateral p = case p of
 -- All other segments are [-delayed release].
 --
 -- (Source: page 260)
--- |
 delayedRelease :: Phonet -> Maybe PhonemeFeature
 delayedRelease (Consonant _ _ Affricate _) = Just DelayedReleaseFeature
 delayedRelease _                           = Nothing
@@ -1677,7 +1722,6 @@ delayedRelease _                           = Nothing
 -- All other segments are undefined for [labial].
 --
 -- (Source: page 264)
--- |
 labial :: Phonet -> Maybe PhonemeFeature
 labial p = case p of
   (Consonant _ Bilabial _ _)    -> Just LabialFeature
@@ -1698,7 +1742,6 @@ labial p = case p of
 -- (Source: page 264)
 -- (The fact that Post-alveolar consonants are coronal is indicated by
 --  Table 12. on page 265.)
--- |
 coronal :: Phonet -> Maybe PhonemeFeature
 coronal p = case p of
   (Consonant _ Dental _ _)         -> Just CoronalFeature
@@ -1721,7 +1764,6 @@ coronal p = case p of
 -- Velars are [dorsal].
 -- Uvulars are [dorsal].
 -- All other segments are undefined for [dorsal].
--- |
 dorsal :: Phonet -> Maybe PhonemeFeature
 dorsal p = case p of
   (Consonant _ Palatal _ _) -> Just DorsalFeature
@@ -1734,7 +1776,6 @@ dorsal p = case p of
 -- All other segments are undefined for [pharyngeal].
 --
 -- (Source: page 264)
--- |
 pharyngeal :: Phonet -> Maybe PhonemeFeature
 pharyngeal (Consonant _ Pharyngeal Fricative _) = Just PharyngealFeature
 pharyngeal _                                    = Nothing
@@ -1744,7 +1785,6 @@ pharyngeal _                                    = Nothing
 -- All other segments are undefined for [laryngeal].
 --
 -- (Source: page 265)
--- |
 laryngeal :: Phonet -> Maybe PhonemeFeature
 laryngeal (Consonant _ Glottal _ _) = Just LaryngealFeature
 laryngeal _                         = Nothing
@@ -1754,7 +1794,6 @@ laryngeal _                         = Nothing
 -- Voiced consonants are [+voice].
 -- Voiced vowels are [+voice].
 -- All other segments are [-voice].
--- |
 voice :: Phonet -> Maybe PhonemeFeature
 voice p = case p of
   (Consonant Voiceless Glottal Plosive PulmonicEgressive) ->
@@ -1773,7 +1812,6 @@ voice p = case p of
 -- Voiced aspirated plosives are [spread glottis].
 -- All other segments are not defined for [spread glottis].
 -- (Source: page 262)
--- |
 spreadGlottis :: Phonet -> Maybe PhonemeFeature
 spreadGlottis p = case p of
   (Consonant VoicelessAspirated _ Plosive _) -> Just SpreadGlottisFeature
@@ -1786,7 +1824,6 @@ spreadGlottis p = case p of
 -- Creaky voiced sonorants have the feature [constricted glottis].
 --
 -- (Source: page 262)
--- |
 constrictedGlottis :: Phonet -> Maybe PhonemeFeature
 constrictedGlottis p = case p of
   (Consonant _ Glottal Plosive _) ->
@@ -1815,8 +1852,6 @@ constrictedGlottis p = case p of
 -- Question: Are Alveolo-palatals [+anterior], or [-anterior]?
 -- Alveolo-palatals are [-anterior].
 -- (SOURCE: not found)
---
--- |
 anterior :: Phonet -> Maybe PhonemeFeature
 anterior p = case p of
   (Consonant _ Dental _ _)         -> Just (AnteriorFeature Plus)
@@ -1854,7 +1889,6 @@ distributed p = case p of
 --
 -- (Source: page 266, under [+/-strident] heading, under the subsection
 -- "Natural classes".)
--- |
 strident :: Phonet -> Maybe PhonemeFeature
 strident p = case p of
   (Consonant _ Alveolar Fricative _)     -> Just (StridentFeature Plus)
@@ -1879,7 +1913,6 @@ strident p = case p of
 -- Close vowels are [+high].
 -- Near-close vowels are [+high].
 -- All other vowels are [-high].
--- |
 high :: Phonet -> Maybe PhonemeFeature
 high p = case p of
   (Consonant _ Palatal _ _)        -> Just (HighFeature Plus)
@@ -1899,7 +1932,6 @@ high p = case p of
 -- Open vowels are [+low].
 -- Near open vowels are [+low].
 -- All other vowels are [-low].
--- |
 low :: Phonet -> Maybe PhonemeFeature
 low p = case p of
   (Consonant _ Uvular _ _)     -> Just (LowFeature Plus)
@@ -1915,7 +1947,6 @@ low p = case p of
 -- Central vowels are [+back].
 -- Front vowels are [-back].
 -- All other segments are undefined for [+/-back].
--- |
 back :: Phonet -> Maybe PhonemeFeature
 back p = case p of
   (Vowel _ Back _ _)    -> Just (BackFeature Plus)
@@ -1927,7 +1958,6 @@ back p = case p of
 -- Rounded vowels are [+round].
 -- All other vowels are [-round].
 -- All other segments are [-round].
--- |
 lipRound :: Phonet -> Maybe PhonemeFeature
 lipRound p = case p of
   (Vowel _ _ Rounded _) -> Just (RoundFeature Plus)
@@ -1936,7 +1966,6 @@ lipRound p = case p of
 
 -- |
 -- Advanced tongue root
--- |
 atr :: Phonet -> Maybe PhonemeFeature
 atr p = case p of
   (Vowel Close Front Unrounded Voiced) ->
@@ -1980,8 +2009,6 @@ atr p = case p of
 --
 -- For example:
 -- /p/
---
---   |
 featureMatrix :: Phonet -> [Maybe PhonemeFeature]
 featureMatrix phonete =
   [ consonantal phonete,
