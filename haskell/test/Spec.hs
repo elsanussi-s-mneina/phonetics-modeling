@@ -4,13 +4,14 @@ module Spec(main) where
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 
-import           Lib_Functions (analyzeIPA, isGlide, ipaTextToPhonetListReport, voicedIPA, devoicedIPA)
+import           Lib_Functions (analyzeIPA, isGlide, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE)
 
 
 main = do
   hspec glideSpec
   hspec ipaTextToPhonetListReportSpec
   hspec voicingSpec
+  hspec analyzeIPAToSPESpec
 
 glideSpec :: Spec
 glideSpec =
@@ -32,7 +33,8 @@ ipaTextToPhonetListReportSpec =
     it "should be that [j] is the voiced palatal approximant pulmonic egressive consonant" $
         ipaTextToPhonetListReport "j" `shouldBe` "/j/ voiced palatal approximant pulmonic egressive consonant\n"
     it "should be that [kc] has two lines" $ 
-        ipaTextToPhonetListReport "kc" `shouldBe` "/k/ voiceless velar plosive pulmonic egressive consonant\n/c/ voiceless palatal plosive pulmonic egressive consonant\n"
+        ipaTextToPhonetListReport "kc" `shouldBe` ("/k/ voiceless velar plosive pulmonic egressive consonant\n"
+          <> "/c/ voiceless palatal plosive pulmonic egressive consonant\n")
 
 
 voicingSpec :: Spec
@@ -47,3 +49,10 @@ voicingSpec =
     it "should be that: [z] devoiced is [s]" $
       devoicedIPA "z" `shouldBe` "s"
 
+analyzeIPAToSPESpec :: Spec
+analyzeIPAToSPESpec =
+  describe "calculating sound patterns of English features" $ do
+    it "case: [t]" $
+      analyzeIPAToSPE "t" `shouldBe` "[+consonantal; -syllabic; -continuant; -sonorant; +anterior; -distributed; coronal; -round; -voice]"
+    it "case: [d]" $
+      analyzeIPAToSPE "d" `shouldBe` "[+consonantal; -syllabic; -continuant; -sonorant; +anterior; -distributed; coronal; -round; +voice]"

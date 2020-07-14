@@ -11,7 +11,7 @@ import           Relude        (Bool (False, True), Char, Int,
                                 Text, catMaybes, elem, filter, fmap, fromList,
                                 fromMaybe, map, maybe, not, notElem, one,
                                 otherwise, sconcat, toList, unwords, zip, (!!?),
-                                (&&), (+), (-), (<), (<>), (==), (||), (/=))
+                                (&&), (+), (-), (<), (<>), (==), (||), (/=), (.))
 
 -- | Given text containing international phonetic alphabet symbols
 --   returns text with every phonetic alphabet symbol or sequence
@@ -2163,3 +2163,7 @@ showPhonemeFeature pf =
     (HighFeature p) -> showPolarity p <> highPhonemeFeatureUIText
     (LowFeature p) -> showPolarity p <> lowPhonemeFeatureUIText
     (BackFeature p) -> showPolarity p <> backPhonemeFeatureUIText
+
+analyzeIPAToSPE :: Text -> Text
+analyzeIPAToSPE ipaText =
+  maybe sorryUnableToCalculate (showFeatures . analyzeFeatures) (analyzeIPA ipaText)

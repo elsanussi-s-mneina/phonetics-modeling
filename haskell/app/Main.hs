@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
-import           Lib           (Phonet, analyzeFeatures, analyzeIPA,
+import           Lib           (Phonet, analyzeIPA,
                                 constructIPA, describeIPA, devoicedIPA,
                                 englishPhonetInventoryReport,
-                                ipaTextToPhonetListReport, showFeatures,
-                                showPhonet, voicedIPA)
+                                ipaTextToPhonetListReport,
+                                showPhonet, voicedIPA, analyzeIPAToSPE)
 import           Prelude       ()
 import           Relude
 import           System.IO     (hFlush)
@@ -19,10 +19,6 @@ putPrompt :: IO ()
 putPrompt =
   putText prompt
   >> hFlush stdout
-
-analyzeIPAToSPE :: Text -> Text
-analyzeIPAToSPE ipaText =
-  maybe sorryUnableToCalculate (showFeatures . analyzeFeatures) (analyzeIPA ipaText)
 
 putBlankLine :: IO ()
 putBlankLine = putTextLn ""
