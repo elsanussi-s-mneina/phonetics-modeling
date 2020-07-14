@@ -97,8 +97,11 @@ main =
   >>  putTextLn programTerminatedNormallyMessage
   >>  putBlankLines 2
 
-handleSelection :: Text -> IO ()
-handleSelection selection =
+-- | Tell the user what they selected. This is necessary
+--   for better user-friendliness.
+acknowledgeAndRespond :: Text -- ^ what the user typed in
+                      -> IO ()
+acknowledgeAndRespond selection =
   putTextLn (unwords [userSelectedMessage, selection])
   >> putBlankLine
   >> respondToSelection selection
