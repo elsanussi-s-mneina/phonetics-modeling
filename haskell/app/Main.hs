@@ -92,7 +92,7 @@ main =
   >>  putText menu
   >>  putPrompt
   >>  getLine
-  >>= handleSelection
+  >>= acknowledgeAndRespond
   >>  putBlankLine
   >>  putTextLn programTerminatedNormallyMessage
   >>  putBlankLines 2
