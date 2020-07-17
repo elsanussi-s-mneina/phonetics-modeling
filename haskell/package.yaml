@@ -72,3 +72,4 @@ tests:
     dependencies:
     - phonetics-modeling
     - hspec
+    - relude
