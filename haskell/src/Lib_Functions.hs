@@ -646,15 +646,19 @@ descenders =
       "y",
       "ɳ",
       "ɲ",
+      "ŋ",
       "ʈ",
       "ɖ",
       "ɸ",
       "β",
       "ʃ",
       "ɮ",
-      "ɭ",
       "ɧ"
     ]
+    -- We don't include the retroflex l i.e <ɭ> because, even though it is a descender,
+    -- There is more free space under it than above
+
+
 
 -- |
 -- Whether a character (but not a diacritic)
@@ -1100,6 +1104,16 @@ analyzeIPA p = case p of
                 Just (Vowel height backness rounding Voiceless)
               _ ->
                 Nothing
+      "̊" ->
+        let fullGrapheme = analyzeIPA (T.init ipaText)
+         in case fullGrapheme of
+              Just (Consonant _ place manner airstream) ->
+                Just (Consonant Voiceless place manner airstream)
+              Just (Vowel height backness rounding _) ->
+                Just (Vowel height backness rounding Voiceless)
+              _ ->
+                Nothing
+
       "̬" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
@@ -1411,7 +1425,10 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
         (1 + recursionLevel)
         (Consonant Voiced x y z) of
         Nothing         -> Nothing
-        Just regularIPA -> Just (regularIPA <> "̥")
+        Just regularIPA ->
+                            Just (if isDescender regularIPA
+                                 then regularIPA <> "̊"
+                                 else regularIPA <> "̥")
   -- add diacritic for voiceless
 
   -- Add the small circle diacritic to vowels to make them voiceless.
@@ -1422,7 +1439,9 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
         (1 + recursionLevel)
         (Vowel x y z Voiced) of
         Nothing         -> Nothing
-        Just regularIPA -> Just (regularIPA <> "̥")
+        Just regularIPA -> if isDescender regularIPA
+                           then Just (regularIPA <> "̊")
+                           else Just (regularIPA <> "̥")
   -- If there is no way to express a voiced consonant in a single
   -- grapheme add a diacritic to the grapheme that represents
   -- the voiceless counterpart.

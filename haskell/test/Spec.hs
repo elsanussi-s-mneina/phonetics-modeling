@@ -38,80 +38,120 @@ ipaTextToPhonetListReportSpec =
 isVoicelessCounterpartOf :: Text -> Text -> Spec
 isVoicelessCounterpartOf unvoicedPhoneme voicedPhoneme =
   describe "voicing and devoicing a phoneme" $ do
-    it ("should be that: [" ++ (toString unvoicedPhoneme) ++ "] voiced is [" ++ (toString voicedPhoneme) ++ "]") $
+    it ("should be that: [" ++ toString unvoicedPhoneme ++ "] voiced is [" ++ toString voicedPhoneme ++ "]") $
       voicedIPA unvoicedPhoneme `shouldBe` voicedPhoneme
-    it ("should be that: [" ++ (toString voicedPhoneme) ++ "] devoiced is [" ++ (toString unvoicedPhoneme) ++ "]") $
+    it ("should be that: [" ++ toString voicedPhoneme ++ "] devoiced is [" ++ toString unvoicedPhoneme ++ "]") $
       devoicedIPA voicedPhoneme `shouldBe` unvoicedPhoneme
 
 
 
 voicingSpec :: Spec
 voicingSpec = do
-  describe "voicing and devoicing a phoneme (usual cases)" $ do
-    it "should be that: [t] voiced is [d]" $
-      voicedIPA "t" `shouldBe` "d"
-    it "should be that: [d] devoiced is [t]" $
-      devoicedIPA "d" `shouldBe` "t"
-    it "should be that: [p] voiced is [b]" $
-      voicedIPA "p" `shouldBe` "b"
-    it "should be that: [b] devoiced is [p]" $
-      devoicedIPA "b" `shouldBe` "p"
-    it "should be that: [ʈ] voiced is [ɖ]" $
-      voicedIPA "ʈ" `shouldBe` "ɖ"
-    it "should be that: [ɖ] devoiced is [ʈ]" $
-      devoicedIPA "ɖ" `shouldBe` "ʈ"
-    it "should be that: [c] voiced is [ɟ]" $
-      voicedIPA "c" `shouldBe` "ɟ"
-    it "should be that: [ɟ] devoiced is [c]" $
-      devoicedIPA "ɟ" `shouldBe` "c"
-    it "should be that: [k] voiced is [g]" $
-      voicedIPA "k" `shouldBe` "g"
-    it "should be that: [g] devoiced is [k]" $
-      devoicedIPA "g" `shouldBe` "k"
-    it "should be that: [q] voiced is [ɢ]" $
-      voicedIPA "q" `shouldBe` "ɢ"
-    it "should be that: [ɢ] devoiced is [q]" $
-      devoicedIPA "ɢ" `shouldBe` "q"
-    it "should be that: [ɸ] voiced is [β]" $
-      voicedIPA "ɸ" `shouldBe` "β"
-    it "should be that: [β] devoiced is [ɸ]" $
-      devoicedIPA "β" `shouldBe` "ɸ"
-    it "should be that: [f] voiced is [v]" $
-      voicedIPA "f" `shouldBe` "v"
-    it "should be that: [v] devoiced is [f]" $
-      devoicedIPA "v" `shouldBe` "f"
-    it "should be that: [θ] voiced is [ð]" $
-      voicedIPA "θ" `shouldBe` "ð"
-    it "should be that: [ð] devoiced is [θ]" $
-      devoicedIPA "ð" `shouldBe` "θ"
-    it "should be that: [s] voiced is [z]" $
-      voicedIPA "s" `shouldBe` "z"
-    it "should be that: [z] devoiced is [s]" $
-      devoicedIPA "z" `shouldBe` "s"
-    it "should be that: [ʃ] voiced is [ʒ]" $
-      voicedIPA "ʃ" `shouldBe` "ʒ"
-    it "should be that: [ʒ] devoiced is [ʃ]" $
-      devoicedIPA "ʒ" `shouldBe` "ʃ"
-    it "should be that: [ʂ] voiced is [ʐ]" $
-      voicedIPA "ʂ" `shouldBe` "ʐ"
-    it "should be that: [ʐ] devoiced is [ʂ]" $
-      devoicedIPA "ʐ" `shouldBe` "ʂ"
-    it "should be that: [ç] voiced is [ʝ]" $
-      voicedIPA "ç" `shouldBe` "ʝ"
-    it "should be that: [ʝ] devoiced is [ç]" $
-      devoicedIPA "ʝ" `shouldBe` "ç"
-    it "should be that: [ɕ] voiced is [ʑ]" $
-      voicedIPA "ɕ" `shouldBe` "ʑ"
-    it "should be that: [ʑ] devoiced is [ɕ]" $
-      devoicedIPA "ʑ" `shouldBe` "ɕ"
-    it "should be that: [x] voiced is [ɣ]" $
-      voicedIPA "x" `shouldBe` "ɣ"
-    it "should be that: [ɣ] devoiced is [x]" $
-      devoicedIPA "ɣ" `shouldBe` "x"
-    "χ" `isVoicelessCounterpartOf` "ʁ"
-    "ħ" `isVoicelessCounterpartOf` "ʕ"
-    "h" `isVoicelessCounterpartOf` "ɦ"
-    "ɬ" `isVoicelessCounterpartOf` "ɮ"
+  describe "voicing and devoicing a phoneme (no diacritics)" $ do
+    "t" `isVoicelessCounterpartOf`"d"
+    "p" `isVoicelessCounterpartOf`"b"
+    "ʈ" `isVoicelessCounterpartOf`"ɖ"
+    "c" `isVoicelessCounterpartOf`"ɟ"
+    "ʈ" `isVoicelessCounterpartOf`"ɖ"
+    "k" `isVoicelessCounterpartOf`"g"
+    "q" `isVoicelessCounterpartOf`"ɢ"
+    "ɸ" `isVoicelessCounterpartOf`"β"
+    "f" `isVoicelessCounterpartOf`"v"
+    "θ" `isVoicelessCounterpartOf`"ð"
+    "s" `isVoicelessCounterpartOf`"z"
+    "ʃ" `isVoicelessCounterpartOf`"ʒ"
+
+    "ʂ" `isVoicelessCounterpartOf`"ʐ"
+    "ç" `isVoicelessCounterpartOf`"ʝ"
+    "ɕ" `isVoicelessCounterpartOf`"ʑ"
+    "x" `isVoicelessCounterpartOf`"ɣ"
+    "x" `isVoicelessCounterpartOf`"ɣ"
+    "χ" `isVoicelessCounterpartOf`"ʁ"
+    "ħ" `isVoicelessCounterpartOf`"ʕ"
+    "h" `isVoicelessCounterpartOf`"ɦ"
+    "ɬ" `isVoicelessCounterpartOf`"ɮ"
+
+  describe "voicing and devoicing a phoneme (with voiceless diacritic)" $ do
+   {-
+   Test that phonemes that in IPA require the diacritic symbol
+   to express voicelessness are handled correctly
+   -}
+    -- Nasal consonants:
+    "m̥" `isVoicelessCounterpartOf`"m"
+    "ɱ̊" `isVoicelessCounterpartOf`"ɱ"
+    "n̥" `isVoicelessCounterpartOf`"n"
+    "ɲ̊" `isVoicelessCounterpartOf`"ɲ"
+    "ɳ̊" `isVoicelessCounterpartOf`"ɳ"
+    "ŋ̊" `isVoicelessCounterpartOf`"ŋ"
+    "ɴ̥" `isVoicelessCounterpartOf`"ɴ"
+
+    -- Trill consonants:
+    "ʙ̥" `isVoicelessCounterpartOf`"ʙ"
+    "r̥" `isVoicelessCounterpartOf`"r"
+    "ʀ̥" `isVoicelessCounterpartOf`"ʀ"
+
+    -- Tap or flap consonants:
+    "ⱱ̥" `isVoicelessCounterpartOf`"ⱱ"
+    "ɾ̥" `isVoicelessCounterpartOf`"ɾ"
+    "ɽ̊" `isVoicelessCounterpartOf`"ɽ"
+
+    -- Approximant consonants:
+    "ʋ̥" `isVoicelessCounterpartOf`"ʋ"
+    "ɹ̥" `isVoicelessCounterpartOf`"ɹ"
+    "ɻ̊" `isVoicelessCounterpartOf`"ɻ"
+    "j̊" `isVoicelessCounterpartOf`"j"
+    "ɰ̊" `isVoicelessCounterpartOf`"ɰ"
+
+    -- Lateral approximants:
+    "l̥" `isVoicelessCounterpartOf`"l"
+    "ɭ̥" `isVoicelessCounterpartOf`"ɭ"
+    "ʎ̥" `isVoicelessCounterpartOf`"ʎ"
+    "ʟ̥" `isVoicelessCounterpartOf`"ʟ"
+
+    -- Vowels
+    "i̥" `isVoicelessCounterpartOf`"i"
+    "ẙ" `isVoicelessCounterpartOf`"y"
+    "ɨ̥" `isVoicelessCounterpartOf`"ɨ"
+    "ʉ̥" `isVoicelessCounterpartOf`"ʉ"
+    "ɯ̥" `isVoicelessCounterpartOf`"ɯ"
+    "u̥" `isVoicelessCounterpartOf`"u"
+    "ɪ̥" `isVoicelessCounterpartOf`"ɪ"
+    "ʏ̥" `isVoicelessCounterpartOf`"ʏ"
+    "ʊ̥" `isVoicelessCounterpartOf`"ʊ"
+    "e̥" `isVoicelessCounterpartOf`"e"
+    "ø̥" `isVoicelessCounterpartOf`"ø"
+    "ɘ̥" `isVoicelessCounterpartOf`"ɘ"
+    "ɵ̥" `isVoicelessCounterpartOf`"ɵ"
+    "ɤ̥" `isVoicelessCounterpartOf`"ɤ"
+    "o̥" `isVoicelessCounterpartOf`"o"
+    "ə̥" `isVoicelessCounterpartOf`"ə"
+    "ɛ̥" `isVoicelessCounterpartOf`"ɛ"
+    "œ̥" `isVoicelessCounterpartOf`"œ"
+    "ɜ̥" `isVoicelessCounterpartOf`"ɜ"
+    "ɞ̥" `isVoicelessCounterpartOf`"ɞ"
+    "ʌ̥" `isVoicelessCounterpartOf`"ʌ"
+    "ɔ̥" `isVoicelessCounterpartOf`"ɔ"
+    "æ̥" `isVoicelessCounterpartOf`"æ"
+    "ɐ̥" `isVoicelessCounterpartOf`"ɐ"
+    "ḁ" `isVoicelessCounterpartOf`"a"
+    "ɶ̥" `isVoicelessCounterpartOf`"ɶ"
+    "ɑ̥" `isVoicelessCounterpartOf`"ɑ"
+    "ɒ̥" `isVoicelessCounterpartOf`"ɒ"
+    "w̥" `isVoicelessCounterpartOf`"w"
+    "ɥ̊" `isVoicelessCounterpartOf`"ɥ"
+    "ɕ" `isVoicelessCounterpartOf`"ʑ"
+    "ɺ̥" `isVoicelessCounterpartOf`"ɺ"
+
+
+  describe "voicing and devoicing a phoneme (with voiced diacritic)" $ do
+    "ʔ" `isVoicelessCounterpartOf`"ʔ̬"
+    "ʡ" `isVoicelessCounterpartOf`"ʡ̬"
+    "ʍ" `isVoicelessCounterpartOf`"ʍ̬"
+
+
+
+
+
 
   describe "voicing and devoicing a phoneme (when no change (idempotency))" $ do
     it "should be that: [q] devoiced is the same as itself" $
