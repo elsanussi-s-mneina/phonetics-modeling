@@ -52,10 +52,6 @@ voicingSpec = do
       voicedIPA "t" `shouldBe` "d"
     it "should be that: [d] devoiced is [t]" $
       devoicedIPA "d" `shouldBe` "t"
-    it "should be that: [s] voiced is [z]" $
-      voicedIPA "s" `shouldBe` "z"
-    it "should be that: [z] devoiced is [s]" $
-      devoicedIPA "z" `shouldBe` "s"
     it "should be that: [p] voiced is [b]" $
       voicedIPA "p" `shouldBe` "b"
     it "should be that: [b] devoiced is [p]" $
