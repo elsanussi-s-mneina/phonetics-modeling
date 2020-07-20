@@ -34,6 +34,10 @@ ipaTextToPhonetListReportSpec =
     it "should be that [kc] has two lines" $ 
         ipaTextToPhonetListReport "kc" `shouldBe` ("/k/ voiceless velar plosive pulmonic egressive consonant\n"
           <> "/c/ voiceless palatal plosive pulmonic egressive consonant\n")
+    it "should be that [t͡ʃ] is the voiceless post-alveolar affricate pulmonic egressive consonant" $
+        ipaTextToPhonetListReport "t͡ʃ" `shouldBe` "/t͡ʃ/ voiceless post-alveolar affricate pulmonic egressive consonant\n"
+    it "should be that [t͜ʃ] is also the voiceless post-alveolar affricate pulmonic egressive consonant" $
+        ipaTextToPhonetListReport "t͜ʃ" `shouldBe` "/t͜ʃ/ voiceless post-alveolar affricate pulmonic egressive consonant\n"
 
 isVoicelessCounterpartOf :: Text -> Text -> Spec
 isVoicelessCounterpartOf unvoicedPhoneme voicedPhoneme =

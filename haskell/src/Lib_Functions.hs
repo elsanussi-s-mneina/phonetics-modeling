@@ -1019,7 +1019,9 @@ analyzeIPA p = case p of
   "ʟ" -> Just (Consonant Voiced Velar LateralApproximant PulmonicEgressive)
   -- Affricates
   "t͡ʃ" -> Just (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive)
+  "t͜ʃ" -> Just (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive)
   "d͡ʒ" -> Just (Consonant Voiced PostAlveolar Affricate PulmonicEgressive)
+  "d͜ʒ" -> Just (Consonant Voiced PostAlveolar Affricate PulmonicEgressive)
   -- We should probably enforce use of the tie-bar underneath, otherwise
   -- it would not be deterministic to determine whether two graphemes here
   -- represent affricates or a plosive followed by a fricative.
