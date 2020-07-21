@@ -14,6 +14,7 @@ menu =
   \ 4) describe a phoneme in English. \n\
   \ 5) describe a phoneme in SPE Features. \n\
   \ 6) divide IPA text into phonemes (chunk) \n\
+  \ 7) open window (user-friendly mode) \n\
   \  \n\
   \ Enter the number representing your selection below, \n\
   \ after the prompt, and press enter/return. \n\
@@ -26,7 +27,8 @@ userInputViewEnglishPhonemeInventory,
   userInputMakeAPhonemeUnvoiced,
   userInputDescribeAPhonemeInEnglish,
   userInputDescribeAPhonemeInSPE,
-  userInputChunkIPAByPhoneme ::
+  userInputChunkIPAByPhoneme,
+  userInputOpenWindow ::
     Text
 userInputViewEnglishPhonemeInventory = "1"
 userInputMakeAPhonemeVoiced = "2"
@@ -34,6 +36,7 @@ userInputMakeAPhonemeUnvoiced = "3"
 userInputDescribeAPhonemeInEnglish = "4"
 userInputDescribeAPhonemeInSPE = "5"
 userInputChunkIPAByPhoneme = "6"
+userInputOpenWindow = "7"
 
 prompt :: Text
 prompt = "(PROMPT:) "
