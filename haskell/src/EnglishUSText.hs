@@ -5,6 +5,10 @@ module EnglishUSText where
 import           Prelude ()
 import           Relude  (Text)
 
+application_title :: Text
+application_title = "Phonetics Modeling Program"
+
+
 menu :: Text
 menu =
   "What do you want to accomplish? \n\
@@ -234,3 +238,6 @@ stridentPhonemeFeatureUIText = "strident"
 highPhonemeFeatureUIText = "high"
 lowPhonemeFeatureUIText = "low"
 backPhonemeFeatureUIText = "back"
+
+makeAPhonemeVoicedUIText :: Text
+makeAPhonemeVoicedUIText = "Make a phoneme voiced…"

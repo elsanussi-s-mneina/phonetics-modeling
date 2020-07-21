@@ -11,7 +11,7 @@ import Graphics.UI.FLTK.LowLevel.Fl_Types
 import Graphics.UI.FLTK.LowLevel.FLTKHS
 
 import           Lib           (voicedIPA)
-
+import EnglishUSText (application_title, makeAPhonemeVoicedUIText)
 
 buttonCb :: Ref Input -> IO ()
 buttonCb i' = do
@@ -21,13 +21,13 @@ buttonCb i' = do
 ui :: IO ()
 ui = do
  window <- windowNew
-           (Size (Width 215) (Height 200))
+           (Size (Width 415) (Height 500))
            Nothing
-           Nothing
+           (Just application_title)
  begin window
  b' <- buttonNew
-        (Rectangle (Position (X 10) (Y 80)) (Size (Width 95) (Height 30)))
-        (Just "Make Phoneme Voiced")
+        (Rectangle (Position (X 10) (Y 80)) (Size (Width 125) (Height 30)))
+        (Just makeAPhonemeVoicedUIText)
  setLabelsize b' (FontSize 10)
 
  i' <- inputNew
