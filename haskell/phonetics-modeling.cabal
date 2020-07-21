@@ -24,6 +24,18 @@ source-repository head
   type: git
   location: https://github.com/githubuser/phonetics-modeling
 
+custom-setup
+  setup-depends:
+      Cabal >=2.4.0.0 && <4
+    , base >=4.4
+    , filepath
+
+Flag FastCompile
+   Description: Turn off optimizations for faster compilation
+   Manual: True
+   Default: False
+
+
 library
   exposed-modules:
       EnglishUSText
@@ -49,6 +61,17 @@ executable phonetics-modeling-exe
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
+  if impl(ghc >= 7.10) && impl(ghc < 8.0) && flag(FastCompile)
+     ghc-Options: -fno-specialise -fmax-simplifier-iterations=0 -fsimplifier-phases=0
+  else
+     ghc-Options: -O2
+  if os(windows)
+   ghc-Options: -pgml g++ "-optl-Wl,--allow-multiple-definition" "-optl-Wl,--whole-archive" "-optl-Wl,-Bstatic" "-optl-Wl,-lfltkc" "-optl-Wl,-Bdynamic" "-optl-Wl,--no-whole-archive"
+  if os(darwin)
+   ghc-Options: "-optl-Wl,-lfltkc"
+  if !os(darwin) && !os(windows)
+   ghc-Options: -pgml g++ "-optl-Wl,--allow-multiple-definition" "-optl-Wl,--whole-archive" "-optl-Wl,-Bstatic" "-optl-Wl,-lfltkc" "-optl-Wl,-Bdynamic" "-optl-Wl,--no-whole-archive"
+
   build-depends:
       base >=4.7 && <5
     , fltkhs >=0.8.0.3
