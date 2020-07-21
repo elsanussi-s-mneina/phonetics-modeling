@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1fb5b8cf0f770f59b92c320066373075340bd5469c171991b00b76a7dce6fcf2
+-- hash: 6d1b7dc0051b02c6fb2ed0a3b99c7b1accb82b5bc71dbc5876fb61435c2813e4
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -44,12 +44,14 @@ library
 executable phonetics-modeling-exe
   main-is: Main.hs
   other-modules:
+      MainWindow
       Paths_phonetics_modeling
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Werror -Wunsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
   build-depends:
       base >=4.7 && <5
+    , fltkhs >=0.8.0.3
     , phonetics-modeling
     , relude
     , text

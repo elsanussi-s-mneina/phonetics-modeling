@@ -32,9 +32,6 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     - -Weverything
-    - -Werror
-    - -Wunsafe
-    - -Wno-safe
     - -fwarn-incomplete-patterns
     - -fwarn-incomplete-uni-patterns
     - -Wno-missing-export-lists
@@ -43,6 +40,7 @@ executables:
     - relude
     - text
     - phonetics-modeling
+    - fltkhs >= 0.8.0.3
 
 library:
   source-dirs:

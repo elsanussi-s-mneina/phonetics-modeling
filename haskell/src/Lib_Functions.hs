@@ -796,7 +796,6 @@ lateralApproximantPulmonic = fromList ["l", "ɭ", "ʎ", "ʟ"]
 consonantsNonPulmonic :: NonEmpty Text
 consonantsNonPulmonic =
   fromList
-    -- Clicks   Voiced implosives
     [ "ʘ",
       "ɓ", -- Bilabial
       "ǀ" {- Dental -},
@@ -868,7 +867,7 @@ suprasegmentals =
       "|", -- Minor (foot) group
       "‖", -- Major (intonation) group
       ".", -- Syllable break
-      "‿" -- Linking (absence of a break
+      "‿" -- Linking (absence of a break)
     ]
 
 toneAndWordAccents :: NonEmpty Text
@@ -927,7 +926,6 @@ diacriticsAndSuprasegmentals =
       "ˤ", -- Pharyngealised
       "̚", -- No audible release
       "̈", -- Centralised
-      -- To do: Figure out if we cannot add a diacritic for "Velarized or Pharyngealized
       "̽", -- Mid centralised
       "̝", -- Raised
       "̩", -- Syllabic

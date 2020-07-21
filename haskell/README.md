@@ -99,11 +99,25 @@ To run the executable type:
 `stack run`
 
 
-## How to compile the code
+## How to compile the code for the terminal
 
 In the command line enter:
 
 `stack build --pedantic`
+
+## How to compile the code for the GUI
+In the command line enter:
+
+`stack install --flag fltkhs:bundled`
+
+This package uses the Fltkhs package for
+making windows and other graphical user
+interface widgets. For information
+on Fltkhs see: https://github.com/deech/fltkhs
+
+So far no windows have been run, but the 
+project is ready to compile with Fltkhs
+dependencies.
 
 ## How to run the unit tests.
 `stack test`
