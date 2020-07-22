@@ -14,12 +14,15 @@ import  Lib          (analyzeIPAToSPE, describeIPA, devoicedIPA, englishPhonetIn
                       ipaTextToPhonetListReport, voicedIPA)
 import EnglishUSText (application_title, showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
                       quitUIText, makeAPhonemeUnvoicedUIText, describePhonemeUIText,
-                      getFeaturesOfPhonemeUIText, splitTranscriptionUIText)
+                      getFeaturesOfPhonemeUIText, splitTranscriptionUIText, resultHeader, voicedPhonemeHeader,
+                      unvoicedPhonemeHeader, englishPhonemeInventoryHeader, featuresHeader, phonemeDescriptionHeader,
+                      phonemesSplitHeader, inputHeader)
 
-voicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
-voicePhonemeCallback inputBox outputBox _ = do
+voicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+voicePhonemeCallback inputBox outputBox textDisplay _ = do
   ipaText <- getValue inputBox
   setText outputBox (voicedIPA ipaText)
+  setLabel textDisplay voicedPhonemeHeader
 
 
 genericInteractCallback :: (Text -> Text) -> Ref Input -> Ref TextBuffer -> Ref Button -> IO ()
@@ -28,20 +31,37 @@ genericInteractCallback func inputBox textDisplay _ = do
   setText textDisplay (func ipaText)
 
 
-devoicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
-devoicePhonemeCallback = genericInteractCallback devoicedIPA
+devoicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+devoicePhonemeCallback inputBox outputBox textDisplay _ = do
+  ipaText <- getValue inputBox
+  setText outputBox (devoicedIPA ipaText)
+  setLabel textDisplay unvoicedPhonemeHeader
 
-englishPhoneteInventoryCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
-englishPhoneteInventoryCallback = genericInteractCallback (\_ -> englishPhonetInventoryReport)
+englishPhoneteInventoryCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+englishPhoneteInventoryCallback inputBox outputBox textDisplay _ = do
+  ipaText <- getValue inputBox
+  setText outputBox (englishPhonetInventoryReport)
+  setLabel textDisplay englishPhonemeInventoryHeader
 
-describePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
-describePhonemeCallback = genericInteractCallback describeIPA
+describePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+describePhonemeCallback inputBox outputBox textDisplay _ = do
+  ipaText <- getValue inputBox
+  setText outputBox (describeIPA ipaText)
+  setLabel textDisplay phonemeDescriptionHeader
 
-featurizePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
-featurizePhonemeCallback = genericInteractCallback analyzeIPAToSPE
 
-splitTranscriptionCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
-splitTranscriptionCallback = genericInteractCallback ipaTextToPhonetListReport
+featurizePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+featurizePhonemeCallback inputBox outputBox textDisplay _ = do
+  ipaText <- getValue inputBox
+  setText outputBox (analyzeIPAToSPE ipaText)
+  setLabel textDisplay featuresHeader
+
+
+splitTranscriptionCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+splitTranscriptionCallback inputBox outputBox textDisplay _ = do
+  ipaText <- getValue inputBox
+  setText outputBox (ipaTextToPhonetListReport ipaText)
+  setLabel textDisplay phonemesSplitHeader
 
 
 ui :: IO ()
@@ -82,24 +102,26 @@ ui = do
  setLabelsize splitTranscriptionButton (FontSize 10)
 
  inputBox <- inputNew
-        (Rectangle (Position (X 50) (Y 30)) (Size (Width 30) (Height 30)))
+        (Rectangle (Position (X 50) (Y 30)) (Size (Width 90) (Height 30)))
         (Just "")
         (Just FlNormalInput)
+ setLabel inputBox inputHeader
+
 
  textDisplay <- textDisplayNew
      (Rectangle (Position (X 350) (Y 30)) (Size (Width 505) (Height 400)))
      Nothing
 
- setLabel textDisplay "Result:"
+ setLabel textDisplay resultHeader
  textBuffer <- textBufferNew Nothing Nothing
  setBuffer textDisplay (Just textBuffer)
 
- setCallback voicePhonemeButton (voicePhonemeCallback inputBox textBuffer)
- setCallback devoicePhonemeButton (devoicePhonemeCallback inputBox textBuffer)
- setCallback describePhonemeButton (describePhonemeCallback inputBox textBuffer)
- setCallback featurizePhonemeButton (featurizePhonemeCallback inputBox textBuffer)
- setCallback splitTranscriptionButton (splitTranscriptionCallback inputBox textBuffer)
- setCallback showPhonemeInventoryButton (englishPhoneteInventoryCallback inputBox textBuffer)
+ setCallback voicePhonemeButton (voicePhonemeCallback inputBox textBuffer textDisplay)
+ setCallback devoicePhonemeButton (devoicePhonemeCallback inputBox textBuffer textDisplay)
+ setCallback describePhonemeButton (describePhonemeCallback inputBox textBuffer textDisplay)
+ setCallback featurizePhonemeButton (featurizePhonemeCallback inputBox textBuffer textDisplay)
+ setCallback splitTranscriptionButton (splitTranscriptionCallback inputBox textBuffer textDisplay)
+ setCallback showPhonemeInventoryButton (englishPhoneteInventoryCallback inputBox textBuffer textDisplay)
 
  end window
  showWidget window

@@ -250,3 +250,16 @@ describePhonemeUIText = "Describe a phoneme…"
 getFeaturesOfPhonemeUIText =
     "Get sound patterns of English features of IPA transcription…"
 splitTranscriptionUIText = "Split IPA transcription text…"
+
+-- Headers:
+resultHeader, voicedPhonemeHeader, unvoicedPhonemeHeader,
+  phonemeDescriptionHeader, featuresHeader, phonemesSplitHeader,
+  englishPhonemeInventoryHeader, inputHeader :: Text
+resultHeader = "Result:"
+voicedPhonemeHeader = "Voiced Phoneme"
+unvoicedPhonemeHeader = "Unvoiced Phoneme"
+phonemeDescriptionHeader = "Description of Phoneme"
+featuresHeader = "SPE Features of Phoneme"
+phonemesSplitHeader = "Phonemes After Being Split"
+englishPhonemeInventoryHeader = "English Phoneme Inventory"
+inputHeader = "Input:"
