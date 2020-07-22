@@ -21,7 +21,7 @@ buttonCb i' = do
 ui :: IO ()
 ui = do
  window <- windowNew
-           (Size (Width 415) (Height 500))
+           (Size (Width 915) (Height 570))
            Nothing
            (Just application_title)
  begin window
