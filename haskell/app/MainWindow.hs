@@ -21,9 +21,7 @@ import EnglishUSText (application_title, showPhonemeInventoryUIText, makeAPhonem
 voicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 voicePhonemeCallback inputBox outputBox textDisplay _ = do
   ipaText <- getValue inputBox
-  setText outputBox (voicedIPA ipaText)
-  setLabel textDisplay voicedPhonemeHeader
-
+  setText outputBox (voicedPhonemeHeader <> ":\n\n" <> voicedIPA ipaText)
 
 genericInteractCallback :: (Text -> Text) -> Ref Input -> Ref TextBuffer -> Ref Button -> IO ()
 genericInteractCallback func inputBox textDisplay _ = do
@@ -34,34 +32,29 @@ genericInteractCallback func inputBox textDisplay _ = do
 devoicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 devoicePhonemeCallback inputBox outputBox textDisplay _ = do
   ipaText <- getValue inputBox
-  setText outputBox (devoicedIPA ipaText)
-  setLabel textDisplay unvoicedPhonemeHeader
+  setText outputBox (unvoicedPhonemeHeader <> ":\n\n" <> devoicedIPA ipaText)
 
 englishPhoneteInventoryCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 englishPhoneteInventoryCallback inputBox outputBox textDisplay _ = do
   ipaText <- getValue inputBox
-  setText outputBox (englishPhonetInventoryReport)
-  setLabel textDisplay englishPhonemeInventoryHeader
+  setText outputBox (englishPhonemeInventoryHeader <> ":\n\n" <> englishPhonetInventoryReport)
 
 describePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 describePhonemeCallback inputBox outputBox textDisplay _ = do
   ipaText <- getValue inputBox
-  setText outputBox (describeIPA ipaText)
-  setLabel textDisplay phonemeDescriptionHeader
+  setText outputBox (phonemeDescriptionHeader <> ":\n\n" <> describeIPA ipaText)
 
 
 featurizePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 featurizePhonemeCallback inputBox outputBox textDisplay _ = do
   ipaText <- getValue inputBox
-  setText outputBox (analyzeIPAToSPE ipaText)
-  setLabel textDisplay featuresHeader
+  setText outputBox (featuresHeader <> ":\n\n" <> analyzeIPAToSPE ipaText)
 
 
 splitTranscriptionCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 splitTranscriptionCallback inputBox outputBox textDisplay _ = do
   ipaText <- getValue inputBox
-  setText outputBox (ipaTextToPhonetListReport ipaText)
-  setLabel textDisplay phonemesSplitHeader
+  setText outputBox (phonemesSplitHeader <> ":\n\n" <> ipaTextToPhonetListReport ipaText)
 
 
 ui :: IO ()
