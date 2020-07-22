@@ -38,6 +38,14 @@ ipaTextToPhonetListReportSpec =
         ipaTextToPhonetListReport "t͡ʃ" `shouldBe` "/t͡ʃ/ voiceless post-alveolar affricate pulmonic egressive consonant\n"
     it "should be that [t͜ʃ] is also the voiceless post-alveolar affricate pulmonic egressive consonant" $
         ipaTextToPhonetListReport "t͜ʃ" `shouldBe` "/t͜ʃ/ voiceless post-alveolar affricate pulmonic egressive consonant\n"
+    it "should be that (tʃ) with no tie bar is 2 phonemes." $
+        ipaTextToPhonetListReport "tʃ" `shouldBe` "/t/ voiceless alveolar plosive pulmonic egressive consonant\n/ʃ/ voiceless post-alveolar fricative pulmonic egressive consonant\n"
+
+    it "should be that (t͜ʃdd͜ʒ) is properly split into 3 phonemes" $
+        ipaTextToPhonetListReport "t͜ʃdd͜ʒ" `shouldBe` "/t͜ʃ/ voiceless post-alveolar affricate pulmonic egressive consonant\n/d/ voiced alveolar plosive pulmonic egressive consonant\n/d͜ʒ/ voiced post-alveolar affricate pulmonic egressive consonant\n"
+    it "should be that (t͜ʃdd͜ʒʒ) is properly split into 4 phonemes" $
+        ipaTextToPhonetListReport "t͜ʃdd͜ʒʒ" `shouldBe` "/t͜ʃ/ voiceless post-alveolar affricate pulmonic egressive consonant\n/d/ voiced alveolar plosive pulmonic egressive consonant\n/d͜ʒ/ voiced post-alveolar affricate pulmonic egressive consonant\n/ʒ/ voiced post-alveolar fricative pulmonic egressive consonant\n"
+
 
 isVoicelessCounterpartOf :: Text -> Text -> Spec
 isVoicelessCounterpartOf unvoicedPhoneme voicedPhoneme =
