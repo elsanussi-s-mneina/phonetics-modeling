@@ -71,11 +71,13 @@ ui = do
   setBuffer outputToUserWidget (Just outputToUser)
 
   setLabel outputToUserWidget resultHeader
-  create_buttons
 
-createButtons :: IO ()
-createButtons =
-  do
+  inputBox <- inputNew
+         (Rectangle (Position (X 50) (Y 100)) (Size (Width 90) (Height 30)))
+         Nothing
+         (Just FlNormalInput)
+  setLabel inputBox inputHeader
+
   showInventoryButton <- buttonNew
          (Rectangle (Position (X 10) (Y 30)) (Size (Width 275) (Height 30)))
          (Just showPhonemeInventoryUIText)
@@ -106,13 +108,6 @@ createButtons =
          (Just splitTranscriptionUIText)
   setLabelsize splitTranscriptionButton (FontSize 10)
 
-  inputBox <- inputNew
-         (Rectangle (Position (X 50) (Y 100)) (Size (Width 90) (Height 30)))
-         Nothing
-         (Just FlNormalInput)
-  setLabel inputBox inputHeader
-
-  
 
   setCallback voicePhonemeButton (voicePhonemeCallback inputBox outputToUser outputToUserWidget)
   setCallback devoicePhonemeButton (devoicePhonemeCallback inputBox outputToUser outputToUserWidget)
