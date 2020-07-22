@@ -72,37 +72,37 @@ ui = do
            (Just application_title)
  begin window
  voicePhonemeButton <- buttonNew
-        (Rectangle (Position (X 10) (Y 80)) (Size (Width 275) (Height 30)))
+        (Rectangle (Position (X 10) (Y 140)) (Size (Width 275) (Height 30)))
         (Just makeAPhonemeVoicedUIText)
  setLabelsize voicePhonemeButton (FontSize 10)
 
  devoicePhonemeButton <- buttonNew
-        (Rectangle (Position (X 10) (Y 120)) (Size (Width 275) (Height 30)))
+        (Rectangle (Position (X 10) (Y 180)) (Size (Width 275) (Height 30)))
         (Just makeAPhonemeUnvoicedUIText)
  setLabelsize devoicePhonemeButton (FontSize 10)
 
  describePhonemeButton <- buttonNew
-        (Rectangle (Position (X 10) (Y 160)) (Size (Width 275) (Height 30)))
+        (Rectangle (Position (X 10) (Y 220)) (Size (Width 275) (Height 30)))
         (Just describePhonemeUIText)
  setLabelsize describePhonemeButton (FontSize 10)
 
  featurizePhonemeButton <- buttonNew
-        (Rectangle (Position (X 10) (Y 200)) (Size (Width 275) (Height 30)))
+        (Rectangle (Position (X 10) (Y 260)) (Size (Width 275) (Height 30)))
         (Just getFeaturesOfPhonemeUIText)
  setLabelsize featurizePhonemeButton (FontSize 10)
 
  showPhonemeInventoryButton <- buttonNew
-        (Rectangle (Position (X 10) (Y 200)) (Size (Width 275) (Height 30)))
+        (Rectangle (Position (X 10) (Y 30)) (Size (Width 275) (Height 30)))
         (Just showPhonemeInventoryUIText)
  setLabelsize showPhonemeInventoryButton (FontSize 10)
 
  splitTranscriptionButton <- buttonNew
-        (Rectangle (Position (X 10) (Y 240)) (Size (Width 275) (Height 30)))
+        (Rectangle (Position (X 10) (Y 300)) (Size (Width 275) (Height 30)))
         (Just splitTranscriptionUIText)
  setLabelsize splitTranscriptionButton (FontSize 10)
 
  inputBox <- inputNew
-        (Rectangle (Position (X 50) (Y 30)) (Size (Width 90) (Height 30)))
+        (Rectangle (Position (X 50) (Y 100)) (Size (Width 90) (Height 30)))
         (Just "")
         (Just FlNormalInput)
  setLabel inputBox inputHeader
