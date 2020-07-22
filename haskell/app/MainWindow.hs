@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module MainWindow (startMainWindow) where
+module MainWindow (openWindow) where
 
 import           Prelude       (read)
 import           Relude
@@ -12,7 +12,7 @@ import Graphics.UI.FLTK.LowLevel.FLTKHS
 
 import  Lib          (analyzeIPAToSPE, describeIPA, devoicedIPA, englishPhonetInventoryReport,
                       ipaTextToPhonetListReport, voicedIPA)
-import EnglishUSText (application_title, showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
+import EnglishUSText (applicationTitle, showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
                       quitUIText, makeAPhonemeUnvoicedUIText, describePhonemeUIText,
                       getFeaturesOfPhonemeUIText, splitTranscriptionUIText, resultHeader, voicedPhonemeHeader,
                       unvoicedPhonemeHeader, englishPhonemeInventoryHeader, featuresHeader, phonemeDescriptionHeader,
@@ -23,34 +23,34 @@ headerThenContent header content = header <> ":\n\n" <> content
 
 
 voicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-voicePhonemeCallback inputBox outputBox textDisplay _ = do
+voicePhonemeCallback inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent voicedPhonemeHeader (voicedIPA ipaText))
 
 devoicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-devoicePhonemeCallback inputBox outputBox textDisplay _ = do
+devoicePhonemeCallback inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent unvoicedPhonemeHeader (devoicedIPA ipaText))
 
 englishPhoneteInventoryCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-englishPhoneteInventoryCallback inputBox outputBox textDisplay _ = do
+englishPhoneteInventoryCallback inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
-  setText outputBox (headerThenContent englishPhonemeInventoryHeader (englishPhonetInventoryReport))
+  setText outputBox (headerThenContent englishPhonemeInventoryHeader englishPhonetInventoryReport)
 
 describePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-describePhonemeCallback inputBox outputBox textDisplay _ = do
+describePhonemeCallback inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent phonemeDescriptionHeader (describeIPA ipaText))
 
 
 featurizePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-featurizePhonemeCallback inputBox outputBox textDisplay _ = do
+featurizePhonemeCallback inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent featuresHeader (analyzeIPAToSPE ipaText))
 
 
 splitTranscriptionCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-splitTranscriptionCallback inputBox outputBox textDisplay _ = do
+splitTranscriptionCallback inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent phonemesSplitHeader (ipaTextToPhonetListReport ipaText))
 
@@ -60,8 +60,27 @@ ui = do
   window <- windowNew
             (Size (Width 915) (Height 570))
             Nothing
-            (Just application_title)
+            (Just applicationTitle)
   begin window
+
+  outputToUser <- textBufferNew Nothing Nothing
+
+  outputToUserWidget <- textDisplayNew
+      (Rectangle (Position (X 350) (Y 30)) (Size (Width 505) (Height 400)))
+      Nothing
+  setBuffer outputToUserWidget (Just outputToUser)
+
+  setLabel outputToUserWidget resultHeader
+  create_buttons
+
+createButtons :: IO ()
+createButtons =
+  do
+  showInventoryButton <- buttonNew
+         (Rectangle (Position (X 10) (Y 30)) (Size (Width 275) (Height 30)))
+         (Just showPhonemeInventoryUIText)
+  setLabelsize showInventoryButton (FontSize 10)
+
   voicePhonemeButton <- buttonNew
          (Rectangle (Position (X 10) (Y 140)) (Size (Width 275) (Height 30)))
          (Just makeAPhonemeVoicedUIText)
@@ -82,11 +101,6 @@ ui = do
          (Just getFeaturesOfPhonemeUIText)
   setLabelsize featurizePhonemeButton (FontSize 10)
 
-  showPhonemeInventoryButton <- buttonNew
-         (Rectangle (Position (X 10) (Y 30)) (Size (Width 275) (Height 30)))
-         (Just showPhonemeInventoryUIText)
-  setLabelsize showPhonemeInventoryButton (FontSize 10)
-
   splitTranscriptionButton <- buttonNew
          (Rectangle (Position (X 10) (Y 300)) (Size (Width 275) (Height 30)))
          (Just splitTranscriptionUIText)
@@ -99,26 +113,19 @@ ui = do
   setLabel inputBox inputHeader
 
   
-  textDisplay <- textDisplayNew
-      (Rectangle (Position (X 350) (Y 30)) (Size (Width 505) (Height 400)))
-      Nothing
 
-  setLabel textDisplay resultHeader
-  textBuffer <- textBufferNew Nothing Nothing
-  setBuffer textDisplay (Just textBuffer)
-
-  setCallback voicePhonemeButton (voicePhonemeCallback inputBox textBuffer textDisplay)
-  setCallback devoicePhonemeButton (devoicePhonemeCallback inputBox textBuffer textDisplay)
-  setCallback describePhonemeButton (describePhonemeCallback inputBox textBuffer textDisplay)
-  setCallback featurizePhonemeButton (featurizePhonemeCallback inputBox textBuffer textDisplay)
-  setCallback splitTranscriptionButton (splitTranscriptionCallback inputBox textBuffer textDisplay)
-  setCallback showPhonemeInventoryButton (englishPhoneteInventoryCallback inputBox textBuffer textDisplay)
+  setCallback voicePhonemeButton (voicePhonemeCallback inputBox outputToUser outputToUserWidget)
+  setCallback devoicePhonemeButton (devoicePhonemeCallback inputBox outputToUser outputToUserWidget)
+  setCallback describePhonemeButton (describePhonemeCallback inputBox outputToUser outputToUserWidget)
+  setCallback featurizePhonemeButton (featurizePhonemeCallback inputBox outputToUser outputToUserWidget)
+  setCallback splitTranscriptionButton (splitTranscriptionCallback inputBox outputToUser outputToUserWidget)
+  setCallback showInventoryButton (englishPhoneteInventoryCallback inputBox outputToUser outputToUserWidget)
 
   end window
   showWidget window
 
-startMainWindow :: IO ()
-startMainWindow = ui >> FL.run >> FL.flush
+openWindow :: IO ()
+openWindow = ui >> FL.run >> FL.flush
 
 replMain :: IO ()
 replMain = ui >> FL.replRun

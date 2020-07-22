@@ -5,8 +5,8 @@ module EnglishUSText where
 import           Prelude ()
 import           Relude  (Text)
 
-application_title :: Text
-application_title = "Phonetics Modeling Program"
+applicationTitle :: Text
+applicationTitle = "Phonetics Modeling Program"
 
 
 menu :: Text

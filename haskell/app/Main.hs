@@ -11,7 +11,7 @@ import           Relude
 import           System.IO     (hFlush)
 
 import           EnglishUSText
-import           MainWindow (startMainWindow)
+import           MainWindow (openWindow)
 
 -- | Print characters to the terminal, so that the
 --   user knows that they are expected to enter
@@ -117,7 +117,7 @@ respondToSelection selection
   | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe
   | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom
   | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit
-  | selection == userInputOpenWindow                  = startMainWindow
+  | selection == userInputOpenWindow                  = openWindow
   | otherwise                                         = putTextLn unrecognizedSelectionMessage
 
 -- | Given an IPA transcription, return the
