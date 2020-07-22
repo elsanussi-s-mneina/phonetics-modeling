@@ -239,5 +239,14 @@ highPhonemeFeatureUIText = "high"
 lowPhonemeFeatureUIText = "low"
 backPhonemeFeatureUIText = "back"
 
-makeAPhonemeVoicedUIText :: Text
+showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
+  quitUIText, makeAPhonemeUnvoicedUIText, describePhonemeUIText,
+  getFeaturesOfPhonemeUIText, splitTranscriptionUIText :: Text
+showPhonemeInventoryUIText = "Show English phoneme inventory"
 makeAPhonemeVoicedUIText = "Make a phoneme voiced…"
+quitUIText = "Quit"
+makeAPhonemeUnvoicedUIText = "Make a phoneme unvoiced…"
+describePhonemeUIText = "Describe a phoneme…"
+getFeaturesOfPhonemeUIText =
+    "Get sound patterns of English features of IPA transcription…"
+splitTranscriptionUIText = "Split IPA transcription text…"

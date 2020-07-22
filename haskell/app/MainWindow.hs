@@ -10,13 +10,39 @@ import qualified Graphics.UI.FLTK.LowLevel.FL as FL
 import Graphics.UI.FLTK.LowLevel.Fl_Types
 import Graphics.UI.FLTK.LowLevel.FLTKHS
 
-import           Lib           (voicedIPA)
-import EnglishUSText (application_title, makeAPhonemeVoicedUIText)
+import  Lib          (analyzeIPAToSPE, describeIPA, devoicedIPA, englishPhonetInventoryReport,
+                      ipaTextToPhonetListReport, voicedIPA)
+import EnglishUSText (application_title, showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
+                      quitUIText, makeAPhonemeUnvoicedUIText, describePhonemeUIText,
+                      getFeaturesOfPhonemeUIText, splitTranscriptionUIText)
 
-buttonCb :: Ref Input -> IO ()
-buttonCb i' = do
-  l' <- getValue i'
-  setLabel i' (voicedIPA l')
+voicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
+voicePhonemeCallback inputBox outputBox _ = do
+  ipaText <- getValue inputBox
+  setText outputBox (voicedIPA ipaText)
+
+
+genericInteractCallback :: (Text -> Text) -> Ref Input -> Ref TextBuffer -> Ref Button -> IO ()
+genericInteractCallback func inputBox textDisplay _ = do
+  ipaText <- getValue inputBox
+  setText textDisplay (func ipaText)
+
+
+devoicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
+devoicePhonemeCallback = genericInteractCallback devoicedIPA
+
+englishPhoneteInventoryCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
+englishPhoneteInventoryCallback = genericInteractCallback (\_ -> englishPhonetInventoryReport)
+
+describePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
+describePhonemeCallback = genericInteractCallback describeIPA
+
+featurizePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
+featurizePhonemeCallback = genericInteractCallback analyzeIPAToSPE
+
+splitTranscriptionCallback :: Ref Input -> Ref TextBuffer -> Ref Button ->  IO ()
+splitTranscriptionCallback = genericInteractCallback ipaTextToPhonetListReport
+
 
 ui :: IO ()
 ui = do
@@ -25,18 +51,55 @@ ui = do
            Nothing
            (Just application_title)
  begin window
- b' <- buttonNew
-        (Rectangle (Position (X 10) (Y 80)) (Size (Width 125) (Height 30)))
+ voicePhonemeButton <- buttonNew
+        (Rectangle (Position (X 10) (Y 80)) (Size (Width 275) (Height 30)))
         (Just makeAPhonemeVoicedUIText)
- setLabelsize b' (FontSize 10)
+ setLabelsize voicePhonemeButton (FontSize 10)
 
- i' <- inputNew
+ devoicePhonemeButton <- buttonNew
+        (Rectangle (Position (X 10) (Y 120)) (Size (Width 275) (Height 30)))
+        (Just makeAPhonemeUnvoicedUIText)
+ setLabelsize devoicePhonemeButton (FontSize 10)
+
+ describePhonemeButton <- buttonNew
+        (Rectangle (Position (X 10) (Y 160)) (Size (Width 275) (Height 30)))
+        (Just describePhonemeUIText)
+ setLabelsize describePhonemeButton (FontSize 10)
+
+ featurizePhonemeButton <- buttonNew
+        (Rectangle (Position (X 10) (Y 200)) (Size (Width 275) (Height 30)))
+        (Just getFeaturesOfPhonemeUIText)
+ setLabelsize featurizePhonemeButton (FontSize 10)
+
+ showPhonemeInventoryButton <- buttonNew
+        (Rectangle (Position (X 10) (Y 200)) (Size (Width 275) (Height 30)))
+        (Just showPhonemeInventoryUIText)
+ setLabelsize showPhonemeInventoryButton (FontSize 10)
+
+ splitTranscriptionButton <- buttonNew
+        (Rectangle (Position (X 10) (Y 240)) (Size (Width 275) (Height 30)))
+        (Just splitTranscriptionUIText)
+ setLabelsize splitTranscriptionButton (FontSize 10)
+
+ inputBox <- inputNew
         (Rectangle (Position (X 50) (Y 30)) (Size (Width 30) (Height 30)))
         (Just "")
         (Just FlNormalInput)
 
- setCallback i' buttonCb
+ textDisplay <- textDisplayNew
+     (Rectangle (Position (X 350) (Y 30)) (Size (Width 505) (Height 400)))
+     Nothing
 
+ setLabel textDisplay "Result:"
+ textBuffer <- textBufferNew Nothing Nothing
+ setBuffer textDisplay (Just textBuffer)
+
+ setCallback voicePhonemeButton (voicePhonemeCallback inputBox textBuffer)
+ setCallback devoicePhonemeButton (devoicePhonemeCallback inputBox textBuffer)
+ setCallback describePhonemeButton (describePhonemeCallback inputBox textBuffer)
+ setCallback featurizePhonemeButton (featurizePhonemeCallback inputBox textBuffer)
+ setCallback splitTranscriptionButton (splitTranscriptionCallback inputBox textBuffer)
+ setCallback showPhonemeInventoryButton (englishPhoneteInventoryCallback inputBox textBuffer)
 
  end window
  showWidget window
