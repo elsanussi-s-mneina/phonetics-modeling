@@ -161,6 +161,169 @@ voicingSpec = do
     "ɕ" `isVoicelessCounterpartOf`"ʑ"
     "ɺ̥" `isVoicelessCounterpartOf`"ɺ"
 
+  describe "voicing a phoneme (with voiceless diacritic above or below)" $ do
+    -- Nasal consonants:
+    "m̥" `xVoicedIsY` "m"
+    "m̊" `xVoicedIsY` "m"
+
+    "ɱ̥" `xVoicedIsY` "ɱ"
+    "ɱ̊" `xVoicedIsY` "ɱ"
+
+    "n̥" `xVoicedIsY` "n"
+    "n̊" `xVoicedIsY` "n"
+
+    "ɲ̥" `xVoicedIsY` "ɲ"
+    "ɲ̊" `xVoicedIsY` "ɲ"
+
+    "ɳ̥" `xVoicedIsY` "ɳ"
+    "ɳ̊" `xVoicedIsY` "ɳ"
+
+    "ŋ̥" `xVoicedIsY` "ŋ"
+    "ŋ̊" `xVoicedIsY` "ŋ"
+
+    "ɴ̥" `xVoicedIsY` "ɴ"
+    "ɴ̊" `xVoicedIsY` "ɴ"
+
+    -- Trill consonants:
+    "ʙ̊" `xVoicedIsY` "ʙ"
+    "ʙ̥" `xVoicedIsY` "ʙ"
+    "r̊" `xVoicedIsY` "r"
+    "r̥" `xVoicedIsY` "r"
+    "ʀ̊" `xVoicedIsY` "ʀ"
+    "ʀ̥" `xVoicedIsY` "ʀ"
+
+    -- Tap or flap consonants:
+    "ⱱ̥" `xVoicedIsY` "ⱱ"
+    "ⱱ̊" `xVoicedIsY` "ⱱ"
+    "ɾ̥" `xVoicedIsY` "ɾ"
+    "ɾ̊" `xVoicedIsY` "ɾ"
+    "ɽ̥" `xVoicedIsY` "ɽ"
+    "ɽ̊" `xVoicedIsY` "ɽ"
+
+    -- Approximant consonants:
+    "ʋ̥" `xVoicedIsY` "ʋ"
+    "ʋ̊" `xVoicedIsY` "ʋ"
+    "ɹ̥" `xVoicedIsY` "ɹ"
+    "ɹ̊" `xVoicedIsY` "ɹ"
+    "ɻ̥" `xVoicedIsY` "ɻ"
+    "ɻ̊" `xVoicedIsY` "ɻ"
+    "j̥" `xVoicedIsY` "j"
+    "j̊" `xVoicedIsY` "j"
+    "ɰ̥" `xVoicedIsY` "ɰ"
+    "ɰ̊" `xVoicedIsY` "ɰ"
+
+    -- Lateral approximants:
+    "l̥" `xVoicedIsY` "l"
+    "l̊" `xVoicedIsY` "l"
+
+    "ɭ̥" `xVoicedIsY` "ɭ"
+    "ɭ̊" `xVoicedIsY` "ɭ"
+
+
+    "ʎ̥" `xVoicedIsY` "ʎ"
+    "ʎ̊" `xVoicedIsY` "ʎ"
+
+    "ʟ̥" `xVoicedIsY` "ʟ"
+    "ʟ̊" `xVoicedIsY` "ʟ"
+
+    -- Vowels
+    "i̥" `xVoicedIsY` "i"
+    "i̊" `xVoicedIsY` "i"
+
+    "y̥" `xVoicedIsY` "y"
+    "ẙ" `xVoicedIsY` "y"
+
+    "ɨ̥" `xVoicedIsY` "ɨ"
+    "ɨ̊" `xVoicedIsY` "ɨ"
+
+    "ʉ̥" `xVoicedIsY` "ʉ"
+    "ʉ̊" `xVoicedIsY` "ʉ"
+
+    "ɯ̥" `xVoicedIsY` "ɯ"
+    "ɯ̊" `xVoicedIsY` "ɯ"
+
+    "u̥" `xVoicedIsY` "u"
+    "ů" `xVoicedIsY` "u"
+
+    "ɪ̥" `xVoicedIsY` "ɪ"
+    "ɪ̊" `xVoicedIsY` "ɪ"
+
+    "ʏ̥" `xVoicedIsY` "ʏ"
+    "ʏ̊" `xVoicedIsY` "ʏ"
+
+    "ʊ̥" `xVoicedIsY` "ʊ"
+    "ʊ̊" `xVoicedIsY` "ʊ"
+
+    "e̥" `xVoicedIsY` "e"
+    "e̊" `xVoicedIsY` "e"
+
+    "ø̥" `xVoicedIsY` "ø"
+    "ø̊" `xVoicedIsY` "ø"
+
+    "ɘ̥" `xVoicedIsY` "ɘ"
+    "ɘ̊" `xVoicedIsY` "ɘ"
+
+    "ɵ̥" `xVoicedIsY` "ɵ"
+    "ɵ̊" `xVoicedIsY` "ɵ"
+
+    "ɤ̥" `xVoicedIsY` "ɤ"
+    "ɤ̊" `xVoicedIsY` "ɤ"
+
+    "o̥" `xVoicedIsY` "o"
+    "o̊" `xVoicedIsY` "o"
+
+    "ə̥" `xVoicedIsY` "ə"
+    "ə̊" `xVoicedIsY` "ə"
+
+    "ɛ̥" `xVoicedIsY` "ɛ"
+    "ɛ̊" `xVoicedIsY` "ɛ"
+
+    "œ̥" `xVoicedIsY` "œ"
+    "œ̊" `xVoicedIsY` "œ"
+
+    "ɜ̥" `xVoicedIsY` "ɜ"
+    "ɜ̊" `xVoicedIsY` "ɜ"
+
+    "ɞ̥" `xVoicedIsY` "ɞ"
+    "ɞ̊" `xVoicedIsY` "ɞ"
+
+    "ʌ̥" `xVoicedIsY` "ʌ"
+    "ʌ̊" `xVoicedIsY` "ʌ"
+
+    "ɔ̥" `xVoicedIsY` "ɔ"
+    "ɔ̊" `xVoicedIsY` "ɔ"
+
+    "æ̥" `xVoicedIsY` "æ"
+    "æ̊" `xVoicedIsY` "æ"
+
+    "ɐ̥" `xVoicedIsY` "ɐ"
+    "ɐ̊" `xVoicedIsY` "ɐ"
+
+    "ḁ" `xVoicedIsY` "a"
+    "å" `xVoicedIsY` "a"
+
+    "ɶ̥" `xVoicedIsY` "ɶ"
+    "ɶ̊" `xVoicedIsY` "ɶ"
+
+    "ɑ̥" `xVoicedIsY` "ɑ"
+    "ɑ̊" `xVoicedIsY` "ɑ"
+
+    "ɒ̥" `xVoicedIsY` "ɒ"
+    "ɒ̊" `xVoicedIsY` "ɒ"
+
+    "w̥" `xVoicedIsY` "w"
+    "ẘ" `xVoicedIsY` "w"
+
+    "ɥ̥" `xVoicedIsY` "ɥ"
+    "ɥ̊" `xVoicedIsY` "ɥ"
+
+    "ɕ" `xVoicedIsY` "ʑ"
+    "ɕ̥" `xVoicedIsY` "ʑ"
+    "ɕ̊" `xVoicedIsY` "ʑ"
+
+    "ɺ̥" `xVoicedIsY` "ɺ"
+    "ɺ̊" `xVoicedIsY` "ɺ"
+
 
   describe "voicing and devoicing a phoneme (with voiced diacritic)" $ do
     "ʔ" `isVoicelessCounterpartOf`"ʔ̬"
