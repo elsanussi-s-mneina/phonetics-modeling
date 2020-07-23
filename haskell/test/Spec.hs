@@ -46,16 +46,23 @@ ipaTextToPhonetListReportSpec =
     it "should be that (t͜ʃdd͜ʒʒ) is properly split into 4 phonemes" $
         ipaTextToPhonetListReport "t͜ʃdd͜ʒʒ" `shouldBe` "/t͜ʃ/ voiceless post-alveolar affricate pulmonic egressive consonant\n/d/ voiced alveolar plosive pulmonic egressive consonant\n/d͜ʒ/ voiced post-alveolar affricate pulmonic egressive consonant\n/ʒ/ voiced post-alveolar fricative pulmonic egressive consonant\n"
 
-
-isVoicelessCounterpartOf :: Text -> Text -> Spec
-isVoicelessCounterpartOf unvoicedPhoneme voicedPhoneme =
-  describe "voicing and devoicing a phoneme" $ do
+xVoicedIsY :: Text -> Text -> Spec
+xVoicedIsY unvoicedPhoneme voicedPhoneme =
+  describe ("voicing [" ++ toString unvoicedPhoneme ++ "]") $ do
     it ("should be that: [" ++ toString unvoicedPhoneme ++ "] voiced is [" ++ toString voicedPhoneme ++ "]") $
       voicedIPA unvoicedPhoneme `shouldBe` voicedPhoneme
+
+xDevoicedIsY :: Text -> Text -> Spec
+xDevoicedIsY unvoicedPhoneme voicedPhoneme =
+  describe ("devoicing [" ++ toString voicedPhoneme ++ "]") $ do
     it ("should be that: [" ++ toString voicedPhoneme ++ "] devoiced is [" ++ toString unvoicedPhoneme ++ "]") $
       devoicedIPA voicedPhoneme `shouldBe` unvoicedPhoneme
 
-
+isVoicelessCounterpartOf :: Text -> Text -> Spec
+isVoicelessCounterpartOf unvoicedPhoneme voicedPhoneme =
+  do
+  xVoicedIsY unvoicedPhoneme voicedPhoneme
+  xDevoicedIsY unvoicedPhoneme voicedPhoneme
 
 voicingSpec :: Spec
 voicingSpec = do
