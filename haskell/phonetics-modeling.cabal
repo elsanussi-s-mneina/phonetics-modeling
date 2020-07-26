@@ -43,6 +43,8 @@ library
       Lib_Functions
       Lib_Types
       LanguageSpecific.EnglishSpecific
+      PhoneticFeatures
+      PhoneticFeaturesTypes
   other-modules:
       Paths_phonetics_modeling
   hs-source-dirs:

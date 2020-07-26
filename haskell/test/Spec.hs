@@ -3,7 +3,8 @@ module Spec(main) where
 
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           Lib_Functions (analyzeIPA, isGlide, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE)
+import           Lib (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE)
+import           PhoneticFeatures (isGlide)
 import           Relude
 
 main = do
