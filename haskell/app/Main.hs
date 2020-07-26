@@ -1,11 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
-import           Lib           (Phonet, analyzeIPA,
-                                constructIPA, describeIPA, devoicedIPA,
-                                englishPhonetInventoryReport,
-                                ipaTextToPhonetListReport,
-                                showPhonet, voicedIPA, analyzeIPAToSPE)
+import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListReport, analyzeIPAToSPE,
+                      englishPhonetInventoryReport, analyzeIPA, constructIPA)
+
+
+
+import           Lib           (Phonet,
+                                showPhonet)
 import           Prelude       ()
 import           Relude
 import           System.IO     (hFlush)

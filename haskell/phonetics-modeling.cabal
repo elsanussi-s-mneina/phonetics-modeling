@@ -39,6 +39,8 @@ Flag FastCompile
 library
   exposed-modules:
       EnglishUSText
+      GraphemeGrammar
+      IPA
       Lib
       Lib_Functions
       Lib_Types

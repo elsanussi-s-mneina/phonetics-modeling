@@ -7,11 +7,16 @@ import           Relude (Bool(False, True), Text, Maybe(Just, Nothing), catMaybe
 
 
 import qualified Data.Text     as T
-import PhoneticFeaturesTypes
 
 import           Lib_Types
 
-import PhoneticFeaturesTypes()
+import PhoneticFeaturesTypes (Polarity(Minus, Plus), PhonemeFeature(SyllabicFeature, ConsonantalFeature,
+           SonorantFeature, ContinuantFeature, VoiceFeature, AdvancedTongueRootFeature, NasalFeature,
+           LateralFeature, DelayedReleaseFeature, SpreadGlottisFeature, ConstrictedGlottisFeature,
+           LabialFeature, CoronalFeature, DorsalFeature, PharyngealFeature, LaryngealFeature,
+           RoundFeature,
+           AnteriorFeature, DistributedFeature, StridentFeature, HighFeature, LowFeature, BackFeature))
+
 import EnglishUSText
 
 showPolarity :: Polarity -> Text

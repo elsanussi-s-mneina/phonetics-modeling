@@ -10,8 +10,9 @@ import qualified Graphics.UI.FLTK.LowLevel.FL as FL
 import Graphics.UI.FLTK.LowLevel.Fl_Types
 import Graphics.UI.FLTK.LowLevel.FLTKHS
 
-import  Lib          (analyzeIPAToSPE, describeIPA, devoicedIPA, englishPhonetInventoryReport,
-                      ipaTextToPhonetListReport, voicedIPA)
+import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListReport, analyzeIPAToSPE,
+                      englishPhonetInventoryReport)
+
 import EnglishUSText (applicationTitle, showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
                       quitUIText, makeAPhonemeUnvoicedUIText, describePhonemeUIText,
                       getFeaturesOfPhonemeUIText, splitTranscriptionUIText, resultHeader, voicedPhonemeHeader,

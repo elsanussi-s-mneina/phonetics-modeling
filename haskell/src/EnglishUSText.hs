@@ -168,9 +168,11 @@ consonantUIText,
     Text
 consonantUIText = "consonant"
 vowelUIText = "vowel"
+
 frontBacknessUIText = "front"
 centralBacknessUIText = "central"
 backBacknessUIText = "back"
+
 closeHeightUIText = "close"
 nearCloseHeightUIText = "near-close"
 closeMidHeightUIText = "close-mid"
@@ -178,8 +180,10 @@ midHeightUIText = "mid"
 openMidHeightUIText = "open-mid"
 nearOpenHeightUIText = "near-open"
 openHeightUIText = "open"
+
 roundedRoundingUIText = "rounded"
 unroundedRoundingUIText = "unrounded"
+
 bilabialPlaceUIText = "bilabial"
 labioDentalPlaceUIText = "labio-dental"
 dentalPlaceUIText = "dental"
@@ -196,6 +200,7 @@ labialVelarPlaceUIText = "labial-velar"
 labialPalatalPlaceUIText = "labial-palatal"
 alveoloPalatalPlaceUIText = "alveolo-palatal"
 palatoAlveolarPlaceUIText = "palato-alveolar"
+
 plosiveMannerUIText = "plosive"
 nasalMannerUIText = "nasal"
 trillMannerUIText = "trill"
@@ -207,14 +212,17 @@ lateralFricativeMannerUIText = "lateral fricative"
 lateralApproximantMannerUIText = "lateral approximant"
 lateralFlapMannerUIText = "lateral flap"
 lateralMannerUIText = "lateral"
+
 pulmonicEgressiveAirstreamUIText = "pulmonic egressive"
 clickAirstreamUIText = "click"
 implosiveAirstreamUIText = "implosive"
+
 voicedVocalFoldsUIText = "voiced"
 voicelessVocalFoldsUIText = "voiceless"
 voicedAspiratedVocalFoldsUIText = "voiced aspirated"
 voicelessAspiratedVocalFoldsUIText = "voiceless aspirated"
 creakyVoicedVocalFoldsUIText = "creaky voiced"
+
 syllabicPhonemeFeatureUIText = "syllabic"
 consonantalPhonemeFeatureUIText = "consonantal"
 sonorantPhonemeFeatureUIText = "sonorant"

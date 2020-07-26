@@ -4,7 +4,13 @@ module LanguageSpecific.EnglishSpecific where
 
 import           Prelude ()
 import           Relude  (fromList)
-import           Lib_Types
+import           Lib_Types (PhonetInventory(PhonetInventory), Phonet(Consonant, Vowel), VocalFolds(..),
+                            Place(Bilabial, LabioDental, LabialVelar, Dental, Alveolar, PostAlveolar, Palatal, Velar,
+                            Glottal),
+                            Manner(Affricate, Approximant, Fricative, Nasal, Plosive),
+                            Airstream(PulmonicEgressive), Height(Close, CloseMid, Mid, OpenMid, NearClose, NearOpen, Open),
+                            Backness(Front, Central, Back),
+                            Rounding(Rounded, Unrounded))
 
 -- | This is a list of the sounds of English. Just the basic ones.
 --   It is somewhat more complicated in reality, but for now this will
