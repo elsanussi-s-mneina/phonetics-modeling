@@ -42,6 +42,7 @@ library
       Lib
       Lib_Functions
       Lib_Types
+      LanguageSpecific.EnglishSpecific
   other-modules:
       Paths_phonetics_modeling
   hs-source-dirs:
