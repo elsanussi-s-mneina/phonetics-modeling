@@ -19,6 +19,7 @@ menu =
   \ 5) describe a phoneme in SPE Features. \n\
   \ 6) divide IPA text into phonemes (chunk) \n\
   \ 7) open window (user-friendly mode) \n\
+  \ 8) start web server \n\
   \  \n\
   \ Enter the number representing your selection below, \n\
   \ after the prompt, and press enter/return. \n\
@@ -32,7 +33,8 @@ userInputViewEnglishPhonemeInventory,
   userInputDescribeAPhonemeInEnglish,
   userInputDescribeAPhonemeInSPE,
   userInputChunkIPAByPhoneme,
-  userInputOpenWindow ::
+  userInputOpenWindow,
+  userInputStartServer ::
     Text
 userInputViewEnglishPhonemeInventory = "1"
 userInputMakeAPhonemeVoiced = "2"
@@ -41,6 +43,7 @@ userInputDescribeAPhonemeInEnglish = "4"
 userInputDescribeAPhonemeInSPE = "5"
 userInputChunkIPAByPhoneme = "6"
 userInputOpenWindow = "7"
+userInputStartServer = "8"
 
 prompt :: Text
 prompt = "(PROMPT:) "
@@ -271,3 +274,12 @@ featuresHeader = "SPE Features of Phoneme"
 phonemesSplitHeader = "Phonemes After Being Split"
 englishPhonemeInventoryHeader = "English Phoneme Inventory"
 inputHeader = "Input:"
+
+beforeServerStartMessage :: Text
+beforeServerStartMessage =
+  "Starting server...\n\
+  \Server running... at port 8080 locally.\n\
+  \Browse to http://localhost:8080/voice_phoneme/s\n\
+  \to get the voiced phoneme alternative of [s].\n\
+  \Browse to http://localhost:8080/devoice_phoneme/z\n\
+  \to get the voiceless phoneme alternative of [z]."
