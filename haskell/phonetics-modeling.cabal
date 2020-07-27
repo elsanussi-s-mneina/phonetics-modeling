@@ -47,6 +47,7 @@ library
       LanguageSpecific.EnglishSpecific
       PhoneticFeatures
       PhoneticFeaturesTypes
+      UserInterfaceText
   other-modules:
       Paths_phonetics_modeling
   hs-source-dirs:

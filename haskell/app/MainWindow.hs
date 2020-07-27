@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module MainWindow (openWindow) where
+module MainWindow (openWindow, replMainLangSpecific, replMain) where
 
 import           Prelude       (read)
 import           Relude
@@ -13,51 +13,77 @@ import Graphics.UI.FLTK.LowLevel.FLTKHS
 import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListReport, analyzeIPAToSPE,
                       englishPhonetInventoryReport)
 
-import EnglishUSText (applicationTitle, showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
-                      quitUIText, makeAPhonemeUnvoicedUIText, describePhonemeUIText,
-                      getFeaturesOfPhonemeUIText, splitTranscriptionUIText, resultHeader, voicedPhonemeHeader,
-                      unvoicedPhonemeHeader, englishPhonemeInventoryHeader, featuresHeader, phonemeDescriptionHeader,
-                      phonemesSplitHeader, inputHeader)
+import UserInterfaceText
+  (i18n
+  , UITextTicket( ApplicationTitle
+                , ShowPhonemeInventoryUIText
+                , MakeAPhonemeVoicedUIText
+                , QuitUIText
+                , MakeAPhonemeUnvoicedUIText
+                , DescribePhonemeUIText
+                , GetFeaturesOfPhonemeUIText
+                , SplitTranscriptionUIText
+                , ResultHeader
+                , VoicedPhonemeHeader
+                , UnvoicedPhonemeHeader
+                , EnglishPhonemeInventoryHeader
+                , FeaturesHeader
+                , PhonemeDescriptionHeader
+                , PhonemesSplitHeader
+                , InputHeader
+                )
+  , NatLanguage(English))
 
 headerThenContent :: Text -> Text -> Text
 headerThenContent header content = header <> ":\n\n" <> content
 
 
-voicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-voicePhonemeCallback inputBox outputBox outputToUserWidget _ = do
+voicePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+voicePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent voicedPhonemeHeader (voicedIPA ipaText))
+  where uiTxt = i18n lang
+        voicedPhonemeHeader = uiTxt VoicedPhonemeHeader
 
-devoicePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-devoicePhonemeCallback inputBox outputBox outputToUserWidget _ = do
+devoicePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+devoicePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent unvoicedPhonemeHeader (devoicedIPA ipaText))
+  where uiTxt = i18n lang
+        unvoicedPhonemeHeader = uiTxt UnvoicedPhonemeHeader
 
-englishPhoneteInventoryCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-englishPhoneteInventoryCallback inputBox outputBox outputToUserWidget _ = do
+englishPhoneteInventoryCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+englishPhoneteInventoryCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent englishPhonemeInventoryHeader englishPhonetInventoryReport)
+  where uiTxt = i18n lang
+        englishPhonemeInventoryHeader = uiTxt EnglishPhonemeInventoryHeader
 
-describePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-describePhonemeCallback inputBox outputBox outputToUserWidget _ = do
+describePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+describePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent phonemeDescriptionHeader (describeIPA ipaText))
+  where uiTxt = i18n lang
+        phonemeDescriptionHeader = uiTxt PhonemeDescriptionHeader
 
 
-featurizePhonemeCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-featurizePhonemeCallback inputBox outputBox outputToUserWidget _ = do
+featurizePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+featurizePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent featuresHeader (analyzeIPAToSPE ipaText))
+  where uiTxt = i18n lang
+        featuresHeader = uiTxt FeaturesHeader
 
 
-splitTranscriptionCallback :: Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
-splitTranscriptionCallback inputBox outputBox outputToUserWidget _ = do
+splitTranscriptionCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+splitTranscriptionCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent phonemesSplitHeader (ipaTextToPhonetListReport ipaText))
+  where uiTxt = i18n lang
+        phonemesSplitHeader = uiTxt PhonemesSplitHeader
 
-
-ui :: IO ()
-ui = do
+ui :: [NatLanguage] -> IO ()
+ui lang = do
   window <- windowNew
             (Size (Width 915) (Height 570))
             Nothing
@@ -71,7 +97,7 @@ ui = do
       Nothing
   setBuffer outputToUserWidget (Just outputToUser)
 
-  setLabel outputToUserWidget resultHeader
+  setLabel outputToUserWidget (i18n lang ResultHeader)
 
   inputBox <- inputNew
          (Rectangle (Position (X 50) (Y 100)) (Size (Width 90) (Height 30)))
@@ -110,18 +136,31 @@ ui = do
   setLabelsize splitTranscriptionButton (FontSize 10)
 
 
-  setCallback voicePhonemeButton (voicePhonemeCallback inputBox outputToUser outputToUserWidget)
-  setCallback devoicePhonemeButton (devoicePhonemeCallback inputBox outputToUser outputToUserWidget)
-  setCallback describePhonemeButton (describePhonemeCallback inputBox outputToUser outputToUserWidget)
-  setCallback featurizePhonemeButton (featurizePhonemeCallback inputBox outputToUser outputToUserWidget)
-  setCallback splitTranscriptionButton (splitTranscriptionCallback inputBox outputToUser outputToUserWidget)
-  setCallback showInventoryButton (englishPhoneteInventoryCallback inputBox outputToUser outputToUserWidget)
+  setCallback voicePhonemeButton (voicePhonemeCallback lang inputBox outputToUser outputToUserWidget)
+  setCallback devoicePhonemeButton (devoicePhonemeCallback lang inputBox outputToUser outputToUserWidget)
+  setCallback describePhonemeButton (describePhonemeCallback lang inputBox outputToUser outputToUserWidget)
+  setCallback featurizePhonemeButton (featurizePhonemeCallback lang inputBox outputToUser outputToUserWidget)
+  setCallback splitTranscriptionButton (splitTranscriptionCallback lang inputBox outputToUser outputToUserWidget)
+  setCallback showInventoryButton (englishPhoneteInventoryCallback lang inputBox outputToUser outputToUserWidget)
 
   end window
   showWidget window
+  where
+    uiTxt = i18n lang
+    inputHeader =  uiTxt InputHeader
+    applicationTitle = uiTxt ApplicationTitle
+    splitTranscriptionUIText = uiTxt SplitTranscriptionUIText
+    getFeaturesOfPhonemeUIText = uiTxt GetFeaturesOfPhonemeUIText
+    describePhonemeUIText = uiTxt DescribePhonemeUIText
+    makeAPhonemeUnvoicedUIText = uiTxt MakeAPhonemeUnvoicedUIText
+    makeAPhonemeVoicedUIText = uiTxt MakeAPhonemeVoicedUIText
+    showPhonemeInventoryUIText = uiTxt ShowPhonemeInventoryUIText
 
 openWindow :: IO ()
-openWindow = ui >> FL.run >> FL.flush
+openWindow = ui [English] >> FL.run >> FL.flush
 
 replMain :: IO ()
-replMain = ui >> FL.replRun
+replMain = replMainLangSpecific [English]
+
+replMainLangSpecific :: [NatLanguage] -> IO ()
+replMainLangSpecific natLang = ui natLang >> FL.replRun
