@@ -14,8 +14,6 @@ module MainServer where
 
 import           Prelude       ()
 
-import Data.Aeson
-import Data.Aeson.TH
 import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant

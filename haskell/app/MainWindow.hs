@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module MainWindow where
 
-import           Prelude       (read)
+import           Prelude       ()
 import           Relude
 
 import qualified Graphics.UI.FLTK.LowLevel.FL as FL
