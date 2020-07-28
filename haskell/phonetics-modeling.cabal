@@ -68,7 +68,7 @@ executable phonetics-modeling-exe
       Paths_phonetics_modeling
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Wno-unsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
   if impl(ghc >= 7.10) && impl(ghc < 8.0) && flag(FastCompile)
      ghc-Options: -fno-specialise -fmax-simplifier-iterations=0 -fsimplifier-phases=0
   else

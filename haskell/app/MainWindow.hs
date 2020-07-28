@@ -4,8 +4,6 @@ module MainWindow where
 import           Prelude       (read)
 import           Relude
 
-import qualified Data.Text as T
-
 import qualified Graphics.UI.FLTK.LowLevel.FL as FL
 import Graphics.UI.FLTK.LowLevel.Fl_Types
 import Graphics.UI.FLTK.LowLevel.FLTKHS
@@ -18,7 +16,6 @@ import UserInterfaceText
   , UITextTicket( ApplicationTitle
                 , ShowPhonemeInventoryUIText
                 , MakeAPhonemeVoicedUIText
-                , QuitUIText
                 , MakeAPhonemeUnvoicedUIText
                 , DescribePhonemeUIText
                 , GetFeaturesOfPhonemeUIText

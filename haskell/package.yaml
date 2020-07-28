@@ -32,6 +32,8 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     - -Weverything
+    - -Wno-unsafe
+    - -Wno-safe
     - -fwarn-incomplete-patterns
     - -fwarn-incomplete-uni-patterns
     - -Wno-missing-export-lists
@@ -52,8 +54,6 @@ library:
   ghc-options:
   - -Weverything
   - -Werror
-  - -Wunsafe
-  - -Wno-safe
   - -fwarn-incomplete-patterns
   - -fwarn-incomplete-uni-patterns
   - -Wno-missing-export-lists
