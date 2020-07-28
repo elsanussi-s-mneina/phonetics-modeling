@@ -157,7 +157,7 @@ respondToSelection lang selection
   | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe lang
   | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom lang
   | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit lang
-  | selection == userInputOpenWindow                  = openWindowLangSpecific French
+  | selection == userInputOpenWindow                  = openWindowLangSpecific lang
   | selection == userInputStartServer                 = startServer
   | selection == "00"                                 = il8nGenMain
   | otherwise                                         = putTextLn unrecognizedSelectionMessage
