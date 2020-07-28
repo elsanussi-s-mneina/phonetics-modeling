@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module MainWindow (openWindow, replMainLangSpecific, replMain) where
+module MainWindow where
 
 import           Prelude       (read)
 import           Relude
@@ -38,28 +38,28 @@ headerThenContent :: Text -> Text -> Text
 headerThenContent header content = header <> ":\n\n" <> content
 
 
-voicePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+voicePhonemeCallback :: NatLanguage -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 voicePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent voicedPhonemeHeader (voicedIPA ipaText))
   where uiTxt = i18n lang
         voicedPhonemeHeader = uiTxt VoicedPhonemeHeader
 
-devoicePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+devoicePhonemeCallback :: NatLanguage -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 devoicePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent unvoicedPhonemeHeader (devoicedIPA ipaText))
   where uiTxt = i18n lang
         unvoicedPhonemeHeader = uiTxt UnvoicedPhonemeHeader
 
-englishPhoneteInventoryCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+englishPhoneteInventoryCallback :: NatLanguage -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 englishPhoneteInventoryCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent englishPhonemeInventoryHeader englishPhonetInventoryReport)
   where uiTxt = i18n lang
         englishPhonemeInventoryHeader = uiTxt EnglishPhonemeInventoryHeader
 
-describePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+describePhonemeCallback :: NatLanguage -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 describePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent phonemeDescriptionHeader (describeIPA ipaText))
@@ -67,7 +67,7 @@ describePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
         phonemeDescriptionHeader = uiTxt PhonemeDescriptionHeader
 
 
-featurizePhonemeCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+featurizePhonemeCallback :: NatLanguage -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 featurizePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent featuresHeader (analyzeIPAToSPE ipaText))
@@ -75,14 +75,14 @@ featurizePhonemeCallback lang inputBox outputBox outputToUserWidget _ = do
         featuresHeader = uiTxt FeaturesHeader
 
 
-splitTranscriptionCallback :: [NatLanguage] -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
+splitTranscriptionCallback :: NatLanguage -> Ref Input -> Ref TextBuffer -> Ref TextDisplay -> Ref Button ->  IO ()
 splitTranscriptionCallback lang inputBox outputBox outputToUserWidget _ = do
   ipaText <- getValue inputBox
   setText outputBox (headerThenContent phonemesSplitHeader (ipaTextToPhonetListReport ipaText))
   where uiTxt = i18n lang
         phonemesSplitHeader = uiTxt PhonemesSplitHeader
 
-ui :: [NatLanguage] -> IO ()
+ui :: NatLanguage -> IO ()
 ui lang = do
   window <- windowNew
             (Size (Width 915) (Height 570))
@@ -157,10 +157,14 @@ ui lang = do
     showPhonemeInventoryUIText = uiTxt ShowPhonemeInventoryUIText
 
 openWindow :: IO ()
-openWindow = ui [English] >> FL.run >> FL.flush
+openWindow = openWindowLangSpecific English
+
+openWindowLangSpecific :: NatLanguage -> IO ()
+openWindowLangSpecific lang = ui lang >> FL.run >> FL.flush
+
 
 replMain :: IO ()
-replMain = replMainLangSpecific [English]
+replMain = replMainLangSpecific English
 
-replMainLangSpecific :: [NatLanguage] -> IO ()
+replMainLangSpecific :: NatLanguage -> IO ()
 replMainLangSpecific natLang = ui natLang >> FL.replRun

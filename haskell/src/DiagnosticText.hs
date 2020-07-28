@@ -1,31 +1,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module EnglishUSText where
+module DiagnosticText where
 
 import           Prelude ()
-import           Relude  (Text)
+import           Relude  ((<>), Text)
+import qualified EnglishUSText
+
+tag :: Text -> Text
+tag x = "(PLEASE_TRANSLATE)" <> x
 
 applicationTitle :: Text
-applicationTitle = "Phonetics Modeling Program"
+applicationTitle = tag EnglishUSText.applicationTitle
 
 
 menu :: Text
-menu =
-  "What do you want to accomplish? \n\
-  \ 1) view the English phoneme inventory (as IPA graphemes). \n\
-  \ 2) make a phoneme voiced. \n\
-  \ 3) make a phoneme unvoiced. \n\
-  \ 4) describe a phoneme in English. \n\
-  \ 5) describe a phoneme in SPE Features. \n\
-  \ 6) divide IPA text into phonemes \n\
-  \ 7) open window (graphical user interface) \n\
-  \ 8) start web server \n\
-  \  \n\
-  \ Enter the number representing your selection below, \n\
-  \ after the prompt, and press enter/return. \n\
-  \ \n\
-  \ \n\
-  \ \n"
+menu = tag EnglishUSText.menu
 
 userInputViewEnglishPhonemeInventory,
   userInputMakeAPhonemeVoiced,
@@ -46,15 +35,13 @@ userInputOpenWindow = "7"
 userInputStartServer = "8"
 
 prompt :: Text
-prompt = "(PROMPT:) "
+prompt = tag EnglishUSText.prompt
 
 sorryUnableToCalculate :: Text
-sorryUnableToCalculate = "Sorry, unable to calculate answer with that input."
+sorryUnableToCalculate = tag EnglishUSText.sorryUnableToCalculate
 
 typeAPhoneme :: Text
-typeAPhoneme =
-  "Type a phoneme using IPA symbols, and then press the enter key, \
-  \ and the computer will display"
+typeAPhoneme = tag EnglishUSText.typeAPhoneme
 
 phonemeToDevoiceMessage,
   phonemeToVoiceMessage,
@@ -67,34 +54,19 @@ phonemeToDevoiceMessage,
   noAnalysisFoundMessage,
   ipaTextToDivideMessage ::
     Text
-phonemeToDevoiceMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the devoiced counterpart (on the subsequent line):"
-phonemeToVoiceMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the voiced counterpart (on the subsequent line):"
-phonemeToDescribeMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ its English description (on the subsequent line):"
-phonemeToCalculateSPEMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ its SPE features (on the subsequent line):"
-ipaTextToDivideMessage =
-  "Type text using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the text you entered with separate phonemes on separate lines:"
-pleaseReadReadmeMessage = "Please read README.md file for instructions on how to use."
-programTerminatedNormallyMessage = "Program terminated normally."
-userSelectedMessage = "The user selected:"
-unrecognizedSelectionMessage = "Unrecognized selection. No action taken."
-noAnalysisFoundMessage = "No analysis found!"
+phonemeToDevoiceMessage = tag EnglishUSText.phonemeToDevoiceMessage
+phonemeToVoiceMessage = tag EnglishUSText.phonemeToVoiceMessage
+phonemeToDescribeMessage = tag EnglishUSText.phonemeToDescribeMessage
+phonemeToCalculateSPEMessage = tag EnglishUSText.phonemeToCalculateSPEMessage
+ipaTextToDivideMessage = tag EnglishUSText.ipaTextToDivideMessage
+pleaseReadReadmeMessage = tag EnglishUSText.pleaseReadReadmeMessage
+programTerminatedNormallyMessage = tag EnglishUSText.programTerminatedNormallyMessage
+userSelectedMessage = tag EnglishUSText.userSelectedMessage
+unrecognizedSelectionMessage = tag EnglishUSText.unrecognizedSelectionMessage
+noAnalysisFoundMessage = tag EnglishUSText.noAnalysisFoundMessage
 
 noEnglishDescriptionFoundMessage :: Text
-noEnglishDescriptionFoundMessage = "(no English description found.)"
+noEnglishDescriptionFoundMessage = tag EnglishUSText.noEnglishDescriptionFoundMessage
 
 consonantUIText,
   vowelUIText,
@@ -276,10 +248,4 @@ englishPhonemeInventoryHeader = "English Phoneme Inventory"
 inputHeader = "Input:"
 
 beforeServerStartMessage :: Text
-beforeServerStartMessage =
-  "Starting server...\n\
-  \Server running... at port 8080 locally.\n\
-  \Browse to http://localhost:8080/voice_phoneme/s\n\
-  \to get the voiced phoneme alternative of [s].\n\
-  \Browse to http://localhost:8080/devoice_phoneme/z\n\
-  \to get the voiceless phoneme alternative of [z]."
+beforeServerStartMessage = tag EnglishUSText.beforeServerStartMessage

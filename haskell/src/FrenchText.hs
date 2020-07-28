@@ -1,31 +1,34 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module EnglishUSText where
+module DiagnosticText where
 
 import           Prelude ()
-import           Relude  (Text)
+import           Relude  ((<>), Text)
+import qualified EnglishUSText
 
 applicationTitle :: Text
-applicationTitle = "Phonetics Modeling Program"
+applicationTitle = "Modèle Phonétique "
 
 
 menu :: Text
 menu =
-  "What do you want to accomplish? \n\
-  \ 1) view the English phoneme inventory (as IPA graphemes). \n\
-  \ 2) make a phoneme voiced. \n\
-  \ 3) make a phoneme unvoiced. \n\
-  \ 4) describe a phoneme in English. \n\
-  \ 5) describe a phoneme in SPE Features. \n\
-  \ 6) divide IPA text into phonemes \n\
-  \ 7) open window (graphical user interface) \n\
-  \ 8) start web server \n\
+  "Qu'est-ce que vous voulez accomplir? \n\
+  \ 1) voir le inventaire de phonèmes de l'anglais (comme graphèmes d'API). \n\
+  \ 2) faire un phonème voisée. \n\
+  \ 3) faire un phonème sourde. \n\
+  \ 4) décrire un phonème en anglais. \n\
+  \ 5) décrire un phonème selon Modèle sonore de l'anglais. \n\
+  \ 6) diviser texte API en phonèmes \n\
+  \ 7) ouvrir la fenêtre principale (interface graphique) \n\
+  \ 8) démarrer le serveur Web \n\
   \  \n\
   \ Enter the number representing your selection below, \n\
   \ after the prompt, and press enter/return. \n\
   \ \n\
   \ \n\
   \ \n"
+
+
 
 userInputViewEnglishPhonemeInventory,
   userInputMakeAPhonemeVoiced,
@@ -46,15 +49,13 @@ userInputOpenWindow = "7"
 userInputStartServer = "8"
 
 prompt :: Text
-prompt = "(PROMPT:) "
+prompt = tag EnglishUSText.prompt
 
 sorryUnableToCalculate :: Text
-sorryUnableToCalculate = "Sorry, unable to calculate answer with that input."
+sorryUnableToCalculate = tag EnglishUSText.sorryUnableToCalculate
 
 typeAPhoneme :: Text
-typeAPhoneme =
-  "Type a phoneme using IPA symbols, and then press the enter key, \
-  \ and the computer will display"
+typeAPhoneme = tag EnglishUSText.typeAPhoneme
 
 phonemeToDevoiceMessage,
   phonemeToVoiceMessage,
@@ -67,34 +68,19 @@ phonemeToDevoiceMessage,
   noAnalysisFoundMessage,
   ipaTextToDivideMessage ::
     Text
-phonemeToDevoiceMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the devoiced counterpart (on the subsequent line):"
-phonemeToVoiceMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the voiced counterpart (on the subsequent line):"
-phonemeToDescribeMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ its English description (on the subsequent line):"
-phonemeToCalculateSPEMessage =
-  "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ its SPE features (on the subsequent line):"
-ipaTextToDivideMessage =
-  "Type text using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the text you entered with separate phonemes on separate lines:"
-pleaseReadReadmeMessage = "Please read README.md file for instructions on how to use."
-programTerminatedNormallyMessage = "Program terminated normally."
-userSelectedMessage = "The user selected:"
-unrecognizedSelectionMessage = "Unrecognized selection. No action taken."
-noAnalysisFoundMessage = "No analysis found!"
+phonemeToDevoiceMessage = phonemeToDevoiceMessage
+phonemeToVoiceMessage = phonemeToVoiceMessage
+phonemeToDescribeMessage = phonemeToDescribeMessage
+phonemeToCalculateSPEMessage = phonemeToCalculateSPEMessage
+ipaTextToDivideMessage = ipaTextToDivideMessage
+pleaseReadReadmeMessage = pleaseReadReadmeMessage
+programTerminatedNormallyMessage = programTerminatedNormallyMessage
+userSelectedMessage = userSelectedMessage
+unrecognizedSelectionMessage = unrecognizedSelectionMessage
+noAnalysisFoundMessage = noAnalysisFoundMessage
 
 noEnglishDescriptionFoundMessage :: Text
-noEnglishDescriptionFoundMessage = "(no English description found.)"
+noEnglishDescriptionFoundMessage = noEnglishDescriptionFoundMessage
 
 consonantUIText,
   vowelUIText,
@@ -169,8 +155,8 @@ consonantUIText,
   lowPhonemeFeatureUIText,
   backPhonemeFeatureUIText ::
     Text
-consonantUIText = "consonant"
-vowelUIText = "vowel"
+consonantUIText = consonantUIText
+vowelUIText = vowelUIText
 
 frontBacknessUIText = "front"
 centralBacknessUIText = "central"

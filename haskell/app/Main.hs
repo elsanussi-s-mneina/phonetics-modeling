@@ -35,9 +35,10 @@ import           UserInterfaceText
                                  , ProgramTerminatedNormallyMessage
                                  , Prompt
                                  )
-                   , NatLanguage(English)
-                   , i18n)
-import           MainWindow (openWindow)
+                   , NatLanguage(English, French)
+                   , i18n
+                   , il8nGenMain)
+import           MainWindow (openWindowLangSpecific)
 import           MainServer (startServer)
 
 -- | Print characters to the terminal, so that the
@@ -47,7 +48,7 @@ putPrompt :: IO ()
 putPrompt =
   putText prompt
   >> hFlush stdout
-  where prompt = i18n [English] Prompt
+  where prompt = i18n English Prompt
 
 -- | Print a blank line on the terminal.
 putBlankLine :: IO ()
@@ -78,7 +79,7 @@ interact func =
 --   The user inputs a phoneme.
 --   Take the phoneme, and print the phoneme that is as similar
 --   to the original phoneme, but unvoiced.
-promptForPhonemeToDevoice :: [NatLanguage] -> IO ()
+promptForPhonemeToDevoice :: NatLanguage -> IO ()
 promptForPhonemeToDevoice lang =
   promptForTextAndApply devoicedIPA phonemeToDevoiceMessage
   where phonemeToDevoiceMessage = i18n lang PhonemeToDevoiceMessage
@@ -87,7 +88,7 @@ promptForPhonemeToDevoice lang =
 --   The user inputs a phoneme.
 --   Take the phoneme, and print the phoneme that is as similar
 --   to the original phoneme, but voiced.
-promptForPhonemeToVoice :: [NatLanguage] -> IO ()
+promptForPhonemeToVoice :: NatLanguage -> IO ()
 promptForPhonemeToVoice lang =
   promptForTextAndApply voicedIPA phonemeToVoiceMessage
   where phonemeToVoiceMessage = i18n lang PhonemeToVoiceMessage
@@ -96,7 +97,7 @@ promptForPhonemeToVoice lang =
 --   The user inputs a phoneme.
 --   Take the phoneme, and print the
 --   description of the phoneme.
-promptForPhonemeToDescribe :: [NatLanguage] -> IO ()
+promptForPhonemeToDescribe :: NatLanguage -> IO ()
 promptForPhonemeToDescribe lang =
   promptForTextAndApply describeIPA phonemeToDescribeMessage
   where phonemeToDescribeMessage = i18n lang PhonemeToDescribeMessage
@@ -106,7 +107,7 @@ promptForPhonemeToDescribe lang =
 --   Take the phoneme, calculate what
 --   the features of it are (according to Sound Patterns of English)
 --   and print those features.
-promptForPhonemeToCalculateSPEFeaturesFrom :: [NatLanguage] -> IO ()
+promptForPhonemeToCalculateSPEFeaturesFrom :: NatLanguage -> IO ()
 promptForPhonemeToCalculateSPEFeaturesFrom lang =
   promptForTextAndApply analyzeIPAToSPE phonemeToCalculateSPEMessage
   where phonemeToCalculateSPEMessage = i18n lang PhonemeToCalculateSPEMessage
@@ -114,7 +115,7 @@ promptForPhonemeToCalculateSPEFeaturesFrom lang =
 -- | Ask the user for IPA text which may contain multiple IPA characters
 --   and phonemes. Take that input, and print each phoneme on
 --   separate lines.
-promptForIPATextToSplit :: [NatLanguage] -> IO ()
+promptForIPATextToSplit :: NatLanguage -> IO ()
 promptForIPATextToSplit lang =
   promptForTextAndApply ipaTextToPhonetListReport ipaTextToDivideMessage
   where ipaTextToDivideMessage = i18n lang IpaTextToDivideMessage
@@ -126,17 +127,17 @@ main =
   >>  putText menu
   >>  putPrompt
   >>  getLine
-  >>= acknowledgeAndRespond [English]
+  >>= acknowledgeAndRespond English
   >>  putBlankLine
   >>  putTextLn programTerminatedNormallyMessage
   >>  putBlankLines 2
-  where pleaseReadReadmeMessage = i18n [English] PleaseReadReadmeMessage
-        menu = i18n [English] Menu
-        programTerminatedNormallyMessage = i18n [English] ProgramTerminatedNormallyMessage
+  where pleaseReadReadmeMessage = i18n English PleaseReadReadmeMessage
+        menu = i18n English Menu
+        programTerminatedNormallyMessage = i18n English ProgramTerminatedNormallyMessage
 
 -- | Tell the user what they selected. This is necessary
 --   for better user-friendliness.
-acknowledgeAndRespond :: [NatLanguage]
+acknowledgeAndRespond :: NatLanguage
                       -> Text -- ^ what the user typed in
                       -> IO ()
 acknowledgeAndRespond lang selection =
@@ -146,7 +147,7 @@ acknowledgeAndRespond lang selection =
   where userSelectedMessage = i18n lang UserSelectedMessage
 
 -- | Start the appropriate action according to what the user already selected.
-respondToSelection :: [NatLanguage]
+respondToSelection :: NatLanguage
                    -> Text -- ^ the text the user put in after being shown the menu
                    -> IO ()
 respondToSelection lang selection
@@ -156,8 +157,9 @@ respondToSelection lang selection
   | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe lang
   | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom lang
   | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit lang
-  | selection == userInputOpenWindow                  = openWindow
+  | selection == userInputOpenWindow                  = openWindowLangSpecific French
   | selection == userInputStartServer                 = startServer
+  | selection == "00"                                 = il8nGenMain
   | otherwise                                         = putTextLn unrecognizedSelectionMessage
   where
         unrecognizedSelectionMessage         = i18n lang UnrecognizedSelectionMessage
@@ -174,7 +176,7 @@ respondToSelection lang selection
 --   name of the phoneme that IPA transcription describes.
 --   If the IPA transcription could not be named,
 --   return a message saying so.
-doAnalyzeIPA :: [NatLanguage]
+doAnalyzeIPA :: NatLanguage
              -> Text -- ^ text from the International Phonetic Alphabet
              -> Text -- ^ the name of the phoneme,
                      -- or a message saying the phoneme was not recognized

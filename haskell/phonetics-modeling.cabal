@@ -48,6 +48,7 @@ library
       PhoneticFeatures
       PhoneticFeaturesTypes
       UserInterfaceText
+      DiagnosticText
   other-modules:
       Paths_phonetics_modeling
   hs-source-dirs:
