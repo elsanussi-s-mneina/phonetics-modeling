@@ -24,7 +24,7 @@ data Phonet = Consonant VocalFolds
                         Place   -- ^ Place of articulation
                         Manner  -- ^ Manner of articulation
                         Airstream
-
+                        SecondaryArticulation
             | Vowel Height
                     Backness
                     Rounding
@@ -45,6 +45,7 @@ data UnmarkablePhonet
       UnmarkablePlace
       UnmarkableManner
       UnmarkableAirstream
+      UnmarkableSecondaryArticulation
   | UnmarkableVowel
       UnmarkableHeight
       UnmarkableBackness
@@ -220,6 +221,8 @@ data VocalFolds = Voiced
 data UnmarkableVocalFolds
   = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
 
+data UnmarkableSecondaryArticulation
+  = UnmarkedSecondaryArticulation | MarkedSecondaryArticulation SecondaryArticulation
 
 vocalFoldStates :: NonEmpty VocalFolds
 vocalFoldStates
@@ -232,3 +235,16 @@ vocalFoldStates
     ]
 
 newtype PhonetInventory = PhonetInventory (NonEmpty Phonet)
+
+data SecondaryArticulation
+  = Normal | Labialized | Palatalized | Velarized | Pharyngealized
+    deriving stock Eq
+
+secondaryArticulationStates :: NonEmpty SecondaryArticulation
+secondaryArticulationStates
+  = fromList
+    [ Labialized
+    , Palatalized
+    , Velarized
+    , Pharyngealized
+    ]

@@ -11,6 +11,8 @@ import           Relude        (Bool (False, True),
                                 one,
                                 sconcat, toList, unwords,
                                 (==))
+import qualified Data.Text as T
+
 
 equivalentInPlace :: Place -> Place -> Bool
 Bilabial `equivalentInPlace` Bilabial = True
@@ -58,22 +60,22 @@ englishDescription = showPhonet
 --   equivalent.
 voicedPhonet :: Phonet -> Phonet
 voicedPhonet p = case p of
-  (Consonant VoicelessAspirated x y z) -> Consonant VoicedAspirated x y z
-  (Consonant Voiceless x y z)          -> Consonant Voiced x y z
-  (Consonant Voiced x y z)             -> Consonant Voiced x y z
-  (Consonant VoicedAspirated x y z)    -> Consonant VoicedAspirated x y z
-  (Consonant _ x y z)                  -> Consonant Voiced x y z
+  (Consonant VoicelessAspirated w x y z) -> Consonant VoicedAspirated w x y z
+  (Consonant Voiceless w x y z)          -> Consonant Voiced w x y z
+  (Consonant Voiced w x y z)             -> Consonant Voiced w x y z
+  (Consonant VoicedAspirated w x y z)    -> Consonant VoicedAspirated w x y z
+  (Consonant _ w x y z)                  -> Consonant Voiced w x y z
   (Vowel x y z _)                      -> Vowel x y z Voiced
 
 -- | A function that given an IPA symbol will convert it to the voiceless
 --   equivalent.
 devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet p = case p of
-  (Consonant Voiced x y z)             -> Consonant Voiceless x y z
-  (Consonant CreakyVoiced x y z)       -> Consonant Voiceless x y z
-  (Consonant Voiceless x y z)          -> Consonant Voiceless x y z
-  (Consonant VoicedAspirated x y z)    -> Consonant VoicelessAspirated x y z
-  (Consonant VoicelessAspirated x y z) -> Consonant VoicelessAspirated x y z
+  (Consonant Voiced w x y z)             -> Consonant Voiceless w x y z
+  (Consonant CreakyVoiced w x y z)       -> Consonant Voiceless w x y z
+  (Consonant Voiceless w x y z)          -> Consonant Voiceless w x y z
+  (Consonant VoicedAspirated w x y z)    -> Consonant VoicelessAspirated w x y z
+  (Consonant VoicelessAspirated w x y z) -> Consonant VoicelessAspirated w x y z
   (Vowel x y z _)                      -> Vowel x y z Voiceless
 
 spirantizedPhonet :: Phonet -> Phonet
@@ -84,20 +86,21 @@ spirantizedPhonet :: Phonet -> Phonet
 -- So the following line implements this
 -- change in place of articulation.
 spirantizedPhonet p = case p of
-  (Consonant x Alveolar Plosive z) -> Consonant x Dental Fricative z
-  (Consonant x place_1 Plosive z)  -> Consonant x place_1 Fricative z
+  (Consonant x Alveolar Plosive z sa) -> Consonant x Dental Fricative z sa
+  (Consonant x place_1 Plosive z sa)  -> Consonant x place_1 Fricative z sa
   other                            -> other
 
 unmarkDifferences :: Phonet -> Phonet -> UnmarkablePhonet
 unmarkDifferences p_1 p_2 = case (p_1, p_2) of
-  ( Consonant voice_1 place_1 manner_1 airstream_1,
-    Consonant voice_2 place_2 manner_2 airstream_2
+  ( Consonant voice_1 place_1 manner_1 airstream_1 secondary_1,
+    Consonant voice_2 place_2 manner_2 airstream_2 secondary_2
     ) ->
       let voice' = unmarkVoice voice_1 voice_2
           place' = unmarkPlace place_1 place_2
           manner' = unmarkManner manner_1 manner_2
           airstream' = unmarkAirstream airstream_1 airstream_2
-       in UnmarkableConsonant voice' place' manner' airstream'
+          secondary' = unmarkSecondaryArticulation secondary_1 secondary_2
+       in UnmarkableConsonant voice' place' manner' airstream' secondary'
   ( Vowel height_1 backness_1 rounding_1 voice_1,
     Vowel height_2 backness_2 rounding_2 voice_2
     ) ->
@@ -107,7 +110,7 @@ unmarkDifferences p_1 p_2 = case (p_1, p_2) of
           rounding' = unmarkRounding rounding_1 rounding_2
        in UnmarkableVowel height' backness' rounding' voice'
   ( Vowel _ _ _ voice_1,
-    Consonant voice_2 _ _ _
+    Consonant voice_2 _ _ _ _
     ) ->
       let voice' = unmarkVoice voice_1 voice_2
        in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
@@ -136,6 +139,11 @@ unmarkDifferences p_1 p_2 = case (p_1, p_2) of
         then MarkedAirstream airstream_1
         else UnmarkedAirstream
 
+    unmarkSecondaryArticulation secondary_1 secondary_2 =
+      if secondary_1 == secondary_2
+        then MarkedSecondaryArticulation secondary_1
+        else UnmarkedSecondaryArticulation
+
     unmarkHeight height_1 height_2 =
       if height_1 == height_2
         then MarkedHeight height_1
@@ -155,12 +163,13 @@ unmarkDifferences p_1 p_2 = case (p_1, p_2) of
 -- takes any unmarked attributes in the phoneme definition,
 -- and returns a list with all possible phonemes that have that attribute.
 similarPhonemesTo :: UnmarkablePhonet -> [Phonet]
-similarPhonemesTo (UnmarkableConsonant voice_1 place_1 manner_1 airstream_1) =
+similarPhonemesTo (UnmarkableConsonant voice_1 place_1 manner_1 airstream_1 secondary_1) =
   let voice' = toList (similarInVoice voice_1)
       place' = toList (similarInPlace place_1)
       manner' = toList (similarInManner manner_1)
       airstream' = toList (similarInAirstream airstream_1)
-   in [Consonant v p m a | p <- place', v <- voice', m <- manner', a <- airstream']
+      secondary' = toList (similarInSecondaryArticulation secondary_1)
+   in [Consonant v p m a sa | p <- place', v <- voice', m <- manner', a <- airstream', sa <- secondary']
 similarPhonemesTo (UnmarkableVowel height_1 backness_1 rounding_1 voice_1) =
   let voice' = toList (similarInVoice voice_1)
       height' = toList (similarInHeight height_1)
@@ -192,6 +201,12 @@ similarInAirstream airstream_1 =
     MarkedAirstream x -> one x
     UnmarkedAirstream -> airstreamStates
 
+similarInSecondaryArticulation :: UnmarkableSecondaryArticulation -> NonEmpty SecondaryArticulation
+similarInSecondaryArticulation secondaryArticulation_1 =
+  case secondaryArticulation_1 of
+    MarkedSecondaryArticulation x -> one x
+    UnmarkedSecondaryArticulation -> secondaryArticulationStates
+
 similarInHeight :: UnmarkableHeight -> NonEmpty Height
 similarInHeight height_1 =
   case height_1 of
@@ -215,64 +230,72 @@ similarInRounding rounding_1 =
 -- Does not work for other values.
 impossible :: Phonet -> Bool
 impossible p = case p of
-  (Consonant Voiced Pharyngeal Plosive PulmonicEgressive) ->
+  (Consonant Voiced Pharyngeal Plosive PulmonicEgressive _) ->
     True
-  (Consonant VoicedAspirated Pharyngeal Plosive PulmonicEgressive) ->
+  (Consonant VoicedAspirated Pharyngeal Plosive PulmonicEgressive _) ->
     True
-  (Consonant Voiceless Glottal Plosive PulmonicEgressive) ->
+  (Consonant Voiceless Glottal Plosive PulmonicEgressive _) ->
     False -- [ʔ] is not impossible.
-  (Consonant _ Glottal Fricative PulmonicEgressive) ->
+  (Consonant _ Glottal Fricative PulmonicEgressive _) ->
     False -- [h] and [ɦ] are not impossible.
-  (Consonant _ Glottal _ PulmonicEgressive) ->
+  (Consonant _ Glottal _ PulmonicEgressive _) ->
     True -- all other pulmonary egressive consonants are impossible..
-  (Consonant _ Pharyngeal Nasal PulmonicEgressive) ->
+  (Consonant _ Pharyngeal Nasal PulmonicEgressive _) ->
     True
-  (Consonant _ Pharyngeal LateralFricative PulmonicEgressive) ->
+  (Consonant _ Pharyngeal LateralFricative PulmonicEgressive _) ->
     True
-  (Consonant _ Pharyngeal LateralApproximant PulmonicEgressive) ->
+  (Consonant _ Pharyngeal LateralApproximant PulmonicEgressive _) ->
     True
-  (Consonant _ Velar Trill PulmonicEgressive) ->
+  (Consonant _ Velar Trill PulmonicEgressive _) ->
     True
-  (Consonant _ Velar TapOrFlap PulmonicEgressive) ->
+  (Consonant _ Velar TapOrFlap PulmonicEgressive _) ->
     True
-  (Consonant _ Bilabial LateralFricative PulmonicEgressive) ->
+  (Consonant _ Bilabial LateralFricative PulmonicEgressive _) ->
     True
-  (Consonant _ Bilabial LateralApproximant PulmonicEgressive) ->
+  (Consonant _ Bilabial LateralApproximant PulmonicEgressive _) ->
     True
-  (Consonant _ LabioDental LateralFricative PulmonicEgressive) ->
+  (Consonant _ LabioDental LateralFricative PulmonicEgressive _) ->
     True
-  (Consonant _ LabioDental LateralApproximant PulmonicEgressive) ->
+  (Consonant _ LabioDental LateralApproximant PulmonicEgressive _) ->
     True
   _ ->
     False -- Everything else is assumed to be possible.
 
 retractPhonet :: Maybe Phonet -> Maybe Phonet
-retractPhonet (Just (Consonant v p m a)) = Just (Consonant v (retractedPlace p) m a)
+retractPhonet (Just (Consonant v p m a sa)) = Just (Consonant v (retractedPlace p) m a sa)
 retractPhonet _ = Nothing
 
 deaspirate :: Phonet -> Phonet
-deaspirate (Consonant VoicedAspirated place manner airstream) =
-  Consonant Voiced place manner airstream
-deaspirate (Consonant VoicelessAspirated place_1 manner_1 airstream_1) =
-  Consonant Voiceless place_1 manner_1 airstream_1
+deaspirate (Consonant VoicedAspirated place manner airstream secondary) =
+  Consonant Voiced place manner airstream secondary
+deaspirate (Consonant VoicelessAspirated place_1 manner_1 airstream_1 secondary_1) =
+  Consonant Voiceless place_1 manner_1 airstream_1 secondary_1
 deaspirate x = x
 
 decreak :: Phonet -> Phonet
-decreak (Consonant CreakyVoiced place manner airstream) =
-  Consonant Voiced place manner airstream
+decreak (Consonant CreakyVoiced place manner airstream secondary) =
+  Consonant Voiced place manner airstream secondary
 decreak x = x
+
+-- Replaces two consecutive spaces with one wherever they occur in a text
+removeExtraTwoSpaces :: Text -> Text
+removeExtraTwoSpaces x = T.replace "  " " " x
+
 
 showPhonet :: Phonet -> Text
 showPhonet phonet =
   case phonet of
-    Consonant v p m a ->
-      unwords
-        [ showVocalFolds v,
-          showPlace p,
-          showManner m,
-          showAirstream a,
-          consonantUIText
-        ]
+    Consonant v p m a sa ->
+      removeExtraTwoSpaces (
+        unwords
+          [ showVocalFolds v,
+            showPlace p,
+            showManner m,
+            showAirstream a,
+            showSecondaryArticulation sa,
+            consonantUIText
+          ]
+        )
     Vowel h b r v ->
       unwords
         [ showVocalFolds v,
@@ -353,6 +376,16 @@ showVocalFolds vocalFolds_1 =
     VoicedAspirated    -> voicedAspiratedVocalFoldsUIText
     VoicelessAspirated -> voicelessAspiratedVocalFoldsUIText
     CreakyVoiced       -> creakyVoicedVocalFoldsUIText
+
+showSecondaryArticulation :: SecondaryArticulation -> Text
+showSecondaryArticulation secondary_articulation =
+  case secondary_articulation of
+    Labialized -> labializedUIText
+    Palatalized -> palatalizedUIText
+    Velarized -> velarizedUIText
+    Pharyngealized -> pharyngealizedUIText
+    Normal -> ""
+
 
 showPhonetInventory :: PhonetInventory -> Text
 showPhonetInventory (PhonetInventory phonetes) =

@@ -250,6 +250,20 @@ highPhonemeFeatureUIText = "high"
 lowPhonemeFeatureUIText = "low"
 backPhonemeFeatureUIText = "back"
 
+-- Secondary Articulations:
+labializedUIText :: Text
+labializedUIText = "labialized"
+
+palatalizedUIText :: Text
+palatalizedUIText = "palatalized"
+
+velarizedUIText :: Text
+velarizedUIText = "velarized"
+
+pharyngealizedUIText :: Text
+pharyngealizedUIText = "pharyngealized"
+
+
 showPhonemeInventoryUIText, makeAPhonemeVoicedUIText,
   quitUIText, makeAPhonemeUnvoicedUIText, describePhonemeUIText,
   getFeaturesOfPhonemeUIText, splitTranscriptionUIText :: Text

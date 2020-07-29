@@ -3,7 +3,7 @@ module Spec(main) where
 
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           IPA (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE)
+import           IPA (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
 import           PhoneticFeatures (isGlide)
 import           Relude
 
@@ -12,6 +12,7 @@ main = do
   hspec ipaTextToPhonetListReportSpec
   hspec voicingSpec
   hspec analyzeIPAToSPESpec
+  hspec secondaryArticulationSpec
 
 glideSpec :: Spec
 glideSpec =
@@ -357,3 +358,27 @@ analyzeIPAToSPESpec =
       analyzeIPAToSPE "t" `shouldBe` "[+consonantal; -syllabic; -continuant; -sonorant; +anterior; -distributed; coronal; -round; -voice]"
     it "case: [d]" $
       analyzeIPAToSPE "d" `shouldBe` "[+consonantal; -syllabic; -continuant; -sonorant; +anterior; -distributed; coronal; -round; +voice]"
+
+
+secondaryArticulationSpec :: Spec
+secondaryArticulationSpec = do
+  describe "labialization" $ do
+    it "case: t labialized" $
+      describeIPA "tʷ" `shouldBe` "voiceless alveolar plosive pulmonic egressive labialized consonant"
+    it "case: r labialized" $
+      describeIPA "rʷ" `shouldBe` "voiced alveolar trill pulmonic egressive labialized consonant"
+  describe "palatalization" $ do
+    it "case: t palatalized" $
+      describeIPA "tʲ" `shouldBe` "voiceless alveolar plosive pulmonic egressive palatalized consonant"
+    it "case: r palatalized" $
+      describeIPA "rʲ" `shouldBe` "voiced alveolar trill pulmonic egressive palatalized consonant"
+  describe "velarization" $ do
+    it "case: t velarized" $
+      describeIPA "tˠ" `shouldBe` "voiceless alveolar plosive pulmonic egressive velarized consonant"
+    it "case: r velarized" $
+      describeIPA "rˠ" `shouldBe` "voiced alveolar trill pulmonic egressive velarized consonant"
+  describe "palatalization" $ do
+    it "case: t pharyngealized" $
+      describeIPA "tˤ" `shouldBe` "voiceless alveolar plosive pulmonic egressive pharyngealized consonant"
+    it "case: r pharyngealized" $
+      describeIPA "rˤ" `shouldBe` "voiced alveolar trill pulmonic egressive pharyngealized consonant"

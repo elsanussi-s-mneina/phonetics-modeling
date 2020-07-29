@@ -35,7 +35,7 @@ import           UserInterfaceText
                                  , ProgramTerminatedNormallyMessage
                                  , Prompt
                                  )
-                   , NatLanguage(English, French)
+                   , NatLanguage(English)
                    , i18n
                    , il8nGenMain)
 import           MainWindow (openWindowLangSpecific)
