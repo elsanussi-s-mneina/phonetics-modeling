@@ -75,15 +75,15 @@ pulmonicEgressiveConsonantSpec = do
       voicedAndAspiratedTests "ʙ" "bilabial" "trill"
       voicedAndAspiratedTests "r" "alveolar" "trill"
       voicedAndAspiratedTests "ʀ" "uvular" "trill"
-      voicedAndAspiratedTests "ⱱ" "labiodental" "tap or flap"
+      voicedAndAspiratedTests "ⱱ" "labio-dental" "tap or flap"
       voicedAndAspiratedTests "ɾ" "alveolar" "tap or flap"
       voicedAndAspiratedTests "ɽ" "retroflex" "tap or flap"
 
       voicedAndAspiratedTests "ʋ" "labio-dental" "approximant"
       voicedAndAspiratedTests "ɹ" "alveolar" "approximant"
-      voicedAndAspiratedTests "ɭ" "retroflex" "approximant"
-      voicedAndAspiratedTests "ʎ" "palatal" "approximant"
-      voicedAndAspiratedTests "ʟ" "velar" "approximant"
+      voicedAndAspiratedTests "ɭ" "retroflex" "lateral approximant"
+      voicedAndAspiratedTests "ʎ" "palatal" "lateral approximant"
+      voicedAndAspiratedTests "ʟ" "velar" "lateral approximant"
 
 
 -- | Use for phonemes that only have a character for the voiced phoneme,
