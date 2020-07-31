@@ -1,8 +1,7 @@
-
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE DerivingStrategies #-}
 
 module PhoneticFeaturesTypes where
-import           Prelude ()
 import           Relude  (Eq)
 
 

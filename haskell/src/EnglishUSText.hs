@@ -1,8 +1,8 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module EnglishUSText where
 
-import           Prelude ()
 import           Relude  (Text)
 
 applicationTitle :: Text

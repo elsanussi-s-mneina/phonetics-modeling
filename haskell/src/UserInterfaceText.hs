@@ -1,9 +1,9 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DerivingStrategies #-}
 
 module UserInterfaceText where
 
-import           Prelude ()
 import           Relude  (Text, Eq, IO, (<>), ($), map, putTextLn)
 import         EnglishUSText
 import         qualified  DiagnosticText

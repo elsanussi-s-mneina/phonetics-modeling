@@ -1,10 +1,10 @@
 -- | Handle splitting of IPA graphemes into chunks, so that
 --   diacritics go with the non-diacritic characters they modify.
-
+--
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module GraphemeGrammar where
 
-import Prelude()
 import Relude((+), (-), (<), (&&), (<>), (/=), (==), Bool(False, True),
               Char, Int, Maybe(Just, Nothing), NonEmpty, Text,
               elem, filter, fmap, fromList, not, otherwise, one)

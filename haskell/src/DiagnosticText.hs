@@ -1,8 +1,8 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module DiagnosticText where
 
-import           Prelude ()
 import           Relude  ((<>), Text)
 import qualified EnglishUSText
 

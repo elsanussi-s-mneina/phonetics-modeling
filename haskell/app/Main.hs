@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
@@ -8,7 +9,6 @@ import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListRe
 
 import           Lib           (Phonet,
                                 showPhonet)
-import           Prelude       ()
 import           Relude
 import           System.IO     (hFlush)
 

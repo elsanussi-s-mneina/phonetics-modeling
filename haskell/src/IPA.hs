@@ -1,7 +1,7 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module IPA where
 
-import Prelude ()
 import Relude ((+), (.), (==), (/=), (&&), NonEmpty((:|)), Maybe(Just, Nothing), Text, (<), (<>),  Natural,
                fromMaybe, map, fmap, sconcat, maybe, not, zip)
 

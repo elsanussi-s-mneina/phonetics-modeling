@@ -1,8 +1,7 @@
-
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module PhoneticFeatures where
-import           Prelude ()
 import           Relude (Bool(False, True), Text, Maybe(Just, Nothing), catMaybes, elem, filter, map, notElem, otherwise, (||), (==), (<>), (&&), (!!?))
 
 

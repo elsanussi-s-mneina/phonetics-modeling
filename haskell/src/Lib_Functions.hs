@@ -1,10 +1,10 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Lib_Functions where
 
 import           EnglishUSText
 import           Lib_Types
-import           Prelude       ()
 import           Relude        (Bool (False, True),
                                 Maybe (Just, Nothing), NonEmpty (),
                                 Text, elem, fmap,
