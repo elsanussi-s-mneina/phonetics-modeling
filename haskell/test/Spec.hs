@@ -86,6 +86,59 @@ pulmonicEgressiveConsonantSpec = do
       voicedAndAspiratedTests "ʟ" "velar" "lateral approximant"
 
 
+voicelessTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
+                        -> Text -- ^ place of articulation (as text) e.g. "bilabial"
+                        -> Text -- ^ manner of articulation (as text) e.g. "plosive"
+                        -> Spec
+voicelessTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
+  describe ("voiceless " ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+    it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic above is the voiceless."
+        ++ toString placeNameText ++ " " ++ toString mannerText) $
+       describeIPA (basicVoicedIPA <> "̊") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic below is the same.") $
+       describeIPA (basicVoicedIPA <> "̥") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+
+voicelessAspiratedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
+                                 -> Text -- ^ place of articulation (as text) e.g. "bilabial"
+                                 -> Text -- ^ manner of articulation (as text) e.g. "plosive"
+                                 -> Spec
+voicelessAspiratedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
+  describe ("voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+    it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic below then superscript h is a \
+       \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+      describeIPA (basicVoicedIPA <> "̥ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
+    it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic above then superscript h is a \
+       \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+      describeIPA (basicVoicedIPA <> "̊ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
+
+
+voicedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
+                     -> Text -- ^ place of articulation (as text) e.g. "bilabial"
+                     -> Text -- ^ manner of articulation (as text) e.g. "plosive"
+                     -> Spec
+voicedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
+  describe ("voiced " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+    it ("should be that: [" <> toString basicVoicedIPA <> "] is the representation of the voiced " <> toString placeNameText <>
+       " " <> toString mannerText <> ".") $
+       describeIPA basicVoicedIPA `shouldBe` ("voiced " <> placeNameText <>
+                                                  " " <> mannerText <> " pulmonic egressive consonant")
+
+voicedAspiratedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
+                              -> Text -- ^ place of articulation (as text) e.g. "bilabial"
+                              -> Text -- ^ manner of articulation (as text) e.g. "plosive"
+                              -> Spec
+voicedAspiratedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
+  describe ("voiced aspirated " <> toString placeNameText <> " plosive in International Phonetic Alphabet") $ do
+    it ("should be that: aspirated voiced " <> toString placeNameText <> " " <> toString mannerText <> " is a \
+       \" <> toString basicVoicedIPA <> " character followed by a superscript h character") $
+      describeIPA (basicVoicedIPA <> "ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    it ("should be that: " <> toString basicVoicedIPA <> " then voiced diacritic below then superscript h is a \
+       \ voiced aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+      describeIPA (basicVoicedIPA <> "̬ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+
+
 -- | Use for phonemes that only have a character for the voiced phoneme,
 -- and not for its voiceless counterpart
 voicedAndAspiratedTests :: Text -- ^ IPA representation of voiced phoneme "m"
@@ -94,42 +147,18 @@ voicedAndAspiratedTests :: Text -- ^ IPA representation of voiced phoneme "m"
                         -> Spec
 voicedAndAspiratedTests basicVoicedIPA placeNameText mannerText = do
    describe (toString placeNameText) $ do
-      describe ("voiceless " ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-        it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic above is the voiceless."
-            ++ toString placeNameText ++ " " ++ toString mannerText) $
-           describeIPA (basicVoicedIPA <> "̊") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
-        it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic below is the same.") $
-           describeIPA (basicVoicedIPA <> "̥") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
-      describe ("voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-        it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic below then superscript h is a \
-           \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
-          describeIPA (basicVoicedIPA <> "̥ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
-                                       " " <> mannerText <> " pulmonic egressive consonant")
-        it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic above then superscript h is a \
-           \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
-          describeIPA (basicVoicedIPA <> "̊ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
-                                       " " <> mannerText <> " pulmonic egressive consonant")
-      describe ("voiced " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-        it ("should be that: [" <> toString basicVoicedIPA <> "] is the representation of the voiced " <> toString placeNameText <>
-           " " <> toString mannerText <> ".") $
-           describeIPA basicVoicedIPA `shouldBe` ("voiced " <> placeNameText <>
-                                                  " " <> mannerText <> " pulmonic egressive consonant")
-      describe ("voiced aspirated " <> toString placeNameText <> " plosive in International Phonetic Alphabet") $ do
-        it ("should be that: aspirated voiced " <> toString placeNameText <> " " <> toString mannerText <> " is a \
-           \" <> toString basicVoicedIPA <> " character followed by a superscript h character") $
-          describeIPA (basicVoicedIPA <> "ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
-        it ("should be that: " <> toString basicVoicedIPA <> " then voiced diacritic below then superscript h is a \
-           \ voiced aspirated " <> toString placeNameText <> " " <> toString mannerText) $
-          describeIPA (basicVoicedIPA <> "̬ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+      voicelessTestsOneSymbol basicVoicedIPA placeNameText mannerText
+      voicelessAspiratedTestsOneSymbol basicVoicedIPA placeNameText mannerText
+      voicedTestsOneSymbol basicVoicedIPA placeNameText mannerText
+      voicedAspiratedTestsOneSymbol basicVoicedIPA placeNameText mannerText
 
-
-voicedVoicelessAspiratedTests :: Text -- ^ IPA representation of voiceless phoneme "t"
+voicelessTestsTwoSymbols
+  :: Text -- ^ IPA representation of voiceless phoneme "t"
                               -> Text -- ^ IPA representation of voiced phoneme "d"
                               -> Text -- ^ place of articulation (as text) e.g. "alveolar"
                               -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
                               -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicedVoicelessAspiratedTests basicVoicelessIPA basicVoicedIPA placeNameText mannerText = do
-   describe (toString placeNameText) $ do
+voicelessTestsTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText = do
       describe ("voiceless " ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
         it ("should be that: [" ++ toString basicVoicelessIPA ++ "] is the representation of the voiceless "
               ++ toString placeNameText ++ " plosive.") $
@@ -143,6 +172,14 @@ voicedVoicelessAspiratedTests basicVoicelessIPA basicVoicedIPA placeNameText man
            describeIPA (basicVoicelessIPA <> "̊") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
         it ("should be that: <" ++ toString basicVoicelessIPA ++ "> with a voiceless diacritic below is the same.") $
            describeIPA (basicVoicelessIPA <> "̥") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+
+voicelessAspiratedTestsTwoSymbols
+  :: Text -- ^ IPA representation of voiceless phoneme "t"
+                              -> Text -- ^ IPA representation of voiced phoneme "d"
+                              -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+                              -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+                              -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+voicelessAspiratedTestsTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
       describe ("voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
         it ("should be that: aspirated voiceless " <> toString placeNameText <> " " <> toString mannerText <> " is a \
            \" <> toString basicVoicelessIPA <> " character followed by a superscript h character") $
@@ -156,6 +193,14 @@ voicedVoicelessAspiratedTests basicVoicelessIPA basicVoicedIPA placeNameText man
            \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
           describeIPA (basicVoicedIPA <> "̊ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
                                        " " <> mannerText <> " pulmonic egressive consonant")
+voicedTestsTwoSymbols
+  :: Text -- ^ IPA representation of voiceless phoneme "t"
+                              -> Text -- ^ IPA representation of voiced phoneme "d"
+                              -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+                              -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+                              -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+
+voicedTestsTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
       describe ("voiced " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
         it ("should be that: [" <> toString basicVoicedIPA <> "] is the representation of the voiced " <> toString placeNameText <>
            " " <> toString mannerText <> ".") $
@@ -165,6 +210,15 @@ voicedVoicelessAspiratedTests basicVoicelessIPA basicVoicedIPA placeNameText man
            describeIPA (basicVoicelessIPA <> "̬") `shouldBe` ("voiced " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
         it ("should be that: <" <> toString basicVoicelessIPA <> "> with a voiced diacritic below is the same.") $
            describeIPA (basicVoicelessIPA <> "̬") `shouldBe` ("voiced " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+
+voicedAspiratedTwoSymbols
+  :: Text -- ^ IPA representation of voiceless phoneme "t"
+                              -> Text -- ^ IPA representation of voiced phoneme "d"
+                              -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+                              -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+                              -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+
+voicedAspiratedTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
       describe ("voiced aspirated " <> toString placeNameText <> " plosive in International Phonetic Alphabet") $ do
         it ("should be that: aspirated voiced " <> toString placeNameText <> " " <> toString mannerText <> " is a \
            \" <> toString basicVoicedIPA <> " character followed by a superscript h character") $
@@ -176,6 +230,18 @@ voicedVoicelessAspiratedTests basicVoicelessIPA basicVoicedIPA placeNameText man
            \ voiced aspirated " <> toString placeNameText <> " " <> toString mannerText) $
           describeIPA (basicVoicelessIPA <> "̬ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
+
+voicedVoicelessAspiratedTests :: Text -- ^ IPA representation of voiceless phoneme "t"
+                              -> Text -- ^ IPA representation of voiced phoneme "d"
+                              -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+                              -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+                              -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+voicedVoicelessAspiratedTests basicVoicelessIPA basicVoicedIPA placeNameText mannerText = do
+   describe (toString placeNameText) $ do
+      voicelessTestsTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText
+      voicelessAspiratedTestsTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText
+      voicedTestsTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText
+      voicedAspiratedTwoSymbols basicVoicelessIPA basicVoicedIPA placeNameText mannerText
 
 glideSpec :: Spec
 glideSpec =
