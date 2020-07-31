@@ -9,12 +9,173 @@ import           PhoneticFeatures (isGlide)
 import           Relude
 
 main = do
+  hspec pulmonicEgressiveConsonantSpec
   hspec glideSpec
   hspec ipaTextToPhonetListReportSpec
   hspec voicingSpec
   hspec analyzeIPAToSPESpec
   hspec secondaryArticulationSpec
   hspec vowelLengthSpec
+
+pulmonicEgressiveConsonantSpec :: Spec
+pulmonicEgressiveConsonantSpec = do
+  describe "pulmonic egressive consonants:" $ do
+      voicedVoicelessAspiratedTests "p" "b" "bilabial" "plosive"
+      voicedVoicelessAspiratedTests "t" "d" "alveolar" "plosive"
+      voicedVoicelessAspiratedTests "ʈ" "ɖ" "retroflex" "plosive"
+      voicedVoicelessAspiratedTests "c" "ɟ" "palatal" "plosive"
+      voicedVoicelessAspiratedTests "k" "g" "velar" "plosive"
+      voicedVoicelessAspiratedTests "q" "ɢ" "uvular" "plosive"
+      describe "voiceless glottal plosive in International Phonetic Alphabet" $ do
+        it "should be that: [ʔ] is the representation of the voiceless glottal plosive." $
+           describeIPA "ʔ" `shouldBe` "voiceless glottal plosive pulmonic egressive consonant"
+        it "should be that: <ʔ> with a voiceless diacritic above is the same." $
+           describeIPA "ʔ̊" `shouldBe` "voiceless glottal plosive pulmonic egressive consonant"
+        it "should be that: <ʔ> with a voiceless diacritic below is the same." $
+           describeIPA "ʔ̥" `shouldBe` "voiceless glottal plosive pulmonic egressive consonant"
+      describe "voiceless aspirated glottal plosive in International Phonetic Alphabet" $ do
+        it "should be that: aspirated voiceless glottal plosive is a \
+           \t character followed by a superscript h character" $
+          describeIPA "ʔʰ" `shouldBe` "voiceless aspirated glottal plosive pulmonic egressive consonant"
+        it "should be that: ʔ then voiceless diacritic below then superscript h is a \
+           \ voiceless aspirated glottal plosive" $
+          describeIPA "ʔ̥ʰ" `shouldBe` "voiceless aspirated glottal plosive pulmonic egressive consonant"
+        it "should be that: ʔ then voiceless diacritic above then superscript h is a \
+           \ voiceless aspirated glottal plosive" $
+          describeIPA "ʔ̊ʰ" `shouldBe` "voiceless aspirated glottal plosive pulmonic egressive consonant"
+      describe "voiced glottal plosive in International Phonetic Alphabet" $ do
+        it "should be that: <ʔ> with a voiced diacritic below is the voiced glottal plosive." $
+           describeIPA "ʔ̬" `shouldBe` "voiced glottal plosive pulmonic egressive consonant"
+      describe "voiced aspirated glottal plosive in International Phonetic Alphabet" $ do
+        it "should be that: aspirated voiced alveolar plosive is a \
+           \ʔ followed by a voicing diacritic character followed by a superscript h character" $
+          describeIPA "ʔ̬ʰ" `shouldBe` "voiced aspirated glottal plosive pulmonic egressive consonant"
+
+      voicedVoicelessAspiratedTests "ɸ" "β" "bilabial" "fricative"
+      voicedVoicelessAspiratedTests "f" "v" "labio-dental" "fricative"
+      voicedVoicelessAspiratedTests "θ" "ð" "dental" "fricative"
+      voicedVoicelessAspiratedTests "s" "z" "alveolar" "fricative"
+      voicedVoicelessAspiratedTests "ʃ" "ʒ" "post-alveolar" "fricative"
+      voicedVoicelessAspiratedTests "ʂ" "ʐ" "retroflex" "fricative"
+      voicedVoicelessAspiratedTests "ç" "ʝ" "palatal" "fricative"
+      voicedVoicelessAspiratedTests "x" "ɣ" "velar" "fricative"
+      voicedVoicelessAspiratedTests "χ" "ʁ" "uvular" "fricative"
+      voicedVoicelessAspiratedTests "ħ" "ʕ" "pharyngeal" "fricative"
+      voicedVoicelessAspiratedTests "h" "ɦ" "glottal" "fricative"
+      voicedVoicelessAspiratedTests "ɬ" "ɮ" "alveolar" "lateral fricative"
+
+
+      voicedAndAspiratedTests "m" "bilabial" "nasal"
+      voicedAndAspiratedTests "n" "alveolar" "nasal"
+      voicedAndAspiratedTests "ɲ" "palatal" "nasal"
+      voicedAndAspiratedTests "ɳ" "retroflex" "nasal"
+      voicedAndAspiratedTests "ŋ" "velar" "nasal"
+      voicedAndAspiratedTests "ɴ" "uvular" "nasal"
+
+      voicedAndAspiratedTests "ʙ" "bilabial" "trill"
+      voicedAndAspiratedTests "r" "alveolar" "trill"
+      voicedAndAspiratedTests "ʀ" "uvular" "trill"
+      voicedAndAspiratedTests "ⱱ" "labiodental" "tap or flap"
+      voicedAndAspiratedTests "ɾ" "alveolar" "tap or flap"
+      voicedAndAspiratedTests "ɽ" "retroflex" "tap or flap"
+
+      voicedAndAspiratedTests "ʋ" "labio-dental" "approximant"
+      voicedAndAspiratedTests "ɹ" "alveolar" "approximant"
+      voicedAndAspiratedTests "ɭ" "retroflex" "approximant"
+      voicedAndAspiratedTests "ʎ" "palatal" "approximant"
+      voicedAndAspiratedTests "ʟ" "velar" "approximant"
+
+
+-- | Use for phonemes that only have a character for the voiced phoneme,
+-- and not for its voiceless counterpart
+voicedAndAspiratedTests :: Text -- ^ IPA representation of voiced phoneme "m"
+                        -> Text -- ^ place of articulation (as text) e.g. "bilabial"
+                        -> Text -- ^ manner of articulation (as text) e.g. "plosive"
+                        -> Spec
+voicedAndAspiratedTests basicVoicedIPA placeNameText mannerText = do
+   describe (toString placeNameText) $ do
+      describe ("voiceless " ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+        it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic above is the voiceless."
+            ++ toString placeNameText ++ " " ++ toString mannerText) $
+           describeIPA (basicVoicedIPA <> "̊") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic below is the same.") $
+           describeIPA (basicVoicedIPA <> "̥") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+      describe ("voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+        it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic below then superscript h is a \
+           \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+          describeIPA (basicVoicedIPA <> "̥ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic above then superscript h is a \
+           \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+          describeIPA (basicVoicedIPA <> "̊ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
+      describe ("voiced " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+        it ("should be that: [" <> toString basicVoicedIPA <> "] is the representation of the voiced " <> toString placeNameText <>
+           " " <> toString mannerText <> ".") $
+           describeIPA basicVoicedIPA `shouldBe` ("voiced " <> placeNameText <>
+                                                  " " <> mannerText <> " pulmonic egressive consonant")
+      describe ("voiced aspirated " <> toString placeNameText <> " plosive in International Phonetic Alphabet") $ do
+        it ("should be that: aspirated voiced " <> toString placeNameText <> " " <> toString mannerText <> " is a \
+           \" <> toString basicVoicedIPA <> " character followed by a superscript h character") $
+          describeIPA (basicVoicedIPA <> "ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: " <> toString basicVoicedIPA <> " then voiced diacritic below then superscript h is a \
+           \ voiced aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+          describeIPA (basicVoicedIPA <> "̬ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+
+
+voicedVoicelessAspiratedTests :: Text -- ^ IPA representation of voiceless phoneme "t"
+                              -> Text -- ^ IPA representation of voiced phoneme "d"
+                              -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+                              -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+                              -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+voicedVoicelessAspiratedTests basicVoicelessIPA basicVoicedIPA placeNameText mannerText = do
+   describe (toString placeNameText) $ do
+      describe ("voiceless " ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+        it ("should be that: [" ++ toString basicVoicelessIPA ++ "] is the representation of the voiceless "
+              ++ toString placeNameText ++ " plosive.") $
+           describeIPA basicVoicelessIPA `shouldBe` ("voiceless " <> placeNameText <>
+                                                     " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic above is the same.") $
+           describeIPA (basicVoicedIPA <> "̊") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: <" ++ toString basicVoicedIPA ++ "> with a voiceless diacritic below is the same.") $
+           describeIPA (basicVoicedIPA <> "̥") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: <" ++ toString basicVoicelessIPA ++ "> with a voiceless diacritic above is the same.") $
+           describeIPA (basicVoicelessIPA <> "̊") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: <" ++ toString basicVoicelessIPA ++ "> with a voiceless diacritic below is the same.") $
+           describeIPA (basicVoicelessIPA <> "̥") `shouldBe` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+      describe ("voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+        it ("should be that: aspirated voiceless " <> toString placeNameText <> " " <> toString mannerText <> " is a \
+           \" <> toString basicVoicelessIPA <> " character followed by a superscript h character") $
+          describeIPA (basicVoicelessIPA <> "ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic below then superscript h is a \
+           \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+          describeIPA (basicVoicedIPA <> "̥ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: " <> toString basicVoicedIPA <> " then voiceless diacritic above then superscript h is a \
+           \ voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+          describeIPA (basicVoicedIPA <> "̊ʰ") `shouldBe` ("voiceless aspirated " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
+      describe ("voiced " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
+        it ("should be that: [" <> toString basicVoicedIPA <> "] is the representation of the voiced " <> toString placeNameText <>
+           " " <> toString mannerText <> ".") $
+           describeIPA basicVoicedIPA `shouldBe` ("voiced " <> placeNameText <>
+                                                  " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: <" <> toString basicVoicelessIPA <> "> with a voiced diacritic below is the same.") $
+           describeIPA (basicVoicelessIPA <> "̬") `shouldBe` ("voiced " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: <" <> toString basicVoicelessIPA <> "> with a voiced diacritic below is the same.") $
+           describeIPA (basicVoicelessIPA <> "̬") `shouldBe` ("voiced " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+      describe ("voiced aspirated " <> toString placeNameText <> " plosive in International Phonetic Alphabet") $ do
+        it ("should be that: aspirated voiced " <> toString placeNameText <> " " <> toString mannerText <> " is a \
+           \" <> toString basicVoicedIPA <> " character followed by a superscript h character") $
+          describeIPA (basicVoicedIPA <> "ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: " <> toString basicVoicedIPA <> " then voiced diacritic below then superscript h is a \
+           \ voiced aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+          describeIPA (basicVoicedIPA <> "̬ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+        it ("should be that: " <> toString basicVoicelessIPA <> " then voiced diacritic below then superscript h is a \
+           \ voiced aspirated " <> toString placeNameText <> " " <> toString mannerText) $
+          describeIPA (basicVoicelessIPA <> "̬ʰ") `shouldBe` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+
 
 glideSpec :: Spec
 glideSpec =
