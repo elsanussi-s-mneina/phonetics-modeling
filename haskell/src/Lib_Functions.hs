@@ -65,7 +65,7 @@ voicedPhonet p = case p of
   (Consonant Voiced w x y z)             -> Consonant Voiced w x y z
   (Consonant VoicedAspirated w x y z)    -> Consonant VoicedAspirated w x y z
   (Consonant _ w x y z)                  -> Consonant Voiced w x y z
-  (Vowel x y z _)                      -> Vowel x y z Voiced
+  (Vowel x y z _ vl)                      -> Vowel x y z Voiced vl
 
 -- | A function that given an IPA symbol will convert it to the voiceless
 --   equivalent.
@@ -76,7 +76,7 @@ devoicedPhonet p = case p of
   (Consonant Voiceless w x y z)          -> Consonant Voiceless w x y z
   (Consonant VoicedAspirated w x y z)    -> Consonant VoicelessAspirated w x y z
   (Consonant VoicelessAspirated w x y z) -> Consonant VoicelessAspirated w x y z
-  (Vowel x y z _)                      -> Vowel x y z Voiceless
+  (Vowel x y z _ vl)                      -> Vowel x y z Voiceless vl
 
 spirantizedPhonet :: Phonet -> Phonet
 -- The following is inelegant, but there is no other way in the system,
@@ -101,19 +101,20 @@ unmarkDifferences p_1 p_2 = case (p_1, p_2) of
           airstream' = unmarkAirstream airstream_1 airstream_2
           secondary' = unmarkSecondaryArticulation secondary_1 secondary_2
        in UnmarkableConsonant voice' place' manner' airstream' secondary'
-  ( Vowel height_1 backness_1 rounding_1 voice_1,
-    Vowel height_2 backness_2 rounding_2 voice_2
+  ( Vowel height_1 backness_1 rounding_1 voice_1 vowel_length_1,
+    Vowel height_2 backness_2 rounding_2 voice_2 vowel_length_2
     ) ->
       let voice' = unmarkVoice voice_1 voice_2
           height' = unmarkHeight height_1 height_2
           backness' = unmarkBackness backness_1 backness_2
           rounding' = unmarkRounding rounding_1 rounding_2
-       in UnmarkableVowel height' backness' rounding' voice'
-  ( Vowel _ _ _ voice_1,
+          vowel_length' = unmarkVowelLength vowel_length_1 vowel_length_2
+       in UnmarkableVowel height' backness' rounding' voice' vowel_length'
+  ( Vowel _ _ _ voice_1 _,
     Consonant voice_2 _ _ _ _
     ) ->
       let voice' = unmarkVoice voice_1 voice_2
-       in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice'
+       in UnmarkableVowel UnmarkedHeight UnmarkedBackness UnmarkedRounding voice' UnmarkedVowelLength
   ( Consonant {},
     Vowel {}
     ) ->
@@ -159,6 +160,11 @@ unmarkDifferences p_1 p_2 = case (p_1, p_2) of
         then MarkedRounding rounding_1
         else UnmarkedRounding
 
+    unmarkVowelLength vowel_length_1 vowel_length_2 =
+      if vowel_length_1 == vowel_length_2
+        then MarkedVowelLength vowel_length_1
+        else UnmarkedVowelLength
+
 -- This function
 -- takes any unmarked attributes in the phoneme definition,
 -- and returns a list with all possible phonemes that have that attribute.
@@ -170,12 +176,13 @@ similarPhonemesTo (UnmarkableConsonant voice_1 place_1 manner_1 airstream_1 seco
       airstream' = toList (similarInAirstream airstream_1)
       secondary' = toList (similarInSecondaryArticulation secondary_1)
    in [Consonant v p m a sa | p <- place', v <- voice', m <- manner', a <- airstream', sa <- secondary']
-similarPhonemesTo (UnmarkableVowel height_1 backness_1 rounding_1 voice_1) =
+similarPhonemesTo (UnmarkableVowel height_1 backness_1 rounding_1 voice_1 vowel_length_1) =
   let voice' = toList (similarInVoice voice_1)
       height' = toList (similarInHeight height_1)
       backness' = toList (similarInBackness backness_1)
       rounding' = toList (similarInRounding rounding_1)
-   in [Vowel h b r v | h <- height', b <- backness', r <- rounding', v <- voice']
+      vowel_length' = toList (similarInLength vowel_length_1)
+   in [Vowel h b r v l | h <- height', b <- backness', r <- rounding', v <- voice', l <- vowel_length']
 
 similarInVoice :: UnmarkableVocalFolds -> NonEmpty VocalFolds
 similarInVoice voice_1 =
@@ -224,6 +231,12 @@ similarInRounding rounding_1 =
   case rounding_1 of
     MarkedRounding x -> one x
     UnmarkedRounding -> roundingStates
+
+similarInLength :: UnmarkableVowelLength -> NonEmpty VowelLength
+similarInLength vowel_length_1 =
+  case vowel_length_1 of
+    MarkedVowelLength x -> one x
+    UnmarkedVowelLength -> vowelLengthStates
 
 -- The following function returns whether an articulation is
 -- considered impossible according to the IPA (pulmonic) consonants chart.
@@ -277,7 +290,7 @@ decreak (Consonant CreakyVoiced place manner airstream secondary) =
   Consonant Voiced place manner airstream secondary
 decreak x = x
 
--- Replaces two consecutive spaces with one wherever they occur in a text
+-- | Replaces two consecutive spaces with one wherever they occur in a text
 removeExtraTwoSpaces :: Text -> Text
 removeExtraTwoSpaces x = T.replace "  " " " x
 
@@ -296,20 +309,30 @@ showPhonet phonet =
             consonantUIText
           ]
         )
-    Vowel h b r v ->
-      unwords
-        [ showVocalFolds v,
-          showRounding r,
-          showHeight h,
-          showBackness b,
-          vowelUIText
-        ]
-
+    Vowel h b r v l ->
+      removeExtraTwoSpaces (
+        unwords
+          [ showVocalFolds v,
+            showRounding r,
+            showHeight h,
+            showBackness b,
+            showVowelLength l,
+            vowelUIText
+          ]
+        )
+-- | Provide user-readable text for the backness of
+--   a vowel.
+--
+--   e.g. "central"
 showBackness :: Backness -> Text
 showBackness Front   = frontBacknessUIText
 showBackness Central = centralBacknessUIText
 showBackness Back    = backBacknessUIText
 
+-- | Provide user readable text for reprsenting
+--   height of a vowel.
+--   
+--   e.g. "mid"
 showHeight :: Height -> Text
 showHeight height =
   case height of
@@ -321,10 +344,26 @@ showHeight height =
     NearOpen  -> nearOpenHeightUIText
     Open      -> openHeightUIText
 
+-- | Provide user readable text for representing
+--   lip rounding.
+--   e.g. "rounded"
 showRounding :: Rounding -> Text
 showRounding Rounded   = roundedRoundingUIText
 showRounding Unrounded = unroundedRoundingUIText
 
+-- | Provide user readable text for representing
+--   vowel length.
+--   e.g. "half-long"
+showVowelLength :: VowelLength -> Text
+showVowelLength NormalLength = ""
+showVowelLength ExtraShort = extraShortUIText
+showVowelLength HalfLong = halfLongUIText
+showVowelLength Long = longUIText
+
+-- | Provide user readable text for representing
+--   the place of articulation.
+--   e.g. "bilabial"
+--   Convert place to a string that the user can read.
 showPlace :: Place -> Text
 showPlace place_1 =
   case place_1 of
@@ -346,6 +385,8 @@ showPlace place_1 =
     PalatoAlveolar -> palatoAlveolarPlaceUIText
     Places ps      -> unwords (toList (fmap showPlace ps))
 
+-- | Provide user-readable text for representing
+--   the manner of articulation.
 showManner :: Manner -> Text
 showManner manner_1 =
   case manner_1 of
@@ -361,6 +402,9 @@ showManner manner_1 =
     LateralFlap        -> lateralFlapMannerUIText
     Lateral            -> lateralMannerUIText
 
+-- | user-readable representation of a Airstream configuration.
+--   Converts an Airstream object to user-readable text.
+--   e.g. "pulmonic egressive"
 showAirstream :: Airstream -> Text
 showAirstream airstream_1 =
   case airstream_1 of
@@ -368,6 +412,8 @@ showAirstream airstream_1 =
     Click             -> clickAirstreamUIText
     Implosive         -> implosiveAirstreamUIText
 
+-- | user-readable text representation of a vocal fold configuration:
+--   e.g. "voiced", "creaky voiced"
 showVocalFolds :: VocalFolds -> Text
 showVocalFolds vocalFolds_1 =
   case vocalFolds_1 of
@@ -377,6 +423,8 @@ showVocalFolds vocalFolds_1 =
     VoicelessAspirated -> voicelessAspiratedVocalFoldsUIText
     CreakyVoiced       -> creakyVoicedVocalFoldsUIText
 
+-- | user-readable text representation of a secondary articulation:
+--   e.g. "pharyngealized"
 showSecondaryArticulation :: SecondaryArticulation -> Text
 showSecondaryArticulation secondary_articulation =
   case secondary_articulation of

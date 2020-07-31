@@ -29,6 +29,7 @@ data Phonet = Consonant VocalFolds
                     Backness
                     Rounding
                     VocalFolds
+                    VowelLength
                     deriving stock Eq
 
 -- | The data type UnmarkablePhonet was originally intended
@@ -51,6 +52,7 @@ data UnmarkablePhonet
       UnmarkableBackness
       UnmarkableRounding
       UnmarkableVocalFolds
+      UnmarkableVowelLength
 
 
 
@@ -104,10 +106,12 @@ data UnmarkableRounding
   = UnmarkedRounding
   | MarkedRounding Rounding
 
-
-
 roundingStates :: NonEmpty Rounding
 roundingStates = fromList [Rounded, Unrounded]
+
+data UnmarkableVowelLength
+  = UnmarkedVowelLength
+  | MarkedVowelLength VowelLength
 
 data Place = Bilabial
            | LabioDental
@@ -248,3 +252,16 @@ secondaryArticulationStates
     , Velarized
     , Pharyngealized
     ]
+
+data VowelLength
+  = NormalLength | Long | HalfLong | ExtraShort
+    deriving stock Eq
+
+vowelLengthStates :: NonEmpty VowelLength
+vowelLengthStates
+  = fromList
+  [ NormalLength
+  , Long
+  , HalfLong
+  , ExtraShort
+  ]

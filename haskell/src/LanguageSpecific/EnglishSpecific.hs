@@ -11,7 +11,7 @@ import           Lib_Types (PhonetInventory(PhonetInventory), Phonet(Consonant, 
                             Airstream(PulmonicEgressive),
                             SecondaryArticulation(Normal),
                             Height(Close, CloseMid, Mid, OpenMid, NearClose, NearOpen, Open),
-
+                            VowelLength(NormalLength),
                             Backness(Front, Central, Back),
                             Rounding(Rounded, Unrounded))
 
@@ -54,18 +54,18 @@ englishPhonetInventory =
         , Consonant Voiced    Palatal      Approximant        PulmonicEgressive Normal
         , Consonant Voiced    Alveolar     LateralApproximant PulmonicEgressive Normal
         , Consonant Voiced    LabialVelar  Approximant        PulmonicEgressive Normal
-        , Vowel     Close     Front   Unrounded Voiced
-        , Vowel     NearClose Front   Unrounded Voiced
-        , Vowel     CloseMid  Front   Unrounded Voiced
-        , Vowel     OpenMid   Front   Unrounded Voiced
-        , Vowel     NearOpen  Front   Unrounded Voiced
-        , Vowel     Mid       Central Unrounded Voiced
-        , Vowel     Close     Back    Rounded   Voiced
-        , Vowel     NearClose Back    Rounded   Voiced
-        , Vowel     CloseMid  Back    Rounded   Voiced
-        , Vowel     OpenMid   Back    Unrounded Voiced
-        , Vowel     OpenMid   Back    Rounded   Voiced
-        , Vowel     Open      Back    Unrounded Voiced
+        , Vowel     Close     Front   Unrounded Voiced NormalLength
+        , Vowel     NearClose Front   Unrounded Voiced NormalLength
+        , Vowel     CloseMid  Front   Unrounded Voiced NormalLength
+        , Vowel     OpenMid   Front   Unrounded Voiced NormalLength
+        , Vowel     NearOpen  Front   Unrounded Voiced NormalLength
+        , Vowel     Mid       Central Unrounded Voiced NormalLength
+        , Vowel     Close     Back    Rounded   Voiced NormalLength
+        , Vowel     NearClose Back    Rounded   Voiced NormalLength
+        , Vowel     CloseMid  Back    Rounded   Voiced NormalLength
+        , Vowel     OpenMid   Back    Unrounded Voiced NormalLength
+        , Vowel     OpenMid   Back    Rounded   Voiced NormalLength
+        , Vowel     Open      Back    Unrounded Voiced NormalLength
         ]
     )
 

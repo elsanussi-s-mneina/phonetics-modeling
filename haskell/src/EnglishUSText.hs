@@ -187,6 +187,17 @@ openHeightUIText = "open"
 roundedRoundingUIText = "rounded"
 unroundedRoundingUIText = "unrounded"
 
+extraShortUIText :: Text
+extraShortUIText = "extra-short"
+
+halfLongUIText :: Text
+halfLongUIText = "half-long"
+
+longUIText :: Text
+longUIText = "long"
+
+
+
 bilabialPlaceUIText = "bilabial"
 labioDentalPlaceUIText = "labio-dental"
 dentalPlaceUIText = "dental"

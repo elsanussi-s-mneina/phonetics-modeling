@@ -355,7 +355,7 @@ exponentialsBefore :: NonEmpty Text
 exponentialsBefore = fromList ["ⁿ"]
 
 exponentialsAfter :: NonEmpty Text
-exponentialsAfter = diacriticsAndSuprasegmentals <> fromList ["ː", "ˑ"]
+exponentialsAfter = diacriticsAndSuprasegmentals <> fromList ["ː", "ˑ", "̆"]
 
 -- |
 -- Whether a character (but not a diacritic)

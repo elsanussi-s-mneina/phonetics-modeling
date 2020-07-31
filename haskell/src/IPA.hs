@@ -2,7 +2,7 @@
 module IPA where
 
 import Prelude ()
-import Relude ((+), (.), (==), NonEmpty((:|)), Maybe(Just, Nothing), Text, (<), (<>),  Natural,
+import Relude ((+), (.), (==), (/=), (&&), NonEmpty((:|)), Maybe(Just, Nothing), Text, (<), (<>),  Natural,
                fromMaybe, map, fmap, sconcat, maybe, not, zip)
 
 import qualified Data.Text     as T
@@ -10,7 +10,8 @@ import qualified Data.Text     as T
 import EnglishUSText
 import Lib_Types (Phonet(Consonant, Vowel), VocalFolds(..), Place(..), Manner(..), Airstream(..),
                       SecondaryArticulation(..),
-                      Height(..), Backness(..), Rounding(..), PhonetInventory(..))
+                      Height(..), Backness(..), Rounding(..), PhonetInventory(..),
+                      VowelLength(ExtraShort, NormalLength, HalfLong, Long))
 import Lib_Functions (showPhonet,
   spirantizedPhonet, devoicedPhonet,
   voicedPhonet, decreak, deaspirate,
@@ -166,40 +167,40 @@ analyzeIPA p = case p of
   "ɠ" -> Just (Consonant Voiced Velar Plosive Implosive Normal)
   "ʛ" -> Just (Consonant Voiced Uvular Plosive Implosive Normal)
   -- Close Vowels:
-  "i" -> Just (Vowel Close Front Unrounded Voiced)
-  "y" -> Just (Vowel Close Front Rounded Voiced)
-  "ɨ" -> Just (Vowel Close Central Unrounded Voiced)
-  "ʉ" -> Just (Vowel Close Central Rounded Voiced)
-  "ɯ" -> Just (Vowel Close Back Unrounded Voiced)
-  "u" -> Just (Vowel Close Back Rounded Voiced)
+  "i" -> Just (Vowel Close Front Unrounded Voiced NormalLength)
+  "y" -> Just (Vowel Close Front Rounded Voiced NormalLength)
+  "ɨ" -> Just (Vowel Close Central Unrounded Voiced NormalLength)
+  "ʉ" -> Just (Vowel Close Central Rounded Voiced NormalLength)
+  "ɯ" -> Just (Vowel Close Back Unrounded Voiced NormalLength)
+  "u" -> Just (Vowel Close Back Rounded Voiced NormalLength)
   -- Near-close Vowels:
-  "ɪ" -> Just (Vowel NearClose Front Unrounded Voiced)
-  "ʏ" -> Just (Vowel NearClose Front Rounded Voiced)
-  "ʊ" -> Just (Vowel NearClose Back Rounded Voiced)
+  "ɪ" -> Just (Vowel NearClose Front Unrounded Voiced NormalLength)
+  "ʏ" -> Just (Vowel NearClose Front Rounded Voiced NormalLength)
+  "ʊ" -> Just (Vowel NearClose Back Rounded Voiced NormalLength)
   -- Close-mid Vowels:
-  "e" -> Just (Vowel CloseMid Front Unrounded Voiced)
-  "ø" -> Just (Vowel CloseMid Front Rounded Voiced)
-  "ɘ" -> Just (Vowel CloseMid Central Unrounded Voiced)
-  "ɵ" -> Just (Vowel CloseMid Central Rounded Voiced)
-  "ɤ" -> Just (Vowel CloseMid Back Unrounded Voiced)
-  "o" -> Just (Vowel CloseMid Back Rounded Voiced)
+  "e" -> Just (Vowel CloseMid Front Unrounded Voiced NormalLength)
+  "ø" -> Just (Vowel CloseMid Front Rounded Voiced NormalLength)
+  "ɘ" -> Just (Vowel CloseMid Central Unrounded Voiced NormalLength)
+  "ɵ" -> Just (Vowel CloseMid Central Rounded Voiced NormalLength)
+  "ɤ" -> Just (Vowel CloseMid Back Unrounded Voiced NormalLength)
+  "o" -> Just (Vowel CloseMid Back Rounded Voiced NormalLength)
   -- Mid Vowels:
-  "ə" -> Just (Vowel Mid Central Unrounded Voiced)
+  "ə" -> Just (Vowel Mid Central Unrounded Voiced NormalLength)
   -- Open-mid Vowels:
-  "ɛ" -> Just (Vowel OpenMid Front Unrounded Voiced)
-  "œ" -> Just (Vowel OpenMid Front Rounded Voiced)
-  "ɜ" -> Just (Vowel OpenMid Central Unrounded Voiced)
-  "ɞ" -> Just (Vowel OpenMid Central Rounded Voiced)
-  "ʌ" -> Just (Vowel OpenMid Back Unrounded Voiced)
-  "ɔ" -> Just (Vowel OpenMid Back Rounded Voiced)
+  "ɛ" -> Just (Vowel OpenMid Front Unrounded Voiced NormalLength)
+  "œ" -> Just (Vowel OpenMid Front Rounded Voiced NormalLength)
+  "ɜ" -> Just (Vowel OpenMid Central Unrounded Voiced NormalLength)
+  "ɞ" -> Just (Vowel OpenMid Central Rounded Voiced NormalLength)
+  "ʌ" -> Just (Vowel OpenMid Back Unrounded Voiced NormalLength)
+  "ɔ" -> Just (Vowel OpenMid Back Rounded Voiced NormalLength)
   -- Near-open
-  "æ" -> Just (Vowel NearOpen Front Unrounded Voiced)
-  "ɐ" -> Just (Vowel NearOpen Central Unrounded Voiced)
+  "æ" -> Just (Vowel NearOpen Front Unrounded Voiced NormalLength)
+  "ɐ" -> Just (Vowel NearOpen Central Unrounded Voiced NormalLength)
   -- Open Vowels:
-  "a" -> Just (Vowel Open Front Unrounded Voiced)
-  "ɶ" -> Just (Vowel Open Front Rounded Voiced)
-  "ɑ" -> Just (Vowel Open Back Unrounded Voiced)
-  "ɒ" -> Just (Vowel Open Back Rounded Voiced)
+  "a" -> Just (Vowel Open Front Unrounded Voiced NormalLength)
+  "ɶ" -> Just (Vowel Open Front Rounded Voiced NormalLength)
+  "ɑ" -> Just (Vowel Open Back Unrounded Voiced NormalLength)
+  "ɒ" -> Just (Vowel Open Back Rounded Voiced NormalLength)
   -- Handle Diacritics:
   ipaText | not (T.null ipaText) ->
     case [T.last ipaText] of
@@ -208,8 +209,8 @@ analyzeIPA p = case p of
          in case fullGrapheme of
               Just (Consonant _ place manner airstream sa) ->
                 Just (Consonant Voiceless place manner airstream sa)
-              Just (Vowel height backness rounding _) ->
-                Just (Vowel height backness rounding Voiceless)
+              Just (Vowel height backness rounding _ vowelLength) ->
+                Just (Vowel height backness rounding Voiceless vowelLength)
               _ ->
                 Nothing
       "̊" ->
@@ -217,8 +218,8 @@ analyzeIPA p = case p of
          in case fullGrapheme of
               Just (Consonant _ place manner airstream sa) ->
                 Just (Consonant Voiceless place manner airstream sa)
-              Just (Vowel height backness rounding _) ->
-                Just (Vowel height backness rounding Voiceless)
+              Just (Vowel height backness rounding _ vowelLength) ->
+                Just (Vowel height backness rounding Voiceless vowelLength)
               _ ->
                 Nothing
 
@@ -227,8 +228,8 @@ analyzeIPA p = case p of
          in case fullGrapheme of
               Just (Consonant _ place manner airstream sa) ->
                 Just (Consonant Voiced place manner airstream sa)
-              Just (Vowel height backness rounding _) ->
-                Just (Vowel height backness rounding Voiced)
+              Just (Vowel height backness rounding _ vowelLength) ->
+                Just (Vowel height backness rounding Voiced vowelLength)
               _ ->
                 Nothing
       "ʷ" ->
@@ -236,8 +237,8 @@ analyzeIPA p = case p of
          in case fullGrapheme of
               Just (Consonant voicing place manner airstream Normal) ->
                 Just (Consonant voicing place manner airstream Labialized)
-              Just (Vowel height backness rounding voicing) ->
-                Just (Vowel height backness rounding voicing)   -- Should never happen, but let's just ignore it
+              Just (Vowel height backness rounding voicing vowelLength) ->
+                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
               _ ->
                 Nothing
 
@@ -246,8 +247,8 @@ analyzeIPA p = case p of
          in case fullGrapheme of
               Just (Consonant voicing place manner airstream Normal) ->
                 Just (Consonant voicing place manner airstream Palatalized)
-              Just (Vowel height backness rounding voicing) ->
-                Just (Vowel height backness rounding voicing)   -- Should never happen, but let's just ignore it
+              Just (Vowel height backness rounding voicing vowelLength) ->
+                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
               _ ->
                 Nothing
 
@@ -257,8 +258,8 @@ analyzeIPA p = case p of
          in case fullGrapheme of
               Just (Consonant voicing place manner airstream Normal) ->
                 Just (Consonant voicing place manner airstream Velarized)
-              Just (Vowel height backness rounding voicing) ->
-                Just (Vowel height backness rounding voicing)   -- Should never happen, but let's just ignore it
+              Just (Vowel height backness rounding voicing vowelLength) ->
+                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
               _ ->
                 Nothing
 
@@ -267,8 +268,35 @@ analyzeIPA p = case p of
          in case fullGrapheme of
               Just (Consonant voicing place manner airstream Normal) ->
                 Just (Consonant voicing place manner airstream Pharyngealized)
-              Just (Vowel height backness rounding voicing) ->
-                Just (Vowel height backness rounding voicing)   -- Should never happen, but let's just ignore it
+              Just (Vowel height backness rounding voicing vowelLength) ->
+                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
+              _ ->
+                Nothing
+      "ː" ->
+        let fullGrapheme = analyzeIPA (T.init ipaText)
+         in case fullGrapheme of
+              Just (Consonant voicing place manner airstream sa) ->
+                Just (Consonant voicing place manner airstream sa)
+              Just (Vowel height backness rounding voicing _) ->
+                Just (Vowel height backness rounding voicing Long)
+              _ ->
+                Nothing
+      "ˑ" ->
+        let fullGrapheme = analyzeIPA (T.init ipaText)
+         in case fullGrapheme of
+              Just (Consonant voicing place manner airstream sa) ->
+                Just (Consonant voicing place manner airstream sa)
+              Just (Vowel height backness rounding voicing _) ->
+                Just (Vowel height backness rounding voicing HalfLong)
+              _ ->
+                Nothing
+      "̆" ->
+        let fullGrapheme = analyzeIPA (T.init ipaText)
+         in case fullGrapheme of
+              Just (Consonant voicing place manner airstream sa) ->
+                Just (Consonant voicing place manner airstream sa)
+              Just (Vowel height backness rounding voicing _) ->
+                Just (Vowel height backness rounding voicing ExtraShort)
               _ ->
                 Nothing
 
@@ -279,8 +307,8 @@ analyzeIPA p = case p of
                 Just (Consonant VoicedAspirated place manner airstream sa)
               Just (Consonant Voiceless place manner airstream sa) ->
                 Just (Consonant VoicelessAspirated place manner airstream sa)
-              Just (Vowel height backness rounding voicing) ->
-                Just (Vowel height backness rounding voicing)
+              Just (Vowel height backness rounding voicing vowelLength) ->
+                Just (Vowel height backness rounding voicing vowelLength)
               anythingElse ->
                 anythingElse
       -- (About the preceding line:) It is strange but we will just
@@ -308,6 +336,13 @@ secondaryArticulationIPA articulation =
      Velarized  -> "ˠ"
      Pharyngealized -> "ˤ"
 
+vowelLengthIPA :: VowelLength -> Text
+vowelLengthIPA vowelLength =
+  case vowelLength of
+    NormalLength -> ""
+    ExtraShort -> "̆"
+    HalfLong -> "ˑ"
+    Long -> "ː"
 
 constructIPARecursive :: Natural -> Natural -> Phonet -> Maybe Text
 -- Plosives:
@@ -491,62 +526,69 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
   (Consonant Voiced Velar Plosive Implosive sa) ->
     Just ("ɠ" <> secondaryArticulationIPA sa)
   (Consonant Voiced Uvular Plosive Implosive sa) ->
-    Just ("ʛ" <> secondaryArticulationIPA sa) -- Close Vowels (next line):
-  (Vowel Close Front Unrounded Voiced) ->
+    Just ("ʛ" <> secondaryArticulationIPA sa)
+  -- Close Vowels (next line):
+  (Vowel Close Front Unrounded Voiced NormalLength) ->
     Just "i"
-  (Vowel Close Front Rounded Voiced) ->
+  (Vowel Close Front Rounded Voiced NormalLength) ->
     Just "y"
-  (Vowel Close Central Unrounded Voiced) ->
+  (Vowel Close Central Unrounded Voiced NormalLength) ->
     Just "ɨ"
-  (Vowel Close Central Rounded Voiced) ->
+  (Vowel Close Central Rounded Voiced NormalLength) ->
     Just "ʉ"
-  (Vowel Close Back Unrounded Voiced) ->
+  (Vowel Close Back Unrounded Voiced NormalLength) ->
     Just "ɯ"
-  (Vowel Close Back Rounded Voiced) ->
-    Just "u" -- Near-close Vowels (next line):
-  (Vowel NearClose Front Unrounded Voiced) ->
+  (Vowel Close Back Rounded Voiced NormalLength) ->
+    Just "u"
+  -- Near-close Vowels (next line):
+  (Vowel NearClose Front Unrounded Voiced NormalLength) ->
     Just "ɪ"
-  (Vowel NearClose Front Rounded Voiced) ->
+  (Vowel NearClose Front Rounded Voiced NormalLength) ->
     Just "ʏ"
-  (Vowel NearClose Back Rounded Voiced) ->
-    Just "ʊ" -- Close-mid Vowels (next line):
-  (Vowel CloseMid Front Unrounded Voiced) ->
+  (Vowel NearClose Back Rounded Voiced NormalLength) ->
+    Just "ʊ"
+  -- Close-mid Vowels (next line):
+  (Vowel CloseMid Front Unrounded Voiced NormalLength) ->
     Just "e"
-  (Vowel CloseMid Front Rounded Voiced) ->
+  (Vowel CloseMid Front Rounded Voiced NormalLength) ->
     Just "ø"
-  (Vowel CloseMid Central Unrounded Voiced) ->
+  (Vowel CloseMid Central Unrounded Voiced NormalLength) ->
     Just "ɘ"
-  (Vowel CloseMid Central Rounded Voiced) ->
+  (Vowel CloseMid Central Rounded Voiced NormalLength) ->
     Just "ɵ"
-  (Vowel CloseMid Back Unrounded Voiced) ->
+  (Vowel CloseMid Back Unrounded Voiced NormalLength) ->
     Just "ɤ"
-  (Vowel CloseMid Back Rounded Voiced) ->
-    Just "o" -- Mid Vowels (next line):
-  (Vowel Mid Central Unrounded Voiced) ->
-    Just "ə" -- Open-mid Vowels (next line):
-  (Vowel OpenMid Front Unrounded Voiced) ->
+  (Vowel CloseMid Back Rounded Voiced NormalLength) ->
+    Just "o"
+  -- Mid Vowels (next line):
+  (Vowel Mid Central Unrounded Voiced NormalLength) ->
+    Just "ə"
+  -- Open-mid Vowels (next line):
+  (Vowel OpenMid Front Unrounded Voiced NormalLength) ->
     Just "ɛ"
-  (Vowel OpenMid Front Rounded Voiced) ->
+  (Vowel OpenMid Front Rounded Voiced NormalLength) ->
     Just "œ"
-  (Vowel OpenMid Central Unrounded Voiced) ->
+  (Vowel OpenMid Central Unrounded Voiced NormalLength) ->
     Just "ɜ"
-  (Vowel OpenMid Central Rounded Voiced) ->
+  (Vowel OpenMid Central Rounded Voiced NormalLength) ->
     Just "ɞ"
-  (Vowel OpenMid Back Unrounded Voiced) ->
+  (Vowel OpenMid Back Unrounded Voiced NormalLength) ->
     Just "ʌ"
-  (Vowel OpenMid Back Rounded Voiced) ->
-    Just "ɔ" -- Near-open (next line)
-  (Vowel NearOpen Front Unrounded Voiced) ->
+  (Vowel OpenMid Back Rounded Voiced NormalLength) ->
+    Just "ɔ"
+  -- Near-open (next line):
+  (Vowel NearOpen Front Unrounded Voiced NormalLength) ->
     Just "æ"
-  (Vowel NearOpen Central Unrounded Voiced) ->
-    Just "ɐ" -- Open Vowels (next line):
-  (Vowel Open Front Unrounded Voiced) ->
+  (Vowel NearOpen Central Unrounded Voiced NormalLength) ->
+    Just "ɐ"
+  -- Open Vowels (next line):
+  (Vowel Open Front Unrounded Voiced NormalLength) ->
     Just "a"
-  (Vowel Open Front Rounded Voiced) ->
+  (Vowel Open Front Rounded Voiced NormalLength) ->
     Just "ɶ"
-  (Vowel Open Back Unrounded Voiced) ->
+  (Vowel Open Back Unrounded Voiced NormalLength) ->
     Just "ɑ"
-  (Vowel Open Back Rounded Voiced) ->
+  (Vowel Open Back Rounded Voiced NormalLength) ->
     Just "ɒ"
   -- The following two lines are commented out, because I am unsure
   -- about their place of articulation:
@@ -569,6 +611,15 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
         Nothing         -> Nothing
         Just regularIPA -> Just (regularIPA <> "̠")
   -- Add the diacritic for "retracted"
+  (Vowel w x y z vowelLength)
+    | vowelLength /= NormalLength
+    && recursionLevel < recursionLimit ->
+      case constructIPARecursive
+        recursionLimit
+        (1 + recursionLevel)
+        (Vowel w x y z NormalLength) of
+        Nothing         -> Nothing
+        Just regularIPA -> Just (regularIPA <> vowelLengthIPA vowelLength)
 
   -- If there isn't a symbol, and the consonant we want is voiceless,
   -- Just take the symbol for a voiced consonant,
@@ -589,12 +640,12 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
   -- add diacritic for voiceless
 
   -- Add the small circle diacritic to vowels to make them voiceless.
-  (Vowel x y z Voiceless)
+  (Vowel x y z Voiceless vowelLength)
     | recursionLevel < recursionLimit ->
       case constructIPARecursive
         recursionLimit
         (1 + recursionLevel)
-        (Vowel x y z Voiced) of
+        (Vowel x y z Voiced vowelLength) of
         Nothing         -> Nothing
         Just regularIPA -> if isDescender regularIPA
                            then Just (regularIPA <> "̊")
@@ -610,12 +661,12 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
         (Consonant Voiceless x y z sa) of
         Nothing         -> Nothing
         Just regularIPA -> Just (regularIPA <> "̬")
-  (Vowel x y z Voiced)
+  (Vowel x y z Voiced vowelLength)
     | recursionLevel < recursionLimit ->
       case constructIPARecursive
         recursionLimit
         (1 + recursionLevel)
-        (Vowel x y z Voiceless) of
+        (Vowel x y z Voiceless vowelLength) of
         Nothing         -> Nothing
         Just regularIPA -> Just (regularIPA <> "̬")
   (Consonant VoicedAspirated _ _ PulmonicEgressive Normal)

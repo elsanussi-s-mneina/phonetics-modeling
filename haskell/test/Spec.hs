@@ -13,6 +13,7 @@ main = do
   hspec voicingSpec
   hspec analyzeIPAToSPESpec
   hspec secondaryArticulationSpec
+  hspec vowelLengthSpec
 
 glideSpec :: Spec
 glideSpec =
@@ -382,3 +383,21 @@ secondaryArticulationSpec = do
       describeIPA "tˤ" `shouldBe` "voiceless alveolar plosive pulmonic egressive pharyngealized consonant"
     it "case: r pharyngealized" $
       describeIPA "rˤ" `shouldBe` "voiced alveolar trill pulmonic egressive pharyngealized consonant"
+
+vowelLengthSpec :: Spec
+vowelLengthSpec = do
+  describe "vowel length" $ do
+    it "test_normal_a_vowel case: [a]" $
+      describeIPA "a" `shouldBe` "voiced unrounded open front vowel"
+    it "test_long_a_vowel case: [aː]" $
+      describeIPA "aː" `shouldBe` "voiced unrounded open front long vowel"
+    it "test_half_long_a_vowel case: [aˑ]" $
+      describeIPA "aˑ" `shouldBe` "voiced unrounded open front half-long vowel"
+    it "test_extra_short_a_vowel case: [ă]" $
+      describeIPA "ă" `shouldBe` "voiced unrounded open front extra-short vowel"
+    it "test_voiceless_long_i_vowel case [i̥ː]" $
+       describeIPA "i̥ː" `shouldBe` "voiceless unrounded close front long vowel"
+    it "test_voiceless_half_long_i_vowel case [i̥ˑ]" $
+       describeIPA "i̥ˑ" `shouldBe` "voiceless unrounded close front half-long vowel"
+    it "test_voiceless_half_long_i_vowel case [ĭ̥]" $
+      describeIPA "ĭ̥" `shouldBe` "voiceless unrounded close front extra-short vowel"

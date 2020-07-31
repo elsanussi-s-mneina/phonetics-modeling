@@ -15,7 +15,8 @@ import PhoneticFeaturesTypes (Polarity(Minus, Plus), PhonemeFeature(SyllabicFeat
            LateralFeature, DelayedReleaseFeature, SpreadGlottisFeature, ConstrictedGlottisFeature,
            LabialFeature, CoronalFeature, DorsalFeature, PharyngealFeature, LaryngealFeature,
            RoundFeature,
-           AnteriorFeature, DistributedFeature, StridentFeature, HighFeature, LowFeature, BackFeature))
+           AnteriorFeature, DistributedFeature, StridentFeature, HighFeature, LowFeature, BackFeature),
+           )
 
 import EnglishUSText
 
@@ -232,7 +233,7 @@ voice p = case p of
     Just (VoiceFeature Plus)
   (Consonant Voiced _ _ _ _) ->
     Just (VoiceFeature Plus)
-  (Vowel _ _ _ Voiced) ->
+  (Vowel _ _ _ Voiced _) ->
     Just (VoiceFeature Plus)
   _ ->
     Just (VoiceFeature Minus)
@@ -262,7 +263,7 @@ constrictedGlottis p = case p of
     if sonorant p == Just (SonorantFeature Plus)
       then Just ConstrictedGlottisFeature
       else Nothing
-  (Vowel _ _ _ CreakyVoiced) ->
+  (Vowel _ _ _ CreakyVoiced _) ->
     if sonorant p == Just (SonorantFeature Plus)
       then Just ConstrictedGlottisFeature
       else Nothing
@@ -350,8 +351,8 @@ high p = case p of
   (Consonant _ Velar _ _ _)          -> Just (HighFeature Plus)
   (Consonant _ Uvular _ _ _)         -> Just (HighFeature Minus)
   Consonant {}                     -> Nothing
-  (Vowel Close _ _ _)              -> Just (HighFeature Plus)
-  (Vowel NearClose _ _ _)          -> Just (HighFeature Plus)
+  (Vowel Close _ _ _ _)              -> Just (HighFeature Plus)
+  (Vowel NearClose _ _ _ _)          -> Just (HighFeature Plus)
   Vowel {}                         -> Just (HighFeature Minus)
 
 -- |
@@ -368,8 +369,8 @@ low p = case p of
   (Consonant _ Pharyngeal _ _ _) -> Just (LowFeature Plus)
   (Consonant _ Glottal _ _ _)    -> Just (LowFeature Plus)
   Consonant {}                 -> Nothing
-  (Vowel Open _ _ _)           -> Just (LowFeature Plus)
-  (Vowel NearOpen _ _ _)       -> Just (LowFeature Plus)
+  (Vowel Open _ _ _ _)         -> Just (LowFeature Plus)
+  (Vowel NearOpen _ _ _ _)       -> Just (LowFeature Plus)
   Vowel {}                     -> Just (LowFeature Minus)
 
 -- |
@@ -379,9 +380,14 @@ low p = case p of
 -- All other segments are undefined for [+/-back].
 back :: Phonet -> Maybe PhonemeFeature
 back p = case p of
-  (Vowel _ Back _ _)    -> Just (BackFeature Plus)
-  (Vowel _ Central _ _) -> Just (BackFeature Plus)
-  (Vowel _ Front _ _)   -> Just (BackFeature Minus)
+  (Vowel _ Back _ _ _)    -> Just (BackFeature Plus)
+  (Vowel _ Central _ _ _) -> Just (BackFeature Plus)
+  (Vowel _ Front _ _ _)   -> Just (BackFeature Minus)
+  (Consonant _ _ _ _ Palatalized) -> Just (BackFeature Minus) -- Palatalized consonants are [-back].
+  -- For a source on palatalized consonants being [-back],
+  -- see page 59 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
+  -- A document titled "Segmental Phonology" by Darin Howe.
+  -- Further sources are on that page.                      .
   _                     -> Nothing
 
 -- |
@@ -390,42 +396,54 @@ back p = case p of
 -- All other segments are [-round].
 lipRound :: Phonet -> Maybe PhonemeFeature
 lipRound p = case p of
-  (Vowel _ _ Rounded _) -> Just (RoundFeature Plus)
+  (Vowel _ _ Rounded _ _) -> Just (RoundFeature Plus)
   Vowel {}              -> Just (RoundFeature Minus)
+  (Consonant _ _ _ _ Labialized) ->
+    Just (RoundFeature Plus) -- Labialized consonants are [+round].
+    -- For a source on labialized consonants being [+round],
+    -- see page 44 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
+    -- A document titled "Segmental Phonology" by Darin Howe.
+    -- Further sources are on that page.
   _                     -> Just (RoundFeature Minus)
 
 -- |
 -- Advanced tongue root
 atr :: Phonet -> Maybe PhonemeFeature
 atr p = case p of
-  (Vowel Close Front Unrounded Voiced) ->
+  (Vowel Close Front Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Front Unrounded Voiced) ->
+  (Vowel CloseMid Front Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel Close Back Rounded Voiced) ->
+  (Vowel Close Back Rounded Voiced _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Front Rounded Voiced) ->
+  (Vowel CloseMid Front Rounded Voiced _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Back Rounded Voiced) ->
+  (Vowel CloseMid Back Rounded Voiced _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel Close Front Rounded Voiced) ->
+  (Vowel Close Front Rounded Voiced _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel NearOpen Front Unrounded Voiced) ->
+  (Vowel NearOpen Front Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel Open Back Unrounded Voiced) ->
+  (Vowel Open Back Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel Close Central Unrounded Voiced) ->
+  (Vowel Close Central Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Back Unrounded Voiced) ->
+  (Vowel OpenMid Back Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel NearClose Front Unrounded Voiced) ->
+  (Vowel NearClose Front Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel NearClose Back Rounded Voiced) ->
+  (Vowel NearClose Back Rounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Front Unrounded Voiced) ->
+  (Vowel OpenMid Front Unrounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Back Rounded Voiced) ->
+  (Vowel OpenMid Back Rounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
+  (Consonant _ _ _ _ Pharyngealized) ->
+    Just (AdvancedTongueRootFeature Minus) -- Pharyngealized consonants are [-ATR].
+    -- For a source on pharyngealized consonants being [-ATR]      
+    -- see page 70 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
+    -- A document titled "Segmental Phonology" by Darin Howe.
+    -- Further sources are on that page.
   _ ->
     Nothing
 
@@ -501,10 +519,10 @@ syllabic Consonant {} = Just (SyllabicFeature Minus)
 -- Whether a segment is a glide.
 isGlide :: Phonet -> Bool
 isGlide p = case p of
-  (Consonant _ Palatal Approximant PulmonicEgressive Normal)       -> True
-  (Consonant _ LabialVelar Approximant PulmonicEgressive Normal)   -> True
-  (Consonant _ LabialPalatal Approximant PulmonicEgressive Normal) -> True
-  (Consonant _ Velar Approximant PulmonicEgressive Normal)         -> True
+  (Consonant _ Palatal Approximant PulmonicEgressive _)       -> True
+  (Consonant _ LabialVelar Approximant PulmonicEgressive _)   -> True
+  (Consonant _ LabialPalatal Approximant PulmonicEgressive _) -> True
+  (Consonant _ Velar Approximant PulmonicEgressive _)         -> True
   _                                                         -> False
 
 
