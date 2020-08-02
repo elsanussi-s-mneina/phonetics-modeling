@@ -16,6 +16,21 @@ main = do
   hspec analyzeIPAToSPESpec
   hspec secondaryArticulationSpec
   hspec vowelLengthSpec
+  hspec pulmonicEgressiveConsonantSpec_oldStyle
+
+pulmonicEgressiveConsonantSpec_oldStyle :: Spec
+pulmonicEgressiveConsonantSpec_oldStyle = do
+  describe "pulmonic egressive consonants (old way):" $ do
+    "p" `isDescribedAs` "voiceless bilabial plosive pulmonic egressive consonant"
+    "b̥" `isDescribedAs` "voiceless bilabial plosive pulmonic egressive consonant"
+    "b̊" `isDescribedAs` "voiceless bilabial plosive pulmonic egressive consonant"
+    "pʷ" `isDescribedAs` "voiceless labialized bilabial plosive pulmonic egressive consonant"
+    "b̥ʷ" `isDescribedAs` "voiceless labialized bilabial plosive pulmonic egressive consonant"
+    "b̊ʷ" `isDescribedAs` "voiceless labialized bilabial plosive pulmonic egressive consonant"
+    "pʰ" `isDescribedAs` "voiceless aspirated bilabial plosive pulmonic egressive consonant"
+    "b̥ʰ" `isDescribedAs` "voiceless aspirated bilabial plosive pulmonic egressive consonant"
+    "b̊ʰ" `isDescribedAs` "voiceless aspirated bilabial plosive pulmonic egressive consonant"
+
 
 pulmonicEgressiveConsonantSpec :: Spec
 pulmonicEgressiveConsonantSpec = do
@@ -102,8 +117,8 @@ voicelessLabializedTestsOneSymbol :: Text -- ^ IPA representation of voiced phon
                         -> Spec
 voicelessLabializedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless labialized" ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-    (basicVoicedIPA <> "̊" <> "ʷ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive labialized consonant")
-    (basicVoicedIPA <> "̥" <> "ʷ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive labialized consonant")
+    (basicVoicedIPA <> "̊" <> "ʷ") `isDescribedAs` ("voiceless labialized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    (basicVoicedIPA <> "̥" <> "ʷ") `isDescribedAs` ("voiceless labialized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
 voicelessPharyngealizedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
                                       -> Text -- ^ place of articulation (as text) e.g. "bilabial"
@@ -111,8 +126,8 @@ voicelessPharyngealizedTestsOneSymbol :: Text -- ^ IPA representation of voiced 
                                       -> Spec
 voicelessPharyngealizedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless pharyngealized" ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-    (basicVoicedIPA <> "̊" <> "ˤ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive pharyngealized consonant")
-    (basicVoicedIPA <> "̥" <> "ˤ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive pharyngealized consonant")
+    (basicVoicedIPA <> "̊" <> "ˤ") `isDescribedAs` ("voiceless pharyngealized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    (basicVoicedIPA <> "̥" <> "ˤ") `isDescribedAs` ("voiceless pharyngealized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
 
 voicelessPalatalizedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
@@ -121,8 +136,8 @@ voicelessPalatalizedTestsOneSymbol :: Text -- ^ IPA representation of voiced pho
                                       -> Spec
 voicelessPalatalizedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless palatalized" ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-     (basicVoicedIPA <> "̊" <> "ʲ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive palatalized consonant")
-     (basicVoicedIPA <> "̥" <> "ʲ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive palatalized consonant")
+     (basicVoicedIPA <> "̊" <> "ʲ") `isDescribedAs` ("voiceless palatalized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+     (basicVoicedIPA <> "̥" <> "ʲ") `isDescribedAs` ("voiceless palatalized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
 voicelessVelarizedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
                                       -> Text -- ^ place of articulation (as text) e.g. "bilabial"
@@ -130,8 +145,8 @@ voicelessVelarizedTestsOneSymbol :: Text -- ^ IPA representation of voiced phone
                                       -> Spec
 voicelessVelarizedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless velarized" ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-    (basicVoicedIPA <> "̊" <> "ˠ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive velarized consonant")
-    (basicVoicedIPA <> "̥" <> "ˠ") `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive velarized consonant")
+    (basicVoicedIPA <> "̊" <> "ˠ") `isDescribedAs` ("voiceless velarized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    (basicVoicedIPA <> "̥" <> "ˠ") `isDescribedAs` ("voiceless velarized " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
 voicelessTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
                         -> Text -- ^ place of articulation (as text) e.g. "bilabial"
@@ -163,10 +178,10 @@ voicelessAspiratedLabializedTestsOneSymbol :: Text -- ^ IPA representation of vo
                                  -> Spec
 voicelessAspiratedLabializedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless aspirated labialized " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-      (basicVoicedIPA <> "̥ʰ" <> "ʷ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                   " " <> mannerText <> " pulmonic egressive labialized consonant")
-      (basicVoicedIPA <> "̊ʰ" <> "ʷ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                   " " <> mannerText <> " pulmonic egressive labialized consonant")
+      (basicVoicedIPA <> "̥ʰ" <> "ʷ") `isDescribedAs` ("voiceless aspirated labialized " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
+      (basicVoicedIPA <> "̊ʰ" <> "ʷ") `isDescribedAs` ("voiceless aspirated labialized " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
 
 
 voicelessAspiratedPalatalizedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
@@ -175,10 +190,10 @@ voicelessAspiratedPalatalizedTestsOneSymbol :: Text -- ^ IPA representation of v
                                  -> Spec
 voicelessAspiratedPalatalizedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless aspirated palatalized " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-      (basicVoicedIPA <> "̥ʰ" <> "ʲ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                   " " <> mannerText <> " pulmonic egressive palatalized consonant")
-      (basicVoicedIPA <> "̊ʰ" <> "ʲ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                   " " <> mannerText <> " pulmonic egressive palatalized consonant")
+      (basicVoicedIPA <> "̥ʰ" <> "ʲ") `isDescribedAs` ("voiceless aspirated palatalized " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
+      (basicVoicedIPA <> "̊ʰ" <> "ʲ") `isDescribedAs` ("voiceless aspirated palatalized " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
 
 
 voicelessAspiratedVelarizedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
@@ -187,10 +202,10 @@ voicelessAspiratedVelarizedTestsOneSymbol :: Text -- ^ IPA representation of voi
                                  -> Spec
 voicelessAspiratedVelarizedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless aspirated velarized " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-      (basicVoicedIPA <> "̥ʰ" <> "ˠ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                   " " <> mannerText <> " pulmonic egressive velarized consonant")
-      (basicVoicedIPA <> "̊ʰ" <> "ˠ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                   " " <> mannerText <> " pulmonic egressive velarized consonant")
+      (basicVoicedIPA <> "̥ʰ" <> "ˠ") `isDescribedAs` ("voiceless aspirated velarized " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
+      (basicVoicedIPA <> "̊ʰ" <> "ˠ") `isDescribedAs` ("voiceless aspirated velarized " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
 
 voicelessAspiratedPharyngealizedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
                                  -> Text -- ^ place of articulation (as text) e.g. "bilabial"
@@ -198,11 +213,11 @@ voicelessAspiratedPharyngealizedTestsOneSymbol :: Text -- ^ IPA representation o
                                  -> Spec
 voicelessAspiratedPharyngealizedTestsOneSymbol basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless aspirated pharyngealized " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-     (basicVoicedIPA <> "̥ʰ" <> "ˤ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                 " " <> mannerText <> " pulmonic egressive pharyngealized consonant")
+     (basicVoicedIPA <> "̥ʰ" <> "ˤ") `isDescribedAs` ("voiceless aspirated pharyngealized " <> placeNameText <>
+                                 " " <> mannerText <> " pulmonic egressive consonant")
 
-     (basicVoicedIPA <> "̊ʰ" <> "ˤ") `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                   " " <> mannerText <> " pulmonic egressive pharyngealized consonant")
+     (basicVoicedIPA <> "̊ʰ" <> "ˤ") `isDescribedAs` ("voiceless aspirated pharyngealized " <> placeNameText <>
+                                   " " <> mannerText <> " pulmonic egressive consonant")
 
 
 voicelessAspiratedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
@@ -243,8 +258,8 @@ voicedSecondaryArticulationTestsOneSymbol
                      -> Spec
 voicedSecondaryArticulationTestsOneSymbol articulation2Name superscript  basicVoicedIPA placeNameText mannerText = do
   describe ("voiced " <> toString articulation2Name <> " " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-    (basicVoicedIPA <> superscript) `isDescribedAs` ("voiced " <> placeNameText <>
-                                              " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
+    (basicVoicedIPA <> superscript) `isDescribedAs` ("voiced " <> articulation2Name <> " " <> placeNameText <>
+                                              " " <> mannerText <> " pulmonic egressive consonant")
 
 voicedLabializedTestsOneSymbol :: Text -- ^ IPA representation of voiced phoneme "m"
                      -> Text -- ^ place of articulation (as text) e.g. "bilabial"
@@ -325,12 +340,12 @@ voicelessSecondaryArticulationTestsTwoSymbols
                      -> Spec
 voicelessSecondaryArticulationTestsTwoSymbols articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText = do
   describe ("voiceless " ++ toString placeNameText ++ " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-    (basicVoicelessIPA <> superscript) `isDescribedAs` ("voiceless " <> placeNameText <>
-                                              " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-    (basicVoicedIPA <> "̊" <> superscript) `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-    (basicVoicedIPA <> "̥" <> superscript) `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-    (basicVoicelessIPA <> "̊" <> superscript) `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-    (basicVoicelessIPA <> "̥" <> superscript) `isDescribedAs` ("voiceless " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
+    (basicVoicelessIPA <> superscript) `isDescribedAs` ("voiceless " <> articulation2Name <> " " <> placeNameText <>
+                                              " " <> mannerText <> " pulmonic egressive consonant")
+    (basicVoicedIPA <> "̊" <> superscript) `isDescribedAs` ("voiceless " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    (basicVoicedIPA <> "̥" <> superscript) `isDescribedAs` ("voiceless " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    (basicVoicelessIPA <> "̊" <> superscript) `isDescribedAs` ("voiceless " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+    (basicVoicelessIPA <> "̥" <> superscript) `isDescribedAs` ("voiceless " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
 voicelessPlainTestsTwoSymbols
   :: Text -- ^ IPA representation of voiceless phoneme "t"
@@ -419,14 +434,14 @@ voicelessSecondaryArticulationAspiratedTestsTwoSymbols
   -> Text -- ^ manner of articulation (as text) e.g. "plosive"
   -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
 voicelessSecondaryArticulationAspiratedTestsTwoSymbols articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-      describe ("voiceless aspirated " <> toString placeNameText <> " " <> toString mannerText <> " " <> toString articulation2Name <> " in International Phonetic Alphabet") $ do
+      describe ("voiceless aspirated " <> toString articulation2Name <> " " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
 
-          (basicVoicelessIPA <> "ʰ" <> superscript) `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                       " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-          (basicVoicedIPA <> "̥ʰ" <> superscript) `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                       " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-          (basicVoicedIPA <> "̊ʰ" <> superscript) `isDescribedAs` ("voiceless aspirated " <> placeNameText <>
-                                       " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
+          (basicVoicelessIPA <> "ʰ" <> superscript) `isDescribedAs` ("voiceless aspirated " <> articulation2Name <> " " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
+          (basicVoicedIPA <> "̥ʰ" <> superscript) `isDescribedAs` ("voiceless aspirated " <> articulation2Name <> " " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
+          (basicVoicedIPA <> "̊ʰ" <> superscript) `isDescribedAs` ("voiceless aspirated " <> articulation2Name <> " " <> placeNameText <>
+                                       " " <> mannerText <> " pulmonic egressive consonant")
 
 voicelessAspiratedTestsTwoSymbols
   :: Text -- ^ IPA representation of voiceless phoneme "t"
@@ -465,11 +480,10 @@ voicedSecondaryArticulationTestsTwoSymbols
   -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
 voicedSecondaryArticulationTestsTwoSymbols articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
       describe ("voiced " <> toString articulation2Name <> " " <> toString placeNameText <> " " <> toString mannerText <> " in International Phonetic Alphabet") $ do
-           (basicVoicedIPA <> superscript) `isDescribedAs` ("voiced " <> placeNameText <>
-                                                  " " <> mannerText <> " pulmonic egressive " <>
-                                                  articulation2Name <> " consonant")
-           (basicVoicelessIPA <> "̬" <> superscript) `isDescribedAs` ("voiced " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-           (basicVoicelessIPA <> "̬" <> superscript) `isDescribedAs` ("voiced " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
+           (basicVoicedIPA <> superscript) `isDescribedAs` ("voiced " <> articulation2Name <> " " <> placeNameText <>
+                                                  " " <> mannerText <> " pulmonic egressive consonant")
+           (basicVoicelessIPA <> "̬" <> superscript) `isDescribedAs` ("voiced " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+           (basicVoicelessIPA <> "̬" <> superscript) `isDescribedAs` ("voiced " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
 voicedTestsTwoSymbols
   :: Text -- ^ IPA representation of voiceless phoneme "t"
@@ -505,10 +519,10 @@ voicedAspiratedSecondaryArticulationTwoSymbols
   -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
   -> Spec -- ^ specifications of voiced, voiceless, and aspirated behaviour.
 voicedAspiratedSecondaryArticulationTwoSymbols articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-      describe (toString articulation2Name <> " voiced aspirated " <> toString placeNameText <> " plosive in International Phonetic Alphabet") $ do
-          (basicVoicedIPA <> "ʰ" <> superscript) `isDescribedAs` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-          (basicVoicedIPA <> "̬ʰ" <> superscript) `isDescribedAs` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
-          (basicVoicelessIPA <> "̬ʰ" <> superscript) `isDescribedAs` ("voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive " <> articulation2Name <> " consonant")
+      describe (" voiced aspirated " <> toString articulation2Name <> " " <> toString placeNameText <> " plosive in International Phonetic Alphabet") $ do
+          (basicVoicedIPA <> "ʰ" <> superscript) `isDescribedAs` ("voiced aspirated " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+          (basicVoicedIPA <> "̬ʰ" <> superscript) `isDescribedAs` ("voiced aspirated " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
+          (basicVoicelessIPA <> "̬ʰ" <> superscript) `isDescribedAs` ("voiced aspirated " <> articulation2Name <> " " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant")
 
 voicedAspiratedTwoSymbols
   :: Text -- ^ IPA representation of voiceless phoneme "t"
@@ -881,24 +895,24 @@ secondaryArticulationSpec :: Spec
 secondaryArticulationSpec = do
   describe "labialization" $ do
     it "case: t labialized" $
-      describeIPA "tʷ" `shouldBe` "voiceless alveolar plosive pulmonic egressive labialized consonant"
+      describeIPA "tʷ" `shouldBe` "voiceless labialized alveolar plosive pulmonic egressive consonant"
     it "case: r labialized" $
-      describeIPA "rʷ" `shouldBe` "voiced alveolar trill pulmonic egressive labialized consonant"
+      describeIPA "rʷ" `shouldBe` "voiced labialized alveolar trill pulmonic egressive consonant"
   describe "palatalization" $ do
     it "case: t palatalized" $
-      describeIPA "tʲ" `shouldBe` "voiceless alveolar plosive pulmonic egressive palatalized consonant"
+      describeIPA "tʲ" `shouldBe` "voiceless palatalized alveolar plosive pulmonic egressive consonant"
     it "case: r palatalized" $
-      describeIPA "rʲ" `shouldBe` "voiced alveolar trill pulmonic egressive palatalized consonant"
+      describeIPA "rʲ" `shouldBe` "voiced palatalized alveolar trill pulmonic egressive consonant"
   describe "velarization" $ do
     it "case: t velarized" $
-      describeIPA "tˠ" `shouldBe` "voiceless alveolar plosive pulmonic egressive velarized consonant"
+      describeIPA "tˠ" `shouldBe` "voiceless velarized alveolar plosive pulmonic egressive consonant"
     it "case: r velarized" $
-      describeIPA "rˠ" `shouldBe` "voiced alveolar trill pulmonic egressive velarized consonant"
+      describeIPA "rˠ" `shouldBe` "voiced velarized alveolar trill pulmonic egressive consonant"
   describe "palatalization" $ do
     it "case: t pharyngealized" $
-      describeIPA "tˤ" `shouldBe` "voiceless alveolar plosive pulmonic egressive pharyngealized consonant"
+      describeIPA "tˤ" `shouldBe` "voiceless pharyngealized alveolar plosive pulmonic egressive consonant"
     it "case: r pharyngealized" $
-      describeIPA "rˤ" `shouldBe` "voiced alveolar trill pulmonic egressive pharyngealized consonant"
+      describeIPA "rˤ" `shouldBe` "voiced pharyngealized alveolar trill pulmonic egressive consonant"
 
 vowelLengthSpec :: Spec
 vowelLengthSpec = do

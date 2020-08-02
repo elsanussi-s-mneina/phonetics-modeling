@@ -302,10 +302,10 @@ showPhonet phonet =
       removeExtraTwoSpaces (
         unwords
           [ showVocalFolds v,
+            showSecondaryArticulation sa,
             showPlace p,
             showManner m,
             showAirstream a,
-            showSecondaryArticulation sa,
             consonantUIText
           ]
         )
