@@ -11,322 +11,201 @@ import           Relude
 import qualified Data.Text as T
 
 
-generatedTestCode :: Text
-generatedTestCode =
-  pulmonicEgressiveConsonantGen
-
-
-
-pulmonicEgressiveConsonantGen :: Text
-pulmonicEgressiveConsonantGen =
-   voicedVoicelessAspiratedTestsGen "p" "b" "bilabial"      "plosive"   <>
-   voicedVoicelessAspiratedTestsGen "t" "d" "alveolar"      "plosive"   <>
-   voicedVoicelessAspiratedTestsGen "ʈ" "ɖ" "retroflex"     "plosive"   <>
-   voicedVoicelessAspiratedTestsGen "c" "ɟ" "palatal"       "plosive"   <>
-   voicedVoicelessAspiratedTestsGen "k" "g" "velar"         "plosive"   <>
-   voicedVoicelessAspiratedTestsGen "q" "ɢ" "uvular"        "plosive"   <>
-   voicedVoicelessAspiratedTestsGen "ɸ" "β" "bilabial"      "fricative" <>
-   voicedVoicelessAspiratedTestsGen "f" "v" "labio-dental"  "fricative" <>
-   voicedVoicelessAspiratedTestsGen "θ" "ð" "dental"        "fricative" <>
-   voicedVoicelessAspiratedTestsGen "s" "z" "alveolar"      "fricative" <>
-   voicedVoicelessAspiratedTestsGen "ʃ" "ʒ" "post-alveolar" "fricative" <>
-   voicedVoicelessAspiratedTestsGen "ʂ" "ʐ" "retroflex"     "fricative" <>
-   voicedVoicelessAspiratedTestsGen "ç" "ʝ" "palatal"       "fricative" <>
-   voicedVoicelessAspiratedTestsGen "x" "ɣ" "velar"         "fricative" <>
-   voicedVoicelessAspiratedTestsGen "χ" "ʁ" "uvular"        "fricative" <>
-   voicedVoicelessAspiratedTestsGen "ħ" "ʕ" "pharyngeal"    "fricative" <>
-   voicedVoicelessAspiratedTestsGen "h" "ɦ" "glottal"       "fricative" <>
-   voicedVoicelessAspiratedTestsGen "ɬ" "ɮ" "alveolar"      "lateral fricative"
-
-
-      <> voicedAndAspiratedTestsGen "m" "bilabial" "nasal"
-      <> voicedAndAspiratedTestsGen "n" "alveolar" "nasal"
-      <> voicedAndAspiratedTestsGen "ɲ" "palatal" "nasal"
-      <> voicedAndAspiratedTestsGen "ɳ" "retroflex" "nasal"
-      <> voicedAndAspiratedTestsGen "ŋ" "velar" "nasal"
-      <> voicedAndAspiratedTestsGen "ɴ" "uvular" "nasal"
-
-      <> voicedAndAspiratedTestsGen "ʙ" "bilabial" "trill"
-      <> voicedAndAspiratedTestsGen "r" "alveolar" "trill"
-      <> voicedAndAspiratedTestsGen "ʀ" "uvular" "trill"
-      <> voicedAndAspiratedTestsGen "ⱱ" "labio-dental" "tap or flap"
-      <> voicedAndAspiratedTestsGen "ɾ" "alveolar" "tap or flap"
-      <> voicedAndAspiratedTestsGen "ɽ" "retroflex" "tap or flap"
-
-      <> voicedAndAspiratedTestsGen "ʋ" "labio-dental" "approximant"
-      <> voicedAndAspiratedTestsGen "ɹ" "alveolar" "approximant"
-      <> voicedAndAspiratedTestsGen "ɭ" "retroflex" "lateral approximant"
-      <> voicedAndAspiratedTestsGen "ʎ" "palatal" "lateral approximant"
-      <> voicedAndAspiratedTestsGen "ʟ" "velar" "lateral approximant"
-
-voicelessSecondaryArticulationTestsOneSymbolGen
-  :: Text
-  -> Text
-  -> Text -- ^ IPA representation of voiced phoneme "m"
-                                      -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                                      -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-                                      -> Text
-voicelessSecondaryArticulationTestsOneSymbolGen articulation2Text superscript basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiceless " <> (if T.null articulation2Text then "" else articulation2Text <> " ") <>
-                        placeNameText <> " " <> mannerText <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n"
-     <> (basicVoicedIPA <> "̊" <> superscript) `isDescribedAsGen` theDescription
-     <> (basicVoicedIPA <> "̥" <> superscript) `isDescribedAsGen` theDescription
-
-
-
-
-voicelessTestsOneSymbolGen :: Text -- ^ IPA representation of voiced phoneme "m"
-                        -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                        -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-                        -> Text
-voicelessTestsOneSymbolGen basicVoicedIPA placeNameText mannerText =
-      voicelessSecondaryArticulationTestsOneSymbolGen "" "" basicVoicedIPA placeNameText mannerText
-      <> voicelessSecondaryArticulationTestsOneSymbolGen "labialized" "ʷ" basicVoicedIPA placeNameText mannerText
-      <> voicelessSecondaryArticulationTestsOneSymbolGen "palatalized" "ʲ" basicVoicedIPA placeNameText mannerText
-      <> voicelessSecondaryArticulationTestsOneSymbolGen "velarized" "ˠ" basicVoicedIPA placeNameText mannerText
-      <> voicelessSecondaryArticulationTestsOneSymbolGen "pharyngealized" "ˤ" basicVoicedIPA placeNameText mannerText
-
-
-voicelessAspiratedSecondaryArticulationTestsOneSymbolGen :: Text -> Text
-                                 -> Text -- ^ IPA representation of voiced phoneme "m"
-                                 -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                                 -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-                                 -> Text
-voicelessAspiratedSecondaryArticulationTestsOneSymbolGen articulation2Name superscript basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiceless aspirated " <> (if T.null articulation2Name then "" else articulation2Name <> " ") <> placeNameText <> " "
-                     <> mannerText <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n" <>
-       ((basicVoicedIPA <> "̥ʰ" <> superscript) `isDescribedAsGen` theDescription) <>
-       ((basicVoicedIPA <> "̊ʰ" <> superscript) `isDescribedAsGen` theDescription)
-
-voicelessAspiratedTestsOneSymbolGen
-  :: 
-     Text -- ^ IPA representation of voiced phoneme "m"
-  -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-  -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-  -> Text
-voicelessAspiratedTestsOneSymbolGen basicVoicedIPA placeNameText mannerText =
-  voicelessAspiratedSecondaryArticulationTestsOneSymbolGen "" ""  basicVoicedIPA placeNameText mannerText
-  <> voicelessAspiratedSecondaryArticulationTestsOneSymbolGen "labialized" "ʷ" basicVoicedIPA placeNameText mannerText
-  <> voicelessAspiratedSecondaryArticulationTestsOneSymbolGen "palatalized" "ʲ" basicVoicedIPA placeNameText mannerText
-  <> voicelessAspiratedSecondaryArticulationTestsOneSymbolGen "velarized" "ˠ" basicVoicedIPA placeNameText mannerText
-  <> voicelessAspiratedSecondaryArticulationTestsOneSymbolGen "pharyngealized" "ˤ" basicVoicedIPA placeNameText mannerText
-
 isDescribedAsGen
   :: Text -- ^ IPA e.g. "pʰ"
   -> Text -- ^ expected english description e.g. "voiceless aspirated bilabial plosive pulmonic egressive consonant"
   -> Text
 (isDescribedAsGen) ipaText description =
-    "  it \"should be that: [" <> ipaText <> "] is the representation of the " <> description <> "\" $\n"
-    <> "    describeIPA \"" <> ipaText <> "\" `shouldBe` \"" <> description <> "\"\n"
-
-voicedSecondaryArticulationTestsOneSymbolGen
-                     :: Text -- ^ name of secondary articulation e.g. "palatalized"
-                     -> Text -- ^ superscript for secondary articulation e.g. "ʲ"
-                     -> Text -- ^ IPA representation of voiced phoneme "m"
-                     -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                     -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-                     -> Text
-voicedSecondaryArticulationTestsOneSymbolGen articulation2Name superscript  basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiced " <> (if T.null articulation2Name then "" else articulation2Name <> " ") <> placeNameText <>
-                       " " <> mannerText <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n"
-     <> (basicVoicedIPA <> superscript) `isDescribedAsGen` theDescription
+    "  it \"should be that: [" <> ipaText <> "]\\\n     \\is the representation of the\\\n     \\" <> description <> "\" $\n"
+    <> "    describeIPA \"" <> ipaText <> "\"\n      `shouldBe` \n      \"" <> description <> "\"\n"
 
 
-voicedTestsOneSymbolGen :: Text -- ^ IPA representation of voiced phoneme "m"
-                     -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                     -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-                     -> Text
-voicedTestsOneSymbolGen basicVoicedIPA placeNameText mannerText =
-  voicedSecondaryArticulationTestsOneSymbolGen "" ""  basicVoicedIPA placeNameText mannerText
-  <> voicedSecondaryArticulationTestsOneSymbolGen "labialized" "ʷ" basicVoicedIPA placeNameText mannerText
-  <> voicedSecondaryArticulationTestsOneSymbolGen "palatalized" "ʲ" basicVoicedIPA placeNameText mannerText
-  <> voicedSecondaryArticulationTestsOneSymbolGen "velarized" "ˠ" basicVoicedIPA placeNameText mannerText
-  <> voicedSecondaryArticulationTestsOneSymbolGen "pharyngealized" "ˤ" basicVoicedIPA placeNameText mannerText
+emptyIfEmpty :: Text -> Text
+emptyIfEmpty x =
+  if T.null x then "" else x <> " "
 
+type SecondArticulationTestGenFunction
+  = (  Text       -- ^ articulation name, e.g. "palatalized"
+    -> Text       -- ^ superscript, e.g. "ʲ"
+    -> Maybe Text -- ^ IPA representation of voiceless phoneme "t"
+    -> Maybe Text -- ^ IPA representation of voiced phoneme "d"
+    -> Text       -- ^ place of articulation (as text) e.g. "alveolar"
+    -> Text       -- ^ manner of articulation (as text) e.g. "alveolar"
+    -> Text
+    )
 
-
-voicedAspiratedTestsOneSymbolGen :: Text -- ^ IPA representation of voiced phoneme "m"
-                                 -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                                 -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-                                 -> Text
-voicedAspiratedTestsOneSymbolGen basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiced aspirated " <> placeNameText <> " " <> mannerText <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n" <>
-       (basicVoicedIPA <> "ʰ") `isDescribedAsGen` theDescription  <>
-       (basicVoicedIPA <> "̬ʰ") `isDescribedAsGen` theDescription
-
-
-
--- | Use for phonemes that only have a character for the voiced phoneme,
--- and not for its voiceless counterpart
-voicedAndAspiratedTestsGen :: Text -- ^ IPA representation of voiced phoneme "m"
-                           -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                           -> Text -- ^ manner of articulation (as text) e.g. "nasal"
-                           -> Text
-voicedAndAspiratedTestsGen basicVoicedIPA placeNameText mannerText =
-       voicelessTestsOneSymbolGen basicVoicedIPA placeNameText mannerText
-      <> voicelessAspiratedTestsOneSymbolGen basicVoicedIPA placeNameText mannerText
-      <> voicedTestsOneSymbolGen basicVoicedIPA placeNameText mannerText
-      <> voicedAspiratedTestsOneSymbolGen basicVoicedIPA placeNameText mannerText
-
-
-
-
-voicelessSecondaryArticulationTestsTwoSymbolsGen
-                     :: Text -- ^ name of secondary articulation e.g. "palatalized"
-                     -> Text -- ^ superscript for secondary articulation e.g. "ʲ"
-                     -> Text -- ^ IPA representation of voiced phoneme "p"
-                     -> Text -- ^ IPA representation of voiced phoneme "b"
-                     -> Text -- ^ place of articulation (as text) e.g. "bilabial"
-                     -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-                     -> Text
-voicelessSecondaryArticulationTestsTwoSymbolsGen articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiceless " <> articulation2Name <>
-                       (if T.null articulation2Name then "" else " ") <> placeNameText <> " "
-                     <> mannerText <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n"
-     <> (basicVoicelessIPA <> superscript)       `isDescribedAsGen` theDescription
-     <> (basicVoicedIPA <> "̊" <> superscript)    `isDescribedAsGen` theDescription
-     <> (basicVoicedIPA <> "̥" <> superscript)    `isDescribedAsGen` theDescription
-     <> (basicVoicelessIPA <> "̊" <> superscript) `isDescribedAsGen` theDescription
-     <> (basicVoicelessIPA <> "̥" <> superscript) `isDescribedAsGen` theDescription
-
-voicelessTestsTwoSymbolsGen
-  :: Text -- ^ IPA representation of voiceless phoneme "t"
-                              -> Text -- ^ IPA representation of voiced phoneme "d"
-                              -> Text -- ^ place of articulation (as text) e.g. "alveolar"
-                              -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
-                              -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicelessTestsTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-  voicelessSecondaryArticulationTestsTwoSymbolsGen "" "" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicelessSecondaryArticulationTestsTwoSymbolsGen "labialized" "ʷ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicelessSecondaryArticulationTestsTwoSymbolsGen "palatalized" "ʲ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicelessSecondaryArticulationTestsTwoSymbolsGen "velarized" "ˠ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicelessSecondaryArticulationTestsTwoSymbolsGen "pharyngealized" "ˤ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-
-voicelessSecondaryArticulationAspiratedTestsTwoSymbolsGen
-  :: Text -- ^ articulation name, e.g. "palatalized"
-  -> Text -- ^ superscript, e.g. "ʲ"
-  -> Text -- ^ IPA representation of voiceless phoneme "t"
-  -> Text -- ^ IPA representation of voiced phoneme "d"
-  -> Text -- ^ place of articulation (as text) e.g. "alveolar"
-  -> Text -- ^ manner of articulation (as text) e.g. "plosive"
-  -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicelessSecondaryArticulationAspiratedTestsTwoSymbolsGen articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiceless aspirated " <> (if T.null articulation2Name then "" else articulation2Name <> " ")
-                       <> placeNameText <>
-                       " " <> mannerText <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n" <>
-       (basicVoicelessIPA <> "ʰ" <> superscript) `isDescribedAsGen` theDescription <>
-       (basicVoicedIPA    <> "̥ʰ" <> superscript) `isDescribedAsGen` theDescription <>
-       (basicVoicedIPA    <> "̊ʰ" <> superscript) `isDescribedAsGen` theDescription
-
-
-voicelessAspiratedTestsTwoSymbolsGen
-  :: Text -- ^ IPA representation of voiceless phoneme "t"
-  -> Text -- ^ IPA representation of voiced phoneme "d"
-  -> Text -- ^ place of articulation (as text) e.g. "alveolar"
-  -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
-  -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicelessAspiratedTestsTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-  voicelessSecondaryArticulationAspiratedTestsTwoSymbolsGen "" "" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <> voicelessSecondaryArticulationAspiratedTestsTwoSymbolsGen "labialized" "ʷ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <> voicelessSecondaryArticulationAspiratedTestsTwoSymbolsGen "palatalized" "ʲ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <> voicelessSecondaryArticulationAspiratedTestsTwoSymbolsGen "velarized" "ˠ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <> voicelessSecondaryArticulationAspiratedTestsTwoSymbolsGen "pharyngealized" "ˤ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-
-
-voicedSecondaryArticulationTestsTwoSymbolsGen
-  :: Text -- ^ articulation name, e.g. "palatalized"
-  -> Text -- ^ superscript, e.g. "ʲ"
-  -> Text -- ^ IPA representation of voiceless phoneme "t"
-  -> Text -- ^ IPA representation of voiced phoneme "d"
-  -> Text -- ^ place of articulation (as text) e.g. "alveolar"
-  -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
-  -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicedSecondaryArticulationTestsTwoSymbolsGen articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiced " <> articulation2Name <> (if T.null articulation2Name then "" else " ") <> placeNameText <> " " <> mannerText
+voiced2ndArticulationTestsGen :: SecondArticulationTestGenFunction
+voiced2ndArticulationTestsGen articulation2Name superscript voicelessIPA voicedIPA place manner =
+  let theDescription = "voiced " <> emptyIfEmpty articulation2Name
+                     <> place <> " " <> manner
                      <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n" <>
-       (basicVoicedIPA <> superscript) `isDescribedAsGen` theDescription <>
-       (basicVoicelessIPA <> "̬" <> superscript) `isDescribedAsGen` theDescription <>
-       (basicVoicelessIPA <> "̬" <> superscript) `isDescribedAsGen` theDescription
+  in "describe \"" <> theDescription <> "\" $\n  do\n" <>
+       case voicedIPA of
+         Just b  -> (b <> superscript) `isDescribedAsGen` theDescription
+         Nothing -> ""
+       <>
+       case voicelessIPA of
+         Just p -> (p <> "̬" <> superscript) `isDescribedAsGen` theDescription <>
+                   (p <> "̬" <> superscript) `isDescribedAsGen` theDescription
+         Nothing -> ""
 
 
-voicedTestsTwoSymbolsGen
-  :: Text -- ^ IPA representation of voiceless phoneme "t"
-  -> Text -- ^ IPA representation of voiced phoneme "d"
+voicedAspirated2ndArticulationGen :: SecondArticulationTestGenFunction
+voicedAspirated2ndArticulationGen articulation2Name superscript voicelessIPA voicedIPA place manner =
+  let theDescription = "voiced aspirated " <> emptyIfEmpty articulation2Name
+                     <> place <> " "
+                     <> manner <> " pulmonic egressive consonant"
+  in "describe \"" <> theDescription <> "\" $\n  do\n" <>
+       case voicedIPA of
+         Just b -> (b <> "ʰ" <> superscript) `isDescribedAsGen` theDescription <>
+                   (b <> "̬ʰ" <> superscript) `isDescribedAsGen` theDescription
+         Nothing -> ""
+       <>
+       case voicelessIPA
+         of Nothing -> ""
+            Just p -> (p <> "̬ʰ" <> superscript) `isDescribedAsGen` theDescription
+
+
+
+voicelessAspirated2ndArticulationTestsGen :: SecondArticulationTestGenFunction
+voicelessAspirated2ndArticulationTestsGen articulation2Name superscript voicelessIPA voicedIPA place manner =
+  let theDescription = "voiceless aspirated " <> emptyIfEmpty articulation2Name
+                       <> place <>
+                       " " <> manner <> " pulmonic egressive consonant"
+  in "describe \"" <> theDescription <> "\" $\n  do\n" <>
+       case voicelessIPA of
+         Just p -> (p <> "ʰ" <> superscript) `isDescribedAsGen` theDescription
+         Nothing -> ""
+       <>
+       case voicedIPA of
+         Just b ->
+           (b <> "̥ʰ" <> superscript) `isDescribedAsGen` theDescription <>
+           (b <> "̊ʰ" <> superscript) `isDescribedAsGen` theDescription
+         Nothing -> ""
+
+
+voiceless2ndArticulationTestsGen :: SecondArticulationTestGenFunction
+voiceless2ndArticulationTestsGen articulation2Name superscript voicelessIPA voicedIPA place manner =
+  let theDescription = "voiceless " <> emptyIfEmpty articulation2Name <> place <> " "
+                     <> manner <> " pulmonic egressive consonant"
+  in "describe \"" <> theDescription <> "\" $\n  do\n"
+     <> case voicelessIPA
+          of Nothing -> ""
+             Just p  -> ((p <> superscript) `isDescribedAsGen` theDescription)
+                        <> ((p <> "̊" <> superscript) `isDescribedAsGen` theDescription)
+                        <> ((p <> "̥" <> superscript) `isDescribedAsGen` theDescription)
+     <> case voicedIPA of
+          Nothing -> ""
+          Just b ->
+            (b <> "̊" <> superscript) `isDescribedAsGen` theDescription
+            <> (b <> "̥" <> superscript) `isDescribedAsGen` theDescription
+
+
+
+allSecondary
+  :: SecondArticulationTestGenFunction
+  -> Maybe Text -- ^ IPA representation of voiceless phoneme "t"
+  -> Maybe Text -- ^ IPA representation of voiced phoneme "d"
   -> Text -- ^ place of articulation (as text) e.g. "alveolar"
   -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
   -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicedTestsTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText = do
-  voicedSecondaryArticulationTestsTwoSymbolsGen "" "" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedSecondaryArticulationTestsTwoSymbolsGen "labialized" "ʷ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedSecondaryArticulationTestsTwoSymbolsGen "palatalized" "ʲ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedSecondaryArticulationTestsTwoSymbolsGen "velarized" "ˠ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedSecondaryArticulationTestsTwoSymbolsGen "pharyngealized" "ˤ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
+allSecondary func voicelessIPA voicedIPA place manner =
+  func ""               ""  voicelessIPA voicedIPA place manner <>
+  func "labialized"     "ʷ" voicelessIPA voicedIPA place manner <>
+  func "palatalized"    "ʲ" voicelessIPA voicedIPA place manner <>
+  func "velarized"      "ˠ" voicelessIPA voicedIPA place manner <>
+  func "pharyngealized" "ˤ" voicelessIPA voicedIPA place manner
 
 
-voicedAspiratedSecondaryArticulationTwoSymbolsGen
-  :: Text -- ^ articulation name, e.g. "palatalized"
-  -> Text -- ^ superscript, e.g. "ʲ"
-  -> Text -- ^ IPA representation of voiceless phoneme "t"
-  -> Text -- ^ IPA representation of voiced phoneme "d"
+voicelessTestsGen
+  :: Maybe Text -- ^ IPA representation of voiceless phoneme "t"
+  -> Maybe Text -- ^ IPA representation of voiced phoneme "d"
   -> Text -- ^ place of articulation (as text) e.g. "alveolar"
   -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
   -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicedAspiratedSecondaryArticulationTwoSymbolsGen articulation2Name superscript basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-  let theDescription = "voiced aspirated " <> articulation2Name <> (if T.null articulation2Name then "" else " ")
-                     <> placeNameText <> " "
-                     <> mannerText <> " pulmonic egressive consonant"
-  in "describe \"" <> theDescription <> "\" $ do\n" <>
-       (basicVoicedIPA <> "ʰ" <> superscript) `isDescribedAsGen` theDescription <>
-       (basicVoicedIPA <> "̬ʰ" <> superscript) `isDescribedAsGen` theDescription <>
-       (basicVoicelessIPA <> "̬ʰ" <> superscript) `isDescribedAsGen` theDescription
-
-
-voicedAspiratedTwoSymbolsGen
-  :: Text -- ^ IPA representation of voiceless phoneme "t"
-                              -> Text -- ^ IPA representation of voiced phoneme "d"
-                              -> Text -- ^ place of articulation (as text) e.g. "alveolar"
-                              -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
-                              -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicedAspiratedTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-  voicedAspiratedSecondaryArticulationTwoSymbolsGen "" "" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedAspiratedSecondaryArticulationTwoSymbolsGen "labialized" "ʷ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedAspiratedSecondaryArticulationTwoSymbolsGen "palatalized" "ʲ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedAspiratedSecondaryArticulationTwoSymbolsGen "velarized" "ˠ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-  <>
-  voicedAspiratedSecondaryArticulationTwoSymbolsGen "pharyngealized" "ˤ" basicVoicelessIPA basicVoicedIPA placeNameText mannerText
+voicelessTestsGen =
+  allSecondary voiceless2ndArticulationTestsGen
 
 
 
-voicedVoicelessAspiratedTestsGen :: Text -- ^ IPA representation of voiceless phoneme "t"
-                                 -> Text -- ^ IPA representation of voiced phoneme "d"
-                                 -> Text -- ^ place of articulation (as text) e.g. "alveolar"
-                                 -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
-                                 -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
-voicedVoicelessAspiratedTestsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText =
-      voicelessTestsTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-      <>
-      voicelessAspiratedTestsTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-      <>
-      voicedTestsTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText
-      <>
-      voicedAspiratedTwoSymbolsGen basicVoicelessIPA basicVoicedIPA placeNameText mannerText
+voicelessAspiratedTestsGen
+  :: Maybe Text -- ^ IPA representation of voiceless phoneme "t"
+  -> Maybe Text -- ^ IPA representation of voiced phoneme "d"
+  -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+  -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+  -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+voicelessAspiratedTestsGen =
+  allSecondary voicelessAspirated2ndArticulationTestsGen
 
+voicedTestsGen
+  :: Maybe Text -- ^ IPA representation of voiceless phoneme "t"
+  -> Maybe Text -- ^ IPA representation of voiced phoneme "d"
+  -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+  -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+  -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+voicedTestsGen =
+  allSecondary voiced2ndArticulationTestsGen
+
+voicedAspiratedTestsGen
+  :: Maybe Text -- ^ IPA representation of voiceless phoneme "t"
+  -> Maybe Text -- ^ IPA representation of voiced phoneme "d"
+  -> Text -- ^ place of articulation (as text) e.g. "alveolar"
+  -> Text -- ^ manner of articulation (as text) e.g. "alveolar"
+  -> Text -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+voicedAspiratedTestsGen  =
+  allSecondary voicedAspirated2ndArticulationGen
+
+generateConsonantTests
+   :: Maybe Text -- ^ IPA representation of voiceless phoneme "t"
+   -> Maybe Text -- ^ IPA representation of voiced phoneme "d"
+   -> Text       -- ^ place of articulation (as text) e.g. "alveolar"
+   -> Text       -- ^ manner of articulation (as text) e.g. "alveolar"
+   -> Text       -- ^ specifications of voiced, voiceless, and aspirated behaviour.
+generateConsonantTests voicelessIPA voicedIPA place manner =
+   voicelessTestsGen voicelessIPA voicedIPA place manner <>
+   voicelessAspiratedTestsGen voicelessIPA voicedIPA place manner <>
+   voicedTestsGen voicelessIPA voicedIPA place manner <>
+   voicedAspiratedTestsGen voicelessIPA voicedIPA place manner
+   
+pulmonicEgressiveConsonantGen :: Text
+pulmonicEgressiveConsonantGen =
+   generateConsonantTests (Just "p") (Just "b") "bilabial"      "plosive"             <>
+   generateConsonantTests (Just "t") (Just "d") "alveolar"      "plosive"             <>
+   generateConsonantTests (Just "ʈ") (Just "ɖ") "retroflex"     "plosive"             <>
+   generateConsonantTests (Just "c") (Just "ɟ") "palatal"       "plosive"             <>
+   generateConsonantTests (Just "k") (Just "g") "velar"         "plosive"             <>
+   generateConsonantTests (Just "q") (Just "ɢ") "uvular"        "plosive"             <>
+   generateConsonantTests (Just "ɸ") (Just "β") "bilabial"      "fricative"           <>
+   generateConsonantTests (Just "f") (Just "v") "labio-dental"  "fricative"           <>
+   generateConsonantTests (Just "θ") (Just "ð") "dental"        "fricative"           <>
+   generateConsonantTests (Just "s") (Just "z") "alveolar"      "fricative"           <>
+   generateConsonantTests (Just "ʃ") (Just "ʒ") "post-alveolar" "fricative"           <>
+   generateConsonantTests (Just "ʂ") (Just "ʐ") "retroflex"     "fricative"           <>
+   generateConsonantTests (Just "ç") (Just "ʝ") "palatal"       "fricative"           <>
+   generateConsonantTests (Just "x") (Just "ɣ") "velar"         "fricative"           <>
+   generateConsonantTests (Just "χ") (Just "ʁ") "uvular"        "fricative"           <>
+   generateConsonantTests (Just "ħ") (Just "ʕ") "pharyngeal"    "fricative"           <>
+   generateConsonantTests (Just "h") (Just "ɦ") "glottal"       "fricative"           <>
+   generateConsonantTests (Just "ɬ") (Just "ɮ") "alveolar"      "lateral fricative"   <>
+   generateConsonantTests Nothing    (Just "m") "bilabial"      "nasal"               <>
+   generateConsonantTests Nothing    (Just "n") "alveolar"      "nasal"               <>
+   generateConsonantTests Nothing    (Just "ɲ") "palatal"       "nasal"               <>
+   generateConsonantTests Nothing    (Just "ɳ") "retroflex"     "nasal"               <>
+   generateConsonantTests Nothing    (Just "ŋ") "velar"         "nasal"               <>
+   generateConsonantTests Nothing    (Just "ɴ") "uvular"        "nasal"               <>
+   generateConsonantTests Nothing    (Just "ʙ") "bilabial"      "trill"               <>
+   generateConsonantTests Nothing    (Just "r") "alveolar"      "trill"               <>
+   generateConsonantTests Nothing    (Just "ʀ") "uvular"        "trill"               <>
+   generateConsonantTests Nothing    (Just "ⱱ") "labio-dental"  "tap or flap"         <>
+   generateConsonantTests Nothing    (Just "ɾ") "alveolar"      "tap or flap"         <>
+   generateConsonantTests Nothing    (Just "ɽ") "retroflex"     "tap or flap"         <>
+   generateConsonantTests Nothing    (Just "ʋ") "labio-dental"  "approximant"         <>
+   generateConsonantTests Nothing    (Just "ɹ") "alveolar"      "approximant"         <>
+   generateConsonantTests Nothing    (Just "ɭ") "retroflex"     "lateral approximant" <>
+   generateConsonantTests Nothing    (Just "ʎ") "palatal"       "lateral approximant" <>
+   generateConsonantTests Nothing    (Just "ʟ") "velar"         "lateral approximant"
+
+generatedTestCode :: Text
+generatedTestCode =
+  pulmonicEgressiveConsonantGen
 
