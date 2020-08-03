@@ -16,7 +16,7 @@ isDescribedAsGen
   -> Text -- ^ expected english description e.g. "voiceless aspirated bilabial plosive pulmonic egressive consonant"
   -> Text
 (isDescribedAsGen) ipaText description =
-    "  it \"should be that: [" <> ipaText <> "]\\\n     \\is the representation of the\\\n     \\" <> description <> "\" $\n"
+    "  it \"should be that: [" <> ipaText <> "] \\\n     \\is the representation of the \\\n     \\" <> description <> "\" $\n"
     <> "    describeIPA \"" <> ipaText <> "\"\n      `shouldBe` \n      \"" <> description <> "\"\n"
 
 
