@@ -3175,6 +3175,256 @@ pulmonicEgressiveConsonantSpec = do
       describeIPA "q̬ʰˤ"
         `shouldBe`
         "voiced aspirated pharyngealized uvular plosive pulmonic egressive consonant"
+  describe "voiceless glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ] \
+       \is the representation of the \
+       \voiceless glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ"
+        `shouldBe`
+        "voiceless glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̊] \
+       \is the representation of the \
+       \voiceless glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̊"
+        `shouldBe`
+        "voiceless glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̥] \
+       \is the representation of the \
+       \voiceless glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̥"
+        `shouldBe`
+        "voiceless glottal plosive pulmonic egressive consonant"
+  describe "voiceless labialized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔʷ] \
+       \is the representation of the \
+       \voiceless labialized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔʷ"
+        `shouldBe`
+        "voiceless labialized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̊ʷ] \
+       \is the representation of the \
+       \voiceless labialized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̊ʷ"
+        `shouldBe`
+        "voiceless labialized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̥ʷ] \
+       \is the representation of the \
+       \voiceless labialized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̥ʷ"
+        `shouldBe`
+        "voiceless labialized glottal plosive pulmonic egressive consonant"
+  describe "voiceless palatalized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔʲ] \
+       \is the representation of the \
+       \voiceless palatalized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔʲ"
+        `shouldBe`
+        "voiceless palatalized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̊ʲ] \
+       \is the representation of the \
+       \voiceless palatalized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̊ʲ"
+        `shouldBe`
+        "voiceless palatalized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̥ʲ] \
+       \is the representation of the \
+       \voiceless palatalized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̥ʲ"
+        `shouldBe`
+        "voiceless palatalized glottal plosive pulmonic egressive consonant"
+  describe "voiceless velarized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔˠ] \
+       \is the representation of the \
+       \voiceless velarized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔˠ"
+        `shouldBe`
+        "voiceless velarized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̊ˠ] \
+       \is the representation of the \
+       \voiceless velarized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̊ˠ"
+        `shouldBe`
+        "voiceless velarized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̥ˠ] \
+       \is the representation of the \
+       \voiceless velarized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̥ˠ"
+        `shouldBe`
+        "voiceless velarized glottal plosive pulmonic egressive consonant"
+  describe "voiceless pharyngealized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔˤ] \
+       \is the representation of the \
+       \voiceless pharyngealized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔˤ"
+        `shouldBe`
+        "voiceless pharyngealized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̊ˤ] \
+       \is the representation of the \
+       \voiceless pharyngealized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̊ˤ"
+        `shouldBe`
+        "voiceless pharyngealized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̥ˤ] \
+       \is the representation of the \
+       \voiceless pharyngealized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̥ˤ"
+        `shouldBe`
+        "voiceless pharyngealized glottal plosive pulmonic egressive consonant"
+  describe "voiceless aspirated glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔʰ] \
+       \is the representation of the \
+       \voiceless aspirated glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔʰ"
+        `shouldBe`
+        "voiceless aspirated glottal plosive pulmonic egressive consonant"
+  describe "voiceless aspirated labialized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔʰʷ] \
+       \is the representation of the \
+       \voiceless aspirated labialized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔʰʷ"
+        `shouldBe`
+        "voiceless aspirated labialized glottal plosive pulmonic egressive consonant"
+  describe "voiceless aspirated palatalized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔʰʲ] \
+       \is the representation of the \
+       \voiceless aspirated palatalized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔʰʲ"
+        `shouldBe`
+        "voiceless aspirated palatalized glottal plosive pulmonic egressive consonant"
+  describe "voiceless aspirated velarized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔʰˠ] \
+       \is the representation of the \
+       \voiceless aspirated velarized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔʰˠ"
+        `shouldBe`
+        "voiceless aspirated velarized glottal plosive pulmonic egressive consonant"
+  describe "voiceless aspirated pharyngealized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔʰˤ] \
+       \is the representation of the \
+       \voiceless aspirated pharyngealized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔʰˤ"
+        `shouldBe`
+        "voiceless aspirated pharyngealized glottal plosive pulmonic egressive consonant"
+  describe "voiced glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬] \
+       \is the representation of the \
+       \voiced glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬"
+        `shouldBe`
+        "voiced glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̬] \
+       \is the representation of the \
+       \voiced glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬"
+        `shouldBe`
+        "voiced glottal plosive pulmonic egressive consonant"
+  describe "voiced labialized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ʷ] \
+       \is the representation of the \
+       \voiced labialized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʷ"
+        `shouldBe`
+        "voiced labialized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̬ʷ] \
+       \is the representation of the \
+       \voiced labialized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʷ"
+        `shouldBe`
+        "voiced labialized glottal plosive pulmonic egressive consonant"
+  describe "voiced palatalized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ʲ] \
+       \is the representation of the \
+       \voiced palatalized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʲ"
+        `shouldBe`
+        "voiced palatalized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̬ʲ] \
+       \is the representation of the \
+       \voiced palatalized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʲ"
+        `shouldBe`
+        "voiced palatalized glottal plosive pulmonic egressive consonant"
+  describe "voiced velarized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ˠ] \
+       \is the representation of the \
+       \voiced velarized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ˠ"
+        `shouldBe`
+        "voiced velarized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̬ˠ] \
+       \is the representation of the \
+       \voiced velarized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ˠ"
+        `shouldBe`
+        "voiced velarized glottal plosive pulmonic egressive consonant"
+  describe "voiced pharyngealized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ˤ] \
+       \is the representation of the \
+       \voiced pharyngealized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ˤ"
+        `shouldBe`
+        "voiced pharyngealized glottal plosive pulmonic egressive consonant"
+    it "should be that: [ʔ̬ˤ] \
+       \is the representation of the \
+       \voiced pharyngealized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ˤ"
+        `shouldBe`
+        "voiced pharyngealized glottal plosive pulmonic egressive consonant"
+  describe "voiced aspirated glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ʰ] \
+       \is the representation of the \
+       \voiced aspirated glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʰ"
+        `shouldBe`
+        "voiced aspirated glottal plosive pulmonic egressive consonant"
+  describe "voiced aspirated labialized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ʰʷ] \
+       \is the representation of the \
+       \voiced aspirated labialized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʰʷ"
+        `shouldBe`
+        "voiced aspirated labialized glottal plosive pulmonic egressive consonant"
+  describe "voiced aspirated palatalized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ʰʲ] \
+       \is the representation of the \
+       \voiced aspirated palatalized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʰʲ"
+        `shouldBe`
+        "voiced aspirated palatalized glottal plosive pulmonic egressive consonant"
+  describe "voiced aspirated velarized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ʰˠ] \
+       \is the representation of the \
+       \voiced aspirated velarized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʰˠ"
+        `shouldBe`
+        "voiced aspirated velarized glottal plosive pulmonic egressive consonant"
+  describe "voiced aspirated pharyngealized glottal plosive pulmonic egressive consonant" $
+    do
+    it "should be that: [ʔ̬ʰˤ] \
+       \is the representation of the \
+       \voiced aspirated pharyngealized glottal plosive pulmonic egressive consonant" $
+      describeIPA "ʔ̬ʰˤ"
+        `shouldBe`
+        "voiced aspirated pharyngealized glottal plosive pulmonic egressive consonant"
   describe "voiceless bilabial fricative pulmonic egressive consonant" $
     do
     it "should be that: [ɸ] \

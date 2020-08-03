@@ -175,6 +175,7 @@ pulmonicEgressiveConsonantGen =
    generateConsonantTests (Just "c") (Just "ɟ") "palatal"       "plosive"             <>
    generateConsonantTests (Just "k") (Just "g") "velar"         "plosive"             <>
    generateConsonantTests (Just "q") (Just "ɢ") "uvular"        "plosive"             <>
+   generateConsonantTests (Just "ʔ") Nothing    "glottal"       "plosive"             <>
    generateConsonantTests (Just "ɸ") (Just "β") "bilabial"      "fricative"           <>
    generateConsonantTests (Just "f") (Just "v") "labio-dental"  "fricative"           <>
    generateConsonantTests (Just "θ") (Just "ð") "dental"        "fricative"           <>
