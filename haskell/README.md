@@ -40,7 +40,7 @@ directory (where this README file is)  and type
 To start an interactive environment where you will be able to execute the
 code:
 
-`stack -- ghci --ghci-options -XOverloadedStrings --ghci-options -XUnicodeSyntax`
+`stack -- ghci --ghci-options -XOverloadedStrings`
 
 
 You can then type in code like the following (starting after the ">", you do not have to type the part before the first ">" symbol on each line.):
