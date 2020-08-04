@@ -204,7 +204,14 @@ pulmonicEgressiveConsonantGen =
    generateConsonantTests Nothing    (Just "ɹ") "alveolar"      "approximant"         <>
    generateConsonantTests Nothing    (Just "ɭ") "retroflex"     "lateral approximant" <>
    generateConsonantTests Nothing    (Just "ʎ") "palatal"       "lateral approximant" <>
-   generateConsonantTests Nothing    (Just "ʟ") "velar"         "lateral approximant"
+   generateConsonantTests Nothing    (Just "ʟ") "velar"         "lateral approximant" <>
+
+   generateConsonantTests Nothing    (Just "w") "labial-velar"    "approximant" <>
+   generateConsonantTests (Just "ʍ") Nothing    "labial-velar"    "fricative"   <>
+   generateConsonantTests (Just "ʡ") Nothing    "epiglottal"      "plosive"     <>
+   generateConsonantTests (Just "ʜ") (Just "ʢ") "epiglottal"      "fricative"   <>
+   generateConsonantTests (Just "ɕ") (Just "ʑ") "alveolo-palatal" "fricative"
+
 
 generatedTestCode :: Text
 generatedTestCode =
