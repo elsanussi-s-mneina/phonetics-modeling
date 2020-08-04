@@ -1,5 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE Safe #-}
 
 module PhoneticFeaturesTypes where
 import           Relude  (Eq)

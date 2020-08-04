@@ -1,6 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE Safe #-}
 
 module UserInterfaceText where
 
@@ -18,8 +19,6 @@ data UITextTicket
   | UserInputDescribeAPhonemeInEnglish
   | UserInputDescribeAPhonemeInSPE
   | UserInputChunkIPAByPhoneme
-  | UserInputOpenWindow
-  | UserInputStartServer
   | Prompt
   | SorryUnableToCalculate
   | TypeAPhoneme
@@ -134,8 +133,6 @@ allUITextTicketList
   , "UserInputDescribeAPhonemeInEnglish"
   , "UserInputDescribeAPhonemeInSPE"
   , "UserInputChunkIPAByPhoneme"
-  , "UserInputOpenWindow"
-  , "UserInputStartServer"
   , "Prompt"
   , "SorryUnableToCalculate"
   , "TypeAPhoneme"
@@ -270,8 +267,6 @@ i18n lang t =
         UserInputDescribeAPhonemeInEnglish        -> userInputDescribeAPhonemeInEnglish
         UserInputDescribeAPhonemeInSPE            -> userInputDescribeAPhonemeInSPE
         UserInputChunkIPAByPhoneme                -> userInputChunkIPAByPhoneme
-        UserInputOpenWindow                       -> userInputOpenWindow
-        UserInputStartServer                      -> userInputStartServer
         Prompt                                    -> prompt
         SorryUnableToCalculate                    -> sorryUnableToCalculate
         TypeAPhoneme                              -> typeAPhoneme

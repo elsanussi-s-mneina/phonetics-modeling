@@ -23,7 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 
 executables:
-  phonetics-modeling-exe:
+  phonetics-modeling-console-exe:
     main:                Main.hs
     source-dirs:
     - app
@@ -42,11 +42,54 @@ executables:
     - relude
     - text
     - phonetics-modeling
-    - fltkhs >= 0.8.0.3
-    - aeson
-    - servant-server
-    - wai
-    - warp
+
+  phonetics-modeling-server-exe:
+    main:                Main.hs
+    source-dirs:
+      - server-app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -Weverything
+      - -Wno-unsafe
+      - -Wno-safe
+      - -fwarn-incomplete-patterns
+      - -fwarn-incomplete-uni-patterns
+      - -Wno-missing-export-lists
+      - -Wno-missing-import-lists
+    dependencies:
+      - relude
+      - text
+      - phonetics-modeling
+      - aeson
+      - servant-server
+      - wai
+      - warp
+
+
+#  phonetics-modeling-gui-exe:
+#    main:                Main.hs
+#    source-dirs:
+#      - gui-app
+#    ghc-options:
+#      - -threaded
+#      - -rtsopts
+#      - -with-rtsopts=-N
+#      - -Weverything
+#      - -Wno-unsafe
+#      - -Wno-safe
+#      - -fwarn-incomplete-patterns
+#      - -fwarn-incomplete-uni-patterns
+#      - -Wno-missing-export-lists
+#      - -Wno-missing-import-lists
+#    dependencies:
+#      - relude
+#      - text
+#      - phonetics-modeling
+#      - fltkhs >= 0.8.0.3
+#      - aeson
+
 
 library:
   source-dirs:
@@ -54,6 +97,7 @@ library:
   ghc-options:
   - -Weverything
   - -Werror
+  - -Wno-safe
   - -fwarn-incomplete-patterns
   - -fwarn-incomplete-uni-patterns
   - -Wno-missing-export-lists
@@ -75,3 +119,4 @@ tests:
     - phonetics-modeling
     - hspec
     - relude
+    - text

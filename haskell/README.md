@@ -22,8 +22,28 @@ Feel free to use it for educational purposes.
 
 This project was started by Elsanussi S. Mneina on July 25, 2019.
 
-## How to execute the code, and write your own.
+## How to start the server.
+Open the terminal or command prompt.
 
+Be in the Haskell directory.
+`cd haskell`
+
+Run the following command to start the server.
+`stack run phonetics-modeling-server-exe`
+
+Instructions should appear on where to browse to.
+
+## How to start the terminal program.
+This program takes text input, and provides 
+a text based menu.
+
+Be in the Haskell directory.
+`cd haskell`
+
+Run the following command to start the command line
+program.
+
+`stack run`
 
 
 ## How to use
@@ -36,59 +56,6 @@ https://www.haskell.org/platform/
 
 You need to use the terminal, make sure you are in this
 directory (where this README file is)  and type
-
-To start an interactive environment where you will be able to execute the
-code:
-
-`stack -- ghci --ghci-options -XOverloadedStrings`
-
-
-You can then type in code like the following (starting after the ">", you do not have to type the part before the first ">" symbol on each line.):
-
-`*Main> doAnalyzeIPA "ð"
-`
-And you get the following in response.
-
-`"voiced dental fricative pulmonic egressive consonant"`
-
-
-Then to go the other direction (to IPA symbols):
-
-`*Main> doConstructIPA (Consonant Voiceless Alveolar LateralApproximant PulmonicEgressive)`
-
-`l̥`
-
-
-
-
-To go from voiceless to voiced (from IPA symbol to IPA symbol):
-
-`*Main> putTextLn $ voicedIPA "s"`
-
-`z`
-
-
-`*Main> putTextLn $ devoicedIPA "z"`
-
-`s`
-
-`*Main> putTextLn $ voicedIPA "ʔ"`
-
-`ʔ̼`
-
-
-`To show the English phoneme inventory:`
-
-`*Main Lib> putTextLn $ showIPA englishPhonetInventory`
-
-`bpdtgkʔvfðθzsʒʃhd͡ʒt͡ʃmnŋɹ̠jwiuɪʊeoəɛɜʌɔæɐɑɒ`
-
-
-
-Note: that the strange zero like symbols (Actually the symbol for the empty set) (∅) at the end represent phones 
-that do not have IPA graphemes for the purposes of this program until I can
-fix it to provide more useful output. This is not a conventional use of this symbol
-for Linguistics!
 
 To build (generates an executable file), use the following command:
 
@@ -106,6 +73,17 @@ In the command line enter:
 `stack build --pedantic`
 
 ## How to compile the code for the GUI
+(Note I could not get the GUI to compile on Windows.
+I was able to get it to work on Mac OS Mojave)
+
+Delete the current phonetics-modeling.cabal file.
+
+`rm phonetics-modeling.cabal`
+
+Rename the cabal file for GUI to replace the deleted file.
+
+`mv phonetics-modeling.cabal.forGUI`
+
 In the command line enter:
 
 `stack install --flag fltkhs:bundled`
@@ -115,15 +93,28 @@ making windows and other graphical user
 interface widgets. For information
 on Fltkhs see: https://github.com/deech/fltkhs
 
-So far no windows have been run, but the 
+So far no windows have been created, but the 
 project is ready to compile with Fltkhs
 dependencies.
+
+Run stack build, and stack run as usual, and a window will appear.
+
+`stack build`
+
+`stack run`
+
+
+When you are done with the GUI project,
+simply rename it back to how it was. Use
+the following command:
+
+`mv phonetics-modeling.cabal phonetics-modeling.cabal.forGUI`
 
 ## How to run the unit tests.
 `stack test`
 
 
-## How to generate documentation for source code:
+## How to generate external documentation for source code:
 
 `stack haddock --open phonetics-modeling`
 
@@ -133,4 +124,4 @@ Use Stylish-Haskell to ensure that whitespace remains consistent.
 
 
 ## Known Issues
-- On Windows 8, the Command Prompt incorrectly displays non-ASCII characters.
+- On Windows 8, the Command Prompt displays non-ASCII characters incorrectly.

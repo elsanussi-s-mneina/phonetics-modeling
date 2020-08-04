@@ -1,9 +1,10 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE Safe #-}
 
-module DiagnosticText where
+module FrenchText where
 
-import           Relude  ((<>), Text)
+import           Relude  (Text)
 import qualified EnglishUSText
 
 applicationTitle :: Text
@@ -49,13 +50,13 @@ userInputOpenWindow = "7"
 userInputStartServer = "8"
 
 prompt :: Text
-prompt = tag EnglishUSText.prompt
+prompt = EnglishUSText.prompt
 
 sorryUnableToCalculate :: Text
-sorryUnableToCalculate = tag EnglishUSText.sorryUnableToCalculate
+sorryUnableToCalculate = EnglishUSText.sorryUnableToCalculate
 
 typeAPhoneme :: Text
-typeAPhoneme = tag EnglishUSText.typeAPhoneme
+typeAPhoneme = EnglishUSText.typeAPhoneme
 
 phonemeToDevoiceMessage,
   phonemeToVoiceMessage,

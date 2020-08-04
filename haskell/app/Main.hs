@@ -24,8 +24,6 @@ import           UserInterfaceText
                                  , UserInputDescribeAPhonemeInEnglish
                                  , UserInputDescribeAPhonemeInSPE
                                  , UserInputChunkIPAByPhoneme
-                                 , UserInputOpenWindow
-                                 , UserInputStartServer
                                  , UserSelectedMessage
                                  , PhonemeToCalculateSPEMessage
                                  , PhonemeToDevoiceMessage
@@ -38,8 +36,6 @@ import           UserInterfaceText
                    , NatLanguage(English)
                    , i18n
                    , il8nGenMain)
-import           MainWindow (openWindowLangSpecific)
-import           MainServer (startServer)
 
 -- | Print characters to the terminal, so that the
 --   user knows that they are expected to enter
@@ -157,8 +153,6 @@ respondToSelection lang selection
   | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe lang
   | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom lang
   | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit lang
-  | selection == userInputOpenWindow                  = openWindowLangSpecific lang
-  | selection == userInputStartServer                 = startServer
   | selection == "00"                                 = il8nGenMain
   | otherwise                                         = putTextLn unrecognizedSelectionMessage
   where
@@ -169,8 +163,7 @@ respondToSelection lang selection
         userInputDescribeAPhonemeInEnglish   = i18n lang UserInputDescribeAPhonemeInEnglish
         userInputDescribeAPhonemeInSPE       = i18n lang UserInputDescribeAPhonemeInSPE
         userInputChunkIPAByPhoneme           = i18n lang UserInputChunkIPAByPhoneme
-        userInputOpenWindow                  = i18n lang UserInputOpenWindow
-        userInputStartServer                 = i18n lang UserInputStartServer
+
 
 -- | Given an IPA transcription, return the
 --   name of the phoneme that IPA transcription describes.

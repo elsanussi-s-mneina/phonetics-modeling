@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-
+{-# LANGUAGE Safe #-}
 module EnglishUSText where
 
 import           Relude  (Text)
@@ -18,8 +18,6 @@ menu =
   \ 4) describe a phoneme in English. \n\
   \ 5) describe a phoneme in SPE Features. \n\
   \ 6) divide IPA text into phonemes \n\
-  \ 7) open window (graphical user interface) \n\
-  \ 8) start web server \n\
   \  \n\
   \ Enter the number representing your selection below, \n\
   \ after the prompt, and press enter/return. \n\
@@ -32,9 +30,8 @@ userInputViewEnglishPhonemeInventory,
   userInputMakeAPhonemeUnvoiced,
   userInputDescribeAPhonemeInEnglish,
   userInputDescribeAPhonemeInSPE,
-  userInputChunkIPAByPhoneme,
-  userInputOpenWindow,
-  userInputStartServer ::
+  userInputChunkIPAByPhoneme
+  ::
     Text
 userInputViewEnglishPhonemeInventory = "1"
 userInputMakeAPhonemeVoiced = "2"
@@ -42,8 +39,6 @@ userInputMakeAPhonemeUnvoiced = "3"
 userInputDescribeAPhonemeInEnglish = "4"
 userInputDescribeAPhonemeInSPE = "5"
 userInputChunkIPAByPhoneme = "6"
-userInputOpenWindow = "7"
-userInputStartServer = "8"
 
 prompt :: Text
 prompt = "(PROMPT:) "

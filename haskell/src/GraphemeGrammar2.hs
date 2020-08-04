@@ -10,8 +10,10 @@
 -- Once the functions in here can parse IPA text,
 -- we will replace some of the functions in GraphemeGrammar,
 -- with those in GraphemeGrammar2, eventually merging both.
+
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE Safe #-}
 module GraphemeGrammar2 where
 
 import Relude((==), (<>), Char, Maybe(Just, Nothing), Text,

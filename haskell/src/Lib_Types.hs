@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE DerivingStrategies #-}
-
+{-# LANGUAGE Safe #-}
 module Lib_Types where
 import           Relude  (Eq, NonEmpty, fromList)
 

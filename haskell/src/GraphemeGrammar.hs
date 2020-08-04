@@ -3,6 +3,8 @@
 --
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE Safe #-}
+
 module GraphemeGrammar where
 
 import Relude((+), (-), (<), (&&), (<>), (/=), (==), Bool(False, True),
