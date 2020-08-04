@@ -6,82 +6,174 @@
 {-# LANGUAGE Safe #-}
 
 module GraphemeGrammar where
-
-import Relude((+), (-), (<), (&&), (<>), (/=), (==), Bool(False, True),
-              Char, Int, Maybe(Just, Nothing), NonEmpty, Text,
-              elem, filter, fmap, fromList, not, otherwise, one)
+import Relude((+),  (<), (&&), (<>),(==), Bool(False, True),
+              Char, Int, Maybe(Just, Nothing), Text,
+              elem, fromList, otherwise, one)
 import qualified Data.Text as T
 
+{- Context free grammar of IPA (incomplete, but good enough to start)
 
+We want something like this:
+
+BaseDigraph -> BaseCharacter
+             | BaseCharacter VoicingDiacritic
+             | BaseCharacter SecondaryArticulationDiacritic
+             | BaseCharacter VoicingDiacritic SecondaryArticulationDiacritic
+             | Digraph
+Digraph -> BaseCharacter TieCharacter BaseCharacter
+TieCharacter ->  ͜  | ͡
+StrictSegmentals -> a | b | c | t | d | s | ʃ | ʒ | f | r
+VoicingDiacritic -> ̥ | ̊ | ̬
+SuperscriptAfter -> ʰ
+SecondaryArticulationDiacritic ->  ʷ | ʲ | ˤ | ˠ
+-}
+
+baseCharacters :: [Char]
+baseCharacters = strictSegmentals
+
+secondaryArticulationDiacritics :: [Char]
+secondaryArticulationDiacritics = ['ʷ', 'ʲ', 'ˤ', 'ˠ']
+
+voicingDiacritics :: [Char]
+voicingDiacritics = ['̥', '̊', '̬']
+
+
+
+-- | Uses one parser on the text,
+--   then uses the next parser on the remaining
+--   text from the first parse.
+thenParser
+  :: (Text -> Maybe (Text, Text))
+  -> (Text -> Maybe (Text, Text))
+  -> Text
+  -> Maybe (Text, Text)
+thenParser firstParser secondParser text =
+  case firstParser text of
+    Nothing -> Nothing
+    Just (parsed, rest)
+            -> case secondParser rest of
+                 Nothing -> Nothing
+                 Just (parsed2, rest2) -> Just (parsed <> parsed2, rest2)
+
+
+-- | combines parsers by using one or the other.
+orParser
+  :: (Text -> Maybe (Text, Text))
+  -> (Text -> Maybe (Text, Text))
+  -> Text
+  -> Maybe (Text, Text)
+orParser firstParser secondParser text =
+  case firstParser text of
+    Nothing -> case secondParser text of
+                      Nothing -> Nothing
+                      Just (parsed, rest) -> Just (parsed, rest)
+    Just (parsed, rest) -> Just (parsed, rest)
+
+-- | changes a parser by repeating it an indefinite number
+--   of times.
+--   So a parser that parses only "a", will parse "aaaaa".
+--   A parser that parses only "@", will parse "@@@@", "@@@@@" and
+--   so on.
+manyParser
+  :: (Text -> Maybe (Text, Text))
+  -> Text
+  -> Maybe (Text, Text)
+manyParser subParser text =
+  case subParser text of
+    Nothing -> Nothing
+    Just (parsed, rest)
+            -> case manyParser subParser rest of
+                  Nothing -> Just (parsed, rest)
+                  Just (parsed2, rest2) -> Just (parsed <> parsed2, rest2)
+
+-- | This implements the
+-- rule expressed in (BNF) grammar as:
+-- digraph -> baseCharacter tieBarCharacter baseCharacter
+digraphParser
+  :: Text
+  -> Maybe (Text, Text)
+digraphParser =
+  baseCharacterParser `thenParser` tieBarParser `thenParser` baseCharacterParser
+
+tieBarParser
+  :: Text
+  -> Maybe (Text, Text)
+tieBarParser = singleCharParser ['͜', '͡']
+
+voicingDiacriticParser
+  :: Text
+  -> Maybe (Text, Text)
+voicingDiacriticParser = singleCharParser voicingDiacritics
+
+superscriptAfterParser
+  :: Text
+  -> Maybe (Text, Text)
+superscriptAfterParser = singleCharParser superscriptsAfter
+
+superscriptBeforeParser
+  :: Text
+  -> Maybe (Text, Text)
+superscriptBeforeParser = singleCharParser superscriptsBefore
+
+phonemeParser
+  :: Text
+  -> Maybe (Text, Text)
+phonemeParser =
+  (baseCharacterParser `thenParser` secondaryArticulationDiacriticParser)
+  `orParser`
+  (baseCharacterParser `thenParser` voicingDiacriticParser `thenParser` secondaryArticulationDiacriticParser)
+  `orParser`
+  (baseCharacterParser `thenParser` voicingDiacriticParser)
+  `orParser`
+  (baseCharacterParser `thenParser` superscriptAfterParser)
+  `orParser`
+  (superscriptBeforeParser `thenParser` baseCharacterParser `thenParser` superscriptAfterParser)
+  `orParser`
+  (superscriptBeforeParser `thenParser` baseCharacterParser)
+  `orParser`
+  digraphParser
+  `orParser`
+  baseCharacterParser
+
+singleCharParser
+  :: [Char]
+  -> Text
+  -> Maybe (Text, Text)
+singleCharParser charList text
+  | T.length text == 0 = Nothing
+  | (T.index text 0) `elem` charList = Just (T.take 1 text, T.drop 1 text)
+  | otherwise = Nothing
+
+secondaryArticulationDiacriticParser
+  :: Text
+  -> Maybe (Text, Text)
+secondaryArticulationDiacriticParser =
+  singleCharParser secondaryArticulationDiacritics
+
+baseCharacterParser
+  :: Text
+  -> Maybe (Text, Text)
+baseCharacterParser =
+  singleCharParser baseCharacters
 
 -- | Splits text in the International Phonetic Alphabet by
 --   phones. This is also called tokenization.
 --
 --   Note: it does not recognize affricates, unless a tie-bar
 --   is provided.
-splitByPhonetes :: Text -> [Text]
-splitByPhonetes = parseStart
+splitIntoPhonemes
+  :: Text
+  -> [Text]
+splitIntoPhonemes text = toListParser phonemeParser text
 
--- | Start parsing some IPA text, in order to
---   chunk it into phonemes.
-parseStart :: Text   -- ^ some text in IPA
-           -> [Text] -- ^ the same text but split into a list
-parseStart x = filter (/= "") (splitByPhonetesPrePostDiacrtic x)
-
--- | Handle situations where the diacritic character occurs
---   before the main character.
---   Handle strings like "ⁿd".
---   If it doesn't find a main character with a diacritic before
---   it, it will look for a diacritic after the main character.
-splitByPhonetesPreDiacritic :: Text   -- ^ text that may contain text with prediacrtics
-                            -> [Text] -- ^ a list of IPA characters split
-splitByPhonetesPreDiacritic text =
-  let result = prediacriticParserFunction text
-   in case result of
-        Nothing     -> splitByPhonetesPostDiacrtic text
-        Just (a, b) -> [a] <> parseStart b
-
--- | Handle "ⁿdʰ", "ⁿdʷʰ" and other text strings
---   where a phoneme is represented in IPA by
---   a segmental preceded and followed by at least
---   one diacritic
-splitByPhonetesPrePostDiacrtic :: Text -> [Text]
-splitByPhonetesPrePostDiacrtic text =
-  let result = prepostdiacriticParserFunction text
-   in case result of
-        Nothing            -> splitByPhonetesPreDiacritic text
-        Just (chunk, rest) -> [chunk] <> parseStart rest
-
--- | Try to split IPA text into a list of IPA text, each element
---   representing phonemes. Handle "dʰ", etc.
-splitByPhonetesPostDiacrtic :: Text   -- ^ a string of IPA text not yet split into phonemes
-                            -> [Text] -- ^ a list of phonemes represented by IPA text
-splitByPhonetesPostDiacrtic text =
-  let result = postdiacriticParserFunction text
-   in case result of
-        Nothing            -> splitByPhonetesNonDiacrtic text
-        Just (chunk, rest) -> [chunk] <> parseStart rest
-
--- | Handle "d", "t", etc. and situations where there is no diacritic.
-splitByPhonetesNonDiacrtic :: Text   -- ^ text containing IPA text
-                           -> [Text] -- ^ a list of phonemes
-splitByPhonetesNonDiacrtic text =
-  let result = nondiacriticParserFunction text
-   in case result of
-        Nothing            -> [text] -- stop parsing!
-        Just (chunk, rest) -> [chunk] <> parseStart rest
-
--- | Parse the part containing diacritic (except the tie-bar).
-nondiacriticParserFunction :: Text -- ^ text containing IPA
-                           -> Maybe (Text, Text) -- ^ a tuple with the part parsed in the frist part, and the
-                                                 --  part not yet parsed after.
-nondiacriticParserFunction text =
-  if not (T.null text) && isSegmental (T.head text)
-    then
-      if isTieBarAt 1 text
-        then Just (T.take 3 text, T.drop 3 text)
-        else Just (T.take 1 text, T.drop 1 text)
-    else Nothing
+toListParser
+  :: (Text -> Maybe (Text, Text))
+  -> Text
+  -> [Text]
+toListParser parser text =
+  case parser text  of
+    Just (parsed, rest) -> parsed : toListParser parser rest
+    Nothing -> []
 
 -- | Whether the character in the string at a certain place,
 --   represents a consonant.
@@ -112,10 +204,10 @@ isSegmental = elemW strictSegmentals
 
 -- | Whether a character is a diacritic that can go after
 --   the main character.
-isExponentialAfterAt :: Int  -- ^ a number indicating where the character is in the text
+isSuperscriptAfterAt :: Int  -- ^ a number indicating where the character is in the text
                      -> Text -- ^ the text that contains the character
                      -> Bool -- ^ true if the character can be a diacritic after the main character
-isExponentialAfterAt = isSuchAt isExponentialAfter
+isSuperscriptAfterAt = isSuchAt isSuperscriptAfter
 
 -- | Whether a character at a certain place in a string,
 --   is the tie-bar diacritic.
@@ -138,16 +230,16 @@ isSuchAt function index text = index < T.length text && function (T.index text i
 --   a superscript `h` causes the phoneme represented by the
 --   previous character to
 --   be aspirated.
-isExponentialAfter :: Char -> Bool
-isExponentialAfter = elemW exponentialsAfter
+isSuperscriptAfter :: Char -> Bool
+isSuperscriptAfter = elemW superscriptsAfter
 
 -- | Whether a character is a superscript character, that
 --   often goes before a full character to modify the
 --   full character's meaning.
 --   For example in the International Phonetic Alphabet,
 --   a superscript `n`.
-isExponentialBefore :: Char -> Bool
-isExponentialBefore = elemW exponentialsBefore
+isSuperscriptBefore :: Char -> Bool
+isSuperscriptBefore = elemW superscriptsBefore
 
 
 -- | Whether a character is used to tie two characters in the
@@ -159,72 +251,14 @@ isTieBar x = x `elem` ['͜', '͡']
 -- | Create a function that sees whether
 -- a character is equal to (the first character in) an element
 -- in a list of text
-elemW :: NonEmpty Text -> (Char -> Bool)
-elemW stringList = (`elem` fmap T.head stringList)
-
--- | Gets a pre-diacritic exponential with a segmental,
---   the segmental may have a tie bar.
---   If it has a tie-bar the character after the tie-bar
---   is also included. These
---   are returned in the first part of the tuple.
---   the text not yet parsed is in the second part
---   of the tuple.
-prediacriticParserFunction :: Text -> Maybe (Text, Text)
-prediacriticParserFunction text =
-  if not (T.null text) && isExponentialBefore (T.head text)
-    && isSegmentalAt 1 text
-    then
-      if isTieBarAt 2 text
-        then Just (T.take 4 text, T.drop 4 text) -- include tie bar and character after it.
-        else Just (T.take 2 text, T.drop 2 text)
-    else Nothing
-
--- | Parse text that contains IPA text, can parse the next phoneme
---   even if it contains diacritics before and after the main character.
-prepostdiacriticParserFunction :: Text -- ^ text to parse
-                               -> Maybe (Text, Text) -- ^ a tuple or nothing.
-                                                     -- The first part of the tuple is a parsed phoneme,
-                                                     -- the second part is the part of the text not parsed yet.
-prepostdiacriticParserFunction text =
-  let preResult = prediacriticParserFunction text
-   in case preResult of
-        Nothing -> Nothing
-        Just (prePart, middle) ->
-          if isExponentialAfterAt 0 middle
-            then
-              let lengthOfFirst = T.length prePart
-                  segmental = T.drop (lengthOfFirst - 1) prePart
-                  postResult = postdiacriticParserFunction (segmental <> middle)
-               in case postResult of
-                    Nothing -> Nothing
-                    Just (postPart, rest) -> Just (prePart <> T.tail postPart, rest)
-            else Nothing
-
--- | Parse IPA text that can contain a diacritic after.
-postdiacriticParserFunction :: Text -- ^ text to attempt to parse
-                            -> Maybe (Text, Text) -- ^ nothing if it was not parsable, otherwise a tuple with what
-                                                  --  was parsed first (IPA text representing a phoneme),
-                                                  --  and the part not
-                                                  --  parsed yet after.
-
-postdiacriticParserFunction text
-  | isSegmentalAt 0 text && isExponentialAfterAt 1 text =
-    let numberOfPostdiacritics = countPostDiacriticsInARow text 1
-        chunkLength = numberOfPostdiacritics + 1
-     in Just (T.take chunkLength text, T.drop chunkLength text)
-  | isSegmentalAt 0 text
-      && isTieBarAt 1 text
-      && isExponentialAfterAt 2 text =
-    let numberOfPostdiacritics = countPostDiacriticsInARow text 3
-        chunkLength = numberOfPostdiacritics + 3
-     in Just (T.take chunkLength text, T.drop chunkLength text)
-  | otherwise = Nothing
+elemW :: [Char] -> (Char -> Bool)
+elemW charList = (`elem` charList)
 
 -- | Count how many superscript characters occur one after another, at a
 --   specific place in a text (that could modify a previous character).
 countPostDiacriticsInARow :: Text -> Int -> Int
 countPostDiacriticsInARow sText startIndex =
-  if isExponentialAfterAt startIndex sText
+  if isSuperscriptAfterAt startIndex sText
     then 1 + countPostDiacriticsInARow sText (startIndex + 1)
     else 0
 
@@ -234,130 +268,128 @@ countPostDiacriticsInARow sText startIndex =
 -- and to the right of the previous character,
 -- like how exponents of a power are written
 -- in mathematical notation.
-isExponential :: Text -> Bool
-isExponential character = character `elem` exponentials
+isSuperscript :: Char -> Bool
+isSuperscript character = character `elem` superscripts
 
 
-plosivePulmonic :: NonEmpty Text
+plosivePulmonic :: [Char]
 plosivePulmonic =
   fromList
-    [ "p",
-      "b",
-      "t",
-      "d",
-      "ʈ",
-      "ɖ",
-      "c",
-      "ɟ",
-      "k",
-      "g",
-      "q",
-      "ɢ",
-      "ʔ"
+    [ 'p',
+      'b',
+      't',
+      'd',
+      'ʈ',
+      'ɖ',
+      'c',
+      'ɟ',
+      'k',
+      'g',
+      'q',
+      'ɢ',
+      'ʔ'
     ]
 
-nasalPulmonic :: NonEmpty Text
-nasalPulmonic = fromList ["m", "ɱ", "n", "ɳ", "ɲ", "ŋ", "ɴ"]
+nasalPulmonic :: [Char]
+nasalPulmonic = ['m', 'ɱ', 'n', 'ɳ', 'ɲ', 'ŋ', 'ɴ']
 
-trillPulmonic :: NonEmpty Text
-trillPulmonic = fromList ["ʙ", "r", "ʀ"]
+trillPulmonic :: [Char]
+trillPulmonic = ['ʙ', 'r', 'ʀ']
 
-tapOrFlapPulmonic :: NonEmpty Text
-tapOrFlapPulmonic = fromList ["ⱱ", "ɾ", "ɽ"]
+tapOrFlapPulmonic :: [Char]
+tapOrFlapPulmonic = ['ⱱ', 'ɾ', 'ɽ']
 
-fricativePulmonic :: NonEmpty Text
+fricativePulmonic :: [Char]
 fricativePulmonic =
-  fromList
-    [ "ɸ",
-      "β",
-      "f",
-      "v",
-      "θ",
-      "ð",
-      "s",
-      "z",
-      "ʃ",
-      "ʒ",
-      "ʂ",
-      "ʐ",
-      "ç",
-      "ʝ",
-      "x",
-      "ɣ",
-      "χ",
-      "ʁ",
-      "ħ",
-      "ʕ",
-      "h",
-      "ɦ"
+    [ 'ɸ',
+      'β',
+      'f',
+      'v',
+      'θ',
+      'ð',
+      's',
+      'z',
+      'ʃ',
+      'ʒ',
+      'ʂ',
+      'ʐ',
+      'ç',
+      'ʝ',
+      'x',
+      'ɣ',
+      'χ',
+      'ʁ',
+      'ħ',
+      'ʕ',
+      'h',
+      'ɦ'
     ]
 
-lateralFricativePulmonic :: NonEmpty Text
-lateralFricativePulmonic = fromList ["ɬ", "ɮ"]
+lateralFricativePulmonic :: [Char]
+lateralFricativePulmonic = ['ɬ', 'ɮ']
 
-approximantPulmonic :: NonEmpty Text
-approximantPulmonic = fromList ["ʋ", "ɹ", "ɻ", "j", "ɰ"]
+approximantPulmonic :: [Char]
+approximantPulmonic = ['ʋ', 'ɹ', 'ɻ', 'j', 'ɰ']
 
-lateralApproximantPulmonic :: NonEmpty Text
-lateralApproximantPulmonic = fromList ["l", "ɭ", "ʎ", "ʟ"]
+lateralApproximantPulmonic :: [Char]
+lateralApproximantPulmonic = ['l', 'ɭ', 'ʎ', 'ʟ']
 
 
-diacriticsAndSuprasegmentals :: NonEmpty Text
+diacriticsAndSuprasegmentals :: [Char]
 diacriticsAndSuprasegmentals =
-  fromList
-    [ "̥", -- Voiceless
-      "̊", -- Voiceless (diacritic placed above symbol with descender)
-      "̤", -- Breathy voiced
+    [ '̥', -- Voiceless
+      '̊', -- Voiceless (diacritic placed above symbol with descender)
+      '̤', -- Breathy voiced
       -- End of first row.
-      "̬", -- Voiced
-      "̰", -- Creaky voiced
-      "̺", -- Apical
+      '̬', -- Voiced
+      '̰', -- Creaky voiced
+      '̺', -- Apical
       -- End of second row.
-      "ʰ", -- Aspirated
-      "̼", -- Linguolabial
-      "̻", -- Laminal
+      'ʰ', -- Aspirated
+      '̼', -- Linguolabial
+      '̻', -- Laminal
       -- End of third row.
-      "̹", -- More rounded
-      "ʷ", -- Labialised
-      "̃", -- Nasalised
+      '̹', -- More rounded
+      'ʷ', -- Labialised
+      '̃', -- Nasalised
       -- End of fourth row.
-      "̜", -- Less rounded
-      "ʲ", -- Palatalised
-      "ⁿ", -- Pre/post nasalised
-      "̟", -- Advanced
-      "ˠ", -- Velarised
-      "ˡ", -- Lateral release
-      "̠", -- Retracted
-      "ˤ", -- Pharyngealised
-      "̚", -- No audible release
-      "̈", -- Centralised
-      "̽", -- Mid centralised
-      "̝", -- Raised
-      "̩", -- Syllabic
-      "̞", -- Lowered
-      "̯", -- Non-syllabic
-      "̘", -- Advanced tongue root
-      "˞", -- Rhoticity
-      "̙", -- Retracted tongue root
-      "ʼ", -- Ejective
-      "̍", -- Syllabic (diacritic placed above)
-      "̪", -- Dental
-      "̣", -- Closer variety/Fricative
-      "̇" -- Palatalization/Centralization
+      '̜', -- Less rounded
+      'ʲ', -- Palatalised
+      'ⁿ', -- Pre/post nasalised
+      '̟', -- Advanced
+      'ˠ', -- Velarised
+      'ˡ', -- Lateral release
+      '̠', -- Retracted
+      'ˤ', -- Pharyngealised
+      '̚', -- No audible release
+      '̈', -- Centralised
+      '̽', -- Mid centralised
+      '̝', -- Raised
+      '̩', -- Syllabic
+      '̞', -- Lowered
+      '̯', -- Non-syllabic
+      '̘', -- Advanced tongue root
+      '˞', -- Rhoticity
+      '̙', -- Retracted tongue root
+      'ʼ', -- Ejective
+      '̍', -- Syllabic (diacritic placed above)
+      '̪', -- Dental
+      '̣', -- Closer variety/Fricative
+      '̇' -- Palatalization/Centralization
     ]
 
--- To do: find a more suitable name than exponentials.
--- They only look like exponentials if you consider how they
--- look similar to mathematical notation for exponentials.
+-- To do: find a more suitable name than superscripts.
+-- They only look like superscripts if you consider how they
+-- look similar to mathematical notation for superscripts.
 -- Really, they should be named something different.
-exponentials :: NonEmpty Text
-exponentials = exponentialsBefore <> exponentialsAfter
+superscripts :: [Char]
+superscripts = superscriptsBefore <> superscriptsAfter
 
-exponentialsBefore :: NonEmpty Text
-exponentialsBefore = fromList ["ⁿ"]
+superscriptsBefore :: [Char]
+superscriptsBefore = ['ⁿ']
 
-exponentialsAfter :: NonEmpty Text
-exponentialsAfter = diacriticsAndSuprasegmentals <> fromList ["ː", "ˑ", "̆"]
+superscriptsAfter :: [Char]
+superscriptsAfter = diacriticsAndSuprasegmentals <>  ['ː', 'ˑ', '̆']
 
 -- |
 -- Whether a character (but not a diacritic)
@@ -368,85 +400,84 @@ exponentialsAfter = diacriticsAndSuprasegmentals <> fromList ["ː", "ˑ", "̆"]
 -- This could be useful later for determining
 -- where to put diacritics so that
 -- they are readable.
-ascenders :: NonEmpty Text
+ascenders :: [Char]
 ascenders =
-  fromList
-    [ "b",
-      "t",
-      "d",
-      "k",
-      "ʔ",
-      "f",
-      "θ",
-      "ð",
-      "ħ",
-      "ʕ",
-      "h",
-      "ɦ",
-      "ɬ",
-      "l",
-      "ʎ",
-      "ʘ",
-      "ɓ",
-      "ǀ",
-      "ɗ",
-      "ǃ",
-      "ǂ",
-      "ɠ",
-      "ʄ",
-      "ǁ",
-      "ʛ",
-      "ɺ",
-      "ʢ",
-      "ʡ",
-      "ɤ",
-      "ʈ",
-      "ɖ",
-      "ɸ",
-      "β",
-      "ʃ",
-      "ɮ",
-      "ɭ",
-      "ɧ"
+    [ 'b',
+      't',
+      'd',
+      'k',
+      'ʔ',
+      'f',
+      'θ',
+      'ð',
+      'ħ',
+      'ʕ',
+      'h',
+      'ɦ',
+      'ɬ',
+      'l',
+      'ʎ',
+      'ʘ',
+      'ɓ',
+      'ǀ',
+      'ɗ',
+      'ǃ',
+      'ǂ',
+      'ɠ',
+      'ʄ',
+      'ǁ',
+      'ʛ',
+      'ɺ',
+      'ʢ',
+      'ʡ',
+      'ɤ',
+      'ʈ',
+      'ɖ',
+      'ɸ',
+      'β',
+      'ʃ',
+      'ɮ',
+      'ɭ',
+      'ɧ'
     ]
 
-descenders :: NonEmpty Text
+descenders :: [Char]
 descenders =
   fromList
-    [ "p",
-      "ɟ",
-      "g",
-      "q",
-      "ɱ",
-      "ɽ",
-      "ʒ",
-      "ʂ",
-      "ʐ",
-      "ç",
-      "ʝ",
-      "ɣ",
-      "χ",
-      "ɻ",
-      "j",
-      "ɰ",
-      "ɥ",
-      "y",
-      "ɳ",
-      "ɲ",
-      "ŋ",
-      "ʈ",
-      "ɖ",
-      "ɸ",
-      "β",
-      "ʃ",
-      "ɮ",
-      "ɧ"
+    [ 'p',
+      'ɟ',
+      'g',
+      'q',
+      'ɱ',
+      'ɽ',
+      'ʒ',
+      'ʂ',
+      'ʐ',
+      'ç',
+      'ʝ',
+      'ɣ',
+      'χ',
+      'ɻ',
+      'j',
+      'ɰ',
+      'ɥ',
+      'y',
+      'ɳ',
+      'ɲ',
+      'ŋ',
+      'ʈ',
+      'ɖ',
+      'ɸ',
+      'β',
+      'ʃ',
+      'ɮ',
+      'ɧ'
     ]
     -- We don't include the retroflex l i.e <ɭ> because, even though it is a descender,
     -- There is more free space under it than above
 
 
-graphemesOfIPA :: NonEmpty Text
+graphemesOfIPA :: [Char]
 graphemesOfIPA =
   consonantsPulmonic
     <> consonantsNonPulmonic
@@ -462,7 +493,7 @@ graphemesOfIPA =
 
 
 -- CONSONANTS (PULMONIC)
-consonantsPulmonic :: NonEmpty Text
+consonantsPulmonic :: [Char]
 consonantsPulmonic =
   plosivePulmonic
     <> nasalPulmonic
@@ -473,120 +504,116 @@ consonantsPulmonic =
     <> approximantPulmonic
     <> lateralApproximantPulmonic
 
-consonantsNonPulmonic :: NonEmpty Text
+consonantsNonPulmonic :: [Char]
 consonantsNonPulmonic =
-  fromList
-    [ "ʘ",
-      "ɓ", -- Bilabial
-      "ǀ" {- Dental -},
-      "ɗ", -- Dental/alveolar
-      "ǃ" {-  (Post)alveolar -},
-      "ʄ",
-      "ǂ",
-      "ɠ",
-      "ǁ",
-      "ʛ"
+    [ 'ʘ',
+      'ɓ', -- Bilabial
+      'ǀ' {- Dental -},
+      'ɗ', -- Dental/alveolar
+      'ǃ' {-  (Post)alveolar -},
+      'ʄ',
+      'ǂ',
+      'ɠ',
+      'ǁ',
+      'ʛ'
     ]
 
-otherSymbols :: NonEmpty Text
+otherSymbols :: [Char]
 otherSymbols =
-  fromList
-    [ "ʍ",
-      "ɕ",
-      "w",
-      "ʑ",
-      "ɥ",
-      "ɺ",
-      "ʜ",
-      "ɧ",
-      "ʢ",
-      "ʡ"
+    [ 'ʍ',
+      'ɕ',
+      'w',
+      'ʑ',
+      'ɥ',
+      'ɺ',
+      'ʜ',
+      'ɧ',
+      'ʢ',
+      'ʡ'
     ]
 
-consonants :: NonEmpty Text
+consonants :: [Char]
 consonants = consonantsPulmonic <> consonantsNonPulmonic <> otherSymbols
 
-vowels :: NonEmpty Text
+vowels :: [Char]
 vowels =
   fromList
-    [ "i",
-      "y",
-      "ɨ",
-      "ʉ",
-      "ɯ",
-      "u", -- Close
-      "ɪ",
-      "ʏ",
-      "ʊ",
-      "e",
-      "ø",
-      "ɘ",
-      "ɵ",
-      "ɤ",
-      "o", -- Close-mid
-      "ə",
-      "ɛ",
-      "œ",
-      "ɜ",
-      "ɞ",
-      "ʌ",
-      "ɔ", -- Open-mid
-      "æ",
-      "ɐ",
-      "a",
-      "ɶ",
-      "ɑ",
-      "ɒ" -- Open
+    [ 'i',
+      'y',
+      'ɨ',
+      'ʉ',
+      'ɯ',
+      'u', -- Close
+      'ɪ',
+      'ʏ',
+      'ʊ',
+      'e',
+      'ø',
+      'ɘ',
+      'ɵ',
+      'ɤ',
+      'o', -- Close-mid
+      'ə',
+      'ɛ',
+      'œ',
+      'ɜ',
+      'ɞ',
+      'ʌ',
+      'ɔ', -- Open-mid
+      'æ',
+      'ɐ',
+      'a',
+      'ɶ',
+      'ɑ',
+      'ɒ' -- Open
     ]
 
 
 -- | IPA text that is not a semantic modifier to what is before or after it.
 --   This includes vowels, and consonants. It excludes all diacritics.
-strictSegmentals :: NonEmpty Text
+strictSegmentals :: [Char]
 strictSegmentals = consonants <> vowels
 
-suprasegmentals :: NonEmpty Text
+suprasegmentals :: [Char]
 suprasegmentals =
-  fromList
-    [ "ˈ", -- Primary stress
-      "ˌ", -- Secondary stress
-      "ː", -- Long
-      "ˑ", -- Half long
-      "̆", -- Extra short
-      "|", -- Minor (foot) group
-      "‖", -- Major (intonation) group
-      ".", -- Syllable break
-      "‿" -- Linking (absence of a break)
+    [ 'ˈ', -- Primary stress
+      'ˌ', -- Secondary stress
+      'ː', -- Long
+      'ˑ', -- Half long
+      '̆', -- Extra short
+      '|', -- Minor (foot) group
+      '‖', -- Major (intonation) group
+      '.', -- Syllable break
+      '‿' -- Linking (absence of a break)
     ]
 
-toneAndWordAccents :: NonEmpty Text
+toneAndWordAccents :: [Char]
 toneAndWordAccents =
-  fromList
     {- Level -}
-    [ "˥",
-      "̋", -- Extra high
-      "˦",
-      "́", -- High
-      "˧",
-      "̄", -- Mid
-      "˨",
-      "̀", -- Low
-      "˩",
-      "̏", -- Extra low
-      "ꜜ", -- Downstep
-      "ꜛ", -- Upstep
+    [ '˥',
+      '̋', -- Extra high
+      '˦',
+      '́', -- High
+      '˧',
+      '̄', -- Mid
+      '˨',
+      '̀', -- Low
+      '˩',
+      '̏', -- Extra low
+      'ꜜ', -- Downstep
+      'ꜛ', -- Upstep
 
       {- Contour -}
-      "̌", -- Rising
-      "̂", -- Falling
-      "᷄", -- High rising
-      "᷅", -- Low rising
-      "᷈", -- Rising-falling
-      "↗", -- Global rise
-      "↘" -- Global fall
+      '̌', -- Rising
+      '̂', -- Falling
+      '᷄', -- High rising
+      '᷅', -- Low rising
+      '᷈', -- Rising-falling
+      '↗', -- Global rise
+      '↘' -- Global fall
     ]
 
-isAscender :: Text -> Bool
+isAscender :: Char -> Bool
 isAscender character = character `elem` ascenders
 
 -- |
@@ -598,8 +625,12 @@ isAscender character = character `elem` ascenders
 -- This could be useful later for determining
 -- where to put diacritics so that
 -- they are readable.
-isDescender :: Text -> Bool
+isDescender :: Char -> Bool
 isDescender character = character `elem` descenders
+
+isDescenderText :: Text -> Bool
+isDescenderText text =
+  T.length text == 1 && T.head text `elem` descenders
 
 -- |
 -- Prevent placement of diacritics below a full-width
@@ -615,29 +646,29 @@ preventProhibitedCombination ss
   | T.null ss = ""
   | T.length ss == 1 = ss
   | otherwise =
-    let firstCharacter = one (T.head ss) :: Text
-        secondCharacter = one (T.index ss 1) :: Text
+    let firstCharacter =  (T.head ss) :: Char
+        secondCharacter =  (T.index ss 1) :: Char
         rest = T.tail (T.tail ss)
      in if isAscender firstCharacter && isDiacriticAbove secondCharacter
-          then firstCharacter <> lowerDiacritic secondCharacter <> rest
+          then one firstCharacter <> one (lowerDiacritic secondCharacter) <> rest
           else
             if isDescender firstCharacter && isDiacriticBelow secondCharacter
-              then firstCharacter <> raiseDiacritic secondCharacter <> rest
+              then one firstCharacter <> one (raiseDiacritic secondCharacter) <> rest
               else ss
 
 
 -- |
 -- Whether a diacritic goes above
 -- the character it is placed on.
-isDiacriticAbove :: Text -> Bool
-isDiacriticAbove "̊" = True
+isDiacriticAbove :: Char -> Bool
+isDiacriticAbove '̊' = True
 isDiacriticAbove _   = False
 
 -- |
 -- Whether a diacritic goes below
 -- the character which it is placed on.
-isDiacriticBelow :: Text -> Bool
-isDiacriticBelow "̥" = True
+isDiacriticBelow :: Char -> Bool
+isDiacriticBelow '̥' = True
 isDiacriticBelow _   = False
 
 -- |
@@ -645,8 +676,8 @@ isDiacriticBelow _   = False
 -- replaces it with one that goes below,
 -- and has the same meaning.
 -- otherwise does nothing.
-lowerDiacritic :: Text -> Text
-lowerDiacritic "̊" = "̥"
+lowerDiacritic :: Char -> Char
+lowerDiacritic '̊' = '̥'
 lowerDiacritic x   = x
 
 -- |
@@ -654,6 +685,6 @@ lowerDiacritic x   = x
 -- replaces it with one that goes below, and
 -- has the same meaning;
 -- otherwise it does nothing.
-raiseDiacritic :: Text -> Text
-raiseDiacritic "̥" = "̊"
+raiseDiacritic :: Char -> Char
+raiseDiacritic '̥' = '̊'
 raiseDiacritic x   = x

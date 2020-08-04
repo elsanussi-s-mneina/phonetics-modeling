@@ -1,22 +1,26 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-module GraphemeGrammar2Spec where
+module GraphemeGrammarSpec where
 
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import           Relude
-import           GraphemeGrammar2 ( singleCharParser
+import           GraphemeGrammar  ( singleCharParser
                                   , secondaryArticulationDiacriticParser
                                   , phonemeParser
                                   , thenParser
                                   , manyParser
                                   , tieBarParser
-                                  , digraphParser)
+                                  , digraphParser
+                                  , orParser
+                                  , phonemeParser
+                                  , splitIntoPhonemes
+                                  )
 
 import qualified Data.Text as T
 
 
-graphemeGrammar2Spec = do
+graphemeGrammarSpec = do
   hspec singleCharParserSpec
   hspec secondaryArticulationDiacriticParserSpec
   hspec phonemeParserSpec
@@ -24,6 +28,8 @@ graphemeGrammar2Spec = do
   hspec manyParserSpec
   hspec tieBarParserSpec
   hspec digraphParserSpec
+  hspec orParserSpec
+  hspec splitIntoPhonemesSpec
 
 singleCharParserSpec :: Spec
 singleCharParserSpec =
@@ -83,6 +89,22 @@ phonemeParserSpec =
       isNothing (f "ʲ") `shouldBe` True
     it "should be that: parsing a string containing only a \"t\" followed by superscript j succeeds" $
       f "tʲ" `shouldBe` Just("tʲ", "")
+    it "parses \\t\\" $ do
+      phonemeParser "t" `shouldBe` Just ("t", "")
+    it "parses \\d\\" $ do
+      phonemeParser "d" `shouldBe` Just ("d", "")
+    it "parses \\ʃ\\" $ do
+      phonemeParser "ʃ" `shouldBe` Just ("ʃ", "")
+    it "does not parse dollar sign" $ do
+      phonemeParser "$" `shouldBe` Nothing
+    it "does not parse an empty string" $ do
+      phonemeParser "" `shouldBe` Nothing
+    it "does parse digraph \\t͜ʃ\\" $ do
+      phonemeParser "t͜ʃ" `shouldBe` Just ("t͜ʃ", "")
+    it "does parse digraph \\t͡s\\" $ do
+      phonemeParser "t͡s" `shouldBe` Just ("t͡s", "")
+    it "does parse half of two phonemes \\t\\ \\s\\" $ do
+      phonemeParser "ts" `shouldBe` Just ("t", "s")
 
 thenParserSpec :: Spec
 thenParserSpec =
@@ -132,3 +154,23 @@ digraphParserSpec =
     it "fails to parse ts because it has no digraph" $ do
       digraphParser "ts" `shouldBe` Nothing
 
+orParserSpec :: Spec
+orParserSpec =
+  describe "or-parser" $ do
+    it "parses \"aaa\" successfully" $ do
+      orParser (manyParser (singleCharParser ['f'])) (manyParser (singleCharParser ['a'])) "aaaf" `shouldBe` Just ("aaa", "f")
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "ffffa" `shouldBe` Just ("f", "fffa")
+    it "parse failure case" $ do
+      orParser (manyParser $ singleCharParser ['a', 'b']) (manyParser $ singleCharParser ['k']) "ttttnnn" `shouldBe` Nothing
+
+splitIntoPhonemesSpec :: Spec
+splitIntoPhonemesSpec =
+  describe "split into phonemes" $ do
+    it "splits \"td\" it into two phonemes." $ do
+      splitIntoPhonemes "td" `shouldBe` ["t", "d"]
+    it "splits \"tst͜s\" it into two phonemes." $ do
+      splitIntoPhonemes "tst͜s" `shouldBe` ["t", "s", "t͜s"]
+    it "splits \"ftst͜ss̬r̥dd͜ʒ\" into 8 phonemes." $ do
+      splitIntoPhonemes "ftst͜ss̬r̥dd͜ʒ" `shouldBe` ["f", "t", "s", "t͜s", "s̬", "r̥", "d", "d͜ʒ"]
+    it "splits \"fʰpʰ\" into 2 phonemes" $ do
+      splitIntoPhonemes "fʰpʰ" `shouldBe` ["fʰ", "pʰ"]

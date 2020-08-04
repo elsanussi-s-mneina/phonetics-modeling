@@ -20,7 +20,7 @@ import Lib_Functions (showPhonet,
 import PhoneticFeatures(showFeatures, analyzeFeatures)
 import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
 
-import GraphemeGrammar(splitByPhonetes, isDescender)
+import GraphemeGrammar(splitIntoPhonemes, isDescenderText)
 
 englishPhonetInventoryReport :: Text
 englishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA englishPhonetInventory)
@@ -48,7 +48,7 @@ ipaAndPhonetFormat (ipaText, phonet) =
 
 ipaTextToPhonetList :: Text -> [(Text, Maybe Phonet)]
 ipaTextToPhonetList text =
-  let ipaChunks = splitByPhonetes text
+  let ipaChunks = splitIntoPhonemes text
       phonetes = map analyzeIPA ipaChunks
    in zip ipaChunks phonetes
 
@@ -634,7 +634,7 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
         (Consonant Voiced x y z sa) of
         Nothing         -> Nothing
         Just regularIPA ->
-                            Just (if isDescender regularIPA
+                            Just (if isDescenderText regularIPA
                                  then regularIPA <> "̊"
                                  else regularIPA <> "̥")
   -- add diacritic for voiceless
@@ -647,7 +647,7 @@ constructIPARecursive recursionLimit recursionLevel p = case p of
         (1 + recursionLevel)
         (Vowel x y z Voiced vowelLength) of
         Nothing         -> Nothing
-        Just regularIPA -> if isDescender regularIPA
+        Just regularIPA -> if isDescenderText regularIPA
                            then Just (regularIPA <> "̊")
                            else Just (regularIPA <> "̥")
   -- If there is no way to express a voiced consonant in a single
