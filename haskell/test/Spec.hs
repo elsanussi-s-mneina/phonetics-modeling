@@ -7,7 +7,7 @@ import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import           IPA (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
 import           PhoneticFeatures (isGlide)
 import           Relude
-
+import           GraphemeGrammar2Spec
 import qualified Data.Text as T
 
 -- import SpecGenerator (generatedTestCode) -- If we need to generate the test code
@@ -15,6 +15,8 @@ import qualified Data.Text as T
 
 main = do
 --  putTextLn generatedTestCode -- If we need to generate the test code
+  graphemeGrammar2Spec
+  -- {- Uncomment if only working on graphemeGrammar2Spec
   hspec glideSpec
   hspec ipaTextToPhonetListReportSpec
   hspec voicingSpec
@@ -22,6 +24,7 @@ main = do
   hspec secondaryArticulationSpec
   hspec vowelLengthSpec
   hspec pulmonicEgressiveConsonantSpec
+  -- -} -- Uncomment this line if only working on graphemeGrammar2Spec
 
 isDescribedAs
   :: Text -- ^ IPA e.g. "pʰ"
