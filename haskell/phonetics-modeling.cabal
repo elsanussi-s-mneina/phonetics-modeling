@@ -98,6 +98,7 @@ test-suite phonetics-modeling-test
   main-is: Spec.hs
   other-modules:
       SpecGenerator
+      GraphemeGrammar2Spec
       Paths_phonetics_modeling
   hs-source-dirs:
       test
