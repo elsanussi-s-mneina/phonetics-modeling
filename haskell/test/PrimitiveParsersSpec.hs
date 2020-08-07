@@ -9,15 +9,17 @@ import           PrimitiveParsers  ( singleCharParser
                                    , thenParser
                                    , manyParser
                                    , orParser
+                                   , optionalParser
                                    )
 
 import qualified Data.Text as T
 
-graphemeGrammarSpec = do
+primitiveParsersSpec = do
   hspec singleCharParserSpec
   hspec thenParserSpec
   hspec manyParserSpec
   hspec orParserSpec
+  hspec optionalParserSpec
 
 singleCharParserSpec :: Spec
 singleCharParserSpec =
@@ -71,8 +73,20 @@ manyParserSpec =
 orParserSpec :: Spec
 orParserSpec =
   describe "or-parser" $ do
-    it "parses \"aaa\" successfully" $ do
+    it "parses \"aaaf\" successfully" $ do
       orParser (manyParser (singleCharParser ['f'])) (manyParser (singleCharParser ['a'])) "aaaf" `shouldBe` Just ("aaa", "f")
       orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "ffffa" `shouldBe` Just ("f", "fffa")
     it "parse failure case" $ do
       orParser (manyParser $ singleCharParser ['a', 'b']) (manyParser $ singleCharParser ['k']) "ttttnnn" `shouldBe` Nothing
+
+optionalParserSpec :: Spec
+optionalParserSpec =
+  describe "optional parser" $ do
+    it "parses \"aaaf\" successfully" $ do
+      optionalParser (manyParser (singleCharParser ['a'])) "aaaf" `shouldBe` Just ("aaa", "f")
+    it "parses \"bbb\" successfully without consuming any input" $ do
+      optionalParser (manyParser (singleCharParser ['a'])) "bbb" `shouldBe` Just ("", "bbb")
+    it "parses \"f\" successfully" $ do
+      optionalParser (singleCharParser ['f']) "f" `shouldBe` Just("f", "")
+    it "does parse \"d\" when expecting an \"f\", but does not consume \"d\"." $ do
+      optionalParser (singleCharParser ['f']) "d" `shouldBe` Just("", "d")

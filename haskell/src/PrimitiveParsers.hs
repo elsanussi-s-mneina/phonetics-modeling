@@ -1,4 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE Safe #-}
+
 module PrimitiveParsers where
 
 import Relude(Text, Char, Maybe(Just, Nothing), (<>), (==), elem, otherwise)
@@ -61,3 +64,14 @@ manyParser subParser text =
             -> case manyParser subParser rest of
                   Nothing -> Just (parsed, rest)
                   Just (parsed2, rest2) -> Just (parsed <> parsed2, rest2)
+
+-- | changes a parser by making it never return Nothing,
+--   that is it makes the parser optional.
+optionalParser
+  :: (Text -> Maybe (Text, Text))
+  -> Text
+  -> Maybe (Text, Text)
+optionalParser subParser text =
+  case subParser text of
+    Nothing -> Just ("", text) -- Return text unconsumed.
+    Just (parsed, rest) -> Just (parsed, rest)
