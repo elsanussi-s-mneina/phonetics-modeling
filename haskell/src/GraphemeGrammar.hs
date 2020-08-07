@@ -69,25 +69,22 @@ superscriptBeforeParser
   -> Maybe (Text, Text)
 superscriptBeforeParser = singleCharParser superscriptsBefore
 
+
+-- | represents grammar rule:
+--  phoneme -> [subscriptBefore] (digraph | baseCharacter) [voicingDiacritic] [subscriptAfter] [secondaryArticulation]
 phonemeParser
   :: Text
   -> Maybe (Text, Text)
 phonemeParser =
-  (baseCharacterParser `thenParser` secondaryArticulationDiacriticParser)
-  `orParser`
-  (baseCharacterParser `thenParser` voicingDiacriticParser `thenParser` secondaryArticulationDiacriticParser)
-  `orParser`
-  (baseCharacterParser `thenParser` voicingDiacriticParser)
-  `orParser`
-  (baseCharacterParser `thenParser` superscriptAfterParser)
-  `orParser`
-  (superscriptBeforeParser `thenParser` baseCharacterParser `thenParser` superscriptAfterParser)
-  `orParser`
-  (superscriptBeforeParser `thenParser` baseCharacterParser)
-  `orParser`
-  digraphParser
-  `orParser`
-  baseCharacterParser
+  (optionalParser superscriptBeforeParser)
+  `thenParser`
+  (digraphParser `orParser` baseCharacterParser)
+  `thenParser`
+  (optionalParser voicingDiacriticParser)
+  `thenParser`
+  (optionalParser superscriptAfterParser)
+  `thenParser`
+  (optionalParser secondaryArticulationDiacriticParser)
 
 secondaryArticulationDiacriticParser
   :: Text
