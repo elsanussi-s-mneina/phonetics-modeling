@@ -4,7 +4,7 @@
 
 module PrimitiveParsers where
 
-import Relude(Text, Char, Maybe(Just, Nothing), (<>), (==), elem, otherwise)
+import Relude(Text, Char, Maybe(Just, Nothing), (<>), (&&), elem, not, otherwise)
 
 import qualified Data.Text as T
 
@@ -13,8 +13,7 @@ singleCharParser
   -> Text
   -> Maybe (Text, Text)
 singleCharParser charList text
-  | T.length text == 0 = Nothing
-  | (T.index text 0) `elem` charList = Just (T.take 1 text, T.drop 1 text)
+  | not (T.null text) && (T.index text 0) `elem` charList = Just (T.take 1 text, T.drop 1 text)
   | otherwise = Nothing
 
 
@@ -35,7 +34,8 @@ thenParser firstParser secondParser text =
                  Just (parsed2, rest2) -> Just (parsed <> parsed2, rest2)
 
 
--- | combines parsers by using one or the other.
+-- | Combines parsers by using one or the other.
+--   The first parser that succeeds is used.
 orParser
   :: (Text -> Maybe (Text, Text))
   -> (Text -> Maybe (Text, Text))
@@ -43,10 +43,8 @@ orParser
   -> Maybe (Text, Text)
 orParser firstParser secondParser text =
   case firstParser text of
-    Nothing -> case secondParser text of
-                      Nothing -> Nothing
-                      Just (parsed, rest) -> Just (parsed, rest)
-    Just (parsed, rest) -> Just (parsed, rest)
+    Nothing -> secondParser text
+    Just result -> Just result
 
 -- | changes a parser by repeating it an indefinite number
 --   of times.
@@ -74,4 +72,4 @@ optionalParser
 optionalParser subParser text =
   case subParser text of
     Nothing -> Just ("", text) -- Return text unconsumed.
-    Just (parsed, rest) -> Just (parsed, rest)
+    Just result -> Just result
