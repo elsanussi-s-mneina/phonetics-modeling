@@ -90,10 +90,10 @@ spirantizedPhonet :: Phonet -> Phonet
 -- which is dental.
 -- So the following line implements this
 -- change in place of articulation.
-spirantizedPhonet p = case p of
-  (Consonant x Alveolar Plosive z sa) -> Consonant x Dental Fricative z sa
-  (Consonant x place_1 Plosive z sa)  -> Consonant x place_1 Fricative z sa
-  other                            -> other
+spirantizedPhonet p =
+  if place p == Just Alveolar
+    then withManner Fricative (withPlace Dental p)
+    else withManner Fricative p
 
 unmarkDifferences :: Phonet -> Phonet -> UnmarkablePhonet
 unmarkDifferences p_1 p_2 = case (p_1, p_2) of
@@ -257,7 +257,7 @@ impossible p = case p of
   (Consonant _ Glottal Fricative PulmonicEgressive _) ->
     False -- [h] and [ɦ] are not impossible.
   (Consonant _ Glottal _ PulmonicEgressive _) ->
-    True -- all other pulmonary egressive consonants are impossible..
+    True -- all other glottal pulmonic egressive consonants are impossible..
   (Consonant _ Pharyngeal Nasal PulmonicEgressive _) ->
     True
   (Consonant _ Pharyngeal LateralFricative PulmonicEgressive _) ->

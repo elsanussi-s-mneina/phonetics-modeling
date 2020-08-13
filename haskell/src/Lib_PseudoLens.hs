@@ -27,17 +27,17 @@ place :: Phonet -> Maybe Place
 place (Consonant _ p _ _ _) = Just p
 place _ = Nothing
 
-withPlace :: Place -> Phonet -> Maybe Phonet
-withPlace x (Consonant a _ b c d) = Just (Consonant a x b c d)
-withPlace _ _ = Nothing
+withPlace :: Place -> Phonet -> Phonet
+withPlace x (Consonant a _ b c d) =  Consonant a x b c d
+withPlace _ p = p
 
 manner :: Phonet -> Maybe Manner
 manner (Consonant _ _ m _ _) = Just m
 manner _ = Nothing
 
-withManner :: Manner -> Phonet -> Maybe Phonet
-withManner x (Consonant a b _ c d) = Just (Consonant a b x c d)
-withManner _ _ = Nothing
+withManner :: Manner -> Phonet -> Phonet
+withManner x (Consonant a b _ c d) = (Consonant a b x c d)
+withManner _ p = p
 
 airstream :: Phonet -> Maybe Airstream
 airstream (Consonant _ _ _ a _) = Just a
