@@ -11,7 +11,7 @@ import           Relude        (Bool (False, True),
                                 Text, elem, fmap,
                                 one,
                                 sconcat, toList, unwords,
-                                (==))
+                                (==), (||))
 import qualified Data.Text as T
 
 
@@ -60,30 +60,64 @@ englishDescription = showPhonet
 -- | A function that given an IPA symbol will convert it to the voiced
 --   equivalent.
 voicedPhonet :: Phonet -> Phonet
-voicedPhonet p = case p of
-  (Consonant VoicelessAspirated w x y z) -> Consonant VoicedAspirated w x y z
-  (Consonant Voiceless w x y z)          -> Consonant Voiced w x y z
-  (Consonant Voiced w x y z)             -> Consonant Voiced w x y z
-  (Consonant VoicedAspirated w x y z)    -> Consonant VoicedAspirated w x y z
-  (Consonant _ w x y z)                  -> Consonant Voiced w x y z
-  (Vowel x y z _ vl)                      -> Vowel x y z Voiced vl
+voicedPhonet p =
+  if isAspirated p
+  then changePhonationToVoicedAspirated p
+  else changePhonationToVoiced p
+
+-- | The vocal fold configuration of a phoneme.
+vocalFolds :: Phonet -> VocalFolds
+vocalFolds (Consonant vf _ _ _ _) = vf
+vocalFolds (Vowel _ _ _ vf _) = vf
+
+-- | Given a phonete returns,
+--   a similar phonete with the only possible difference
+--   being that the vocal folds are voiced,
+--  and not aspirated.
+changePhonationToVoiced :: Phonet -> Phonet
+changePhonationToVoiced (Consonant _ w x y z) = (Consonant Voiced w x y z)
+changePhonationToVoiced (Vowel x y z _ vl)    = (Vowel x y z Voiced vl)
+
+
+-- | Given a phonete returns,
+--   a similar phonete with the only difference
+--   being that the result is voiced, and aspirated.
+changePhonationToVoicedAspirated :: Phonet -> Phonet
+changePhonationToVoicedAspirated (Consonant _ w x y z) = (Consonant VoicedAspirated w x y z)
+changePhonationToVoicedAspirated (Vowel x y z _ vl)    = (Vowel x y z VoicedAspirated vl)
 
 -- | A function that given an IPA symbol will convert it to the voiceless
 --   equivalent.
 devoicedPhonet :: Phonet -> Phonet
-devoicedPhonet p = case p of
-  c@(Consonant Voiced _ _ _ _)           -> changePhonationToVoiceless c
-  c@(Consonant CreakyVoiced _ _ _ _)     -> changePhonationToVoiceless c
-  c@(Consonant Voiceless _ _ _ _)        -> changePhonationToVoiceless c
-  (Consonant VoicedAspirated w x y z)    -> Consonant VoicelessAspirated w x y z
-  (Consonant VoicelessAspirated w x y z) -> Consonant VoicelessAspirated w x y z
-  v@(Vowel{})                   -> changePhonationToVoiceless v
+devoicedPhonet p =
+  if isAspirated p
+  then changePhonationToVoicelessAspirated p
+  else changePhonationToVoiceless p
 
+-- | whether a phoneme is aspirated,
+--   (regardless of whether or not it is voiced)
+isAspirated :: Phonet -> Bool
+isAspirated p =
+  let vf = vocalFolds p
+  in vf == VoicelessAspirated || vf == VoicedAspirated
+
+-- | Given a phonete returns,
+--   a similar phonete with the only difference
+--   being that the result is voiceless, but not aspirated.
 changePhonationToVoiceless :: Phonet -> Phonet
 changePhonationToVoiceless (Consonant _ w x y z) = (Consonant Voiceless w x y z)
 changePhonationToVoiceless (Vowel x y z _ vl) = (Vowel x y z Voiceless vl)
 
+-- | Given a phonete returns,
+--   a similar phonete with the only difference
+--   being that the result is voiceless, and aspirated.
+changePhonationToVoicelessAspirated :: Phonet -> Phonet
+changePhonationToVoicelessAspirated (Consonant _ w x y z) = (Consonant VoicelessAspirated w x y z)
+changePhonationToVoicelessAspirated (Vowel x y z _ vl) = (Vowel x y z VoicelessAspirated vl)
 
+
+-- | Make a phoneme spirantized. That is,
+--  change its manner of articulation to fricative.
 spirantizedPhonet :: Phonet -> Phonet
 -- The following is inelegant, but there is no other way in the system,
 -- right now. The part that is inelegant is that,
@@ -244,9 +278,9 @@ similarInLength vowel_length_1 =
     MarkedVowelLength x -> one x
     UnmarkedVowelLength -> vowelLengthStates
 
--- The following function returns whether an articulation is
--- considered impossible according to the IPA (pulmonic) consonants chart.
--- Does not work for other values.
+-- | The following function returns whether an articulation is
+--   considered impossible according to the IPA (pulmonic) consonants chart.
+--   Does not work for other values.
 impossible :: Phonet -> Bool
 impossible p = case p of
   (Consonant Voiced Pharyngeal Plosive PulmonicEgressive _) ->
