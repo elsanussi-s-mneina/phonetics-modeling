@@ -72,12 +72,17 @@ voicedPhonet p = case p of
 --   equivalent.
 devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet p = case p of
-  (Consonant Voiced w x y z)             -> Consonant Voiceless w x y z
-  (Consonant CreakyVoiced w x y z)       -> Consonant Voiceless w x y z
-  (Consonant Voiceless w x y z)          -> Consonant Voiceless w x y z
+  c@(Consonant Voiced _ _ _ _)           -> changePhonationToVoiceless c
+  c@(Consonant CreakyVoiced _ _ _ _)     -> changePhonationToVoiceless c
+  c@(Consonant Voiceless _ _ _ _)        -> changePhonationToVoiceless c
   (Consonant VoicedAspirated w x y z)    -> Consonant VoicelessAspirated w x y z
   (Consonant VoicelessAspirated w x y z) -> Consonant VoicelessAspirated w x y z
-  (Vowel x y z _ vl)                      -> Vowel x y z Voiceless vl
+  v@(Vowel{})                   -> changePhonationToVoiceless v
+
+changePhonationToVoiceless :: Phonet -> Phonet
+changePhonationToVoiceless (Consonant _ w x y z) = (Consonant Voiceless w x y z)
+changePhonationToVoiceless (Vowel x y z _ vl) = (Vowel x y z Voiceless vl)
+
 
 spirantizedPhonet :: Phonet -> Phonet
 -- The following is inelegant, but there is no other way in the system,
