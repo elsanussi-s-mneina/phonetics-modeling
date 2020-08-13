@@ -14,6 +14,7 @@ import           Relude        (Bool (False, True),
                                 (==), (||))
 import qualified Data.Text as T
 
+import Lib_PseudoLens
 
 equivalentInPlace :: Place -> Place -> Bool
 Bilabial `equivalentInPlace` Bilabial = True
@@ -37,8 +38,8 @@ _ `equivalentInPlace` _ = False
 --   returns the place of articulation that is
 --   the next more retracted.
 retractedPlace :: Place -> Place
-retractedPlace place =
-  case place of
+retractedPlace placeValue =
+  case placeValue of
     Bilabial     -> LabioDental
     LabioDental  -> Dental
     Dental       -> Alveolar
@@ -62,37 +63,16 @@ englishDescription = showPhonet
 voicedPhonet :: Phonet -> Phonet
 voicedPhonet p =
   if isAspirated p
-  then changePhonationToVoicedAspirated p
-  else changePhonationToVoiced p
-
--- | The vocal fold configuration of a phoneme.
-vocalFolds :: Phonet -> VocalFolds
-vocalFolds (Consonant vf _ _ _ _) = vf
-vocalFolds (Vowel _ _ _ vf _) = vf
-
--- | Given a phonete returns,
---   a similar phonete with the only possible difference
---   being that the vocal folds are voiced,
---  and not aspirated.
-changePhonationToVoiced :: Phonet -> Phonet
-changePhonationToVoiced (Consonant _ w x y z) = (Consonant Voiced w x y z)
-changePhonationToVoiced (Vowel x y z _ vl)    = (Vowel x y z Voiced vl)
-
-
--- | Given a phonete returns,
---   a similar phonete with the only difference
---   being that the result is voiced, and aspirated.
-changePhonationToVoicedAspirated :: Phonet -> Phonet
-changePhonationToVoicedAspirated (Consonant _ w x y z) = (Consonant VoicedAspirated w x y z)
-changePhonationToVoicedAspirated (Vowel x y z _ vl)    = (Vowel x y z VoicedAspirated vl)
+  then toVoicedAspirated p
+  else toVoiced p
 
 -- | A function that given an IPA symbol will convert it to the voiceless
 --   equivalent.
 devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet p =
   if isAspirated p
-  then changePhonationToVoicelessAspirated p
-  else changePhonationToVoiceless p
+  then toVoicelessAspirated p
+  else toVoiceless p
 
 -- | whether a phoneme is aspirated,
 --   (regardless of whether or not it is voiced)
@@ -100,21 +80,6 @@ isAspirated :: Phonet -> Bool
 isAspirated p =
   let vf = vocalFolds p
   in vf == VoicelessAspirated || vf == VoicedAspirated
-
--- | Given a phonete returns,
---   a similar phonete with the only difference
---   being that the result is voiceless, but not aspirated.
-changePhonationToVoiceless :: Phonet -> Phonet
-changePhonationToVoiceless (Consonant _ w x y z) = (Consonant Voiceless w x y z)
-changePhonationToVoiceless (Vowel x y z _ vl) = (Vowel x y z Voiceless vl)
-
--- | Given a phonete returns,
---   a similar phonete with the only difference
---   being that the result is voiceless, and aspirated.
-changePhonationToVoicelessAspirated :: Phonet -> Phonet
-changePhonationToVoicelessAspirated (Consonant _ w x y z) = (Consonant VoicelessAspirated w x y z)
-changePhonationToVoicelessAspirated (Vowel x y z _ vl) = (Vowel x y z VoicelessAspirated vl)
-
 
 -- | Make a phoneme spirantized. That is,
 --  change its manner of articulation to fricative.
@@ -319,16 +284,18 @@ retractPhonet (Just (Consonant v p m a sa)) = Just (Consonant v (retractedPlace 
 retractPhonet _ = Nothing
 
 deaspirate :: Phonet -> Phonet
-deaspirate (Consonant VoicedAspirated place manner airstream secondary) =
-  Consonant Voiced place manner airstream secondary
-deaspirate (Consonant VoicelessAspirated place_1 manner_1 airstream_1 secondary_1) =
-  Consonant Voiceless place_1 manner_1 airstream_1 secondary_1
-deaspirate x = x
+deaspirate p =
+  let vf = vocalFolds p
+  in case vf of
+       VoicedAspirated -> withVocalFolds Voiced p
+       VoicelessAspirated -> withVocalFolds Voiceless p
+       _ -> p
 
 decreak :: Phonet -> Phonet
-decreak (Consonant CreakyVoiced place manner airstream secondary) =
-  Consonant Voiced place manner airstream secondary
-decreak x = x
+decreak p =
+  if vocalFolds p == CreakyVoiced
+    then toVoiced p
+    else p
 
 -- | Replaces two consecutive spaces with one wherever they occur in a text
 removeExtraTwoSpaces :: Text -> Text

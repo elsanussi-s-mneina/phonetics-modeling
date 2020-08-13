@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 29aae4cb90e45ed773c24528d142ed72132f7164b7a121ec0f98067274d0d229
+-- hash: f32c412c59e63cc14f94f814de5e4745075174d624b5af55d194df213a4e5e38
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -34,6 +34,7 @@ library
       LanguageSpecific.EnglishSpecific
       Lib
       Lib_Functions
+      Lib_PseudoLens
       Lib_Types
       PhoneticFeatures
       PhoneticFeaturesTypes
