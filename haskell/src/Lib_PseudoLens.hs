@@ -9,7 +9,17 @@
 module Lib_PseudoLens where
 import Lib_Types
 
-import Relude (Maybe(Just, Nothing))
+import Relude (Maybe(Just, Nothing), Bool(True, False))
+
+-- | whether a phonete is a consonant.
+isConsonant :: Phonet -> Bool
+isConsonant (Consonant {}) = True
+isConsonant _              = False
+
+-- | whether a phonete is a vowel.
+isVowel :: Phonet -> Bool
+isVowel (Vowel {}) = True
+isVowel _          = False
 
 -- | The vocal fold configuration of a phoneme.
 vocalFolds :: Phonet -> VocalFolds
