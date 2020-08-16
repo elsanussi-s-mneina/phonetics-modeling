@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 972a915417544e3abb98c7ebb2d118a1356ce6494d8b8061f26700050e138844
+-- hash: 205f3e2cd2f97cfa145f8724c9e57b963ef967a8de88f893ad0d40e9b9bdc6cf
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -92,6 +92,7 @@ test-suite phonetics-modeling-test
       IPATextToDescriptionSpec
       PrimitiveParsersSpec
       SpecGenerator
+      SpecGeneratorForPython
       Paths_phonetics_modeling
   hs-source-dirs:
       test

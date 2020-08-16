@@ -11,11 +11,13 @@ import           GraphemeGrammarSpec (graphemeGrammarSpec)
 import           PrimitiveParsersSpec (primitiveParsersSpec)
 import qualified Data.Text as T
 
+-- import SpecGeneratorForPython
 -- import SpecGenerator (generatedTestCode) -- If we need to generate the test code
 
 
 main = do
---  putTextLn generatedTestCode -- If we need to generate the test code
+  -- putTextLn generatedTestCode -- If we need to generate the test code
+  -- putTextLn SpecGeneratorForPython.generatedTestCode -- If we need to generate the test code
   hspec glideSpec
   hspec ipaTextToPhonetListReportSpec
   hspec voicingSpec
