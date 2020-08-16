@@ -12,7 +12,10 @@ import Lib_Types (Phonet(Consonant, Vowel), VocalFolds(..), Place(..), Manner(..
                       SecondaryArticulation(..),
                       Height(..), Backness(..), Rounding(..), PhonetInventory(..),
                       VowelLength(ExtraShort, NormalLength, HalfLong, Long))
-import Lib_Functions (showPhonet,
+import Lib_PseudoLens (toExtraShort, toHalfLong, toLabialized, toLong,
+                       toPalatalized, toPharyngealized, toVelarized,
+                       toVoiced, toVoiceless)
+import Lib_Functions (aspirate, showPhonet,
   spirantizedPhonet, devoicedPhonet,
   voicedPhonet, decreak, deaspirate,
   retractPhonet)
@@ -21,6 +24,7 @@ import PhoneticFeatures(showFeatures, analyzeFeatures)
 import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
 
 import GraphemeGrammar(splitIntoPhonemes, isDescenderText)
+
 
 englishPhonetInventoryReport :: Text
 englishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA englishPhonetInventory)
@@ -207,110 +211,63 @@ analyzeIPA p = case p of
       "̥" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant _ place manner airstream sa) ->
-                Just (Consonant Voiceless place manner airstream sa)
-              Just (Vowel height backness rounding _ vowelLength) ->
-                Just (Vowel height backness rounding Voiceless vowelLength)
-              _ ->
-                Nothing
+              Just x -> Just (toVoiceless x)
+              _      -> Nothing
       "̊" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant _ place manner airstream sa) ->
-                Just (Consonant Voiceless place manner airstream sa)
-              Just (Vowel height backness rounding _ vowelLength) ->
-                Just (Vowel height backness rounding Voiceless vowelLength)
-              _ ->
-                Nothing
+              Just x -> Just (toVoiceless x)
+              _      -> Nothing
 
       "̬" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant _ place manner airstream sa) ->
-                Just (Consonant Voiced place manner airstream sa)
-              Just (Vowel height backness rounding _ vowelLength) ->
-                Just (Vowel height backness rounding Voiced vowelLength)
-              _ ->
-                Nothing
+              Just x -> Just (toVoiced x)
+              _      -> Nothing
       "ʷ" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant voicing place manner airstream Normal) ->
-                Just (Consonant voicing place manner airstream Labialized)
-              Just (Vowel height backness rounding voicing vowelLength) ->
-                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
-              _ ->
-                Nothing
+              Just x -> Just (toLabialized x)
+              _      -> Nothing
 
       "ʲ" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant voicing place manner airstream Normal) ->
-                Just (Consonant voicing place manner airstream Palatalized)
-              Just (Vowel height backness rounding voicing vowelLength) ->
-                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
-              _ ->
-                Nothing
-
+              Just x -> Just (toPalatalized x)
+              _      -> Nothing
 
       "ˠ" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant voicing place manner airstream Normal) ->
-                Just (Consonant voicing place manner airstream Velarized)
-              Just (Vowel height backness rounding voicing vowelLength) ->
-                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
-              _ ->
-                Nothing
+              Just x -> Just (toVelarized x)
+              _      -> Nothing
 
       "ˤ" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant voicing place manner airstream Normal) ->
-                Just (Consonant voicing place manner airstream Pharyngealized)
-              Just (Vowel height backness rounding voicing vowelLength) ->
-                Just (Vowel height backness rounding voicing vowelLength)   -- Should never happen, but let's just ignore it
-              _ ->
-                Nothing
+              Just x -> Just (toPharyngealized x)
+              _      -> Nothing
       "ː" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant voicing place manner airstream sa) ->
-                Just (Consonant voicing place manner airstream sa)
-              Just (Vowel height backness rounding voicing _) ->
-                Just (Vowel height backness rounding voicing Long)
-              _ ->
-                Nothing
+              Just x -> Just (toLong x)
+              _      -> Nothing
       "ˑ" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant voicing place manner airstream sa) ->
-                Just (Consonant voicing place manner airstream sa)
-              Just (Vowel height backness rounding voicing _) ->
-                Just (Vowel height backness rounding voicing HalfLong)
-              _ ->
-                Nothing
+              Just x -> Just (toHalfLong x)
+              _      -> Nothing
       "̆" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant voicing place manner airstream sa) ->
-                Just (Consonant voicing place manner airstream sa)
-              Just (Vowel height backness rounding voicing _) ->
-                Just (Vowel height backness rounding voicing ExtraShort)
-              _ ->
-                Nothing
+              Just x -> Just (toExtraShort x)
+              _      -> Nothing
 
       "ʰ" ->
         let fullGrapheme = analyzeIPA (T.init ipaText)
          in case fullGrapheme of
-              Just (Consonant Voiced place manner airstream sa) ->
-                Just (Consonant VoicedAspirated place manner airstream sa)
-              Just (Consonant Voiceless place manner airstream sa) ->
-                Just (Consonant VoicelessAspirated place manner airstream sa)
-              Just (Vowel height backness rounding voicing vowelLength) ->
-                Just (Vowel height backness rounding voicing vowelLength)
-              anythingElse ->
-                anythingElse
+              Just x -> Just (aspirate x)
+              _      -> Nothing
       -- (About the preceding line:) It is strange but we will just
       -- do nothing if they give us an aspirated vowel.
       -- since we have no way to represent it in the type system.

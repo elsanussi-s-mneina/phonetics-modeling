@@ -291,6 +291,15 @@ deaspirate p =
        VoicelessAspirated -> withVocalFolds Voiceless p
        _ -> p
 
+aspirate :: Phonet -> Phonet
+aspirate p =
+  let vf = vocalFolds p
+  in case vf of
+       Voiced -> withVocalFolds VoicedAspirated p
+       Voiceless -> withVocalFolds VoicelessAspirated p
+       _ -> p
+
+
 decreak :: Phonet -> Phonet
 decreak p =
   if vocalFolds p == CreakyVoiced

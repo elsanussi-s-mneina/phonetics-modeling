@@ -47,13 +47,31 @@ withAirstream :: Airstream -> Phonet -> Maybe Phonet
 withAirstream x (Consonant a b c _ d) = Just (Consonant a b c x d)
 withAirstream _ _ = Nothing
 
+withVowelLength :: VowelLength -> Phonet -> Phonet
+withVowelLength vl (Vowel height backness rounding voicing _ ) =
+                   (Vowel height backness rounding voicing vl)
+withVowelLength _ p = p -- Ignore phonetes that are not vowels.
+
+toLong :: Phonet -> Phonet
+toLong = withVowelLength Long
+
+toHalfLong :: Phonet -> Phonet
+toHalfLong = withVowelLength HalfLong
+
+toExtraShort :: Phonet -> Phonet
+toExtraShort = withVowelLength ExtraShort
+
 secondaryArticulation :: Phonet -> Maybe SecondaryArticulation
 secondaryArticulation (Consonant _ _ _ _ sa) = Just sa
 secondaryArticulation _ = Nothing
 
-withSecondaryArticulation :: SecondaryArticulation -> Phonet -> Maybe Phonet
-withSecondaryArticulation x (Consonant a b c d _) = Just (Consonant a b c d x)
-withSecondaryArticulation _ _ = Nothing
+-- | Changes the secondary articulation value
+--   for a phonete.
+--   Ignore vowels, we don't add any secondary articulation for them
+withSecondaryArticulation :: SecondaryArticulation -> Phonet -> Phonet
+withSecondaryArticulation x (Consonant a b c d _) = Consonant a b c d x
+withSecondaryArticulation _ x = x
+
 
 -- | Given a phonete returns,
 --   a similar phonete with the only possible difference
@@ -77,4 +95,14 @@ toVoicelessAspirated = withVocalFolds VoicelessAspirated
 toCreakyVoiced :: Phonet -> Phonet
 toCreakyVoiced = withVocalFolds CreakyVoiced
 
+toLabialized :: Phonet -> Phonet
+toLabialized = withSecondaryArticulation Labialized
 
+toPalatalized :: Phonet -> Phonet
+toPalatalized = withSecondaryArticulation Palatalized
+
+toVelarized :: Phonet -> Phonet
+toVelarized = withSecondaryArticulation Velarized
+
+toPharyngealized :: Phonet -> Phonet
+toPharyngealized = withSecondaryArticulation Pharyngealized
