@@ -4,11 +4,12 @@ module Spec(main) where
 
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           IPA (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
+import           IPA (analyzeIPA, constructIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
 import           PhoneticFeatures (isGlide)
 import           Relude
 import           GraphemeGrammarSpec (graphemeGrammarSpec)
 import           PrimitiveParsersSpec (primitiveParsersSpec)
+import           Lib_Types
 import qualified Data.Text as T
 
 -- import SpecGeneratorForPython
@@ -18,6 +19,7 @@ import qualified Data.Text as T
 main = do
   -- putTextLn generatedTestCode -- If we need to generate the test code
   -- putTextLn SpecGeneratorForPython.generatedTestCode -- If we need to generate the test code
+  hspec constructIPASpec
   hspec glideSpec
   hspec ipaTextToPhonetListReportSpec
   hspec voicingSpec
@@ -27,6 +29,14 @@ main = do
   hspec pulmonicEgressiveConsonantSpec
   graphemeGrammarSpec
   primitiveParsersSpec
+
+constructIPASpec :: Spec
+constructIPASpec =
+  describe "constructing vowel's IPA" $ do
+    it "should be that: the IPA representation of the close back rounded voiced vowel is \"u\"." $
+      constructIPA (Vowel Close Back Rounded Voiced NormalLength) `shouldBe` "u"
+    it "should be that: the IPA representation of the close back rounded voiced vowel is \"u̥\"." $
+      constructIPA (Vowel Close Back Rounded Voiceless NormalLength) `shouldBe` "u̥"
 
 
 isDescribedAs

@@ -560,9 +560,8 @@ constructIPAConsonant recursionLimit recursionLevel p = case p of
             Nothing         -> Nothing
   _ -> Nothing
 
--- | construct IPA vowel
-constructIPAVowel :: Natural -> Natural -> Phonet -> Maybe Text
-constructIPAVowel recursionLimit recursionLevel p = case p of
+constructIPACloseVowel :: Phonet -> Maybe Text
+constructIPACloseVowel p = case p of
   -- Close Vowels (next line):
   (Vowel Close Front Unrounded Voiced NormalLength) ->
     Just "i"
@@ -576,6 +575,10 @@ constructIPAVowel recursionLimit recursionLevel p = case p of
     Just "ɯ"
   (Vowel Close Back Rounded Voiced NormalLength) ->
     Just "u"
+  _ -> Nothing
+
+constructIPANearCloseVowel :: Phonet -> Maybe Text
+constructIPANearCloseVowel p = case p of
   -- Near-close Vowels (next line):
   (Vowel NearClose Front Unrounded Voiced NormalLength) ->
     Just "ɪ"
@@ -583,6 +586,11 @@ constructIPAVowel recursionLimit recursionLevel p = case p of
     Just "ʏ"
   (Vowel NearClose Back Rounded Voiced NormalLength) ->
     Just "ʊ"
+  _ ->
+    Nothing
+
+constructIPACloseMidVowel :: Phonet -> Maybe Text
+constructIPACloseMidVowel p = case p of
   -- Close-mid Vowels (next line):
   (Vowel CloseMid Front Unrounded Voiced NormalLength) ->
     Just "e"
@@ -596,9 +604,21 @@ constructIPAVowel recursionLimit recursionLevel p = case p of
     Just "ɤ"
   (Vowel CloseMid Back Rounded Voiced NormalLength) ->
     Just "o"
+  _ ->
+    Nothing
+
+
+constructIPAMidVowel :: Phonet -> Maybe Text
+constructIPAMidVowel p = case p of
   -- Mid Vowels (next line):
   (Vowel Mid Central Unrounded Voiced NormalLength) ->
     Just "ə"
+  _ ->
+    Nothing
+
+
+constructIPAOpenMidVowel :: Phonet -> Maybe Text
+constructIPAOpenMidVowel p = case p of
   -- Open-mid Vowels (next line):
   (Vowel OpenMid Front Unrounded Voiced NormalLength) ->
     Just "ɛ"
@@ -612,11 +632,23 @@ constructIPAVowel recursionLimit recursionLevel p = case p of
     Just "ʌ"
   (Vowel OpenMid Back Rounded Voiced NormalLength) ->
     Just "ɔ"
+  _ ->
+    Nothing
+
+
+constructIPANearOpenVowel :: Phonet -> Maybe Text
+constructIPANearOpenVowel p = case p of
   -- Near-open (next line):
   (Vowel NearOpen Front Unrounded Voiced NormalLength) ->
     Just "æ"
   (Vowel NearOpen Central Unrounded Voiced NormalLength) ->
     Just "ɐ"
+  _ ->
+    Nothing
+
+
+constructIPAOpenVowel :: Phonet -> Maybe Text
+constructIPAOpenVowel p = case p of
   -- Open Vowels (next line):
   (Vowel Open Front Unrounded Voiced NormalLength) ->
     Just "a"
@@ -626,54 +658,69 @@ constructIPAVowel recursionLimit recursionLevel p = case p of
     Just "ɑ"
   (Vowel Open Back Rounded Voiced NormalLength) ->
     Just "ɒ"
-  -- The following two lines are commented out, because I am unsure
-  -- about their place of articulation:
-  -- constructIPARecursive _ _ (Consonant  Voiceless LabialVelar? Affricate
-  --     PulmonicEgressive Normal) = "k͡p"
-  -- constructIPARecursive _ _ (Consonant  Voiceless Palatal (or AlveoloPalatal?)
-  --     Affricate PulmonicEgressive Normal) = "c͡ɕ"
+  _ ->
+    Nothing
 
-  -- If it can represent it as a single character it will
-  -- return the single character result (i.e. without diacritics),
-  -- otherwise
-  -- it will try to represent it in IPA with more than
-  -- one character
+-- | construct IPA vowel
+constructIPAVowel :: Natural -> Natural -> Phonet -> Maybe Text
+constructIPAVowel recursionLimit recursionLevel p =
+  let closeVowelResult = constructIPACloseVowel p
+      nearCloseVowelResult = constructIPANearCloseVowel p
+      closeMidResult = constructIPACloseMidVowel p
+      midResult = constructIPAMidVowel p
+      openMidResult = constructIPAOpenMidVowel p
+      nearOpenResult = constructIPANearOpenVowel p
+      openResult = constructIPAOpenVowel p
+  in case p of
+    (Vowel Close _ _ _ _) | closeVowelResult /= Nothing -> closeVowelResult
+    (Vowel NearClose _ _ _ _) | nearCloseVowelResult /= Nothing -> closeVowelResult
+    (Vowel CloseMid _ _ _ _) | closeMidResult /= Nothing -> closeMidResult
+    (Vowel Mid _ _ _ _) | midResult /= Nothing -> midResult
+    (Vowel OpenMid _ _ _ _) | openMidResult /= Nothing -> openMidResult
+    (Vowel NearOpen _ _ _ _) | nearOpenResult /= Nothing -> nearOpenResult
+    (Vowel Open _ _ _ _) | openResult /= Nothing -> openResult
 
-  (Vowel w x y z vowelLength)
-    | vowelLength /= NormalLength
-    && recursionLevel < recursionLimit ->
-      case constructIPARecursive
-        recursionLimit
-        (1 + recursionLevel)
-        (Vowel w x y z NormalLength) of
-        Nothing         -> Nothing
-        Just regularIPA -> Just (regularIPA <> vowelLengthIPA vowelLength)
+    -- If it can represent it as a single character it will
+    -- return the single character result (i.e. without diacritics),
+    -- otherwise
+    -- it will try to represent it in IPA with more than
+    -- one character
+
+    (Vowel w x y z vowelLength)
+      | vowelLength /= NormalLength
+      && recursionLevel < recursionLimit ->
+        case constructIPARecursive
+          recursionLimit
+          (1 + recursionLevel)
+          (Vowel w x y z NormalLength) of
+          Nothing         -> Nothing
+          Just regularIPA -> Just (regularIPA <> vowelLengthIPA vowelLength)
 
 
-  -- Add the small circle diacritic to vowels to make them voiceless.
-  (Vowel x y z Voiceless vowelLength)
-    | recursionLevel < recursionLimit ->
-      case constructIPARecursive
-        recursionLimit
-        (1 + recursionLevel)
-        (Vowel x y z Voiced vowelLength) of
-        Nothing         -> Nothing
-        Just regularIPA -> if isDescenderText regularIPA
-                           then Just (regularIPA <> "̊")
-                           else Just (regularIPA <> "̥")
-  -- If there is no way to express a voiced consonant in a single
-  -- grapheme add a diacritic to the grapheme that represents
-  -- the voiceless counterpart.
-  (Vowel x y z Voiced vowelLength)
-    | recursionLevel < recursionLimit ->
-      case constructIPARecursive
-        recursionLimit
-        (1 + recursionLevel)
-        (Vowel x y z Voiceless vowelLength) of
-        Nothing         -> Nothing
-        Just regularIPA -> Just (regularIPA <> "̬")
+    -- Add the small circle diacritic to vowels to make them voiceless.
+    (Vowel x y z Voiceless vowelLength)
+      | recursionLevel < recursionLimit ->
+        case constructIPARecursive
+          recursionLimit
+          (1 + recursionLevel)
+          (Vowel x y z Voiced vowelLength) of
+          Nothing         -> Nothing
+          Just regularIPA -> if isDescenderText regularIPA
+                             then Just (regularIPA <> "̊")
+                             else Just (regularIPA <> "̥")
+    -- If there is no way to express a voiced consonant in a single
+    -- grapheme add a diacritic to the grapheme that represents
+    -- the voiceless counterpart.
+    (Vowel x y z Voiced vowelLength)
+      | recursionLevel < recursionLimit ->
+        case constructIPARecursive
+          recursionLimit
+          (1 + recursionLevel)
+          (Vowel x y z Voiceless vowelLength) of
+          Nothing         -> Nothing
+          Just regularIPA -> Just (regularIPA <> "̬")
 
-  _ -> Nothing
+    _ -> Nothing
 
 constructDeconstruct :: (Phonet -> Phonet) -> Text -> Text
 constructDeconstruct func x =
@@ -702,4 +749,13 @@ describeIPA x =
 
 showIPA :: PhonetInventory -> Text
 showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
+
+
+
+  -- The following two lines are commented out, because I am unsure
+  -- about their place of articulation:
+  -- constructIPARecursive _ _ (Consonant  Voiceless LabialVelar? Affricate
+  --     PulmonicEgressive Normal) = "k͡p"
+  -- constructIPARecursive _ _ (Consonant  Voiceless Palatal (or AlveoloPalatal?)
+  --     Affricate PulmonicEgressive Normal) = "c͡ɕ"
 
