@@ -19,22 +19,27 @@ import Servant
 import           Relude
 
 import EnglishUSText (beforeServerStartMessage)
-import  IPA          (devoicedIPA, voicedIPA)
+import  IPA          (devoicedIPA, voicedIPA, describeIPA)
 
 type API = "voice_phoneme" :> Capture "phoneme" Text  :> Get '[JSON] Text
       :<|> "devoice_phoneme" :> Capture "phoneme" Text  :> Get '[JSON] Text
+      :<|> "describe_phoneme" :> Capture "phoneme" Text :> Get '[JSON] Text
 
 api :: Proxy API
 api = Proxy
 
 server :: Server API
 server = voicePhonemeWrapper :<|> devoicePhonemeWrapper
+       :<|> describePhonemeWrapper
 
 voicePhonemeWrapper :: Text -> Handler Text
 voicePhonemeWrapper phoneme = return (voicedIPA phoneme)
 
 devoicePhonemeWrapper :: Text -> Handler Text
 devoicePhonemeWrapper phoneme = return (devoicedIPA phoneme)
+
+describePhonemeWrapper :: Text -> Handler Text
+describePhonemeWrapper phoneme = return (describeIPA phoneme)
 
 app :: Application
 app = serve api server

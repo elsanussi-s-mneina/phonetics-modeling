@@ -302,4 +302,6 @@ beforeServerStartMessage =
   \Browse to http://localhost:8080/voice_phoneme/s\n\
   \to get the voiced phoneme alternative of [s].\n\
   \Browse to http://localhost:8080/devoice_phoneme/z\n\
-  \to get the voiceless phoneme alternative of [z]."
+  \to get the voiceless phoneme alternative of [z].\n\
+  \Browse to http://localhost:8080/describe_phoneme/s\n\
+  \to get the English language description of [s]."
