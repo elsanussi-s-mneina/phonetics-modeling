@@ -33,8 +33,8 @@ data Phonet = Consonant VocalFolds
 
 
 instance Hashable Phonet where
-    hashWithSalt salt (Consonant _ _ m _ _) = salt `hashWithSalt` (salt `hashWithSalt` m)
-    hashWithSalt salt (Vowel _ b _ _ _)     = salt `hashWithSalt` (salt `hashWithSalt` b)
+    hashWithSalt salt (Consonant vf _ m _ _) = hashWithSalt (hashWithSalt salt m) vf
+    hashWithSalt salt (Vowel _ b _ vf _)     = hashWithSalt (hashWithSalt salt b) vf
 
 
 -- | The data type UnmarkablePhonet was originally intended
@@ -119,6 +119,10 @@ heightStates = fromList
 data Rounding = Rounded
               | Unrounded
                 deriving stock Eq
+
+instance Hashable Rounding where
+  hashWithSalt s Rounded   = s `hashWithSalt` (1 :: Int)
+  hashWithSalt s Unrounded = s `hashWithSalt` (2 :: Int)
 
 data UnmarkableRounding
   = UnmarkedRounding
@@ -255,6 +259,18 @@ data VocalFolds = Voiced
                 | VoicelessAspirated
                 | CreakyVoiced
                   deriving stock Eq
+
+instance Hashable VocalFolds where
+  hashWithSalt s vf =
+    case vf of
+      Voiced             -> hashWithSalt s (1 :: Int)
+      Voiceless          -> hashWithSalt s (2 :: Int)
+      VoicedAspirated    -> hashWithSalt s (3 :: Int)
+      VoicelessAspirated -> hashWithSalt s (4 :: Int)
+      CreakyVoiced       -> hashWithSalt s (5 :: Int)
+
+
+
 
 data UnmarkableVocalFolds
   = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
