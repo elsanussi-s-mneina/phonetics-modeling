@@ -65,51 +65,6 @@ To run the executable type:
 
 `stack run`
 
-
-## How to compile the code for the terminal
-
-In the command line enter:
-
-`stack build --pedantic`
-
-## How to compile the code for the GUI
-(Note I could not get the GUI to compile on Windows.
-I was able to get it to work on Mac OS Mojave)
-
-Delete the current phonetics-modeling.cabal file.
-
-`rm phonetics-modeling.cabal`
-
-Rename the cabal file for GUI to replace the deleted file.
-
-`mv phonetics-modeling.cabal.forGUI`
-
-In the command line enter:
-
-`stack install --flag fltkhs:bundled`
-
-This package uses the Fltkhs package for
-making windows and other graphical user
-interface widgets. For information
-on Fltkhs see: https://github.com/deech/fltkhs
-
-So far no windows have been created, but the 
-project is ready to compile with Fltkhs
-dependencies.
-
-Run stack build, and stack run as usual, and a window will appear.
-
-`stack build`
-
-`stack run`
-
-
-When you are done with the GUI project,
-simply rename it back to how it was. Use
-the following command:
-
-`mv phonetics-modeling.cabal phonetics-modeling.cabal.forGUI`
-
 ## How to run the unit tests.
 `stack test`
 
