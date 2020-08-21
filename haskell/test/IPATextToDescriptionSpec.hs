@@ -71,7 +71,6 @@ pulmonicEgressiveConsonantSpec = do
       describeIPA "b̥ʷ"
         `shouldBe`
         "voiceless labialized bilabial plosive pulmonic egressive consonant"
-        {-
   describe "voiceless palatalized bilabial plosive pulmonic egressive consonant" $
     do
     it "should be that: [pʲ] \
@@ -14458,4 +14457,3 @@ pulmonicEgressiveConsonantSpec = do
       describeIPA "ɕ̬ʰˤ"
         `shouldBe`
         "voiced aspirated pharyngealized alveolo-palatal fricative pulmonic egressive consonant"
--}
