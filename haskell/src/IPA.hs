@@ -1,15 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 module IPA where
 
-import Prelude((+), (.), (==), (/=), (&&), Maybe(Just, Nothing), (<), (<>),
+import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(Just, Nothing), (<), (<>), otherwise,
   map, fmap, not, zip)
 import Data.Maybe (fromMaybe, maybe)
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.Semigroup (Semigroup(sconcat))
-import Data.HashMap.Strict (HashMap, lookup)
 import Numeric.Natural (Natural)
 import Data.Text (Text)
-import GHC.Exts (IsList (fromList))
 
 import qualified Data.Text     as T
 
@@ -186,14 +184,24 @@ ipaPhonemeMapList =
   , ("ɒ", (Vowel Open Back Rounded Voiced NormalLength))
   ]
 
-ipaTextToPhonetHashMap :: HashMap Text Phonet
-ipaTextToPhonetHashMap = fromList ipaPhonemeMapList
-
 reverseTuple :: (a, b) -> (b, a)
 reverseTuple (x, y) = (y, x)
 
-phonetToIpaTextHashMap :: HashMap Phonet Text
-phonetToIpaTextHashMap = fromList (map reverseTuple ipaPhonemeMapList)
+lookupInList :: Eq a => a -> [(a, b)] -> Maybe b
+lookupInList givenKey aList =
+  case aList of
+    [] -> Nothing
+    ((key, value) : tailOfList) | key == givenKey -> Just value
+                                | otherwise       -> lookupInList givenKey tailOfList
+
+lookupInListFromValue :: Eq b => b -> [(a, b)] -> Maybe a
+lookupInListFromValue givenKey aList =
+  case aList of
+    [] -> Nothing
+    ((value, key) : tailOfList) | key == givenKey -> Just value
+                                | otherwise       -> lookupInListFromValue givenKey tailOfList
+
+
 
 -- | Given text containing international phonetic alphabet symbols
 --   returns text with every phonetic alphabet symbol or sequence
@@ -222,7 +230,7 @@ ipaTextToPhonetList text =
 analyzeIPA :: Text -> Maybe Phonet
 -- Plosives:
 analyzeIPA p =
- let p' = lookup p ipaTextToPhonetHashMap
+ let p' = lookupInList p ipaPhonemeMapList
  in case p' of
    Just x  -> Just x
    Nothing ->
@@ -347,7 +355,7 @@ constructIPARecursive recursionLimit recursionLevel p =
   if recursionLevel == recursionLimit
   then Nothing
   else
-    let p' = lookup p phonetToIpaTextHashMap
+    let p' = lookupInListFromValue p ipaPhonemeMapList
     in case p' of
       Just x -> Just x
       Nothing -> constructIPAMultichar recursionLimit recursionLevel p

@@ -79,9 +79,7 @@ library:
   - -Wno-missing-export-lists
   - -Wno-missing-import-lists
   dependencies:
-  - hashable
   - text
-  - unordered-containers
 
 tests:
   phonetics-modeling-test:

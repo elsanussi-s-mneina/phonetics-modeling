@@ -1,9 +1,7 @@
 module Lib_Types where
 
-import Prelude (Eq, Int)
-import Data.List.NonEmpty (NonEmpty)
-import Data.Hashable (Hashable, hashWithSalt)
-import GHC.Exts (IsList (fromList))
+import Prelude (Eq)
+import Data.List.NonEmpty (NonEmpty, fromList)
 
 -- | The data type Phonet, represents a linguistics
 -- phoneme or phonete.
@@ -30,21 +28,10 @@ data Phonet = Consonant VocalFolds
                     VowelLength
                     deriving Eq
 
-
-instance Hashable Phonet where
-    hashWithSalt salt (Consonant vf _ m _ _) = hashWithSalt (hashWithSalt salt m) vf
-    hashWithSalt salt (Vowel _ b _ vf _)     = hashWithSalt (hashWithSalt salt b) vf
-
 data Backness = Front
               | Central
               | Back
                 deriving Eq
-
-instance Hashable Backness where
-  hashWithSalt s Front   = s `hashWithSalt` (0 :: Int)
-  hashWithSalt s Central = s `hashWithSalt` (1 :: Int)
-  hashWithSalt s Back    = s `hashWithSalt` (2 :: Int)
-
 
 backnessStates :: NonEmpty Backness
 backnessStates = fromList [Front, Central, Back]
@@ -58,15 +45,6 @@ data Height = Close
             | NearOpen
             | Open
               deriving Eq
-
-instance Hashable Height where
-  hashWithSalt s Close     = s `hashWithSalt` (1 :: Int)
-  hashWithSalt s NearClose = s `hashWithSalt` (2 :: Int)
-  hashWithSalt s CloseMid  = s `hashWithSalt` (3 :: Int)
-  hashWithSalt s Mid       = s `hashWithSalt` (4 :: Int)
-  hashWithSalt s OpenMid   = s `hashWithSalt` (5 :: Int)
-  hashWithSalt s NearOpen  = s `hashWithSalt` (6 :: Int)
-  hashWithSalt s Open      = s `hashWithSalt` (7 :: Int)
 
 heightStates :: NonEmpty Height
 heightStates = fromList
@@ -83,10 +61,6 @@ heightStates = fromList
 data Rounding = Rounded
               | Unrounded
                 deriving Eq
-
-instance Hashable Rounding where
-  hashWithSalt s Rounded   = s `hashWithSalt` (1 :: Int)
-  hashWithSalt s Unrounded = s `hashWithSalt` (2 :: Int)
 
 roundingStates :: NonEmpty Rounding
 roundingStates = fromList [Rounded, Unrounded]
@@ -149,21 +123,6 @@ data Manner = Plosive
             | Lateral      -- ^ We need this one for the lateral click.
               deriving Eq
 
-instance Hashable Manner where
-  hashWithSalt s Plosive            = s `hashWithSalt` (0  :: Int)
-  hashWithSalt s Nasal              = s `hashWithSalt` (1  :: Int)
-  hashWithSalt s Trill              = s `hashWithSalt` (2  :: Int)
-  hashWithSalt s TapOrFlap          = s `hashWithSalt` (3  :: Int)
-  hashWithSalt s Approximant        = s `hashWithSalt` (4  :: Int)
-  hashWithSalt s Fricative          = s `hashWithSalt` (5  :: Int)
-  hashWithSalt s Affricate          = s `hashWithSalt` (6  :: Int)
-  hashWithSalt s LateralFricative   = s `hashWithSalt` (7  :: Int)
-  hashWithSalt s LateralApproximant = s `hashWithSalt` (8  :: Int)
-  hashWithSalt s LateralFlap        = s `hashWithSalt` (9  :: Int)
-  hashWithSalt s Lateral            = s `hashWithSalt` (10 :: Int)
-
-
-
 
 mannerStates :: NonEmpty Manner
 mannerStates = fromList
@@ -199,16 +158,6 @@ data VocalFolds = Voiced
                 | VoicelessAspirated
                 | CreakyVoiced
                   deriving Eq
-
-instance Hashable VocalFolds where
-  hashWithSalt s vf =
-    case vf of
-      Voiced             -> hashWithSalt s (1 :: Int)
-      Voiceless          -> hashWithSalt s (2 :: Int)
-      VoicedAspirated    -> hashWithSalt s (3 :: Int)
-      VoicelessAspirated -> hashWithSalt s (4 :: Int)
-      CreakyVoiced       -> hashWithSalt s (5 :: Int)
-
 
 vocalFoldStates :: NonEmpty VocalFolds
 vocalFoldStates
