@@ -9,7 +9,7 @@ import Data.Text (Text, concat)
 
 import qualified Data.Text     as T
 
-import EnglishUSText
+import DefaultLanguageText
 import Lib_Types (Phonet(Consonant, Vowel), VocalFolds(..), Place(..), Manner(..), Airstream(..),
                       SecondaryArticulation(..),
                       Height(..), Backness(..), Rounding(..), PhonetInventory(..),

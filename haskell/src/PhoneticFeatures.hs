@@ -17,7 +17,7 @@ import PhoneticFeaturesTypes (Polarity(Minus, Plus), PhonemeFeature(SyllabicFeat
            AnteriorFeature, DistributedFeature, StridentFeature, HighFeature, LowFeature, BackFeature),
            )
 
-import EnglishUSText
+import DefaultLanguageText
 
 showPolarity :: Polarity -> Text
 showPolarity Plus  = "+"
