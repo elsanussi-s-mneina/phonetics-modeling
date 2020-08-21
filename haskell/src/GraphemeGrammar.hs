@@ -6,7 +6,6 @@ import Prelude((+),  (<), (&&), (<>),(==), Bool(False, True),
               Char, Int, Maybe(Just, Nothing),
               elem, otherwise)
 import Data.Text (Text, pack)
-import GHC.Exts (IsList (fromList))
 
 import qualified Data.Text as T
 
@@ -215,7 +214,6 @@ isSuperscript character = character `elem` superscripts
 
 plosivePulmonic :: [Char]
 plosivePulmonic =
-  fromList
     [ 'p',
       'b',
       't',
@@ -384,7 +382,6 @@ ascenders =
 
 descenders :: [Char]
 descenders =
-  fromList
     [ 'p',
       'ɟ',
       'g',
@@ -478,7 +475,6 @@ consonants = consonantsPulmonic <> consonantsNonPulmonic <> otherSymbols
 
 vowels :: [Char]
 vowels =
-  fromList
     [ 'i',
       'y',
       'ɨ',
