@@ -6,7 +6,6 @@ It sets up a server over HTTP locally.
 
 The API follows REST conventions.
 -}
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE DataKinds       #-}
 {-# LANGUAGE TypeOperators   #-}
 {-# LANGUAGE OverloadedStrings #-}

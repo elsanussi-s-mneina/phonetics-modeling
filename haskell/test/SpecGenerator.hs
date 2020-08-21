@@ -1,7 +1,6 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module SpecGenerator where
-
+import Prelude  ()
 import           Data.Maybe    (fromJust, Maybe(Just, Nothing))
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import           IPA (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
