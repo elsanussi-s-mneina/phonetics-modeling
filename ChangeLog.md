@@ -2,6 +2,12 @@
 
 ## Unreleased changes
 
+August 21, 2020
+Switched from Relude to Prelude.
+- Removed Server functionality
+- Removed complex internationalization source code
+
+
 April 26, 2020:
 Switched from Prelude to Relude which is a replacement for Prelude.
 
