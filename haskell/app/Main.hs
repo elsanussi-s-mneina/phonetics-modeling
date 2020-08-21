@@ -5,8 +5,8 @@ import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListRe
 
 
 
-import           Lib           (Phonet,
-                                showPhonet)
+import           Lib           (Phonet)
+import ShowFunctions (showPhonet)
 
 import Prelude (IO, Int, (.), maybe, otherwise, (==), (>>), (>>=))
 import           System.IO     (hFlush, stdout)

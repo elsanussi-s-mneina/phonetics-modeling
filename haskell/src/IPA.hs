@@ -2,12 +2,10 @@
 module IPA where
 
 import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(Just, Nothing), (<), (<>), otherwise,
-  map, fmap, not, zip)
+  map, not, zip)
 import Data.Maybe (fromMaybe, maybe)
-import Data.List.NonEmpty (NonEmpty((:|)))
-import Data.Semigroup (Semigroup(sconcat))
 import Numeric.Natural (Natural)
-import Data.Text (Text)
+import Data.Text (Text, concat)
 
 import qualified Data.Text     as T
 
@@ -19,10 +17,11 @@ import Lib_Types (Phonet(Consonant, Vowel), VocalFolds(..), Place(..), Manner(..
 import Lib_PseudoLens (toExtraShort, toHalfLong, toLabialized, toLong,
                        toPalatalized, toPharyngealized, toVelarized,
                        toVoiced, toVoiceless)
-import Lib_Functions (aspirate, showPhonet,
+import Lib_Functions (aspirate,
   spirantizedPhonet, devoicedPhonet,
   voicedPhonet, decreak, deaspirate,
   retractPhonet)
+import ShowFunctions (showPhonet)
 
 import PhoneticFeatures(showFeatures, analyzeFeatures)
 import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
@@ -129,7 +128,7 @@ ipaPhonemeMapList =
 
         ( Consonant
             Voiceless
-            (Places (PostAlveolar :| [Velar]))
+            (Places [PostAlveolar, Velar])
             Fricative
             PulmonicEgressive
             Normal
@@ -138,7 +137,7 @@ ipaPhonemeMapList =
   , ("ʘ", (Consonant Voiceless Bilabial Plosive Click Normal))
   , ("ǀ", (Consonant Voiceless Dental Plosive Click Normal))
   , ("ǃ", (Consonant Voiceless Alveolar Plosive Click Normal))
-    --)("ǃ" could also be PostAlveolar.
+    -- "ǃ" could also be PostAlveolar.
   , ("ǂ", (Consonant Voiceless PalatoAlveolar Plosive Click Normal))
   , ("ǁ", (Consonant Voiceless Alveolar Lateral Click Normal))
   , ("ɓ", (Consonant Voiced Bilabial Plosive Implosive Normal))
@@ -496,7 +495,7 @@ describeIPA x =
 
 
 showIPA :: PhonetInventory -> Text
-showIPA (PhonetInventory phonetes) = sconcat (fmap constructIPA phonetes)
+showIPA (PhonetInventory phonetes) = concat (map constructIPA phonetes)
 
 
 

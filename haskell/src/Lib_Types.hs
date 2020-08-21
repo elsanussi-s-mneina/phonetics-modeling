@@ -1,7 +1,6 @@
 module Lib_Types where
 
 import Prelude (Eq)
-import Data.List.NonEmpty (NonEmpty)
 
 -- | The data type Phonet, represents a linguistics
 -- phoneme or phonete.
@@ -65,7 +64,7 @@ data Place = Bilabial
            | AlveoloPalatal
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
-           | Places (NonEmpty Place)
+           | Places [Place]
            deriving Eq
 
 data Manner = Plosive
@@ -93,7 +92,7 @@ data VocalFolds = Voiced
                 | CreakyVoiced
                   deriving Eq
 
-newtype PhonetInventory = PhonetInventory (NonEmpty Phonet)
+newtype PhonetInventory = PhonetInventory [Phonet]
 
 data SecondaryArticulation
   = Normal | Labialized | Palatalized | Velarized | Pharyngealized

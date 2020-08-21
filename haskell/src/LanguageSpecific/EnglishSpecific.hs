@@ -1,6 +1,5 @@
 module LanguageSpecific.EnglishSpecific where
 import Prelude ()
-import GHC.Exts (IsList (fromList))
 import           Lib_Types (PhonetInventory(PhonetInventory), Phonet(Consonant, Vowel), VocalFolds(..),
                             Place(Bilabial, LabioDental, LabialVelar, Dental, Alveolar, PostAlveolar, Palatal, Velar,
                             Glottal),
@@ -26,7 +25,6 @@ import           Lib_Types (PhonetInventory(PhonetInventory), Phonet(Consonant, 
 englishPhonetInventory :: PhonetInventory
 englishPhonetInventory =
   PhonetInventory
-    ( fromList
         [ Consonant Voiceless Bilabial     Plosive            PulmonicEgressive Normal
         , Consonant Voiced    Bilabial     Plosive            PulmonicEgressive Normal
         , Consonant Voiceless Alveolar     Plosive            PulmonicEgressive Normal
@@ -64,5 +62,4 @@ englishPhonetInventory =
         , Vowel     OpenMid   Back    Rounded   Voiced NormalLength
         , Vowel     Open      Back    Unrounded Voiced NormalLength
         ]
-    )
 
