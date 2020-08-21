@@ -73,10 +73,6 @@ To run the executable type:
 
 `stack haddock --open phonetics-modeling`
 
-## How to format source code.
-Use Stylish-Haskell to ensure that whitespace remains consistent.
-
-
 
 ## Known Issues
 - On Windows 8, the Command Prompt displays non-ASCII characters incorrectly.
