@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7f19470f8b167c16602abeaa30d95e084ef47b1c07ef91adce781a384f8ee523
+-- hash: b56d6678d1c7fd0889288e342a6e90bbe100297572cbe4d4fd8d9b1abb5e2784
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -26,9 +26,8 @@ source-repository head
 
 library
   exposed-modules:
-      DiagnosticText
+      DefaultLanguageText
       EnglishUSText
-      FrenchText
       GraphemeGrammar
       IPA
       LanguageSpecific.EnglishSpecific
@@ -40,7 +39,6 @@ library
       PhoneticFeaturesTypes
       PrimitiveParsers
       ShowFunctions
-      UserInterfaceText
   other-modules:
       Paths_phonetics_modeling
   hs-source-dirs:

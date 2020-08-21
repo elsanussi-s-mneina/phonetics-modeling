@@ -14,33 +14,7 @@ import Control.Monad (replicateM_)
 import Data.Text (Text, pack, unwords)
 import Data.Text.IO (getLine, putStr, putStrLn)
 import qualified Data.Text as T
-
-import           UserInterfaceText
-                   ( UITextTicket( IpaTextToDivideMessage
-                                 , Menu
-                                 , NoAnalysisFoundMessage
-                                 , UnrecognizedSelectionMessage
-                                 , UnrecognizedSelectionMessage
-                                 , UserInputViewEnglishPhonemeInventory
-                                 , UserInputMakeAPhonemeVoiced
-                                 , UserInputMakeAPhonemeUnvoiced
-                                 , UserInputDescribeAPhonemeInEnglish
-                                 , UserInputDescribeAPhonemeInSPE
-                                 , UserInputChunkIPAByPhoneme
-                                 , UserSelectedMessage
-                                 , PhonemeToCalculateSPEMessage
-                                 , PhonemeToDevoiceMessage
-                                 , PhonemeToDescribeMessage
-                                 , PhonemeToVoiceMessage
-                                 , PleaseReadReadmeMessage
-                                 , ProgramTerminatedNormallyMessage
-                                 , Prompt
-                                 )
-                   , NatLanguage(English)
-                   , i18n
-                   , il8nGenMain)
-
-
+import DefaultLanguageText
 
 -- | Print characters to the terminal, so that the
 --   user knows that they are expected to enter
@@ -49,7 +23,6 @@ putPrompt :: IO ()
 putPrompt =
   putStr prompt
   >> hFlush stdout
-  where prompt = i18n English Prompt
 
 -- | Print a blank line on the terminal.
 putBlankLine :: IO ()
@@ -80,46 +53,41 @@ interact func =
 --   The user inputs a phoneme.
 --   Take the phoneme, and print the phoneme that is as similar
 --   to the original phoneme, but unvoiced.
-promptForPhonemeToDevoice :: NatLanguage -> IO ()
-promptForPhonemeToDevoice lang =
+promptForPhonemeToDevoice :: IO ()
+promptForPhonemeToDevoice =
   promptForTextAndApply devoicedIPA phonemeToDevoiceMessage
-  where phonemeToDevoiceMessage = i18n lang PhonemeToDevoiceMessage
 
 -- | Ask the user for a phoneme.
 --   The user inputs a phoneme.
 --   Take the phoneme, and print the phoneme that is as similar
 --   to the original phoneme, but voiced.
-promptForPhonemeToVoice :: NatLanguage -> IO ()
-promptForPhonemeToVoice lang =
+promptForPhonemeToVoice :: IO ()
+promptForPhonemeToVoice =
   promptForTextAndApply voicedIPA phonemeToVoiceMessage
-  where phonemeToVoiceMessage = i18n lang PhonemeToVoiceMessage
 
 -- | Ask the user for a phoneme.
 --   The user inputs a phoneme.
 --   Take the phoneme, and print the
 --   description of the phoneme.
-promptForPhonemeToDescribe :: NatLanguage -> IO ()
-promptForPhonemeToDescribe lang =
+promptForPhonemeToDescribe :: IO ()
+promptForPhonemeToDescribe =
   promptForTextAndApply describeIPA phonemeToDescribeMessage
-  where phonemeToDescribeMessage = i18n lang PhonemeToDescribeMessage
 
 -- | Ask the user for a phoneme.
 --   The user inputs a phoneme.
 --   Take the phoneme, calculate what
 --   the features of it are (according to Sound Patterns of English)
 --   and print those features.
-promptForPhonemeToCalculateSPEFeaturesFrom :: NatLanguage -> IO ()
-promptForPhonemeToCalculateSPEFeaturesFrom lang =
+promptForPhonemeToCalculateSPEFeaturesFrom :: IO ()
+promptForPhonemeToCalculateSPEFeaturesFrom =
   promptForTextAndApply analyzeIPAToSPE phonemeToCalculateSPEMessage
-  where phonemeToCalculateSPEMessage = i18n lang PhonemeToCalculateSPEMessage
 
 -- | Ask the user for IPA text which may contain multiple IPA characters
 --   and phonemes. Take that input, and print each phoneme on
 --   separate lines.
-promptForIPATextToSplit :: NatLanguage -> IO ()
-promptForIPATextToSplit lang =
+promptForIPATextToSplit :: IO ()
+promptForIPATextToSplit =
   promptForTextAndApply ipaTextToPhonetListReport ipaTextToDivideMessage
-  where ipaTextToDivideMessage = i18n lang IpaTextToDivideMessage
 
 -- | This function is where the program starts running.
 main :: IO ()
@@ -128,59 +96,42 @@ main =
   >>  putStr menu
   >>  putPrompt
   >>  getLine
-  >>= (acknowledgeAndRespond English)
+  >>= acknowledgeAndRespond
   >>  putBlankLine
   >>  putStrLn programTerminatedNormallyMessage
   >>  putBlankLines 2
-  where pleaseReadReadmeMessage = i18n English PleaseReadReadmeMessage
-        menu = i18n English Menu
-        programTerminatedNormallyMessage = i18n English ProgramTerminatedNormallyMessage
 
 -- | Tell the user what they selected. This is necessary
 --   for better user-friendliness.
-acknowledgeAndRespond :: NatLanguage
-                      -> Text -- ^ what the user typed in
+acknowledgeAndRespond :: Text -- ^ what the user typed in
                       -> IO ()
-acknowledgeAndRespond lang selection =
+acknowledgeAndRespond selection =
   (putStrLn . unwords) [userSelectedMessage, selection]
   >> putBlankLine
-  >> respondToSelection lang selection
-  where userSelectedMessage = i18n lang UserSelectedMessage
+  >> respondToSelection selection
 
 -- | Start the appropriate action according to what the user already selected.
-respondToSelection :: NatLanguage
-                   -> Text -- ^ the text the user put in after being shown the menu
+respondToSelection :: Text -- ^ the text the user put in after being shown the menu
                    -> IO ()
-respondToSelection lang selection
+respondToSelection selection
   | selection == userInputViewEnglishPhonemeInventory = putStrLn englishPhonetInventoryReport
-  | selection == userInputMakeAPhonemeVoiced          = promptForPhonemeToVoice lang
-  | selection == userInputMakeAPhonemeUnvoiced        = promptForPhonemeToDevoice lang
-  | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe lang
-  | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom lang
-  | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit lang
-  | selection == (pack "00")                          = il8nGenMain
+  | selection == userInputMakeAPhonemeVoiced          = promptForPhonemeToVoice
+  | selection == userInputMakeAPhonemeUnvoiced        = promptForPhonemeToDevoice
+  | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe
+  | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom
+  | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit
   | otherwise                                         = putStrLn unrecognizedSelectionMessage
-  where
-        unrecognizedSelectionMessage         = i18n lang UnrecognizedSelectionMessage
-        userInputViewEnglishPhonemeInventory = i18n lang UserInputViewEnglishPhonemeInventory
-        userInputMakeAPhonemeVoiced          = i18n lang UserInputMakeAPhonemeVoiced
-        userInputMakeAPhonemeUnvoiced        = i18n lang UserInputMakeAPhonemeUnvoiced
-        userInputDescribeAPhonemeInEnglish   = i18n lang UserInputDescribeAPhonemeInEnglish
-        userInputDescribeAPhonemeInSPE       = i18n lang UserInputDescribeAPhonemeInSPE
-        userInputChunkIPAByPhoneme           = i18n lang UserInputChunkIPAByPhoneme
 
 
 -- | Given an IPA transcription, return the
 --   name of the phoneme that IPA transcription describes.
 --   If the IPA transcription could not be named,
 --   return a message saying so.
-doAnalyzeIPA :: NatLanguage
-             -> Text -- ^ text from the International Phonetic Alphabet
+doAnalyzeIPA :: Text -- ^ text from the International Phonetic Alphabet
              -> Text -- ^ the name of the phoneme,
                      -- or a message saying the phoneme was not recognized
-doAnalyzeIPA lang x =
+doAnalyzeIPA x =
   maybe noAnalysisFoundMessage showPhonet (analyzeIPA x)
-  where noAnalysisFoundMessage = i18n lang NoAnalysisFoundMessage
 
 -- | Given a set of phoneme properties that describe a phoneme, like:
 --   voiced velar fricative pulmonic egressive,
