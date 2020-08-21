@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7c314b4dcbca768031f5c532a770de5334f3882ce50abbe74a107e0fde2fe8b4
+-- hash: ac646def33460763cbf3a78f53b11ba42a8f99230b2bc936b584686010fe2912
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -98,7 +98,7 @@ test-suite phonetics-modeling-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Spec
   build-depends:
       base >=4.7 && <5
-    , hspec
+    , nanospec
     , phonetics-modeling
     , text
   default-language: Haskell2010

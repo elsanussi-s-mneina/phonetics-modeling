@@ -94,5 +94,5 @@ tests:
     - -main-is Spec
     dependencies:
     - phonetics-modeling:library
-    - hspec
+    - nanospec
     - text
