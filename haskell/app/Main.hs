@@ -11,7 +11,7 @@ import ShowFunctions (showPhonet)
 import Prelude (IO, Int, (.), maybe, otherwise, (==), (>>), (>>=))
 import           System.IO     (hFlush, stdout)
 import Control.Monad (replicateM_)
-import Data.Text (Text, pack, unwords)
+import Data.Text (Text, unwords)
 import Data.Text.IO (getLine, putStr, putStrLn)
 import qualified Data.Text as T
 import DefaultLanguageText
