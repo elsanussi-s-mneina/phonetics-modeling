@@ -98,6 +98,7 @@ library:
   - -Weverything
   - -Werror
   - -Wno-safe
+  - -Wno-unsafe
   - -fwarn-incomplete-patterns
   - -fwarn-incomplete-uni-patterns
   - -Wno-missing-export-lists

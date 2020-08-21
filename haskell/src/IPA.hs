@@ -4,7 +4,7 @@ module IPA where
 
 import Relude ((+), (.), (==), (/=), (&&), NonEmpty((:|)), Maybe(Just, Nothing), Text, (<), (<>),  Natural,
                fromMaybe, map, fmap, sconcat, maybe, not, zip)
-
+import Relude.Container (HashMap, fromList)
 import qualified Data.Text     as T
 
 import EnglishUSText
@@ -33,6 +33,160 @@ analyzeIPAToSPE :: Text -> Text
 analyzeIPAToSPE ipaText =
   maybe sorryUnableToCalculate (showFeatures . analyzeFeatures) (analyzeIPA ipaText)
 
+ipaPhonemeMapList :: [(Text, Phonet)]
+ipaPhonemeMapList = 
+  [ ("p", (Consonant Voiceless Bilabial Plosive PulmonicEgressive Normal))
+  , ("b", (Consonant Voiced Bilabial Plosive PulmonicEgressive Normal))
+  , ("t", (Consonant Voiceless Alveolar Plosive PulmonicEgressive Normal))
+  , ("d", (Consonant Voiced Alveolar Plosive PulmonicEgressive Normal))
+  , ("ʈ", (Consonant Voiceless Retroflex Plosive PulmonicEgressive Normal))
+  , ("ɖ", (Consonant Voiced Retroflex Plosive PulmonicEgressive Normal))
+  , ("c", (Consonant Voiceless Palatal Plosive PulmonicEgressive Normal))
+  , ("ɟ", (Consonant Voiced Palatal Plosive PulmonicEgressive Normal))
+  , ("k", (Consonant Voiceless Velar Plosive PulmonicEgressive Normal))
+  , ("g", (Consonant Voiced Velar Plosive PulmonicEgressive Normal))
+  , ("q", (Consonant Voiceless Uvular Plosive PulmonicEgressive Normal))
+  , ("ɢ", (Consonant Voiced Uvular Plosive PulmonicEgressive Normal))
+  , ("ʔ", (Consonant Voiceless Glottal Plosive PulmonicEgressive Normal))
+    -- Nasals:
+  , ("m", (Consonant Voiced Bilabial Nasal PulmonicEgressive Normal))
+  , ("ɱ", (Consonant Voiced LabioDental Nasal PulmonicEgressive Normal))
+  , ("n", (Consonant Voiced Alveolar Nasal PulmonicEgressive Normal))
+  , ("ɳ", (Consonant Voiced Retroflex Nasal PulmonicEgressive Normal))
+  , ("ɲ", (Consonant Voiced Palatal Nasal PulmonicEgressive Normal))
+  , ("ŋ", (Consonant Voiced Velar Nasal PulmonicEgressive Normal))
+  , ("ɴ", (Consonant Voiced Uvular Nasal PulmonicEgressive Normal))
+    -- Trills:
+  , ("ʙ", (Consonant Voiced Bilabial Trill PulmonicEgressive Normal))
+  , ("r", (Consonant Voiced Alveolar Trill PulmonicEgressive Normal))
+  , ("ʀ", (Consonant Voiced Uvular Trill PulmonicEgressive Normal))
+    -- Taps or flaps:
+  , ("ⱱ", (Consonant Voiced LabioDental TapOrFlap PulmonicEgressive Normal))
+  , ("ɾ", (Consonant Voiced Alveolar TapOrFlap PulmonicEgressive Normal))
+  , ("ɽ", (Consonant Voiced Retroflex TapOrFlap PulmonicEgressive Normal))
+    -- Fricatives:
+  , ("ɸ", (Consonant Voiceless Bilabial Fricative PulmonicEgressive Normal))
+  , ("β", (Consonant Voiced Bilabial Fricative PulmonicEgressive Normal))
+  , ("f", (Consonant Voiceless LabioDental Fricative PulmonicEgressive Normal))
+  , ("v", (Consonant Voiced LabioDental Fricative PulmonicEgressive Normal))
+  , ("θ", (Consonant Voiceless Dental Fricative PulmonicEgressive Normal))
+  , ("ð", (Consonant Voiced Dental Fricative PulmonicEgressive Normal))
+  , ("s", (Consonant Voiceless Alveolar Fricative PulmonicEgressive Normal))
+  , ("z", (Consonant Voiced Alveolar Fricative PulmonicEgressive Normal))
+  , ("ʃ", (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive Normal))
+  , ("ʒ", (Consonant Voiced PostAlveolar Fricative PulmonicEgressive Normal))
+  , ("ʂ", (Consonant Voiceless Retroflex Fricative PulmonicEgressive Normal))
+  , ("ʐ", (Consonant Voiced Retroflex Fricative PulmonicEgressive Normal))
+  , ("ç", (Consonant Voiceless Palatal Fricative PulmonicEgressive Normal))
+  , ("ʝ", (Consonant Voiced Palatal Fricative PulmonicEgressive Normal))
+  , ("x", (Consonant Voiceless Velar Fricative PulmonicEgressive Normal))
+  , ("ɣ", (Consonant Voiced Velar Fricative PulmonicEgressive Normal))
+  , ("χ", (Consonant Voiceless Uvular Fricative PulmonicEgressive Normal))
+  , ("ʁ", (Consonant Voiced Uvular Fricative PulmonicEgressive Normal))
+  , ("ħ", (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive Normal))
+  , ("ʕ", (Consonant Voiced Pharyngeal Fricative PulmonicEgressive Normal))
+  , ("h", (Consonant Voiceless Glottal Fricative PulmonicEgressive Normal))
+  , ("ɦ", (Consonant Voiced Glottal Fricative PulmonicEgressive Normal))
+    -- Lateral Fricatives:
+  , ("ɬ", (Consonant Voiceless Alveolar LateralFricative PulmonicEgressive Normal))
+  , ("ɮ", (Consonant Voiced Alveolar LateralFricative PulmonicEgressive Normal))
+    -- Approximants:
+  , ("ʋ", (Consonant Voiced LabioDental Approximant PulmonicEgressive Normal))
+  , ("ɹ", (Consonant Voiced Alveolar Approximant PulmonicEgressive Normal))
+  , ("ɻ", (Consonant Voiced Retroflex Approximant PulmonicEgressive Normal))
+  , ("j", (Consonant Voiced Palatal Approximant PulmonicEgressive Normal))
+  , ("ɰ", (Consonant Voiced Velar Approximant PulmonicEgressive Normal))
+    -- Lateral Approximants:
+  , ("l", (Consonant Voiced Alveolar LateralApproximant PulmonicEgressive Normal))
+  , ("ɭ", (Consonant Voiced Retroflex LateralApproximant PulmonicEgressive Normal))
+  , ("ʎ", (Consonant Voiced Palatal LateralApproximant PulmonicEgressive Normal))
+  , ("ʟ", (Consonant Voiced Velar LateralApproximant PulmonicEgressive Normal))
+    -- Affricates
+  , ("t͡ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
+  , ("t͜ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
+  , ("d͡ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
+  , ("d͜ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
+    -- We should probably enforce use of the tie-bar underneath, otherwise
+    -- it would not be deterministic to determine whether two graphemes here
+    -- represent affricates or a plosive followed by a fricative.
+
+    -- Under the Other Symbols part of the IPA chart:
+  , ("w", (Consonant Voiced LabialVelar Approximant PulmonicEgressive Normal))
+  , ("ʍ", (Consonant Voiceless LabialVelar Fricative PulmonicEgressive Normal))
+  , ("ɥ", (Consonant Voiced LabialPalatal Approximant PulmonicEgressive Normal))
+  , ("ʜ", (Consonant Voiceless Epiglottal Fricative PulmonicEgressive Normal))
+  , ("ʢ", (Consonant Voiced Epiglottal Fricative PulmonicEgressive Normal))
+  , ("ʡ", (Consonant Voiceless Epiglottal Plosive PulmonicEgressive Normal))
+    -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
+  , ("ɕ", (Consonant Voiceless AlveoloPalatal Fricative PulmonicEgressive Normal))
+  , ("ʑ", (Consonant Voiced AlveoloPalatal Fricative PulmonicEgressive Normal))
+  , ("ɺ", (Consonant Voiced Alveolar LateralFlap PulmonicEgressive Normal))
+  , ("ɧ",
+
+        ( Consonant
+            Voiceless
+            (Places (PostAlveolar :| [Velar]))
+            Fricative
+            PulmonicEgressive
+            Normal
+        ))
+    -- Other Consonants:
+  , ("ʘ", (Consonant Voiceless Bilabial Plosive Click Normal))
+  , ("ǀ", (Consonant Voiceless Dental Plosive Click Normal))
+  , ("ǃ", (Consonant Voiceless Alveolar Plosive Click Normal))
+    --)("ǃ" could also be PostAlveolar.
+  , ("ǂ", (Consonant Voiceless PalatoAlveolar Plosive Click Normal))
+  , ("ǁ", (Consonant Voiceless Alveolar Lateral Click Normal))
+  , ("ɓ", (Consonant Voiced Bilabial Plosive Implosive Normal))
+  , ("ɗ", (Consonant Voiced Dental Plosive Implosive Normal))
+    -- "ɗ" could also be Alveolar
+  , ("ʄ", (Consonant Voiced Palatal Plosive Implosive Normal))
+  , ("ɠ", (Consonant Voiced Velar Plosive Implosive Normal))
+  , ("ʛ", (Consonant Voiced Uvular Plosive Implosive Normal))
+    -- Close Vowels:
+  , ("i", (Vowel Close Front Unrounded Voiced NormalLength))
+  , ("y", (Vowel Close Front Rounded Voiced NormalLength))
+  , ("ɨ", (Vowel Close Central Unrounded Voiced NormalLength))
+  , ("ʉ", (Vowel Close Central Rounded Voiced NormalLength))
+  , ("ɯ", (Vowel Close Back Unrounded Voiced NormalLength))
+  , ("u", (Vowel Close Back Rounded Voiced NormalLength))
+    -- Near-close Vowels:
+  , ("ɪ", (Vowel NearClose Front Unrounded Voiced NormalLength))
+  , ("ʏ", (Vowel NearClose Front Rounded Voiced NormalLength))
+  , ("ʊ", (Vowel NearClose Back Rounded Voiced NormalLength))
+    -- Close-mid Vowels:
+  , ("e", (Vowel CloseMid Front Unrounded Voiced NormalLength))
+  , ("ø", (Vowel CloseMid Front Rounded Voiced NormalLength))
+  , ("ɘ", (Vowel CloseMid Central Unrounded Voiced NormalLength))
+  , ("ɵ", (Vowel CloseMid Central Rounded Voiced NormalLength))
+  , ("ɤ", (Vowel CloseMid Back Unrounded Voiced NormalLength))
+  , ("o", (Vowel CloseMid Back Rounded Voiced NormalLength))
+    -- Mid Vowels:
+  , ("ə", (Vowel Mid Central Unrounded Voiced NormalLength))
+    -- Open-mid Vowels:
+  , ("ɛ", (Vowel OpenMid Front Unrounded Voiced NormalLength))
+  , ("œ", (Vowel OpenMid Front Rounded Voiced NormalLength))
+  , ("ɜ", (Vowel OpenMid Central Unrounded Voiced NormalLength))
+  , ("ɞ", (Vowel OpenMid Central Rounded Voiced NormalLength))
+  , ("ʌ", (Vowel OpenMid Back Unrounded Voiced NormalLength))
+  , ("ɔ", (Vowel OpenMid Back Rounded Voiced NormalLength))
+    -- Near-open
+  , ("æ", (Vowel NearOpen Front Unrounded Voiced NormalLength))
+  , ("ɐ", (Vowel NearOpen Central Unrounded Voiced NormalLength))
+    -- Open Vowels:
+  , ("a", (Vowel Open Front Unrounded Voiced NormalLength))
+  , ("ɶ", (Vowel Open Front Rounded Voiced NormalLength))
+  , ("ɑ", (Vowel Open Back Unrounded Voiced NormalLength))
+  , ("ɒ", (Vowel Open Back Rounded Voiced NormalLength))
+  ]
+
+
+ipaPhonemeHashMap :: HashMap Text Phonet
+ipaPhonemeHashMap = fromList ipaPhonemeMapList
+
+
+  
+  
 
 -- | Given text containing international phonetic alphabet symbols
 --   returns text with every phonetic alphabet symbol or sequence
