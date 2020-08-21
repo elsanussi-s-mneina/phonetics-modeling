@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f02ad65b58f2a4aeb869200048c9985611d5473b0299fa16b653fd69eebdae63
+-- hash: 8d22c02623f2b7c3d3840e28f3471db06dfc8aebfa845e0210431b2d36ad528b
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -44,7 +44,7 @@ library
       Paths_phonetics_modeling
   hs-source-dirs:
       src
-  ghc-options: -Weverything -Werror -Wno-safe -Wno-unsafe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
+  ghc-options: -Weverything -Werror -Wno-safe -Wno-unsafe -Wno-missing-deriving-strategies -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
   build-depends:
       base >=4.7 && <5
     , relude

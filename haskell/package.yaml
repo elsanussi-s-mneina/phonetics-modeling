@@ -75,6 +75,7 @@ library:
   - -Werror
   - -Wno-safe
   - -Wno-unsafe
+  - -Wno-missing-deriving-strategies
   - -fwarn-incomplete-patterns
   - -fwarn-incomplete-uni-patterns
   - -Wno-missing-export-lists

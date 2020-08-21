@@ -1,5 +1,4 @@
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE Safe #-}
 
 module PhoneticFeaturesTypes where
@@ -12,7 +11,7 @@ import           Relude  (Eq)
  [-sonorant]
 -}
 data Polarity = Plus | Minus
-                deriving stock Eq
+                deriving Eq
 
 
 
@@ -87,4 +86,4 @@ data PhonemeFeature = SyllabicFeature Polarity
                     | HighFeature Polarity
                     | LowFeature Polarity
                     | BackFeature Polarity
-                    deriving stock Eq
+                    deriving Eq

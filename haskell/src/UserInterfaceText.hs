@@ -1,6 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE Safe #-}
 
 module UserInterfaceText where
@@ -242,7 +241,7 @@ data NatLanguage
   | French
   | Mandarin
   | Arabic
-  deriving stock Eq
+  deriving Eq
 
 languageList :: [Text]
 languageList

@@ -1,5 +1,4 @@
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE Safe #-}
 module Lib_Types where
 import           Relude  (Eq, Int, Hashable, hashWithSalt, NonEmpty, fromList)
@@ -27,7 +26,7 @@ data Phonet = Consonant VocalFolds
                     Rounding
                     VocalFolds
                     VowelLength
-                    deriving stock Eq
+                    deriving Eq
 
 
 instance Hashable Phonet where
@@ -37,7 +36,7 @@ instance Hashable Phonet where
 data Backness = Front
               | Central
               | Back
-                deriving stock Eq
+                deriving Eq
 
 instance Hashable Backness where
   hashWithSalt s Front   = s `hashWithSalt` (0 :: Int)
@@ -56,7 +55,7 @@ data Height = Close
             | OpenMid
             | NearOpen
             | Open
-              deriving stock Eq
+              deriving Eq
 
 instance Hashable Height where
   hashWithSalt s Close     = s `hashWithSalt` (1 :: Int)
@@ -81,7 +80,7 @@ heightStates = fromList
 
 data Rounding = Rounded
               | Unrounded
-                deriving stock Eq
+                deriving Eq
 
 instance Hashable Rounding where
   hashWithSalt s Rounded   = s `hashWithSalt` (1 :: Int)
@@ -110,7 +109,7 @@ data Place = Bilabial
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
            | Places (NonEmpty Place)
-           deriving stock Eq
+           deriving Eq
 
 
 placeStates :: NonEmpty Place
@@ -146,7 +145,7 @@ data Manner = Plosive
             | LateralApproximant
             | LateralFlap  -- ^ There are very few IPA symbols for lateral flaps
             | Lateral      -- ^ We need this one for the lateral click.
-              deriving stock Eq
+              deriving Eq
 
 instance Hashable Manner where
   hashWithSalt s Plosive            = s `hashWithSalt` (0  :: Int)
@@ -182,7 +181,7 @@ mannerStates = fromList
 data Airstream = PulmonicEgressive
                | Click
                | Implosive
-                 deriving stock Eq
+                 deriving Eq
 
 
 airstreamStates :: NonEmpty Airstream
@@ -197,7 +196,7 @@ data VocalFolds = Voiced
                 | VoicedAspirated
                 | VoicelessAspirated
                 | CreakyVoiced
-                  deriving stock Eq
+                  deriving Eq
 
 instance Hashable VocalFolds where
   hashWithSalt s vf =
@@ -223,7 +222,7 @@ newtype PhonetInventory = PhonetInventory (NonEmpty Phonet)
 
 data SecondaryArticulation
   = Normal | Labialized | Palatalized | Velarized | Pharyngealized
-    deriving stock Eq
+    deriving Eq
 
 secondaryArticulationStates :: NonEmpty SecondaryArticulation
 secondaryArticulationStates
@@ -236,7 +235,7 @@ secondaryArticulationStates
 
 data VowelLength
   = NormalLength | Long | HalfLong | ExtraShort
-    deriving stock Eq
+    deriving Eq
 
 vowelLengthStates :: NonEmpty VowelLength
 vowelLengthStates
