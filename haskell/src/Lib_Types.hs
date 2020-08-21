@@ -17,8 +17,6 @@ import           Relude  (Eq, Int, Hashable, hashWithSalt, NonEmpty, fromList)
 --    the backness (how far back in the mouth),
 --    the rounding (rounding of lips), and
 --    the configuration of the vocal folds.
--- Note: The Phonet datatype does not represent
--- any marked/unmarked distinction.
 data Phonet = Consonant VocalFolds
                         Place   -- ^ Place of articulation
                         Manner  -- ^ Manner of articulation
@@ -36,31 +34,6 @@ instance Hashable Phonet where
     hashWithSalt salt (Consonant vf _ m _ _) = hashWithSalt (hashWithSalt salt m) vf
     hashWithSalt salt (Vowel _ b _ vf _)     = hashWithSalt (hashWithSalt salt b) vf
 
-
--- | The data type UnmarkablePhonet was originally intended
--- to represent a phoneme, or a phonete but with the additional
--- ability to have unmarked properties, such as unmarked voicing.
--- So far, though it has not been used in a way consistent with
--- linguistics, instead it has been used to represent all values of a property.
--- So for example, we would use unmarked voicing to represent all
--- possible vocal fold configurations. We would use unmarked place to
--- to represent all possible places of articulation.
-data UnmarkablePhonet
-  = UnmarkableConsonant
-      UnmarkableVocalFolds
-      UnmarkablePlace
-      UnmarkableManner
-      UnmarkableAirstream
-      UnmarkableSecondaryArticulation
-  | UnmarkableVowel
-      UnmarkableHeight
-      UnmarkableBackness
-      UnmarkableRounding
-      UnmarkableVocalFolds
-      UnmarkableVowelLength
-
-
-
 data Backness = Front
               | Central
               | Back
@@ -74,11 +47,6 @@ instance Hashable Backness where
 
 backnessStates :: NonEmpty Backness
 backnessStates = fromList [Front, Central, Back]
-
-
-data UnmarkableBackness
-  = UnmarkedBackness
-  | MarkedBackness Backness
 
 
 data Height = Close
@@ -98,11 +66,6 @@ instance Hashable Height where
   hashWithSalt s OpenMid   = s `hashWithSalt` (5 :: Int)
   hashWithSalt s NearOpen  = s `hashWithSalt` (6 :: Int)
   hashWithSalt s Open      = s `hashWithSalt` (7 :: Int)
-
-data UnmarkableHeight
-  = UnmarkedHeight | MarkedHeight Height
-
-
 
 heightStates :: NonEmpty Height
 heightStates = fromList
@@ -124,16 +87,8 @@ instance Hashable Rounding where
   hashWithSalt s Rounded   = s `hashWithSalt` (1 :: Int)
   hashWithSalt s Unrounded = s `hashWithSalt` (2 :: Int)
 
-data UnmarkableRounding
-  = UnmarkedRounding
-  | MarkedRounding Rounding
-
 roundingStates :: NonEmpty Rounding
 roundingStates = fromList [Rounded, Unrounded]
-
-data UnmarkableVowelLength
-  = UnmarkedVowelLength
-  | MarkedVowelLength VowelLength
 
 data Place = Bilabial
            | LabioDental
@@ -156,11 +111,6 @@ data Place = Bilabial
            -- is between alveolopalatal, and palatoalveolar
            | Places (NonEmpty Place)
            deriving stock Eq
-
-data UnmarkablePlace
-  = UnmarkedPlace
-  | MarkedPlace Place
-
 
 
 placeStates :: NonEmpty Place
@@ -214,12 +164,6 @@ instance Hashable Manner where
 
 
 
-data UnmarkableManner
-  = UnmarkedManner
-  | MarkedManner Manner
-
-
-
 mannerStates :: NonEmpty Manner
 mannerStates = fromList
                [ Plosive
@@ -239,11 +183,6 @@ data Airstream = PulmonicEgressive
                | Click
                | Implosive
                  deriving stock Eq
-
-data UnmarkableAirstream
-  = UnmarkedAirstream
-  | MarkedAirstream Airstream
-
 
 
 airstreamStates :: NonEmpty Airstream
@@ -269,14 +208,6 @@ instance Hashable VocalFolds where
       VoicelessAspirated -> hashWithSalt s (4 :: Int)
       CreakyVoiced       -> hashWithSalt s (5 :: Int)
 
-
-
-
-data UnmarkableVocalFolds
-  = UnmarkedVocalFolds | MarkedVocalFolds VocalFolds
-
-data UnmarkableSecondaryArticulation
-  = UnmarkedSecondaryArticulation | MarkedSecondaryArticulation SecondaryArticulation
 
 vocalFoldStates :: NonEmpty VocalFolds
 vocalFoldStates
