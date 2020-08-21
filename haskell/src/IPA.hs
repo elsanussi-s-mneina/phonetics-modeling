@@ -1,11 +1,16 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module IPA where
 
-import Relude ((+), (.), (==), (/=), (&&), NonEmpty((:|)), Maybe(Just, Nothing), Text, (<), (<>),  Natural,
-               fromMaybe, map, fmap, sconcat, maybe, not, zip)
-import Relude.Container (HashMap, fromList)
-import  Relude.Extra.Map (lookup)
+import Prelude((+), (.), (==), (/=), (&&), Maybe(Just, Nothing), (<), (<>),
+  map, fmap, not, zip)
+import Data.Maybe (fromMaybe, maybe)
+import Data.List.NonEmpty (NonEmpty((:|)))
+import Data.Semigroup (Semigroup(sconcat))
+import Data.HashMap.Strict (HashMap, lookup)
+import Numeric.Natural (Natural)
+import Data.Text (Text)
+import GHC.Exts (IsList (fromList))
+
 import qualified Data.Text     as T
 
 import EnglishUSText

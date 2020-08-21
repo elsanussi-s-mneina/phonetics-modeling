@@ -1,11 +1,11 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 
 module PrimitiveParsers where
 
-import Relude(Text, Char, Maybe(Just, Nothing), (<>), (&&), elem, not, otherwise)
+import Prelude (Char, Maybe(Just, Nothing), (<>), (&&), elem, not, otherwise)
 
+import Data.Text (Text)
 import qualified Data.Text as T
 
 singleCharParser

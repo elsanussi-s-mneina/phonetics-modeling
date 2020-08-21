@@ -9,8 +9,11 @@ import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListRe
 
 import           Lib           (Phonet,
                                 showPhonet)
-import           Relude
-import           System.IO     (hFlush)
+
+import Prelude (IO, Int, (.), maybe, otherwise, (==), (>>), (>>=), getLine, putStr, putStrLn)
+import           System.IO     (hFlush, stdout)
+import Control.Monad (replicateM_)
+import Data.Text (Text, pack, unpack, unwords)
 
 import           UserInterfaceText
                    ( UITextTicket( IpaTextToDivideMessage
@@ -37,18 +40,20 @@ import           UserInterfaceText
                    , i18n
                    , il8nGenMain)
 
+
+
 -- | Print characters to the terminal, so that the
 --   user knows that they are expected to enter
 --   some text.
 putPrompt :: IO ()
 putPrompt =
-  putText prompt
+  putStr (unpack prompt)
   >> hFlush stdout
   where prompt = i18n English Prompt
 
 -- | Print a blank line on the terminal.
 putBlankLine :: IO ()
-putBlankLine = putTextLn ""
+putBlankLine = putStrLn (unpack "")
 
 -- | Print a specified number of blank lines on the terminal.
 putBlankLines :: Int -- ^ number of lines
@@ -57,7 +62,7 @@ putBlankLines n = replicateM_ n putBlankLine
 
 promptForTextAndApply :: (Text -> Text) -> Text -> IO ()
 promptForTextAndApply func instructions =
-    putTextLn instructions
+    (putStrLn . unpack) instructions
     >> putPrompt
     >> interact func
 
@@ -69,7 +74,7 @@ interact :: (Text -> Text) -- ^ the function to apply to the user input
          -> IO ()
 interact func =
   getLine
-  >>= \userInput -> putTextLn (func userInput)
+  >>= \userInput -> putStrLn (unpack (func (pack userInput)))
 
 -- | Ask the user for a phoneme.
 --   The user inputs a phoneme.
@@ -119,13 +124,13 @@ promptForIPATextToSplit lang =
 -- | This function is where the program starts running.
 main :: IO ()
 main =
-  putTextLn pleaseReadReadmeMessage
-  >>  putText menu
+  (putStrLn . unpack) pleaseReadReadmeMessage
+  >>  (putStr . unpack) menu
   >>  putPrompt
   >>  getLine
-  >>= acknowledgeAndRespond English
+  >>= (acknowledgeAndRespond English) . pack
   >>  putBlankLine
-  >>  putTextLn programTerminatedNormallyMessage
+  >>  (putStrLn . unpack) programTerminatedNormallyMessage
   >>  putBlankLines 2
   where pleaseReadReadmeMessage = i18n English PleaseReadReadmeMessage
         menu = i18n English Menu
@@ -137,7 +142,7 @@ acknowledgeAndRespond :: NatLanguage
                       -> Text -- ^ what the user typed in
                       -> IO ()
 acknowledgeAndRespond lang selection =
-  putTextLn (unwords [userSelectedMessage, selection])
+  (putStrLn . unpack . unwords) [userSelectedMessage, selection]
   >> putBlankLine
   >> respondToSelection lang selection
   where userSelectedMessage = i18n lang UserSelectedMessage
@@ -147,14 +152,14 @@ respondToSelection :: NatLanguage
                    -> Text -- ^ the text the user put in after being shown the menu
                    -> IO ()
 respondToSelection lang selection
-  | selection == userInputViewEnglishPhonemeInventory = putTextLn englishPhonetInventoryReport
+  | selection == userInputViewEnglishPhonemeInventory = (putStrLn . unpack) englishPhonetInventoryReport
   | selection == userInputMakeAPhonemeVoiced          = promptForPhonemeToVoice lang
   | selection == userInputMakeAPhonemeUnvoiced        = promptForPhonemeToDevoice lang
   | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe lang
   | selection == userInputDescribeAPhonemeInSPE       = promptForPhonemeToCalculateSPEFeaturesFrom lang
   | selection == userInputChunkIPAByPhoneme           = promptForIPATextToSplit lang
   | selection == "00"                                 = il8nGenMain
-  | otherwise                                         = putTextLn unrecognizedSelectionMessage
+  | otherwise                                         = (putStrLn . unpack) unrecognizedSelectionMessage
   where
         unrecognizedSelectionMessage         = i18n lang UnrecognizedSelectionMessage
         userInputViewEnglishPhonemeInventory = i18n lang UserInputViewEnglishPhonemeInventory
@@ -182,4 +187,4 @@ doAnalyzeIPA lang x =
 --   print the IPA transcription of it to the terminal.
 doConstructIPA :: Phonet  -- ^ A phonete to get the transcription of
                -> IO ()
-doConstructIPA = putTextLn . constructIPA
+doConstructIPA = putStrLn . unpack . constructIPA

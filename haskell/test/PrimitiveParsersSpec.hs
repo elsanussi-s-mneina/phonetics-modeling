@@ -1,10 +1,8 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module PrimitiveParsersSpec where
 
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           Relude
 import           PrimitiveParsers  ( singleCharParser
                                    , thenParser
                                    , manyParser
@@ -25,11 +23,11 @@ singleCharParserSpec :: Spec
 singleCharParserSpec =
   describe "single character parser" $ do
     it "should be that: single character parser of no characters fails to parse empty text" $
-      isNothing (singleCharParser [] "") `shouldBe` True
+      singleCharParser [] "" `shouldBe` Nothing
     it "should be that: single character parser of no characters fails to parse text of length 3" $
-      isNothing (singleCharParser [] "abc") `shouldBe` True
+      singleCharParser [] "abc" `shouldBe` Nothing
     it "should be that: single character parser of the character 'a' fails to parse the character \"b\"" $
-      isNothing (singleCharParser ['a'] "b") `shouldBe` True
+      singleCharParser ['a'] "b" `shouldBe` Nothing
     it "should be that: single character parser of the character 'a' does parse the character \"a\"" $
       singleCharParser ['a'] "a" `shouldBe` Just("a", "")
     it "should be that: single character parser of the character 'a' does parse the string containing two \"aa\"\
@@ -43,7 +41,7 @@ singleCharParserSpec =
       singleCharParser ['a', 'b'] "abc" `shouldBe` Just("a", "bc")
     it "should be that: single character parser of the character 'a' does parse the string containing \"abc\"\
        \ characters and leaves \"bc\"" $
-      isNothing (singleCharParser ['a', 'b'] "cba") `shouldBe` True
+      singleCharParser ['a', 'b'] "cba" `shouldBe` Nothing
 
 thenParserSpec :: Spec
 thenParserSpec =

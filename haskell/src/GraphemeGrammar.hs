@@ -1,14 +1,16 @@
 -- | Handle splitting of IPA graphemes into chunks, so that
 --   diacritics go with the non-diacritic characters they modify.
 --
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 
 module GraphemeGrammar where
-import Relude((+),  (<), (&&), (<>),(==), Bool(False, True),
-              Char, Int, Maybe(Just, Nothing), Text,
-              elem, fromList, otherwise, one)
+import Prelude((+),  (<), (&&), (<>),(==), Bool(False, True),
+              Char, Int, Maybe(Just, Nothing),
+              elem, otherwise)
+import Data.Text (Text, pack)
+import GHC.Exts (IsList (fromList))
+
 import qualified Data.Text as T
 
 
@@ -592,10 +594,10 @@ preventProhibitedCombination ss
         secondCharacter =  (T.index ss 1) :: Char
         rest = T.tail (T.tail ss)
      in if isAscender firstCharacter && isDiacriticAbove secondCharacter
-          then one firstCharacter <> one (lowerDiacritic secondCharacter) <> rest
+          then pack [firstCharacter] <> pack [lowerDiacritic secondCharacter] <> rest
           else
             if isDescender firstCharacter && isDiacriticBelow secondCharacter
-              then one firstCharacter <> one (raiseDiacritic secondCharacter) <> rest
+              then pack [firstCharacter] <> pack [raiseDiacritic secondCharacter] <> rest
               else ss
 
 

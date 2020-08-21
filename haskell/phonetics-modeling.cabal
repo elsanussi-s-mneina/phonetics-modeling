@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b9cb9be861d5fa7f94feaf345102f486ced9004e17107ae023c77d05466a5ded
+-- hash: 7c314b4dcbca768031f5c532a770de5334f3882ce50abbe74a107e0fde2fe8b4
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -47,8 +47,9 @@ library
   ghc-options: -Weverything -Werror -Wno-safe -Wno-unsafe -Wno-missing-deriving-strategies -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
   build-depends:
       base >=4.7 && <5
-    , relude
+    , hashable
     , text
+    , unordered-containers
   default-language: Haskell2010
 
 executable phonetics-modeling-console-exe
@@ -61,7 +62,6 @@ executable phonetics-modeling-console-exe
   build-depends:
       base >=4.7 && <5
     , phonetics-modeling
-    , relude
     , text
   default-language: Haskell2010
 
@@ -77,7 +77,6 @@ executable phonetics-modeling-server-exe
       aeson
     , base >=4.7 && <5
     , phonetics-modeling
-    , relude
     , servant-server
     , text
     , wai
@@ -101,6 +100,5 @@ test-suite phonetics-modeling-test
       base >=4.7 && <5
     , hspec
     , phonetics-modeling
-    , relude
     , text
   default-language: Haskell2010

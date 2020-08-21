@@ -19,16 +19,16 @@ How to use:
  Then I delete the part that is not Python code from the
  generated file.
 -}
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module SpecGeneratorForPython where
 
-import           Data.Maybe    (fromJust)
+import           Data.Maybe    (fromJust, Maybe(Just, Nothing))
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import           IPA (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
 import           PhoneticFeatures (isGlide)
-import           Relude
-
+import Prelude ((.))
+import Data.Semigroup (Semigroup((<>)))
+import Data.Text (Text)
 import qualified Data.Text as T
 
 replaceSpacesWithUnderscores :: Text -> Text

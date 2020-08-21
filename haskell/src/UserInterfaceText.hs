@@ -1,12 +1,12 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 
 module UserInterfaceText where
 
-import           Relude  (Text, Eq, IO, (<>), ($), map, putTextLn)
+import         Prelude (Eq, IO, (<>), ($), map, putStrLn)
 import         EnglishUSText
 import         qualified  DiagnosticText
+import Data.Text (Text)
 import qualified Data.Text as T
 
 data UITextTicket
@@ -388,6 +388,6 @@ il8nFunctionGen natLangIdentifiers textTokenIdentifiers =
 il8nGenMain :: IO ()
 il8nGenMain =
   let generated = il8nFunctionGen languageList allUITextTicketList
-  in putTextLn generated
+  in putStrLn (T.unpack generated)
 
 

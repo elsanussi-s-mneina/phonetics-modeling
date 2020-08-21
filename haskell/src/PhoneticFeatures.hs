@@ -2,8 +2,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module PhoneticFeatures where
-import           Relude (Bool(False, True), Text, Maybe(Just, Nothing), catMaybes, elem, filter, map, notElem, otherwise, (||), (==), (<>), (&&), (!!?))
-
+import Prelude (Bool(False, True), Maybe(Just, Nothing), elem, filter, head, map, notElem, null, otherwise, (||), (==), (<>), (&&))
+import Data.Maybe (catMaybes)
+import Data.Text (Text)
 
 import qualified Data.Text     as T
 
@@ -548,7 +549,8 @@ binaryDifference feature list_1 list_2
   | relevantList_1 == relevantList_2 =
     (Nothing, Nothing)
   | otherwise =
-    (relevantList_1 !!? 0, relevantList_2 !!? 0)
+    (if null relevantList_1 then Nothing else Just (head relevantList_1),
+     if null relevantList_2 then Nothing else Just (head relevantList_2))
   where
     relevantList_1 = filter (relevantBinary feature) list_1
     relevantList_2 = filter (relevantBinary feature) list_2

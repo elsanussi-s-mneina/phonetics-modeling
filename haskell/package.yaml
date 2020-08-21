@@ -39,7 +39,6 @@ executables:
     - -Wno-missing-export-lists
     - -Wno-missing-import-lists
     dependencies:
-    - relude
     - text
     - phonetics-modeling
 
@@ -59,7 +58,6 @@ executables:
       - -Wno-missing-export-lists
       - -Wno-missing-import-lists
     dependencies:
-      - relude
       - text
       - phonetics-modeling
       - aeson
@@ -81,8 +79,9 @@ library:
   - -Wno-missing-export-lists
   - -Wno-missing-import-lists
   dependencies:
-  - relude
+  - hashable
   - text
+  - unordered-containers
 
 tests:
   phonetics-modeling-test:
@@ -96,5 +95,4 @@ tests:
     dependencies:
     - phonetics-modeling:library
     - hspec
-    - relude
     - text

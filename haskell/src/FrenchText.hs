@@ -1,11 +1,12 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 
 module FrenchText where
 
-import           Relude  (Text)
 import qualified EnglishUSText
+
+import Prelude ()
+import Data.Text (Text)
 
 applicationTitle :: Text
 applicationTitle = "Modèle Phonétique "

@@ -1,8 +1,9 @@
-{-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE OverloadedStrings #-}
 module Main (main) where
 
-import           Relude
+import Prelude (IO, putStrLn, Monad((>>)))
+
+import qualified Data.Text as T
+
 
 import           UserInterfaceText
                    ( UITextTicket( PleaseReadReadmeMessage
@@ -16,9 +17,9 @@ import           MainServer (startServer)
 -- | This function is where the program starts running.
 main :: IO ()
 main =
-  putTextLn pleaseReadReadmeMessage
+  putStrLn (T.unpack pleaseReadReadmeMessage)
   >> startServer
-  >> putTextLn programTerminatedNormallyMessage
+  >> putStrLn (T.unpack programTerminatedNormallyMessage)
   where pleaseReadReadmeMessage = i18n English PleaseReadReadmeMessage
         programTerminatedNormallyMessage = i18n English ProgramTerminatedNormallyMessage
 

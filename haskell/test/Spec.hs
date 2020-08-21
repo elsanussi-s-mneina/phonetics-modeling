@@ -6,16 +6,19 @@ import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import           IPA (analyzeIPA, constructIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
 import           PhoneticFeatures (isGlide)
-import           Relude
 import           GraphemeGrammarSpec (graphemeGrammarSpec)
 import           PrimitiveParsersSpec (primitiveParsersSpec)
 import           IPATextToDescriptionSpec (pulmonicEgressiveConsonantSpec)
 import           Lib_Types
+import Prelude (($), (++), (.), String, Bool(True, False))
+import Data.Text (Text)
+import Data.Semigroup (Semigroup((<>)))
 import qualified Data.Text as T
 
 -- import SpecGeneratorForPython
 -- import SpecGenerator (generatedTestCode) -- If we need to generate the test code
-
+toString :: Text -> String
+toString = T.unpack
 
 main = do
   -- putTextLn generatedTestCode -- If we need to generate the test code

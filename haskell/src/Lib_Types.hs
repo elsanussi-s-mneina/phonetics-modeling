@@ -1,7 +1,9 @@
-{-# LANGUAGE NoImplicitPrelude #-}
-
 module Lib_Types where
-import           Relude  (Eq, Int, Hashable, hashWithSalt, NonEmpty, fromList)
+
+import Prelude (Eq, Int)
+import Data.List.NonEmpty (NonEmpty)
+import Data.Hashable (Hashable, hashWithSalt)
+import GHC.Exts (IsList (fromList))
 
 -- | The data type Phonet, represents a linguistics
 -- phoneme or phonete.

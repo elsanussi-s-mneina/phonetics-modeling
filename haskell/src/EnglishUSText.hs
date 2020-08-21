@@ -1,9 +1,10 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module EnglishUSText where
 
-import           Relude  (Text)
+import Prelude ()
+import           Data.Text  (Text)
+
 
 applicationTitle :: Text
 applicationTitle = "Phonetics Modeling Program"

@@ -1,10 +1,8 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module GraphemeGrammarSpec where
 
 import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           Relude
 import           GraphemeGrammar  ( secondaryArticulationDiacriticParser
                                   , phonemeParser
                                   , tieBarParser
@@ -28,11 +26,11 @@ secondaryArticulationDiacriticParserSpec =
   let f = secondaryArticulationDiacriticParser
   in describe "secondary articulation parser" $ do
     it "should be that: parsing empty text fails" $
-      isNothing (f "") `shouldBe` True
+      f "" `shouldBe` Nothing
     it "should be that: parsing \"abc\" text fails" $
-      isNothing (f "abc") `shouldBe` True
+      f "abc" `shouldBe` Nothing
     it "should be that: parsing \"aʲ\" text fails" $
-      isNothing (f "aʲ") `shouldBe` True
+      f "aʲ" `shouldBe` Nothing
     it "should be that: parsing \"ʲa\" text succeeds with \"a\" remaining" $
       f "ʲa" `shouldBe` Just ("ʲ", "a")
     it "should be that: parsing \"ʷb\" text succeeds with \"b\" remaining" $
@@ -47,13 +45,13 @@ phonemeParserSpec =
   let f = phonemeParser
   in describe "phoneme parser" $ do
     it "should be that: parsing empty text fails" $
-      isNothing (f "") `shouldBe` True
+      (f "") `shouldBe` Nothing
     it "should be that: parsing \"a\" succeeds." $
       f "a" `shouldBe` Just ("a", "")
     it "should be that: parsing \"bc\" succeeds and consumes only one character" $
       f "bc" `shouldBe` Just ("b", "c")
     it "should be that: parsing a string containing only a superscript j fails" $
-      isNothing (f "ʲ") `shouldBe` True
+      (f "ʲ") `shouldBe` Nothing
     it "should be that: parsing a string containing only a \"t\" followed by superscript j succeeds" $
       f "tʲ" `shouldBe` Just("tʲ", "")
     it "parses \\t\\" $ do

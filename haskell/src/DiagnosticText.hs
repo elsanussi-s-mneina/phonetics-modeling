@@ -1,10 +1,10 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 
 module DiagnosticText where
 
-import           Relude  ((<>), Text)
+import           Prelude  ((<>))
+import  Data.Text (Text)
 import qualified EnglishUSText
 
 tag :: Text -> Text

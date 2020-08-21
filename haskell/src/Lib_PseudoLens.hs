@@ -3,12 +3,10 @@
 -- changing the values inside
 -- a type or record.
 
-{-# LANGUAGE NoImplicitPrelude #-}
-
 module Lib_PseudoLens where
 import Lib_Types
 
-import Relude (Maybe(Just, Nothing), Bool(True, False))
+import Prelude (Maybe(Just, Nothing), Bool(True, False))
 
 -- | whether a phonete is a consonant.
 isConsonant :: Phonet -> Bool

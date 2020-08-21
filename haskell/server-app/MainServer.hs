@@ -15,8 +15,8 @@ module MainServer where
 import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant
-
-import           Relude
+import Prelude (IO, putStrLn, Monad(return))
+import Data.Text (Text, unpack)
 
 import EnglishUSText (beforeServerStartMessage)
 import  IPA          (devoicedIPA, voicedIPA, describeIPA)
@@ -47,5 +47,5 @@ app = serve api server
 
 startServer :: IO ()
 startServer = do
-  putTextLn beforeServerStartMessage
+  putStrLn (unpack beforeServerStartMessage)
   run 8080 app

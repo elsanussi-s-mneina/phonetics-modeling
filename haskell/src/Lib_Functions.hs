@@ -1,4 +1,3 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 
@@ -6,11 +5,13 @@ module Lib_Functions where
 
 import           EnglishUSText
 import           Lib_Types
-import           Relude        (Bool (False, True),
-                                Maybe (Just, Nothing),
-                                Text, elem, fmap,
-                                sconcat, toList, unwords,
-                                (==), (||))
+import           Prelude (Bool (False, True),
+                          Maybe (Just, Nothing),
+                          elem, fmap,
+                          (==), (||))
+import Data.Semigroup (Semigroup(sconcat))
+import GHC.Exts (IsList (toList))
+import Data.Text (Text, unwords)
 import qualified Data.Text as T
 
 import Lib_PseudoLens
@@ -250,7 +251,7 @@ showPlace place_1 =
     LabialPalatal  -> labialPalatalPlaceUIText
     AlveoloPalatal -> alveoloPalatalPlaceUIText
     PalatoAlveolar -> palatoAlveolarPlaceUIText
-    Places ps      -> unwords (toList (fmap showPlace ps))
+    Places ps      -> T.unwords (toList (fmap showPlace ps))
 
 -- | Provide user-readable text for representing
 --   the manner of articulation.
