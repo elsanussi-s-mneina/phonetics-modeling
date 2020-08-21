@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE Safe #-}
+
 
 module LanguageSpecific.EnglishSpecific where
 

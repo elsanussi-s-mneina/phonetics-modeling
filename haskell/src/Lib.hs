@@ -1,5 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE Safe #-}
+
 
 module Lib
   ( module Lib_Types

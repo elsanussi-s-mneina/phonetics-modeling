@@ -1,5 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE Safe #-}
+
 module Lib_Types where
 import           Relude  (Eq, Int, Hashable, hashWithSalt, NonEmpty, fromList)
 

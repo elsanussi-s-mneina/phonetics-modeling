@@ -4,7 +4,7 @@
 -- a type or record.
 
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE Safe #-}
+
 module Lib_PseudoLens where
 import Lib_Types
 
