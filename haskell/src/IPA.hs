@@ -301,13 +301,32 @@ vowelLengthIPA vowelLength =
     HalfLong -> "ˑ"
     Long -> "ː"
 
+addRetractedDiacritic :: Text -> Text
+addRetractedDiacritic = (<> "̠")
+
+addVoicedDiacritic :: Text -> Text
+addVoicedDiacritic = (<> "̬")
+
+addCreakyVoicedDiacritic :: Text -> Text
+addCreakyVoicedDiacritic = (<> "̰")
+
+addAspirationDiacritic :: Text -> Text
+addAspirationDiacritic = (<> "ʰ")
+
+addVoicelessDiacritic :: Text -> Text
+addVoicelessDiacritic x =
+  if isDescenderText x
+    then x <> "̊"
+    else x <> "̥"
+
+
 constructIPARecursive :: Natural -> Natural -> Phonet -> Maybe Text
 -- Plosives:
 constructIPARecursive recursionLimit recursionLevel p =
   case p of
     _ | recursionLevel == recursionLimit -> Nothing
-    _| isConsonant p -> constructIPAConsonant recursionLimit recursionLevel p
-    _                -> constructIPAVowel recursionLimit recursionLevel p
+    _ | isConsonant p -> constructIPAConsonant recursionLimit recursionLevel p
+    _                 -> constructIPAVowel recursionLimit recursionLevel p
 
 -- When you know it is a consonant
 constructIPAConsonant :: Natural -> Natural -> Phonet -> Maybe Text
@@ -498,7 +517,7 @@ constructIPAConsonant recursionLimit recursionLevel p = case p of
         (1 + recursionLevel)
         (Consonant x Alveolar y z sa) of
         Nothing         -> Nothing
-        Just regularIPA -> Just (regularIPA <> "̠")
+        Just regularIPA -> Just (addRetractedDiacritic regularIPA)
   -- Add the diacritic for "retracted"
   -- If there isn't a symbol, and the consonant we want is voiceless,
   -- Just take the symbol for a voiced consonant,
@@ -513,9 +532,8 @@ constructIPAConsonant recursionLimit recursionLevel p = case p of
         (Consonant Voiced x y z sa) of
         Nothing         -> Nothing
         Just regularIPA ->
-                            Just (if isDescenderText regularIPA
-                                 then regularIPA <> "̊"
-                                 else regularIPA <> "̥")
+                            Just (addVoicelessDiacritic regularIPA)
+
   -- add diacritic for voiceless
   -- If there is no way to express a voiced consonant in a single
   -- grapheme add a diacritic to the grapheme that represents
@@ -527,7 +545,7 @@ constructIPAConsonant recursionLimit recursionLevel p = case p of
         (1 + recursionLevel)
         (Consonant Voiceless x y z sa) of
         Nothing         -> Nothing
-        Just regularIPA -> Just (regularIPA <> "̬")
+        Just regularIPA -> Just (addVoicedDiacritic regularIPA)
   (Consonant VoicedAspirated _ _ PulmonicEgressive Normal)
     | recursionLevel < recursionLimit ->
       let result =
@@ -537,7 +555,7 @@ constructIPAConsonant recursionLimit recursionLevel p = case p of
               (deaspirate p)
        in case result of
             Nothing         -> Nothing
-            Just regularIPA -> Just (regularIPA <> "ʰ")
+            Just regularIPA -> Just (addAspirationDiacritic regularIPA)
   (Consonant VoicelessAspirated _ _ PulmonicEgressive Normal)
     | recursionLevel < recursionLimit ->
       let result =
@@ -547,7 +565,7 @@ constructIPAConsonant recursionLimit recursionLevel p = case p of
               (deaspirate p)
        in case result of
             Nothing         -> Nothing
-            Just regularIPA -> Just (regularIPA <> "ʰ")
+            Just regularIPA -> Just (addAspirationDiacritic regularIPA)
   (Consonant CreakyVoiced _ _ PulmonicEgressive Normal)
     | recursionLevel < recursionLimit ->
       let result =
@@ -556,7 +574,7 @@ constructIPAConsonant recursionLimit recursionLevel p = case p of
               (1 + recursionLevel)
               (decreak p)
        in case result of
-            Just regularIPA -> Just (regularIPA <> "̰")
+            Just regularIPA -> Just (addCreakyVoicedDiacritic regularIPA)
             Nothing         -> Nothing
   _ -> Nothing
 
@@ -673,7 +691,7 @@ constructIPAVowel recursionLimit recursionLevel p =
       openResult = constructIPAOpenVowel p
   in case p of
     (Vowel Close _ _ _ _) | closeVowelResult /= Nothing -> closeVowelResult
-    (Vowel NearClose _ _ _ _) | nearCloseVowelResult /= Nothing -> closeVowelResult
+    (Vowel NearClose _ _ _ _) | nearCloseVowelResult /= Nothing -> nearCloseVowelResult
     (Vowel CloseMid _ _ _ _) | closeMidResult /= Nothing -> closeMidResult
     (Vowel Mid _ _ _ _) | midResult /= Nothing -> midResult
     (Vowel OpenMid _ _ _ _) | openMidResult /= Nothing -> openMidResult
@@ -705,9 +723,7 @@ constructIPAVowel recursionLimit recursionLevel p =
           (1 + recursionLevel)
           (Vowel x y z Voiced vowelLength) of
           Nothing         -> Nothing
-          Just regularIPA -> if isDescenderText regularIPA
-                             then Just (regularIPA <> "̊")
-                             else Just (regularIPA <> "̥")
+          Just regularIPA -> Just (addVoicelessDiacritic regularIPA)
     -- If there is no way to express a voiced consonant in a single
     -- grapheme add a diacritic to the grapheme that represents
     -- the voiceless counterpart.
@@ -718,7 +734,7 @@ constructIPAVowel recursionLimit recursionLevel p =
           (1 + recursionLevel)
           (Vowel x y z Voiceless vowelLength) of
           Nothing         -> Nothing
-          Just regularIPA -> Just (regularIPA <> "̬")
+          Just regularIPA -> Just (addVoicedDiacritic regularIPA)
 
     _ -> Nothing
 
