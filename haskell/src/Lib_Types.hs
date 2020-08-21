@@ -2,7 +2,7 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE Safe #-}
 module Lib_Types where
-import           Relude  (Eq, NonEmpty, fromList)
+import           Relude  (Eq, Int, Hashable, hashWithSalt, NonEmpty, fromList)
 
 -- | The data type Phonet, represents a linguistics
 -- phoneme or phonete.
@@ -30,6 +30,12 @@ data Phonet = Consonant VocalFolds
                     VocalFolds
                     VowelLength
                     deriving stock Eq
+
+
+instance Hashable Phonet where
+    hashWithSalt salt (Consonant _ _ m _ _) = salt `hashWithSalt` (salt `hashWithSalt` m)
+    hashWithSalt salt (Vowel _ b _ _ _)     = salt `hashWithSalt` (salt `hashWithSalt` b)
+
 
 -- | The data type UnmarkablePhonet was originally intended
 -- to represent a phoneme, or a phonete but with the additional
@@ -60,6 +66,11 @@ data Backness = Front
               | Back
                 deriving stock Eq
 
+instance Hashable Backness where
+  hashWithSalt s Front   = s `hashWithSalt` (0 :: Int)
+  hashWithSalt s Central = s `hashWithSalt` (1 :: Int)
+  hashWithSalt s Back    = s `hashWithSalt` (2 :: Int)
+
 
 backnessStates :: NonEmpty Backness
 backnessStates = fromList [Front, Central, Back]
@@ -70,7 +81,6 @@ data UnmarkableBackness
   | MarkedBackness Backness
 
 
-
 data Height = Close
             | NearClose
             | CloseMid
@@ -79,6 +89,15 @@ data Height = Close
             | NearOpen
             | Open
               deriving stock Eq
+
+instance Hashable Height where
+  hashWithSalt s Close     = s `hashWithSalt` (1 :: Int)
+  hashWithSalt s NearClose = s `hashWithSalt` (2 :: Int)
+  hashWithSalt s CloseMid  = s `hashWithSalt` (3 :: Int)
+  hashWithSalt s Mid       = s `hashWithSalt` (4 :: Int)
+  hashWithSalt s OpenMid   = s `hashWithSalt` (5 :: Int)
+  hashWithSalt s NearOpen  = s `hashWithSalt` (6 :: Int)
+  hashWithSalt s Open      = s `hashWithSalt` (7 :: Int)
 
 data UnmarkableHeight
   = UnmarkedHeight | MarkedHeight Height
@@ -174,6 +193,22 @@ data Manner = Plosive
             | LateralFlap  -- ^ There are very few IPA symbols for lateral flaps
             | Lateral      -- ^ We need this one for the lateral click.
               deriving stock Eq
+
+instance Hashable Manner where
+  hashWithSalt s Plosive            = s `hashWithSalt` (0  :: Int)
+  hashWithSalt s Nasal              = s `hashWithSalt` (1  :: Int)
+  hashWithSalt s Trill              = s `hashWithSalt` (2  :: Int)
+  hashWithSalt s TapOrFlap          = s `hashWithSalt` (3  :: Int)
+  hashWithSalt s Approximant        = s `hashWithSalt` (4  :: Int)
+  hashWithSalt s Fricative          = s `hashWithSalt` (5  :: Int)
+  hashWithSalt s Affricate          = s `hashWithSalt` (6  :: Int)
+  hashWithSalt s LateralFricative   = s `hashWithSalt` (7  :: Int)
+  hashWithSalt s LateralApproximant = s `hashWithSalt` (8  :: Int)
+  hashWithSalt s LateralFlap        = s `hashWithSalt` (9  :: Int)
+  hashWithSalt s Lateral            = s `hashWithSalt` (10 :: Int)
+
+
+
 
 data UnmarkableManner
   = UnmarkedManner

@@ -180,13 +180,14 @@ ipaPhonemeMapList =
   , ("ɒ", (Vowel Open Back Rounded Voiced NormalLength))
   ]
 
+ipaTextToPhonetHashMap :: HashMap Text Phonet
+ipaTextToPhonetHashMap = fromList ipaPhonemeMapList
 
-ipaPhonemeHashMap :: HashMap Text Phonet
-ipaPhonemeHashMap = fromList ipaPhonemeMapList
+reverseTuple :: (a, b) -> (b, a)
+reverseTuple (x, y) = (y, x)
 
-
-  
-  
+phonetToIpaTextHashMap :: HashMap Phonet Text
+phonetToIpaTextHashMap = fromList (map reverseTuple ipaPhonemeMapList)
 
 -- | Given text containing international phonetic alphabet symbols
 --   returns text with every phonetic alphabet symbol or sequence
