@@ -1,6 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-
-
 module DiagnosticText where
 
 import           Prelude  ((<>))

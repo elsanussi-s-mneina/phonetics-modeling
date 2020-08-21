@@ -1,9 +1,6 @@
 -- | Handle splitting of IPA graphemes into chunks, so that
 --   diacritics go with the non-diacritic characters they modify.
 --
-{-# LANGUAGE OverloadedStrings #-}
-
-
 module GraphemeGrammar where
 import Prelude((+),  (<), (&&), (<>),(==), Bool(False, True),
               Char, Int, Maybe(Just, Nothing),
@@ -587,7 +584,7 @@ isDescenderText text =
 -- Only support the voiceless diacritic so far.
 preventProhibitedCombination :: Text -> Text
 preventProhibitedCombination ss
-  | T.null ss = ""
+  | T.null ss = T.empty
   | T.length ss == 1 = ss
   | otherwise =
     let firstCharacter =  (T.head ss) :: Char

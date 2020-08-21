@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
-
 module PrimitiveParsers where
 
 import Prelude (Char, Maybe(Just, Nothing), (<>), (&&), elem, not, otherwise)
@@ -71,5 +68,5 @@ optionalParser
   -> Maybe (Text, Text)
 optionalParser subParser text =
   case subParser text of
-    Nothing -> Just ("", text) -- Return text unconsumed.
+    Nothing -> Just (T.empty, text) -- Return text unconsumed.
     Just result -> Just result

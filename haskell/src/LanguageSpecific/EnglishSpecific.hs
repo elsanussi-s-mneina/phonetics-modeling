@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
-
 module LanguageSpecific.EnglishSpecific where
 import Prelude ()
 import GHC.Exts (IsList (fromList))
