@@ -117,7 +117,7 @@ tests:
     - -with-rtsopts=-N
     - -main-is Spec
     dependencies:
-    - phonetics-modeling
+    - phonetics-modeling:library
     - hspec
     - relude
     - text
