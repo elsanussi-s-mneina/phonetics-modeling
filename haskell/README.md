@@ -5,7 +5,7 @@ language according to Linguistics. The source for our information
 will be Linguistics textbooks,
 and the International Phonetic Alphabet.
 
-Currently, I am using only the textbook with ISBN: 978-1-4051-9103, The
+I am using the textbook with ISBN: 978-1-4051-9103, The
 second chapter. It is titled The Sounds of Language.
 
 Currently the program only determines the place, and manner of articulation,
@@ -22,16 +22,6 @@ Feel free to use it for educational purposes.
 
 This project was started by Elsanussi S. Mneina on July 25, 2019.
 
-## How to start the server.
-Open the terminal or command prompt.
-
-Be in the Haskell directory.
-`cd haskell`
-
-Run the following command to start the server.
-`stack run phonetics-modeling-server-exe`
-
-Instructions should appear on where to browse to.
 
 ## How to start the terminal program.
 This program takes text input, and provides 
@@ -76,3 +66,14 @@ To run the executable type:
 
 ## Known Issues
 - On Windows 8, the Command Prompt displays non-ASCII characters incorrectly.
+
+# Previous functionality
+In order to focus more on the linguistics part of the programming,
+I decided to stop developing a few pieces that were not related.
+In the following sections, I will include a link to the source code in the past where the previous
+functonality was last available.
+
+## How to start the server.
+Server functionality has been removed.
+You will need to go to an older version of the source code:
+https://github.com/elsanussi-s-mneina/phonetics-modeling/commit/8ec55d24b800bc1da626082104499e354cbefc75
