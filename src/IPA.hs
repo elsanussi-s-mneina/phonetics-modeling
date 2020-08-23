@@ -183,9 +183,6 @@ ipaPhonemeMapList =
   , ("ɒ", (Vowel Open Back Rounded Voiced NormalLength))
   ]
 
-reverseTuple :: (a, b) -> (b, a)
-reverseTuple (x, y) = (y, x)
-
 lookupInList :: Eq a => a -> [(a, b)] -> Maybe b
 lookupInList givenKey aList =
   case aList of
