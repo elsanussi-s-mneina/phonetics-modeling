@@ -290,7 +290,7 @@ anterior p = case p of
   (Consonant _ Retroflex _ _ _)      -> Just (AnteriorFeature Minus)
   (Consonant _ Palatal _ _ _)        -> Just (AnteriorFeature Minus)
   (Consonant _ AlveoloPalatal _ _ _) -> Just (AnteriorFeature Minus)
-  _                                -> Nothing
+  _                                  -> Nothing
 
 distributed :: Phonet -> Maybe PhonemeFeature
 distributed p = case p of
@@ -300,7 +300,7 @@ distributed p = case p of
   (Consonant _ Retroflex _ _ _)      -> Just (DistributedFeature Minus)
   (Consonant _ Palatal _ _ _)        -> Just (DistributedFeature Plus)
   (Consonant _ AlveoloPalatal _ _ _) -> Just (DistributedFeature Plus)
-  _                                -> Nothing
+  _                                  -> Nothing
 
 -- |
 -- Alveolar fricatives are [+strident].
@@ -331,7 +331,7 @@ strident p = case p of
   (Consonant _ Uvular Affricate _ _)       -> Just (StridentFeature Plus)
   (Consonant _ _ Fricative _ _)            -> Just (StridentFeature Minus)
   (Consonant _ _ Affricate _ _)            -> Just (StridentFeature Minus)
-  _                                      -> Nothing
+  _                                        -> Nothing
 
 -- |
 -- Palatal consonants are [+high].
@@ -349,10 +349,10 @@ high p = case p of
   (Consonant _ AlveoloPalatal _ _ _) -> Just (HighFeature Plus)
   (Consonant _ Velar _ _ _)          -> Just (HighFeature Plus)
   (Consonant _ Uvular _ _ _)         -> Just (HighFeature Minus)
-  Consonant {}                     -> Nothing
+  Consonant {}                       -> Nothing
   (Vowel Close _ _ _ _)              -> Just (HighFeature Plus)
   (Vowel NearClose _ _ _ _)          -> Just (HighFeature Plus)
-  Vowel {}                         -> Just (HighFeature Minus)
+  Vowel {}                           -> Just (HighFeature Minus)
 
 -- |
 -- Uvular consonants are [+low].
@@ -393,20 +393,28 @@ back p = case p of
 -- Rounded vowels are [+round].
 -- All other vowels are [-round].
 -- All other segments are [-round].
+--
+-- Aside: Labialized consonants are [+round].
+-- For a source on labialized consonants being [+round],
+-- see page 44 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
+-- A document titled "Segmental Phonology" by Darin Howe.
+-- Further sources are on that page.
 lipRound :: Phonet -> Maybe PhonemeFeature
 lipRound p = case p of
   (Vowel _ _ Rounded _ _)        -> Just (RoundFeature Plus)
   Vowel {}                       -> Just (RoundFeature Minus)
-  (Consonant _ _ _ _ Labialized) ->
-    Just (RoundFeature Plus) -- Labialized consonants are [+round].
-    -- For a source on labialized consonants being [+round],
-    -- see page 44 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
-    -- A document titled "Segmental Phonology" by Darin Howe.
-    -- Further sources are on that page.
-  _                     -> Just (RoundFeature Minus)
+  (Consonant _ _ _ _ Labialized) -> Just (RoundFeature Plus)
+  _                               -> Just (RoundFeature Minus)
 
 -- |
 -- Advanced tongue root
+--
+--
+-- Aside: Pharyngealized consonants are [-ATR].
+-- For a source on pharyngealized consonants being [-ATR]
+-- see page 70 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
+-- A document titled "Segmental Phonology" by Darin Howe.
+-- Further sources are on that page.
 atr :: Phonet -> Maybe PhonemeFeature
 atr p = case p of
   (Vowel Close Front Unrounded Voiced _) ->
@@ -438,11 +446,7 @@ atr p = case p of
   (Vowel OpenMid Back Rounded Voiced _) ->
     Just (AdvancedTongueRootFeature Minus)
   (Consonant _ _ _ _ Pharyngealized) ->
-    Just (AdvancedTongueRootFeature Minus) -- Pharyngealized consonants are [-ATR].
-    -- For a source on pharyngealized consonants being [-ATR]      
-    -- see page 70 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
-    -- A document titled "Segmental Phonology" by Darin Howe.
-    -- Further sources are on that page.
+    Just (AdvancedTongueRootFeature Minus)
   _ ->
     Nothing
 
