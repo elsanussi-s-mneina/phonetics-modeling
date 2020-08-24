@@ -142,11 +142,11 @@ showVocalFolds vocalFolds_1 =
 showSecondaryArticulation :: SecondaryArticulation -> Text
 showSecondaryArticulation secondary_articulation =
   case secondary_articulation of
-    Labialized -> labializedUIText
-    Palatalized -> palatalizedUIText
-    Velarized -> velarizedUIText
+    Labialized     -> labializedUIText
+    Palatalized    -> palatalizedUIText
+    Velarized      -> velarizedUIText
     Pharyngealized -> pharyngealizedUIText
-    Normal -> empty
+    Normal         -> empty
 
 showPhonetInventory :: PhonetInventory -> Text
 showPhonetInventory (PhonetInventory phonetes) =

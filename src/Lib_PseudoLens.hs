@@ -21,7 +21,7 @@ isVowel _          = False
 -- | The vocal fold configuration of a phoneme.
 vocalFolds :: Phonet -> VocalFolds
 vocalFolds (Consonant vf _ _ _ _) = vf
-vocalFolds (Vowel _ _ _ vf _) = vf
+vocalFolds (Vowel _ _ _ vf _)     = vf
 
 -- | A function for returning
 --   a phonete with a possibly different vocal fold configuration of a phonete,
@@ -32,7 +32,7 @@ withVocalFolds vf (Vowel x y z _ vl)    = (Vowel x y z vf vl)
 
 place :: Phonet -> Maybe Place
 place (Consonant _ p _ _ _) = Just p
-place _ = Nothing
+place _                     = Nothing
 
 withPlace :: Place -> Phonet -> Phonet
 withPlace x (Consonant a _ b c d) =  Consonant a x b c d

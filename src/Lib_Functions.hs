@@ -14,21 +14,21 @@ import ShowFunctions(showPhonet)
 import Lib_PseudoLens
 
 equivalentInPlace :: Place -> Place -> Bool
-Bilabial `equivalentInPlace` Bilabial = True
-LabioDental `equivalentInPlace` LabioDental = True
-Dental `equivalentInPlace` Dental = True
-Alveolar `equivalentInPlace` Alveolar = True
+Bilabial     `equivalentInPlace` Bilabial     = True
+LabioDental  `equivalentInPlace` LabioDental  = True
+Dental       `equivalentInPlace` Dental       = True
+Alveolar     `equivalentInPlace` Alveolar     = True
 PostAlveolar `equivalentInPlace` PostAlveolar = True
-Retroflex `equivalentInPlace` Retroflex = True
-Palatal `equivalentInPlace` Palatal = True
-Velar `equivalentInPlace` Velar = True
-Uvular `equivalentInPlace` Uvular = True
-Pharyngeal `equivalentInPlace` Pharyngeal = True
-Glottal `equivalentInPlace` Glottal = True
-Epiglottal `equivalentInPlace` Epiglottal = True
-x `equivalentInPlace` Places pList = x `elem` pList
-Places x `equivalentInPlace` y = y `equivalentInPlace` Places x
-_ `equivalentInPlace` _ = False
+Retroflex    `equivalentInPlace` Retroflex    = True
+Palatal      `equivalentInPlace` Palatal      = True
+Velar        `equivalentInPlace` Velar        = True
+Uvular       `equivalentInPlace` Uvular       = True
+Pharyngeal   `equivalentInPlace` Pharyngeal   = True
+Glottal      `equivalentInPlace` Glottal      = True
+Epiglottal   `equivalentInPlace` Epiglottal   = True
+x            `equivalentInPlace` Places pList = x `elem` pList
+Places x     `equivalentInPlace` y            = y `equivalentInPlace` Places x
+_            `equivalentInPlace` _            = False
 
 
 -- | Given a place of articulation,
@@ -60,16 +60,16 @@ englishDescription = showPhonet
 voicedPhonet :: Phonet -> Phonet
 voicedPhonet p =
   if isAspirated p
-  then toVoicedAspirated p
-  else toVoiced p
+    then toVoicedAspirated p
+    else toVoiced p
 
 -- | A function that given an IPA symbol will convert it to the voiceless
 --   equivalent.
 devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet p =
   if isAspirated p
-  then toVoicelessAspirated p
-  else toVoiceless p
+    then toVoicelessAspirated p
+    else toVoiceless p
 
 -- | whether a phoneme is aspirated,
 --   (regardless of whether or not it is voiced)
@@ -130,23 +130,23 @@ impossible p = case p of
 
 retractPhonet :: Maybe Phonet -> Maybe Phonet
 retractPhonet (Just (Consonant v p m a sa)) = Just (Consonant v (retractedPlace p) m a sa)
-retractPhonet _ = Nothing
+retractPhonet _                             = Nothing
 
 deaspirate :: Phonet -> Phonet
 deaspirate p =
   let vf = vocalFolds p
   in case vf of
-       VoicedAspirated -> withVocalFolds Voiced p
+       VoicedAspirated    -> withVocalFolds Voiced p
        VoicelessAspirated -> withVocalFolds Voiceless p
-       _ -> p
+       _                  -> p
 
 aspirate :: Phonet -> Phonet
 aspirate p =
   let vf = vocalFolds p
   in case vf of
-       Voiced -> withVocalFolds VoicedAspirated p
+       Voiced    -> withVocalFolds VoicedAspirated p
        Voiceless -> withVocalFolds VoicelessAspirated p
-       _ -> p
+       _         -> p
 
 
 decreak :: Phonet -> Phonet

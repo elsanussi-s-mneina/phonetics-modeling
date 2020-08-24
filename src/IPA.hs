@@ -436,9 +436,9 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
     | vowelLength /= NormalLength
     && recursionLevel < recursionLimit ->
       case constructIPARecursive
-        recursionLimit
-        (1 + recursionLevel)
-        (Vowel w x y z NormalLength) of
+             recursionLimit
+             (1 + recursionLevel)
+             (Vowel w x y z NormalLength) of
         Nothing         -> Nothing
         Just regularIPA -> Just (regularIPA <> vowelLengthIPA vowelLength)
 

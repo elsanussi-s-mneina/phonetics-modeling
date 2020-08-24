@@ -367,10 +367,10 @@ low p = case p of
   (Consonant _ Uvular _ _ _)     -> Just (LowFeature Plus)
   (Consonant _ Pharyngeal _ _ _) -> Just (LowFeature Plus)
   (Consonant _ Glottal _ _ _)    -> Just (LowFeature Plus)
-  Consonant {}                 -> Nothing
-  (Vowel Open _ _ _ _)         -> Just (LowFeature Plus)
+  Consonant {}                   -> Nothing
+  (Vowel Open _ _ _ _)           -> Just (LowFeature Plus)
   (Vowel NearOpen _ _ _ _)       -> Just (LowFeature Plus)
-  Vowel {}                     -> Just (LowFeature Minus)
+  Vowel {}                       -> Just (LowFeature Minus)
 
 -- |
 -- Back vowels are [+back].
@@ -379,15 +379,15 @@ low p = case p of
 -- All other segments are undefined for [+/-back].
 back :: Phonet -> Maybe PhonemeFeature
 back p = case p of
-  (Vowel _ Back _ _ _)    -> Just (BackFeature Plus)
-  (Vowel _ Central _ _ _) -> Just (BackFeature Plus)
-  (Vowel _ Front _ _ _)   -> Just (BackFeature Minus)
+  (Vowel _ Back _ _ _)            -> Just (BackFeature Plus)
+  (Vowel _ Central _ _ _)         -> Just (BackFeature Plus)
+  (Vowel _ Front _ _ _)           -> Just (BackFeature Minus)
   (Consonant _ _ _ _ Palatalized) -> Just (BackFeature Minus) -- Palatalized consonants are [-back].
   -- For a source on palatalized consonants being [-back],
   -- see page 59 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
   -- A document titled "Segmental Phonology" by Darin Howe.
   -- Further sources are on that page.                      .
-  _                     -> Nothing
+  _                               -> Nothing
 
 -- |
 -- Rounded vowels are [+round].
@@ -395,8 +395,8 @@ back p = case p of
 -- All other segments are [-round].
 lipRound :: Phonet -> Maybe PhonemeFeature
 lipRound p = case p of
-  (Vowel _ _ Rounded _ _) -> Just (RoundFeature Plus)
-  Vowel {}              -> Just (RoundFeature Minus)
+  (Vowel _ _ Rounded _ _)        -> Just (RoundFeature Plus)
+  Vowel {}                       -> Just (RoundFeature Minus)
   (Consonant _ _ _ _ Labialized) ->
     Just (RoundFeature Plus) -- Labialized consonants are [+round].
     -- For a source on labialized consonants being [+round],
@@ -510,7 +510,8 @@ toTextFeatures phonete =
 --
 -- (Source: page 258)
 --
-syllabic :: Phonet -> Maybe PhonemeFeature
+syllabic :: Phonet
+         -> Maybe PhonemeFeature
 syllabic Vowel {}     = Just (SyllabicFeature Plus)
 syllabic Consonant {} = Just (SyllabicFeature Minus)
 
@@ -522,7 +523,7 @@ isGlide p = case p of
   (Consonant _ LabialVelar Approximant PulmonicEgressive _)   -> True
   (Consonant _ LabialPalatal Approximant PulmonicEgressive _) -> True
   (Consonant _ Velar Approximant PulmonicEgressive _)         -> True
-  _                                                         -> False
+  _                                                           -> False
 
 
 -- Go to Section 12.2 of the textbook to understand
@@ -539,11 +540,10 @@ relevantBinary :: (Polarity -> PhonemeFeature) -> PhonemeFeature -> Bool
 relevantBinary feature otherFeature =
   otherFeature == feature Plus || otherFeature == feature Minus
 
-binaryDifference ::
-  (Polarity -> PhonemeFeature) ->
-  [PhonemeFeature] ->
-  [PhonemeFeature] ->
-  (Maybe PhonemeFeature, Maybe PhonemeFeature)
+binaryDifference :: (Polarity -> PhonemeFeature)
+                 -> [PhonemeFeature]
+                 -> [PhonemeFeature]
+                 -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 binaryDifference feature list_1 list_2
   | relevantList_1 == relevantList_2 =
     (Nothing, Nothing)
@@ -554,11 +554,10 @@ binaryDifference feature list_1 list_2
     relevantList_1 = filter (relevantBinary feature) list_1
     relevantList_2 = filter (relevantBinary feature) list_2
 
-unaryDifference ::
-  PhonemeFeature ->
-  [PhonemeFeature] ->
-  [PhonemeFeature] ->
-  (Maybe PhonemeFeature, Maybe PhonemeFeature)
+unaryDifference :: PhonemeFeature
+                -> [PhonemeFeature]
+                -> [PhonemeFeature]
+                -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 unaryDifference feature list_1 list_2
   | (feature `elem` list_1) == (feature `elem` list_2) = (Nothing, Nothing)
   | feature `elem` list_1 && feature `notElem` list_2 = (Just feature, Nothing)
@@ -570,32 +569,31 @@ unaryDifference feature list_1 list_2
 -- will be represented; and any phonemic
 -- feature that is positive in one list but absent
 -- in the other will be represented.
-difference ::
-  [PhonemeFeature] ->
-  [PhonemeFeature] ->
-  [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
+difference :: [PhonemeFeature]
+           -> [PhonemeFeature]
+           -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
 difference list_1 list_2 =
-  [ binaryDifference SyllabicFeature list_1 list_2,
-    binaryDifference ConsonantalFeature list_1 list_2,
-    binaryDifference SonorantFeature list_1 list_2,
-    binaryDifference ContinuantFeature list_1 list_2,
-    binaryDifference VoiceFeature list_1 list_2,
-    binaryDifference AdvancedTongueRootFeature list_1 list_2,
-    unaryDifference NasalFeature list_1 list_2,
-    unaryDifference LateralFeature list_1 list_2,
-    unaryDifference DelayedReleaseFeature list_1 list_2,
-    unaryDifference SpreadGlottisFeature list_1 list_2,
-    unaryDifference ConstrictedGlottisFeature list_1 list_2,
-    unaryDifference LabialFeature list_1 list_2,
-    unaryDifference CoronalFeature list_1 list_2,
-    unaryDifference DorsalFeature list_1 list_2,
-    unaryDifference PharyngealFeature list_1 list_2,
-    unaryDifference LaryngealFeature list_1 list_2,
-    binaryDifference RoundFeature list_1 list_2,
-    binaryDifference AnteriorFeature list_1 list_2,
-    binaryDifference DistributedFeature list_1 list_2,
-    binaryDifference StridentFeature list_1 list_2,
-    binaryDifference HighFeature list_1 list_2,
-    binaryDifference LowFeature list_1 list_2,
-    binaryDifference BackFeature list_1 list_2
+  [ binaryDifference SyllabicFeature list_1 list_2
+  , binaryDifference ConsonantalFeature list_1 list_2
+  , binaryDifference SonorantFeature list_1 list_2
+  , binaryDifference ContinuantFeature list_1 list_2
+  , binaryDifference VoiceFeature list_1 list_2
+  , binaryDifference AdvancedTongueRootFeature list_1 list_2
+  , unaryDifference  NasalFeature list_1 list_2
+  , unaryDifference  LateralFeature list_1 list_2
+  , unaryDifference  DelayedReleaseFeature list_1 list_2
+  , unaryDifference  SpreadGlottisFeature list_1 list_2
+  , unaryDifference  ConstrictedGlottisFeature list_1 list_2
+  , unaryDifference  LabialFeature list_1 list_2
+  , unaryDifference  CoronalFeature list_1 list_2
+  , unaryDifference  DorsalFeature list_1 list_2
+  , unaryDifference  PharyngealFeature list_1 list_2
+  , unaryDifference  LaryngealFeature list_1 list_2
+  , binaryDifference RoundFeature list_1 list_2
+  , binaryDifference AnteriorFeature list_1 list_2
+  , binaryDifference DistributedFeature list_1 list_2
+  , binaryDifference StridentFeature list_1 list_2
+  , binaryDifference HighFeature list_1 list_2
+  , binaryDifference LowFeature list_1 list_2
+  , binaryDifference BackFeature list_1 list_2
   ]
