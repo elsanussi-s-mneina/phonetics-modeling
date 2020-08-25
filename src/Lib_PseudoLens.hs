@@ -10,54 +10,77 @@ import Prelude (Maybe(Just, Nothing), Bool(True, False))
 
 -- | whether a phonete is a consonant.
 isConsonant :: Phonet -> Bool
-isConsonant (Consonant {}) = True
-isConsonant _              = False
+isConsonant p =
+  case p of 
+    Consonant {} -> True
+    _            -> False
 
 -- | whether a phonete is a vowel.
 isVowel :: Phonet -> Bool
-isVowel (Vowel {}) = True
-isVowel _          = False
+isVowel p =
+    case p of
+      Vowel {} -> True
+      _        -> False
 
 -- | The vocal fold configuration of a phoneme.
 vocalFolds :: Phonet -> VocalFolds
-vocalFolds (Consonant vf _ _ _ _) = vf
-vocalFolds (Vowel _ _ _ vf _)     = vf
+vocalFolds p = 
+  case p of 
+    Consonant vf _ _ _ _ -> vf
+    Vowel _ _ _ vf _     -> vf
 
 -- | A function for returning
 --   a phonete with a possibly different vocal fold configuration of a phonete,
 --   but no other difference.
 withVocalFolds :: VocalFolds -> Phonet -> Phonet
-withVocalFolds vf (Consonant _ w x y z) = (Consonant vf w x y z)
-withVocalFolds vf (Vowel x y z _ vl)    = (Vowel x y z vf vl)
+withVocalFolds vf p =
+  case p of
+    Consonant _ w x y z -> Consonant vf w x y z
+    Vowel x y z _ vl    -> Vowel x y z vf vl
 
 place :: Phonet -> Maybe Place
-place (Consonant _ p _ _ _) = Just p
-place _                     = Nothing
+place p = 
+  case p of 
+    Consonant _ pl _ _ _ -> Just pl
+    _                    -> Nothing
 
 withPlace :: Place -> Phonet -> Phonet
-withPlace x (Consonant a _ b c d) =  Consonant a x b c d
-withPlace _ p = p
+withPlace x p =  
+  case p of 
+    Consonant a _ b c d -> Consonant a x b c d
+    _                   -> p
 
 manner :: Phonet -> Maybe Manner
-manner (Consonant _ _ m _ _) = Just m
-manner _ = Nothing
+manner p =
+  case p of
+    Consonant _ _ m _ _ -> Just m
+    _                   -> Nothing
 
 withManner :: Manner -> Phonet -> Phonet
-withManner x (Consonant a b _ c d) = (Consonant a b x c d)
-withManner _ p = p
+withManner x p =
+  case p of
+    Consonant a b _ c d -> Consonant a b x c d
+    _                   -> p
 
 airstream :: Phonet -> Maybe Airstream
-airstream (Consonant _ _ _ a _) = Just a
-airstream _ = Nothing
+airstream p = 
+  case p of 
+    Consonant _ _ _ a _ -> Just a
+    _                   -> Nothing
 
 withAirstream :: Airstream -> Phonet -> Maybe Phonet
-withAirstream x (Consonant a b c _ d) = Just (Consonant a b c x d)
-withAirstream _ _ = Nothing
+withAirstream x p = 
+  case p of 
+    Consonant a b c _ d -> Just (Consonant a b c x d)
+    _                   -> Nothing
 
 withVowelLength :: VowelLength -> Phonet -> Phonet
-withVowelLength vl (Vowel height backness rounding voicing _ ) =
-                   (Vowel height backness rounding voicing vl)
-withVowelLength _ p = p -- Ignore phonetes that are not vowels.
+withVowelLength vl p =
+  case p of 
+    Vowel height backness rounding voicing _ 
+      -> Vowel height backness rounding voicing vl
+    _ 
+      -> p -- Ignore phonetes that are not vowels.
 
 toLong :: Phonet -> Phonet
 toLong = withVowelLength Long
@@ -76,8 +99,10 @@ secondaryArticulation _ = Nothing
 --   for a phonete.
 --   Ignore vowels, we don't add any secondary articulation for them
 withSecondaryArticulation :: SecondaryArticulation -> Phonet -> Phonet
-withSecondaryArticulation x (Consonant a b c d _) = Consonant a b c d x
-withSecondaryArticulation _ x = x
+withSecondaryArticulation x p = 
+  case p of 
+    Consonant a b c d _ -> Consonant a b c d x
+    _                   -> p
 
 
 -- | Given a phonete returns,
