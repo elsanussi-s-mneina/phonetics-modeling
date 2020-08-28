@@ -4,8 +4,8 @@
 module GraphemeGrammar where
 import Prelude((+),  (<), (&&), (<>),(==), Bool(False, True),
               Char, Int, Maybe(Just, Nothing),
-              elem, otherwise)
-import Data.Text (Text, pack)
+              elem)
+import Data.Text (Text)
 
 import qualified Data.Text as T
 
@@ -568,31 +568,6 @@ isDescender character = character `elem` descenders
 isDescenderText :: Text -> Bool
 isDescenderText text =
   T.length text == 1 && T.head text `elem` descenders
-
--- |
--- Prevent placement of diacritics below a full-width
--- character,
--- when doing so would likely make the result
--- difficult to read, whenever there is another
--- diacritic with the same meaning, but can go above.
--- And vice-versa (above - below).
---
--- Only support the voiceless diacritic so far.
-preventProhibitedCombination :: Text -> Text
-preventProhibitedCombination ss
-  | T.null ss = T.empty
-  | T.length ss == 1 = ss
-  | otherwise =
-    let firstCharacter =  (T.head ss) :: Char
-        secondCharacter =  (T.index ss 1) :: Char
-        rest = T.tail (T.tail ss)
-     in if isAscender firstCharacter && isDiacriticAbove secondCharacter
-          then pack [firstCharacter] <> pack [lowerDiacritic secondCharacter] <> rest
-          else
-            if isDescender firstCharacter && isDiacriticBelow secondCharacter
-              then pack [firstCharacter] <> pack [raiseDiacritic secondCharacter] <> rest
-              else ss
-
 
 -- |
 -- Whether a diacritic goes above
