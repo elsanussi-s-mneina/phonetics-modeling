@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
-
 module Lib_Functions where
 
 import           Lib_Types
