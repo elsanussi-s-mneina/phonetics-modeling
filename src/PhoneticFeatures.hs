@@ -1,13 +1,24 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module PhoneticFeatures where
 import Prelude (Bool(False, True), Maybe(Just, Nothing), elem, filter, head, map, notElem, null, otherwise, (||), (==), (<>), (&&))
 import Data.Maybe (catMaybes)
-import Data.Text (Text)
+import Data.Text (Text, pack)
 
 import qualified Data.Text     as T
 
-import           Lib_Types
+import Lib_Types
+    ( SecondaryArticulation(Pharyngealized, Palatalized, Labialized),
+      VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated,
+                 CreakyVoiced),
+      Airstream(PulmonicEgressive),
+      Manner(Approximant, Nasal, Lateral, LateralApproximant,
+             LateralFricative, LateralFlap, Plosive, Fricative, Affricate),
+      Place(Velar, Bilabial, Dental, Retroflex, Alveolar, PostAlveolar,
+            LabioDental, AlveoloPalatal, Uvular, Pharyngeal, Glottal, Palatal,
+            LabialVelar, LabialPalatal),
+      Rounding(Rounded, Unrounded),
+      Height(OpenMid, CloseMid, NearOpen, Open, Close, NearClose),
+      Backness(Back, Central, Front),
+      Phonet(..) )
 
 import PhoneticFeaturesTypes (Polarity(Minus, Plus), PhonemeFeature(SyllabicFeature, ConsonantalFeature,
            SonorantFeature, ContinuantFeature, VoiceFeature, AdvancedTongueRootFeature, NasalFeature,
@@ -20,8 +31,8 @@ import PhoneticFeaturesTypes (Polarity(Minus, Plus), PhonemeFeature(SyllabicFeat
 import DefaultLanguageText
 
 showPolarity :: Polarity -> Text
-showPolarity Plus  = "+"
-showPolarity Minus = "-"
+showPolarity Plus  = pack "+"
+showPolarity Minus = pack "-"
 
 showPhonemeFeature :: PhonemeFeature -> Text
 showPhonemeFeature pf =
@@ -512,7 +523,7 @@ showFeatures :: [PhonemeFeature] -> Text
 showFeatures features =
   let featuresStrings :: [Text]
       featuresStrings = map showPhonemeFeature features
-   in "[" <> T.intercalate "; " featuresStrings <> "]"
+   in pack "[" <> T.intercalate (pack "; ") featuresStrings <> pack "]"
 
 toTextFeatures :: Phonet -> Text
 toTextFeatures phonete =
