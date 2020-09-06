@@ -127,7 +127,7 @@ isConsonantAt = isSuchAt isConsonant
 --   International Phonetic Alphabet to represent a
 --   consonant.
 isConsonant :: Char -> Bool
-isConsonant = elemW consonants
+isConsonant c = elem c consonants
 
 -- | Whether a character in some text, at a specific place
 --   within the text is a "segmental" (i.e. not a diacritic or modifier).
@@ -140,7 +140,7 @@ isSegmentalAt = isSuchAt isSegmental
 --   This means characters that can represent a
 --   consonant or vowel.
 isSegmental :: Char -> Bool
-isSegmental = elemW strictSegmentals
+isSegmental c = elem c strictSegmentals
 
 -- | Whether a character is a diacritic that can go after
 --   the main character.
@@ -171,7 +171,7 @@ isSuchAt function index text = index < T.length text && function (T.index text i
 --   previous character to
 --   be aspirated.
 isSuperscriptAfter :: Char -> Bool
-isSuperscriptAfter = elemW superscriptsAfter
+isSuperscriptAfter c = elem c superscriptsAfter
 
 -- | Whether a character is a superscript character, that
 --   often goes before a full character to modify the
@@ -179,20 +179,15 @@ isSuperscriptAfter = elemW superscriptsAfter
 --   For example in the International Phonetic Alphabet,
 --   a superscript `n`.
 isSuperscriptBefore :: Char -> Bool
-isSuperscriptBefore = elemW superscriptsBefore
+isSuperscriptBefore c = elem c superscriptsBefore
 
 
 -- | Whether a character is used to tie two characters in the
 --   international phonetic alphabet together. The tie bar is
 --   usually used to indicate an affricate, or double-articulation.
 isTieBar :: Char -> Bool
-isTieBar x = x `elem` ['͜', '͡']
+isTieBar x = elem x ['͜', '͡']
 
--- | Create a function that sees whether
--- a character is equal to (the first character in) an element
--- in a list of text
-elemW :: [Char] -> (Char -> Bool)
-elemW charList = (`elem` charList)
 
 -- | Count how many superscript characters occur one after another, at a
 --   specific place in a text (that could modify a previous character).
