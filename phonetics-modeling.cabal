@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b56d6678d1c7fd0889288e342a6e90bbe100297572cbe4d4fd8d9b1abb5e2784
+-- hash: 6af7bff5fb7c785653f988f7082f41fbbac8975e80af4098a702d9824d907e5e
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -43,7 +43,7 @@ library
       Paths_phonetics_modeling
   hs-source-dirs:
       src
-  ghc-options: -Weverything -Werror -Wno-safe -Wno-unsafe -Wno-missing-deriving-strategies -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
+  ghc-options: -Weverything -Werror -Wno-safe -Wno-unsafe -Wno-missing-deriving-strategies -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists -fwrite-ide-info -hiedir=.hie
   build-depends:
       base >=4.7 && <5
     , text
@@ -55,7 +55,7 @@ executable phonetics-modeling-console-exe
       Paths_phonetics_modeling
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Wno-unsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Wno-unsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists -fwrite-ide-info -hiedir=.hie
   build-depends:
       base >=4.7 && <5
     , phonetics-modeling

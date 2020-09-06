@@ -38,6 +38,8 @@ executables:
     - -fwarn-incomplete-uni-patterns
     - -Wno-missing-export-lists
     - -Wno-missing-import-lists
+    - -fwrite-ide-info
+    - -hiedir=.hie
     dependencies:
     - text
     - phonetics-modeling
@@ -55,6 +57,8 @@ library:
   - -fwarn-incomplete-uni-patterns
   - -Wno-missing-export-lists
   - -Wno-missing-import-lists
+  - -fwrite-ide-info
+  - -hiedir=.hie
   dependencies:
   - text
 
