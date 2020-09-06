@@ -122,8 +122,10 @@ impossible p = case p of
     True
   (Consonant _ LabioDental LateralApproximant PulmonicEgressive _) ->
     True
-  _ ->
+  Consonant {} ->
     False -- Everything else is assumed to be possible.
+  Vowel {} ->
+    False
 
 retractPhonet :: Maybe Phonet -> Maybe Phonet
 retractPhonet (Just (Consonant v p m a sa)) = Just (Consonant v (retractedPlace p) m a sa)
@@ -135,16 +137,19 @@ deaspirate p =
   in case vf of
        VoicedAspirated    -> withVocalFolds Voiced p
        VoicelessAspirated -> withVocalFolds Voiceless p
-       _                  -> p
-
+       Voiced             -> p
+       Voiceless          -> p
+       CreakyVoiced       -> p
+    
 aspirate :: Phonet -> Phonet
 aspirate p =
   let vf = vocalFolds p
   in case vf of
        Voiced    -> withVocalFolds VoicedAspirated p
        Voiceless -> withVocalFolds VoicelessAspirated p
-       _         -> p
-
+       VoicedAspirated    -> p
+       VoicelessAspirated -> p
+       CreakyVoiced       -> p
 
 decreak :: Phonet -> Phonet
 decreak p =
