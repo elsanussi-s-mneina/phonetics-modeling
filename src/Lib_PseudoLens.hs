@@ -13,14 +13,14 @@ isConsonant :: Phonet -> Bool
 isConsonant p =
   case p of 
     Consonant {} -> True
-    _            -> False
+    Vowel {}     -> False
 
 -- | whether a phonete is a vowel.
 isVowel :: Phonet -> Bool
 isVowel p =
     case p of
       Vowel {} -> True
-      _        -> False
+      Consonant {} -> False
 
 -- | The vocal fold configuration of a phoneme.
 vocalFolds :: Phonet -> VocalFolds
@@ -42,44 +42,44 @@ place :: Phonet -> Maybe Place
 place p = 
   case p of 
     Consonant _ pl _ _ _ -> Just pl
-    _                    -> Nothing
+    Vowel {}             -> Nothing
 
 withPlace :: Place -> Phonet -> Phonet
 withPlace x p =  
   case p of 
     Consonant a _ b c d -> Consonant a x b c d
-    _                   -> p
+    Vowel {}            -> p
 
 manner :: Phonet -> Maybe Manner
 manner p =
   case p of
     Consonant _ _ m _ _ -> Just m
-    _                   -> Nothing
+    Vowel {}            -> Nothing
 
 withManner :: Manner -> Phonet -> Phonet
 withManner x p =
   case p of
     Consonant a b _ c d -> Consonant a b x c d
-    _                   -> p
+    Vowel {}            -> p
 
 airstream :: Phonet -> Maybe Airstream
 airstream p = 
   case p of 
     Consonant _ _ _ a _ -> Just a
-    _                   -> Nothing
+    Vowel {}            -> Nothing
 
 withAirstream :: Airstream -> Phonet -> Maybe Phonet
 withAirstream x p = 
   case p of 
     Consonant a b c _ d -> Just (Consonant a b c x d)
-    _                   -> Nothing
+    Vowel {}            -> Nothing
 
 withVowelLength :: VowelLength -> Phonet -> Phonet
 withVowelLength vl p =
   case p of 
     Vowel height backness rounding voicing _ 
       -> Vowel height backness rounding voicing vl
-    _ 
+    Consonant {} 
       -> p -- Ignore phonetes that are not vowels.
 
 toLong :: Phonet -> Phonet
@@ -102,7 +102,7 @@ withSecondaryArticulation :: SecondaryArticulation -> Phonet -> Phonet
 withSecondaryArticulation x p = 
   case p of 
     Consonant a b c d _ -> Consonant a b c d x
-    _                   -> p
+    Vowel {}            -> p
 
 
 -- | Given a phonete returns,
