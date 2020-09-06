@@ -15,16 +15,16 @@ import Prelude (Eq)
 --    the backness (how far back in the mouth),
 --    the rounding (rounding of lips), and
 --    the configuration of the vocal folds.
-data Phonet = Consonant VocalFolds
-                        Place   -- ^ Place of articulation
-                        Manner  -- ^ Manner of articulation
-                        Airstream
-                        SecondaryArticulation
-            | Vowel Height
-                    Backness
-                    Rounding
-                    VocalFolds
-                    VowelLength
+data Phonet = Consonant !VocalFolds
+                        !Place   -- ^ Place of articulation
+                        !Manner  -- ^ Manner of articulation
+                        !Airstream
+                        !SecondaryArticulation
+            | Vowel !Height
+                    !Backness
+                    !Rounding
+                    !VocalFolds
+                    !VowelLength
                     deriving Eq
 
 data Backness = Front
@@ -64,7 +64,7 @@ data Place = Bilabial
            | AlveoloPalatal
            | PalatoAlveolar  -- To do: investigate what the difference
            -- is between alveolopalatal, and palatoalveolar
-           | Places [Place]
+           | Places ![Place]
            deriving Eq
 
 data Manner = Plosive
