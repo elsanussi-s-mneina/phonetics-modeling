@@ -1,8 +1,9 @@
-{-# LANGUAGE OverloadedStrings #-}
 module IPATextToDescriptionSpec where
 
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           IPA (describeIPA)
+import qualified IPA 
+import Data.Text (pack, unpack)
+describeIPA = unpack . IPA.describeIPA . pack
 
 pulmonicEgressiveConsonantSpec :: Spec
 pulmonicEgressiveConsonantSpec = do
