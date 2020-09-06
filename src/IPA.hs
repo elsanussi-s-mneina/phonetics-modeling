@@ -2,7 +2,7 @@
 module IPA where
 
 import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(Just, Nothing), (<), (<>), otherwise,
-  map, not, zip)
+  map, zip)
 import Data.Maybe (fromMaybe, maybe)
 import Numeric.Natural (Natural)
 import Data.Text (Text, concat)
@@ -10,6 +10,7 @@ import Data.Text (Text, concat)
 import qualified Data.Text     as T
 
 import DefaultLanguageText
+    ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage )
 import Lib_Types (Phonet(Consonant, Vowel), VocalFolds(..), Place(..), Manner(..), Airstream(..),
                       SecondaryArticulation(..),
                       Height(..), Backness(..), Rounding(..), PhonetInventory(..),
@@ -231,69 +232,70 @@ analyzeIPA p =
    Just x  -> Just x
    Nothing ->
      case p of
+       ipaText | T.null ipaText -> Nothing
        -- Handle Diacritics:
-       ipaText | not (T.null ipaText) ->
+       ipaText ->
          case [T.last ipaText] of
            "̥" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVoiceless x)
-                   _      -> Nothing
+                   Nothing -> Nothing
            "̊" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVoiceless x)
-                   _      -> Nothing
+                   Nothing -> Nothing
       
            "̬" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVoiced x)
-                   _      -> Nothing
+                   Nothing -> Nothing
            "ʷ" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toLabialized x)
-                   _      -> Nothing
+                   Nothing -> Nothing
       
            "ʲ" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toPalatalized x)
-                   _      -> Nothing
+                   Nothing -> Nothing
       
            "ˠ" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVelarized x)
-                   _      -> Nothing
+                   Nothing -> Nothing
       
            "ˤ" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toPharyngealized x)
-                   _      -> Nothing
+                   Nothing -> Nothing
            "ː" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toLong x)
-                   _      -> Nothing
+                   Nothing -> Nothing
            "ˑ" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toHalfLong x)
-                   _      -> Nothing
+                   Nothing -> Nothing
            "̆" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toExtraShort x)
-                   _      -> Nothing
+                   Nothing -> Nothing
       
            "ʰ" ->
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in case fullGrapheme of
                    Just x -> Just (aspirate x)
-                   _      -> Nothing
+                   Nothing -> Nothing
            -- (About the preceding line:) It is strange but we will just
            -- do nothing if they give us an aspirated vowel.
            -- since we have no way to represent it in the type system.
@@ -303,7 +305,6 @@ analyzeIPA p =
              let fullGrapheme = analyzeIPA (T.init ipaText)
               in retractPhonet fullGrapheme
            _ -> Nothing -- not recognized.
-       _ -> Nothing
 
 constructIPA :: Phonet -> Text
 constructIPA phoneme =
@@ -463,8 +464,8 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
         (Vowel x y z Voiceless vowelLength) of
         Nothing         -> Nothing
         Just regularIPA -> Just (addVoicedDiacritic regularIPA)
-
-  _ -> Nothing
+  Consonant {} -> Nothing
+  Vowel     {} -> Nothing
 
 constructDeconstruct :: (Phonet -> Phonet) -> Text -> Text
 constructDeconstruct func x =
