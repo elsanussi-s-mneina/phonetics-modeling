@@ -573,15 +573,14 @@ isDescenderText text =
 -- Whether a diacritic goes above
 -- the character it is placed on.
 isDiacriticAbove :: Char -> Bool
-isDiacriticAbove '̊' = True
-isDiacriticAbove _   = False
+isDiacriticAbove c = c == '̊'
 
 -- |
 -- Whether a diacritic goes below
 -- the character which it is placed on.
 isDiacriticBelow :: Char -> Bool
-isDiacriticBelow '̥' = True
-isDiacriticBelow _   = False
+isDiacriticBelow c = c == '̥'
+
 
 -- |
 -- When given a diacritic that goes above,
@@ -589,8 +588,11 @@ isDiacriticBelow _   = False
 -- and has the same meaning.
 -- otherwise does nothing.
 lowerDiacritic :: Char -> Char
-lowerDiacritic '̊' = '̥'
-lowerDiacritic x   = x
+lowerDiacritic c =
+  case c of 
+    '̊'    -> '̥'
+    other -> other
+
 
 -- |
 -- When given a diacritic that goes below,
@@ -598,5 +600,7 @@ lowerDiacritic x   = x
 -- has the same meaning;
 -- otherwise it does nothing.
 raiseDiacritic :: Char -> Char
-raiseDiacritic '̥' = '̊'
-raiseDiacritic x   = x
+raiseDiacritic c =
+  case c of 
+    '̥'    -> '̊'
+    other -> other
