@@ -26,7 +26,7 @@ import ShowFunctions (showPhonet)
 import PhoneticFeatures(showFeatures, analyzeFeatures)
 import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
 
-import GraphemeGrammar(splitIntoPhonemes, isDescenderText)
+import GraphemeGrammar(splitIntoPhonemes, isDescender)
 
 
 englishPhonetInventoryReport :: Text
@@ -341,7 +341,7 @@ addAspirationDiacritic = (<> pack "ʰ")
 
 addVoicelessDiacritic :: Text -> Text
 addVoicelessDiacritic x =
-  if isDescenderText x
+  if isDescender (T.last x)
     then x <> pack "̊"
     else x <> pack "̥"
 

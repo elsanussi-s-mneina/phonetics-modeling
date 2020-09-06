@@ -565,10 +565,6 @@ isAscender character = character `elem` ascenders
 isDescender :: Char -> Bool
 isDescender character = character `elem` descenders
 
-isDescenderText :: Text -> Bool
-isDescenderText text =
-  T.length text == 1 && T.head text `elem` descenders
-
 -- |
 -- Whether a diacritic goes above
 -- the character it is placed on.
