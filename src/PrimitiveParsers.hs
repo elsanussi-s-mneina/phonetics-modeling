@@ -1,6 +1,6 @@
 module PrimitiveParsers where
 
-import Prelude (Char, Maybe(Just, Nothing), (<>), (&&), elem, not, otherwise)
+import Prelude (Char, Maybe(..), (<>), (&&), elem, not, otherwise)
 
 import Data.Text (Text)
 import qualified Data.Text as T

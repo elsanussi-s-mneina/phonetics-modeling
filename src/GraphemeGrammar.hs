@@ -2,8 +2,8 @@
 --   diacritics go with the non-diacritic characters they modify.
 --
 module GraphemeGrammar where
-import Prelude((+),  (<), (&&), (<>),(==), Bool(False, True),
-              Char, Int, Maybe(Just, Nothing),
+import Prelude((+),  (<), (&&), (<>),(==), Bool(..),
+              Char, Int, Maybe(..),
               elem)
 import Data.Text (Text)
 

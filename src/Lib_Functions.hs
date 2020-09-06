@@ -1,8 +1,8 @@
 module Lib_Functions where
 
 import           Lib_Types
-import           Prelude (Bool (False, True),
-                          Maybe (Just, Nothing),
+import           Prelude (Bool (..),
+                          Maybe (..),
                           elem,
                           (==), (||))
 import Data.Text (Text)

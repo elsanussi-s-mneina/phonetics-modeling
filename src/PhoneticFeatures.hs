@@ -1,5 +1,5 @@
 module PhoneticFeatures where
-import Prelude (Bool(False, True), Maybe(Just, Nothing), elem, filter, head, map, notElem, null, otherwise, (||), (==), (<>), (&&))
+import Prelude (Bool(..), Maybe(..), elem, filter, head, map, notElem, null, otherwise, (||), (==), (<>), (&&))
 import Data.Maybe (catMaybes)
 import Data.Text (Text, pack)
 

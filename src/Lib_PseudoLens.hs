@@ -6,7 +6,7 @@
 module Lib_PseudoLens where
 import Lib_Types
 
-import Prelude (Maybe(Just, Nothing), Bool(True, False))
+import Prelude (Maybe(..), Bool(..))
 
 -- | whether a phonete is a consonant.
 isConsonant :: Phonet -> Bool

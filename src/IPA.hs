@@ -1,6 +1,6 @@
 module IPA where
 
-import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(Just, Nothing), (<), (<>), otherwise,
+import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), otherwise,
   map, zip)
 import Data.Maybe (fromMaybe, maybe)
 import Numeric.Natural (Natural)
