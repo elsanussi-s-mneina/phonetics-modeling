@@ -137,7 +137,8 @@ lateral p = case p of
   (Consonant _ _ LateralApproximant _ _) -> Just LateralFeature
   (Consonant _ _ LateralFricative _ _)   -> Just LateralFeature
   (Consonant _ _ LateralFlap _ _)        -> Just LateralFeature
-  _                                    -> Nothing
+  Consonant {}                           -> Nothing
+  Vowel     {}                           -> Nothing
 
 -- |
 -- Affricates are [+delayed release].
@@ -158,7 +159,8 @@ labial :: Phonet -> Maybe PhonemeFeature
 labial p = case p of
   (Consonant _ Bilabial _ _ _)    -> Just LabialFeature
   (Consonant _ LabioDental _ _ _) -> Just LabialFeature
-  _                             -> Nothing
+  Consonant {}                    -> Nothing
+  Vowel     {}                    -> Nothing
 
 -- |
 -- Dentals are [coronal].
@@ -182,7 +184,8 @@ coronal p = case p of
   (Consonant _ Retroflex _ _ _)      -> Just CoronalFeature
   (Consonant _ Palatal _ _ _)        -> Just CoronalFeature
   (Consonant _ PostAlveolar _ _ _)   -> Just CoronalFeature
-  _                                -> Nothing
+  Consonant {}                       -> Nothing
+  Vowel     {}                       -> Nothing
 
 -- |
 -- Palatals are [dorsal].
@@ -199,7 +202,8 @@ dorsal p = case p of
   (Consonant _ Palatal _ _ _) -> Just DorsalFeature
   (Consonant _ Velar _ _ _)   -> Just DorsalFeature
   (Consonant _ Uvular _ _ _)  -> Just DorsalFeature
-  _                         -> Nothing
+  Consonant {}                -> Nothing
+  Vowel     {}                -> Nothing
 
 -- |
 -- Pharyngeal fricatives are [pharyngeal].
@@ -234,7 +238,9 @@ voice p = case p of
     Just (VoiceFeature Plus)
   (Vowel _ _ _ Voiced _) ->
     Just (VoiceFeature Plus)
-  _ ->
+  Consonant {} -> 
+    Just (VoiceFeature Minus)
+  Vowel     {} -> 
     Just (VoiceFeature Minus)
 
 -- |
@@ -246,7 +252,8 @@ spreadGlottis :: Phonet -> Maybe PhonemeFeature
 spreadGlottis p = case p of
   (Consonant VoicelessAspirated _ Plosive _ _) -> Just SpreadGlottisFeature
   (Consonant VoicedAspirated _ Plosive _ _)    -> Just SpreadGlottisFeature
-  _                                          -> Nothing
+  Consonant {}                       -> Nothing
+  Vowel     {}                       -> Nothing
 
 -- |
 -- Ejectives have the feature [constricted glottis].
@@ -266,8 +273,8 @@ constrictedGlottis p = case p of
     if sonorant p == Just (SonorantFeature Plus)
       then Just ConstrictedGlottisFeature
       else Nothing
-  _ ->
-    Nothing
+  Consonant {}   -> Nothing
+  Vowel     {}   -> Nothing
 
 -- |
 -- Dentals are [+anterior].
@@ -290,7 +297,8 @@ anterior p = case p of
   (Consonant _ Retroflex _ _ _)      -> Just (AnteriorFeature Minus)
   (Consonant _ Palatal _ _ _)        -> Just (AnteriorFeature Minus)
   (Consonant _ AlveoloPalatal _ _ _) -> Just (AnteriorFeature Minus)
-  _                                  -> Nothing
+  Consonant {}                       -> Nothing
+  Vowel     {}                       -> Nothing
 
 distributed :: Phonet -> Maybe PhonemeFeature
 distributed p = case p of
@@ -300,7 +308,8 @@ distributed p = case p of
   (Consonant _ Retroflex _ _ _)      -> Just (DistributedFeature Minus)
   (Consonant _ Palatal _ _ _)        -> Just (DistributedFeature Plus)
   (Consonant _ AlveoloPalatal _ _ _) -> Just (DistributedFeature Plus)
-  _                                  -> Nothing
+  Consonant {}                       -> Nothing
+  Vowel     {}                       -> Nothing
 
 -- |
 -- Alveolar fricatives are [+strident].
@@ -331,7 +340,8 @@ strident p = case p of
   (Consonant _ Uvular Affricate _ _)       -> Just (StridentFeature Plus)
   (Consonant _ _ Fricative _ _)            -> Just (StridentFeature Minus)
   (Consonant _ _ Affricate _ _)            -> Just (StridentFeature Minus)
-  _                                        -> Nothing
+  Consonant {}                             -> Nothing
+  Vowel     {}                             -> Nothing
 
 -- |
 -- Palatal consonants are [+high].
@@ -387,7 +397,8 @@ back p = case p of
   -- see page 59 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
   -- A document titled "Segmental Phonology" by Darin Howe.
   -- Further sources are on that page.                      .
-  _                               -> Nothing
+  Consonant {}                    -> Nothing
+
 
 -- |
 -- Rounded vowels are [+round].
@@ -404,7 +415,7 @@ lipRound p = case p of
   (Vowel _ _ Rounded _ _)        -> Just (RoundFeature Plus)
   Vowel {}                       -> Just (RoundFeature Minus)
   (Consonant _ _ _ _ Labialized) -> Just (RoundFeature Plus)
-  _                               -> Just (RoundFeature Minus)
+  Consonant {}                   -> Just (RoundFeature Minus)
 
 -- |
 -- Advanced tongue root
@@ -447,7 +458,9 @@ atr p = case p of
     Just (AdvancedTongueRootFeature Minus)
   (Consonant _ _ _ _ Pharyngealized) ->
     Just (AdvancedTongueRootFeature Minus)
-  _ ->
+  Consonant {} ->
+    Nothing
+  Vowel {} ->
     Nothing
 
 
@@ -527,7 +540,8 @@ isGlide p = case p of
   (Consonant _ LabialVelar Approximant PulmonicEgressive _)   -> True
   (Consonant _ LabialPalatal Approximant PulmonicEgressive _) -> True
   (Consonant _ Velar Approximant PulmonicEgressive _)         -> True
-  _                                                           -> False
+  Consonant {}                                                -> False
+  Vowel {}                                                    -> False
 
 
 -- Go to Section 12.2 of the textbook to understand
