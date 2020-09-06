@@ -3,7 +3,6 @@ module IPATextToDescriptionSpec where
 
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import           IPA (describeIPA)
-import qualified Data.Text as T
 
 pulmonicEgressiveConsonantSpec :: Spec
 pulmonicEgressiveConsonantSpec = do

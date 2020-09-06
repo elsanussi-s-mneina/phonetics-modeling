@@ -10,7 +10,6 @@ import           GraphemeGrammar  ( secondaryArticulationDiacriticParser
                                   , splitIntoPhonemes
                                   )
 
-import qualified Data.Text as T
 
 
 graphemeGrammarSpec = do

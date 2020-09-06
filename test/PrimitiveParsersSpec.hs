@@ -10,7 +10,6 @@ import           PrimitiveParsers  ( singleCharParser
                                    , optionalParser
                                    )
 
-import qualified Data.Text as T
 
 primitiveParsersSpec = do
   hspec singleCharParserSpec
