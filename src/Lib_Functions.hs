@@ -1,6 +1,6 @@
 module Lib_Functions where
 
-import           Lib_Types
+import           Lib_Types (Airstream(..), Manner(..), Phonet(..), Place(..), VocalFolds(..))
 import           Prelude (Bool (..),
                           Maybe (..),
                           elem,
@@ -8,7 +8,8 @@ import           Prelude (Bool (..),
 import Data.Text (Text)
 import ShowFunctions(showPhonet)
 
-import Lib_PseudoLens
+import Lib_PseudoLens (place, toVoiced, toVoiceless, toVoicedAspirated, toVoicelessAspirated, vocalFolds, withManner,
+                       withPlace, withVocalFolds)
 
 equivalentInPlace :: Place -> Place -> Bool
 Bilabial     `equivalentInPlace` Bilabial     = True

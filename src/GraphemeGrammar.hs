@@ -2,12 +2,11 @@
 --   diacritics go with the non-diacritic characters they modify.
 --
 module GraphemeGrammar where
-import Prelude((+),  (<), (&&), (<>),(==), Bool(..),
+import Prelude((+), (>=), (<>), (==), Bool(..),
               Char, Int, Maybe(..),
-              elem)
-import Data.Text (Text)
+              elem, otherwise)
+import Data.Text (Text, index, length)
 
-import qualified Data.Text as T
 
 
 import PrimitiveParsers
@@ -161,7 +160,9 @@ isSuchAt :: (Char -> Bool) -- ^ a function
          -> Int  -- ^ a number indicating which character in the text
          -> Text -- ^ a string
          -> Bool -- ^ whether it is true
-isSuchAt function index text = index < T.length text && function (T.index text index)
+isSuchAt function indexValue text
+  | indexValue >= length text = False  -- index is out of range
+  | otherwise                 = function (index text indexValue)
 
 -- | Whether a character is a superscript character, that
 --   often goes after a full character to modify the full

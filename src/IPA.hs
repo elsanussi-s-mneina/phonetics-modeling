@@ -4,9 +4,7 @@ import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), otherwise,
   map, zip)
 import Data.Maybe (fromMaybe, maybe)
 import Numeric.Natural (Natural)
-import Data.Text (Text, concat, pack)
-
-import qualified Data.Text     as T
+import Data.Text (Text, concat, init, last, null, pack, unlines)
 
 import DefaultLanguageText
     ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage )
@@ -206,7 +204,7 @@ lookupInListFromValue givenKey aList =
 ipaTextToPhonetListReport :: Text -> Text
 ipaTextToPhonetListReport text =
   let listA = ipaTextToPhonetList text
-   in T.unlines (map ipaAndPhonetFormat listA)
+   in unlines (map ipaAndPhonetFormat listA)
 
 ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
 ipaAndPhonetFormat (ipaText, phonet) =
@@ -231,67 +229,67 @@ analyzeIPA p =
    Just x  -> Just x
    Nothing ->
      case p of
-       ipaText | T.null ipaText -> Nothing
+       ipaText | null ipaText -> Nothing
        -- Handle Diacritics:
        ipaText ->
-         case [T.last ipaText] of
+         case [last ipaText] of
            "̥" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVoiceless x)
                    Nothing -> Nothing
            "̊" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVoiceless x)
                    Nothing -> Nothing
       
            "̬" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVoiced x)
                    Nothing -> Nothing
            "ʷ" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toLabialized x)
                    Nothing -> Nothing
       
            "ʲ" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toPalatalized x)
                    Nothing -> Nothing
       
            "ˠ" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toVelarized x)
                    Nothing -> Nothing
       
            "ˤ" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toPharyngealized x)
                    Nothing -> Nothing
            "ː" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toLong x)
                    Nothing -> Nothing
            "ˑ" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toHalfLong x)
                    Nothing -> Nothing
            "̆" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (toExtraShort x)
                    Nothing -> Nothing
       
            "ʰ" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
                    Just x -> Just (aspirate x)
                    Nothing -> Nothing
@@ -301,7 +299,7 @@ analyzeIPA p =
            -- to do: determine
            -- if the idea of an aspirated vowel makes sense
            "̠" ->
-             let fullGrapheme = analyzeIPA (T.init ipaText)
+             let fullGrapheme = analyzeIPA (init ipaText)
               in retractPhonet fullGrapheme
            _ -> Nothing -- not recognized.
 
@@ -341,7 +339,7 @@ addAspirationDiacritic = (<> pack "ʰ")
 
 addVoicelessDiacritic :: Text -> Text
 addVoicelessDiacritic x =
-  if isDescender (T.last x)
+  if isDescender (last x)
     then x <> pack "̊"
     else x <> pack "̥"
 

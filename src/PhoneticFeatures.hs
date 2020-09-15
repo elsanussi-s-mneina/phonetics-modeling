@@ -1,9 +1,8 @@
 module PhoneticFeatures where
 import Prelude (Bool(..), Maybe(..), elem, filter, head, map, notElem, null, otherwise, (||), (==), (<>), (&&))
 import Data.Maybe (catMaybes)
-import Data.Text (Text, pack)
+import Data.Text (Text, intercalate, pack)
 
-import qualified Data.Text     as T
 
 import Lib_Types
     ( SecondaryArticulation(Pharyngealized, Palatalized, Labialized),
@@ -523,7 +522,7 @@ showFeatures :: [PhonemeFeature] -> Text
 showFeatures features =
   let featuresStrings :: [Text]
       featuresStrings = map showPhonemeFeature features
-   in pack "[" <> T.intercalate (pack "; ") featuresStrings <> pack "]"
+   in pack "[" <> intercalate (pack "; ") featuresStrings <> pack "]"
 
 toTextFeatures :: Phonet -> Text
 toTextFeatures phonete =
