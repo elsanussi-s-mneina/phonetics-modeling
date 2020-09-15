@@ -24,6 +24,7 @@ import Lib_Types
   )
 
 import Lib_PseudoLens (toExtraShort, toHalfLong, toLabialized, toLong,
+                       toNoSecondaryArticulation,
                        toPalatalized, toPharyngealized, toVelarized,
                        toVoiced, toVoiceless)
 import Lib_Functions (aspirate,
@@ -34,12 +35,16 @@ import ShowFunctions (showPhonet)
 
 import PhoneticFeatures(showFeatures, analyzeFeatures)
 import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
+import           LanguageSpecific.ArabicSpecific (arabicPhonemeInventory)
 
 import GraphemeGrammar(splitIntoPhonemes, isDescender)
 
 
 englishPhonetInventoryReport :: Text
 englishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA englishPhonetInventory)
+
+arabicPhonetInventoryReport :: Text
+arabicPhonetInventoryReport = ipaTextToPhonetListReport (showIPA arabicPhonemeInventory)
 
 analyzeIPAToSPE :: Text -> Text
 analyzeIPAToSPE ipaText =
@@ -316,7 +321,7 @@ analyzeIPA p =
 
 constructIPA :: Phonet -> Text
 constructIPA phoneme =
-  fromMaybe (pack "∅") (constructIPARecursive 3 0 phoneme)
+  fromMaybe (pack "∅") (constructIPARecursive 9 0 phoneme)
 
 -- | convert a secondary articulation to its IPA text representation
 secondaryArticulationIPA :: SecondaryArticulation -> Text
@@ -354,6 +359,19 @@ addVoicelessDiacritic x =
     then x <> pack "̊"
     else x <> pack "̥"
 
+-- here here
+addPharynealizedDiacritic :: Text -> Text
+addPharynealizedDiacritic = (<> (secondaryArticulationIPA Pharyngealized))
+
+addVelarizedDiacritic :: Text -> Text
+addVelarizedDiacritic = (<> (secondaryArticulationIPA Velarized))
+
+addPalatalizedDiacritic :: Text -> Text
+addPalatalizedDiacritic = (<> (secondaryArticulationIPA Palatalized))
+
+addLabializedDiacritic :: Text -> Text
+addLabializedDiacritic = (<> (secondaryArticulationIPA Labialized))
+
 
 constructIPARecursive :: Natural -> Natural -> Phonet -> Maybe Text
 constructIPARecursive recursionLimit recursionLevel p =
@@ -377,6 +395,52 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
         (Consonant x Alveolar y z sa) of
         Nothing         -> Nothing
         Just regularIPA -> Just (addRetractedDiacritic regularIPA)
+
+  (Consonant _ _ _ PulmonicEgressive Pharyngealized)
+    | recursionLevel < recursionLimit ->
+      let result =
+            constructIPARecursive
+              recursionLimit
+              (1 + recursionLevel)
+              (toNoSecondaryArticulation p)
+       in case result of
+            Just regularIPA -> Just (addPharynealizedDiacritic regularIPA)
+            Nothing         -> Nothing
+
+  (Consonant _ _ _ PulmonicEgressive Velarized)
+    | recursionLevel < recursionLimit ->
+      let result =
+            constructIPARecursive
+              recursionLimit
+              (1 + recursionLevel)
+              (toNoSecondaryArticulation p)
+       in case result of
+            Just regularIPA -> Just (addVelarizedDiacritic regularIPA)
+            Nothing         -> Nothing
+
+  (Consonant _ _ _ PulmonicEgressive Palatalized)
+    | recursionLevel < recursionLimit ->
+      let result =
+            constructIPARecursive
+              recursionLimit
+              (1 + recursionLevel)
+              (toNoSecondaryArticulation p)
+       in case result of
+            Just regularIPA -> Just (addPalatalizedDiacritic regularIPA)
+            Nothing         -> Nothing
+
+  (Consonant _ _ _ PulmonicEgressive Labialized)
+    | recursionLevel < recursionLimit ->
+      let result =
+            constructIPARecursive
+              recursionLimit
+              (1 + recursionLevel)
+              (toNoSecondaryArticulation p)
+       in case result of
+            Just regularIPA -> Just (addLabializedDiacritic regularIPA)
+            Nothing         -> Nothing
+
+
   -- Add the diacritic for "retracted"
   -- If there isn't a symbol, and the consonant we want is voiceless,
   -- Just take the symbol for a voiced consonant,
@@ -435,11 +499,7 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
        in case result of
             Just regularIPA -> Just (addCreakyVoicedDiacritic regularIPA)
             Nothing         -> Nothing
-  -- If it can represent it as a single character it will
-  -- return the single character result (i.e. without diacritics),
-  -- otherwise
-  -- it will try to represent it in IPA with more than
-  -- one character
+
 
   (Vowel w x y z vowelLength)
     | vowelLength /= NormalLength
@@ -501,7 +561,10 @@ describeIPA x =
 
 
 showIPA :: PhonetInventory -> Text
-showIPA (PhonetInventory phonetes) = concat (map constructIPA phonetes)
+showIPA p = concat (showIPAAsList p)
+
+showIPAAsList :: PhonetInventory -> [Text]
+showIPAAsList (PhonetInventory phonetes) = map constructIPA phonetes
 
 
 

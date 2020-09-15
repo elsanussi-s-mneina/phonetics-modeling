@@ -146,3 +146,6 @@ toVelarized = withSecondaryArticulation Velarized
 
 toPharyngealized :: Phonet -> Phonet
 toPharyngealized = withSecondaryArticulation Pharyngealized
+
+toNoSecondaryArticulation :: Phonet -> Phonet
+toNoSecondaryArticulation = withSecondaryArticulation Normal

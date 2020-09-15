@@ -89,6 +89,9 @@ phonemeParserSpec =
       phonemeParserString "t͡s" `shouldBe` Just ("t͡s", "")
     it "does parse half of two phonemes \\t\\ \\s\\" $ do
       phonemeParserString "ts" `shouldBe` Just ("t", "s")
+    it "does parse pharyngealized \\t\\ when given \\tˤs\\" $ do
+      phonemeParserString "tˤs" `shouldBe` Just ("tˤ", "s")
+
 
 tieBarParserSpec :: Spec
 tieBarParserSpec =
