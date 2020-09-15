@@ -4,6 +4,18 @@ import Prelude (fmap)
 import Data.Text (Text, empty, pack, replace, unwords, concat)
 import EnglishUSText
 import Lib_Types
+  ( Airstream(..)
+  , Backness(..)
+  , Height(..)
+  , Manner(..)
+  , Phonet(..)
+  , PhonetInventory(..)
+  , Place(..)
+  , Rounding(..)
+  , SecondaryArticulation(..)
+  , VocalFolds(..)
+  , VowelLength(..)
+  )
 
 -- | Replaces two consecutive spaces with one wherever they occur in a text
 removeExtraTwoSpaces :: Text -> Text

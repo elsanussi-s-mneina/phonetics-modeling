@@ -6,10 +6,7 @@ import Prelude((+), (>=), (<>), (==), Bool(..),
               Char, Int, Maybe(..),
               elem, otherwise)
 import Data.Text (Text, index, length)
-
-
-
-import PrimitiveParsers
+import PrimitiveParsers (optionalParser, orParser, singleCharParser, thenParser)
 
 {- Context free grammar of IPA (incomplete, but good enough to start)
 

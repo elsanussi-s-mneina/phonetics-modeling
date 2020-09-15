@@ -5,27 +5,18 @@ import Data.Text (Text, intercalate, pack)
 
 
 import Lib_Types
-    ( SecondaryArticulation(Pharyngealized, Palatalized, Labialized),
-      VocalFolds(Voiced, Voiceless, VoicelessAspirated, VoicedAspirated,
-                 CreakyVoiced),
-      Airstream(PulmonicEgressive),
-      Manner(Approximant, Nasal, Lateral, LateralApproximant,
-             LateralFricative, LateralFlap, Plosive, Fricative, Affricate),
-      Place(Velar, Bilabial, Dental, Retroflex, Alveolar, PostAlveolar,
-            LabioDental, AlveoloPalatal, Uvular, Pharyngeal, Glottal, Palatal,
-            LabialVelar, LabialPalatal),
-      Rounding(Rounded, Unrounded),
-      Height(OpenMid, CloseMid, NearOpen, Open, Close, NearClose),
-      Backness(Back, Central, Front),
-      Phonet(..) )
+  ( Airstream(..)
+  , Backness(..)
+  , Height(..)
+  , Manner(..)
+  , Phonet(..)
+  , Place(..)
+  , Rounding(..)
+  , SecondaryArticulation(..)
+  , VocalFolds(..)
+  )
 
-import PhoneticFeaturesTypes (Polarity(Minus, Plus), PhonemeFeature(SyllabicFeature, ConsonantalFeature,
-           SonorantFeature, ContinuantFeature, VoiceFeature, AdvancedTongueRootFeature, NasalFeature,
-           LateralFeature, DelayedReleaseFeature, SpreadGlottisFeature, ConstrictedGlottisFeature,
-           LabialFeature, CoronalFeature, DorsalFeature, PharyngealFeature, LaryngealFeature,
-           RoundFeature,
-           AnteriorFeature, DistributedFeature, StridentFeature, HighFeature, LowFeature, BackFeature),
-           )
+import PhoneticFeaturesTypes (Polarity(..), PhonemeFeature(..))
 
 import DefaultLanguageText
 

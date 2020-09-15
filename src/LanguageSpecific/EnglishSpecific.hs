@@ -1,15 +1,18 @@
 module LanguageSpecific.EnglishSpecific where
 import Prelude ()
-import           Lib_Types (PhonetInventory(PhonetInventory), Phonet(Consonant, Vowel), VocalFolds(..),
-                            Place(Bilabial, LabioDental, LabialVelar, Dental, Alveolar, PostAlveolar, Palatal, Velar,
-                            Glottal),
-                            Manner(Affricate, Approximant, LateralApproximant, Fricative, Nasal, Plosive),
-                            Airstream(PulmonicEgressive),
-                            SecondaryArticulation(Normal),
-                            Height(Close, CloseMid, Mid, OpenMid, NearClose, NearOpen, Open),
-                            VowelLength(NormalLength),
-                            Backness(Front, Central, Back),
-                            Rounding(Rounded, Unrounded))
+import Lib_Types
+  ( Airstream(..)
+  , Backness(..)
+  , Height(..)
+  , Manner(..)
+  , Phonet(..)
+  , PhonetInventory(..)
+  , Place(..)
+  , Rounding(..)
+  , SecondaryArticulation(..)
+  , VocalFolds(..)
+  , VowelLength(..)
+  )
 
 
 -- These are the sounds found in most native English dialects.

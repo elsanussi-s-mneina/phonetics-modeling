@@ -1,4 +1,4 @@
 module DefaultLanguageText(module EnglishUSText) where
 
-import Prelude()
+import Prelude ()
 import EnglishUSText

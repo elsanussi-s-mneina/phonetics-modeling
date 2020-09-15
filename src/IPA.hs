@@ -8,10 +8,21 @@ import Data.Text (Text, concat, init, last, null, pack, unlines)
 
 import DefaultLanguageText
     ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage )
-import Lib_Types (Phonet(Consonant, Vowel), VocalFolds(..), Place(..), Manner(..), Airstream(..),
-                      SecondaryArticulation(..),
-                      Height(..), Backness(..), Rounding(..), PhonetInventory(..),
-                      VowelLength(ExtraShort, NormalLength, HalfLong, Long))
+
+import Lib_Types
+  ( Airstream(..)
+  , Backness(..)
+  , Height(..)
+  , Manner(..)
+  , Phonet(..)
+  , PhonetInventory(..)
+  , Place(..)
+  , Rounding(..)
+  , SecondaryArticulation(..)
+  , VocalFolds(..)
+  , VowelLength(..)
+  )
+
 import Lib_PseudoLens (toExtraShort, toHalfLong, toLabialized, toLong,
                        toPalatalized, toPharyngealized, toVelarized,
                        toVoiced, toVoiceless)

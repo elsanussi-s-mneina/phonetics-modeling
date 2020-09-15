@@ -1,7 +1,7 @@
 module EnglishUSText where
 
 import Prelude ()
-import           Data.Text  (Text, pack)
+import Data.Text (Text, pack)
 
 
 applicationTitle :: Text

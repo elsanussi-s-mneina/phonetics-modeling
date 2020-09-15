@@ -5,6 +5,14 @@
 
 module Lib_PseudoLens where
 import Lib_Types
+  ( Airstream(..)
+  , Manner(..)
+  , Phonet(..)
+  , Place(..)
+  , SecondaryArticulation(..)
+  , VocalFolds(..)
+  , VowelLength(..)
+  )
 
 import Prelude (Maybe(..), Bool(..))
 
