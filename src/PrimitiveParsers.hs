@@ -1,6 +1,6 @@
 module PrimitiveParsers where
 
-import Prelude (Char, Maybe(..), (<>), (&&), elem, not, otherwise)
+import Prelude (Char, Maybe(..), (<>), elem, otherwise)
 
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -10,9 +10,12 @@ singleCharParser
   -> Text
   -> Maybe (Text, Text)
 singleCharParser charList text
-  | not (T.null text) && (T.index text 0) `elem` charList = Just (T.take 1 text, T.drop 1 text)
-  | otherwise = Nothing
-
+  | T.null text
+    = Nothing
+  | (T.index text 0) `elem` charList
+    = Just (T.take 1 text, T.drop 1 text)
+  | otherwise
+    = Nothing
 
 -- | Uses one parser on the text,
 --   then uses the next parser on the remaining
