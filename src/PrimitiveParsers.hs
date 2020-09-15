@@ -2,18 +2,17 @@ module PrimitiveParsers where
 
 import Prelude (Char, Maybe(..), (<>), elem, otherwise)
 
-import Data.Text (Text)
-import qualified Data.Text as T
+import Data.Text (Text, empty, drop, index, null, take)
 
 singleCharParser
   :: [Char]
   -> Text
   -> Maybe (Text, Text)
 singleCharParser charList text
-  | T.null text
+  | null text
     = Nothing
-  | (T.index text 0) `elem` charList
-    = Just (T.take 1 text, T.drop 1 text)
+  | (index text 0) `elem` charList
+    = Just (take 1 text, drop 1 text)
   | otherwise
     = Nothing
 
@@ -71,5 +70,5 @@ optionalParser
   -> Maybe (Text, Text)
 optionalParser subParser text =
   case subParser text of
-    Nothing -> Just (T.empty, text) -- Return text unconsumed.
+    Nothing -> Just (empty, text) -- Return text unconsumed.
     Just result -> Just result
