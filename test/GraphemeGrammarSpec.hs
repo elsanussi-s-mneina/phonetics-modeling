@@ -91,6 +91,20 @@ phonemeParserSpec =
       phonemeParserString "ts" `shouldBe` Just ("t", "s")
     it "does parse pharyngealized \\t\\ when given \\tˤs\\" $ do
       phonemeParserString "tˤs" `shouldBe` Just ("tˤ", "s")
+    it "does parse pharyngealized \\t\\ when given \\tˤa\\" $ do
+      phonemeParserString "tˤa" `shouldBe` Just ("tˤ", "a")
+    it "does parse palatalized \\t\\ when given \\tʲs\\" $ do
+      phonemeParserString "tʲs" `shouldBe` Just ("tʲ", "s")
+    it "does parse palatalized \\t\\ when given \\tʲabcd\\" $ do
+      phonemeParserString "tʲabcd" `shouldBe` Just ("tʲ", "abcd")
+    it "does parse labialized \\b\\ when given \\bʷek\\" $ do
+      phonemeParserString "bʷek" `shouldBe` Just ("bʷ", "ek")
+    it "does parse labialized \\n\\ when given \\nʷabcd\\" $ do
+      phonemeParserString "nʷabcd" `shouldBe` Just ("nʷ", "abcd")
+    it "does parse velarized \\b\\ when given \\bˠek\\" $ do
+      phonemeParserString "bˠek" `shouldBe` Just ("bˠ", "ek")
+    it "does parse velarized \\n\\ when given \\nˠabcd\\" $ do
+      phonemeParserString "nˠabcd" `shouldBe` Just ("nˠ", "abcd")
 
 
 tieBarParserSpec :: Spec
