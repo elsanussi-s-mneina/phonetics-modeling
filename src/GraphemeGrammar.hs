@@ -6,7 +6,7 @@ import Prelude((+), (>=), (<>), (==), Bool(..),
               Char, Int, Maybe(..),
               elem, otherwise)
 import Data.Text (Text, index, length)
-import PrimitiveParsers (optionalParser, orParser, singleCharParser, thenParser)
+import PrimitiveParsers (manyParser, optionalParser, orParser, singleCharParser, thenParser)
 
 {- Context free grammar of IPA (incomplete, but good enough to start)
 
@@ -74,11 +74,13 @@ phonemeParser =
   `thenParser`
   (digraphParser `orParser` baseCharacterParser)
   `thenParser`
-  (optionalParser voicingDiacriticParser)
-  `thenParser`
-  (optionalParser superscriptAfterParser)
-  `thenParser`
-  (optionalParser secondaryArticulationDiacriticParser)
+  (manyParser
+    (optionalParser superscriptAfterParser)
+   `orParser`
+   (optionalParser voicingDiacriticParser)
+   `orParser`
+   (optionalParser secondaryArticulationDiacriticParser)
+  )
 
 secondaryArticulationDiacriticParser
   :: Text
