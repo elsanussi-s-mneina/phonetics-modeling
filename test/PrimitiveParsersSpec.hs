@@ -48,9 +48,9 @@ thenParserSpec =
     it "should be that: combining two single character parsers, parses two characters in same order" $ do
       thenParser (singleCharParser ['a']) (singleCharParser ['b']) "abc" `shouldBe` Just("ab", "c")
     it "should be that: combining two single character parsers, does not parse two characters in opposite order" $ do
-      thenParser (singleCharParser ['a']) (singleCharParser ['b']) "abc" `shouldBe` Just("ab", "c")
-    it "should be that: combining two single character parsers, parses two characters" $ do
       thenParser (singleCharParser ['a']) (singleCharParser ['b']) "bac" `shouldBe` Nothing
+    it "should be that: combining two single character parsers, parses two characters" $ do
+      thenParser (singleCharParser ['m']) (singleCharParser ['m']) "mmc" `shouldBe` Just("mm", "c")
 
 manyParserSpec :: Spec
 manyParserSpec =
