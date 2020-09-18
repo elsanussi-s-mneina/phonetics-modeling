@@ -4,6 +4,12 @@ import Prelude (Char, Maybe(..), (<>), elem, otherwise)
 
 import Data.Text (Text, empty, drop, index, null, take)
 
+-- | Given a list of characters,
+--   and given a piece of text:
+--   Consumes the first character in the
+--   piece of text if that character is
+--   on the list,
+--   otherwise it fails to parse.
 singleCharParser
   :: [Char]
   -> Text
