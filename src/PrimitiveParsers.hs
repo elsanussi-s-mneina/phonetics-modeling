@@ -64,9 +64,12 @@ manyParser subParser text =
   case subParser text of
     Nothing -> Nothing
     Just (parsed, rest)
-            -> case manyParser subParser rest of
-                  Nothing -> Just (parsed, rest)
-                  Just (parsed2, rest2) -> Just (parsed <> parsed2, rest2)
+            -> if null parsed
+                 then Nothing
+                 else
+                   case manyParser subParser rest of
+                     Nothing -> Just (parsed, rest)
+                     Just (parsed2, rest2) -> Just (parsed <> parsed2, rest2)
 
 -- | changes a parser by making it never return Nothing,
 --   that is it makes the parser optional.
