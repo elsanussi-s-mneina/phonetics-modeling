@@ -212,8 +212,9 @@ dorsal p = case p of
 --
 -- (Source: page 264)
 pharyngeal :: Phonet -> Maybe PhonemeFeature
-pharyngeal (Consonant _ Pharyngeal Fricative _ _) = Just PharyngealFeature
-pharyngeal _                                    = Nothing
+pharyngeal p = case p of
+  (Consonant _ Pharyngeal Fricative _ _) -> Just PharyngealFeature
+  _                                      -> Nothing
 
 -- |
 -- Glottal consonants are [laryngeal].
@@ -221,8 +222,9 @@ pharyngeal _                                    = Nothing
 --
 -- (Source: page 265)
 laryngeal :: Phonet -> Maybe PhonemeFeature
-laryngeal (Consonant _ Glottal _ _ _) = Just LaryngealFeature
-laryngeal _                         = Nothing
+laryngeal p = case p of
+  (Consonant _ Glottal _ _ _) -> Just LaryngealFeature
+  _                           -> Nothing
 
 -- |
 -- Voiced Aspirated consonants are [+voice].
