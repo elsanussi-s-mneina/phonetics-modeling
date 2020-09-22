@@ -35,7 +35,7 @@ voicingDiacritics :: [Char]
 voicingDiacritics = ['̥', '̊', '̬']
 
 -- | This implements the
--- rule expressed in (BNF) grammar as:
+-- rule expressed in the grammar as:
 -- digraph -> baseCharacter tieBarCharacter baseCharacter
 digraphParser
   :: Text
@@ -53,11 +53,23 @@ voicingDiacriticParser
   -> Maybe (Text, Text)
 voicingDiacriticParser = singleCharParser voicingDiacritics
 
+-- | A parser that consumes the first
+--   character in some IPA text
+--   if that character is a superscript
+--   (for example ʲ, ʰ)
+--   that comes after a base character
+--   (for example p, t, c, g).
 superscriptAfterParser
   :: Text
   -> Maybe (Text, Text)
 superscriptAfterParser = singleCharParser superscriptsAfter
 
+-- | A parser that consumes the first
+--   character in some IPA text
+--   if that character is a superscript
+--   (for example ⁿ)
+--   that could come before a base character
+--   (for example p, t, c, g).
 superscriptBeforeParser
   :: Text
   -> Maybe (Text, Text)
