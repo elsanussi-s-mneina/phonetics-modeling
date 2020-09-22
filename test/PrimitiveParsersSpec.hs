@@ -72,7 +72,20 @@ orParserSpec =
   describe "or-parser" $ do
     it "parses \"aaaf\" successfully" $ do
       orParser (manyParser (singleCharParser ['f'])) (manyParser (singleCharParser ['a'])) "aaaf" `shouldBe` Just ("aaa", "f")
+    it "parses \"ffffa\" successfully" $ do
       orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "ffffa" `shouldBe` Just ("f", "fffa")
+    it "fails to parse \"qu\" " $ do
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "qu" `shouldBe` Nothing
+    it "does not ignore spaces " $ do
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) " ffffa" `shouldBe` Nothing
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "   ffffa" `shouldBe` Nothing
+    it "does not ignore tabs " $ do
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "\tffffa" `shouldBe` Nothing
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "\t\t\t\tffffa" `shouldBe` Nothing
+    it "does not ignore new lines " $ do
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "\nffffa" `shouldBe` Nothing
+      orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "\n\nffffa" `shouldBe` Nothing
+
     it "parse failure case" $ do
       orParser (manyParser $ singleCharParser ['a', 'b']) (manyParser $ singleCharParser ['k']) "ttttnnn" `shouldBe` Nothing
 
