@@ -41,6 +41,23 @@ singleCharParserSpec =
     it "should be that: single character parser of the character 'a' does parse the string containing \"abc\"\
        \ characters and leaves \"bc\"" $
       singleCharParser ['a', 'b'] "cba" `shouldBe` Nothing
+    it "should be that: single character parser of the non-ASCII character ʃ works" $
+      do
+      singleCharParser ['ʃ'] "" `shouldBe` Nothing
+      singleCharParser ['ʃ'] "ʃ" `shouldBe` Just ("ʃ", "")
+      singleCharParser ['ʃ'] "ʃʃ" `shouldBe` Just ("ʃ", "ʃ")
+      singleCharParser ['ʃ'] "ʃʃʃ" `shouldBe` Just ("ʃ", "ʃʃ")
+      singleCharParser ['ʃ'] "ʃʃa" `shouldBe` Just ("ʃ", "ʃa")
+      singleCharParser ['ʃ'] "bbb" `shouldBe` Nothing
+    it "should be that: single character parser of the non-ASCII character ʃ and the ASCII character q works" $
+      do
+      singleCharParser ['ʃ', 'q'] "ʃ" `shouldBe` Just ("ʃ", "")
+      singleCharParser ['ʃ', 'q'] "q" `shouldBe` Just ("q", "")
+      singleCharParser ['q', 'ʃ'] "ʃʃ" `shouldBe` Just ("ʃ", "ʃ")
+      singleCharParser ['ʃ', 'q'] "qqʃ" `shouldBe` Just ("q", "qʃ")
+      singleCharParser ['ʃ', 'q'] "nnn" `shouldBe` Nothing
+
+
 
 thenParserSpec :: Spec
 thenParserSpec =
@@ -62,7 +79,7 @@ manyParserSpec =
     it "should be that: a many-parser on one character fails when parsing a string that does not start with that character." $ do
       manyParser (singleCharParser ['a']) "baa" `shouldBe` Nothing
       manyParser (singleCharParser ['z']) "az" `shouldBe` Nothing
-    it "should be that: a many-parser on one characters succeeds on a string that contains only that character" $ do
+    it "should be that: a many-parser on one characters succeeds on a string that starts with only that character" $ do
       manyParser (singleCharParser ['f']) "fff" `shouldBe` Just ("fff", "")
       manyParser (singleCharParser ['f']) "fffa" `shouldBe` Just ("fff", "a")
       manyParser (singleCharParser ['d']) "ddrst" `shouldBe` Just ("dd", "rst")
@@ -85,7 +102,6 @@ orParserSpec =
     it "does not ignore new lines " $ do
       orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "\nffffa" `shouldBe` Nothing
       orParser (singleCharParser ['f']) (manyParser $ singleCharParser ['a']) "\n\nffffa" `shouldBe` Nothing
-
     it "parse failure case" $ do
       orParser (manyParser $ singleCharParser ['a', 'b']) (manyParser $ singleCharParser ['k']) "ttttnnn" `shouldBe` Nothing
 
