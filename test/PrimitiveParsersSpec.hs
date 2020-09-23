@@ -72,6 +72,10 @@ thenParserSpec =
 manyParserSpec :: Spec
 manyParserSpec =
   describe "many parser" $ do
+    it "should be that: a many-parser on one character fails on an empty string." $ do
+      manyParser (singleCharParser ['a']) "" `shouldBe` Nothing
+    it "should be that: a many-parser on the space character fails on an empty string." $ do
+      manyParser (singleCharParser [' ']) "" `shouldBe` Nothing
     it "should be that: a many-parser on one character succeeds parsing when the character is the same." $ do
       manyParser (singleCharParser ['a']) "a" `shouldBe` Just ("a", "")
       manyParser (singleCharParser ['b']) "b" `shouldBe` Just ("b", "")
@@ -108,6 +112,14 @@ orParserSpec =
 optionalParserSpec :: Spec
 optionalParserSpec =
   describe "optional parser" $ do
+    it "parses the empty string without consuming input when given a single character parser" $ do
+      optionalParser (singleCharParser ['a']) "" `shouldBe` Just ("", "")
+    it "does not ignore a space character" $ do
+      optionalParser (singleCharParser ['b']) " " `shouldBe` Just ("", " ")
+    it "does not ignore a tab character" $ do
+      optionalParser (singleCharParser ['c']) "\t" `shouldBe` Just ("", "\t")
+    it "does not ignore a new line character" $ do
+      optionalParser (singleCharParser ['d']) "\n" `shouldBe` Just ("", "\n")
     it "parses \"aaaf\" successfully" $ do
       optionalParser (manyParser (singleCharParser ['a'])) "aaaf" `shouldBe` Just ("aaa", "f")
     it "parses \"bbb\" successfully without consuming any input" $ do
