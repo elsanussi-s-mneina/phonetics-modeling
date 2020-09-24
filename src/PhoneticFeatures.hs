@@ -518,7 +518,9 @@ showFeatures :: [PhonemeFeature] -> Text
 showFeatures features =
   let featuresStrings :: [Text]
       featuresStrings = map showPhonemeFeature features
-   in pack "[" <> intercalate (pack "; ") featuresStrings <> pack "]"
+      bracket text = pack "[" <> text <> pack "]"
+      partInside = intercalate (pack "; ") featuresStrings
+   in bracket partInside
 
 toTextFeatures :: Phonet -> Text
 toTextFeatures phonete =
