@@ -15,7 +15,7 @@ import Lib_Types
   )
 
 
--- This is the phoneme inventory found in Modern Standard Arabic
+-- | This is the phoneme inventory found in Modern Standard Arabic
 -- that are considered the correct pronunciation by the Arabic tradition today.
 -- This is what they will teach in school.
 -- Note: These are just phonemes, the allophones are not included for simplicity.
