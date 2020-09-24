@@ -147,8 +147,11 @@ lateral p = case p of
 --
 -- (Source: page 260)
 delayedRelease :: Phonet -> Maybe PhonemeFeature
-delayedRelease (Consonant _ _ Affricate _ _) = Just DelayedReleaseFeature
-delayedRelease _                           = Nothing
+delayedRelease p =
+  case p of
+    (Consonant _ _ Affricate _ _) -> Just DelayedReleaseFeature
+    Consonant {}                  -> Nothing
+    Vowel {}                      -> Nothing
 
 -- |
 -- Bilabial consonants are [labial].
