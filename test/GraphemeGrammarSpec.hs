@@ -120,7 +120,7 @@ tieBarParserSpec =
       tieBarParserString "͜" `shouldBe` Just ("͜", "")
     it "parses only one tie bar at a time successfully"$ do
       tieBarParserString "͜͜" `shouldBe` Just ("͜", "͜")
-      -- Sorry this is hard to see, but there are two tie bar characters in the input.
+      -- Sorry this is hard to see, but there are two tie bar characters in the input on the previous line.
     it "does not parse characters that are not tie-bars"$ do
       tieBarParserString "abcdef" `shouldBe` Nothing
 
