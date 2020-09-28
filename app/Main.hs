@@ -1,7 +1,7 @@
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
 import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListReport, analyzeIPAToSPE,
-                      arabicPhonetInventoryReport, englishPhonetInventoryReport, analyzeIPA, constructIPA)
+                      arabicPhonetInventoryReport, plainsCreePhonetInventoryReport, englishPhonetInventoryReport, analyzeIPA, constructIPA)
 
 
 
@@ -116,6 +116,7 @@ respondToSelection :: Text -- ^ the text the user put in after being shown the m
 respondToSelection selection
   | selection == userInputViewEnglishPhonemeInventory = putStrLn englishPhonetInventoryReport
   | selection == userInputViewArabicPhonemeInventory  = putStrLn arabicPhonetInventoryReport
+  | selection == userInputViewCreePhonemeInventory    = putStrLn plainsCreePhonetInventoryReport
   | selection == userInputMakeAPhonemeVoiced          = promptForPhonemeToVoice
   | selection == userInputMakeAPhonemeUnvoiced        = promptForPhonemeToDevoice
   | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe

@@ -8,6 +8,7 @@ import           PhoneticFeatures (isGlide)
 import           GraphemeGrammarSpec (graphemeGrammarSpec)
 import           PrimitiveParsersSpec (primitiveParsersSpec)
 import           IPATextToDescriptionSpec (pulmonicEgressiveConsonantSpec)
+import           PlainsCreePhonemeInventorySpec (plainsCreePhonetInventoryReportSpec)
 import           Lib_Types
 import Prelude (($), (++), (.), String, Bool(True, False))
 import Data.Text (Text)
@@ -22,6 +23,7 @@ toString = T.unpack
 main = do
   -- putTextLn generatedTestCode -- If we need to generate the test code
   -- putTextLn SpecGeneratorForPython.generatedTestCode -- If we need to generate the test code
+  hspec plainsCreePhonetInventoryReportSpec
   hspec constructIPASpec
   hspec glideSpec
   hspec ipaTextToPhonetListReportSpec

@@ -18,6 +18,7 @@ menu =
   \ 5) describe a phoneme in SPE Features. \n\
   \ 6) divide IPA text into phonemes \n\
   \ 7) view the Arabic phoneme inventory (as IPA graphemes). \n\
+  \ 8) view the Plains Cree phoneme inventory (as IPA graphemes). \n\
   \  \n\
   \ Enter the number representing your selection below, \n\
   \ after the prompt, and press enter/return. \n\
@@ -31,7 +32,8 @@ userInputViewEnglishPhonemeInventory,
   userInputDescribeAPhonemeInEnglish,
   userInputDescribeAPhonemeInSPE,
   userInputChunkIPAByPhoneme,
-  userInputViewArabicPhonemeInventory
+  userInputViewArabicPhonemeInventory,
+  userInputViewCreePhonemeInventory
   ::
     Text
 userInputViewEnglishPhonemeInventory = pack "1"
@@ -41,6 +43,7 @@ userInputDescribeAPhonemeInEnglish = pack "4"
 userInputDescribeAPhonemeInSPE = pack "5"
 userInputChunkIPAByPhoneme = pack "6"
 userInputViewArabicPhonemeInventory = pack "7"
+userInputViewCreePhonemeInventory = pack "8"
 
 
 prompt :: Text

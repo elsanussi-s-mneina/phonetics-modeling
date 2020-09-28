@@ -36,6 +36,7 @@ import ShowFunctions (showPhonet)
 import PhoneticFeatures(showFeatures, analyzeFeatures)
 import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
 import           LanguageSpecific.ArabicSpecific (arabicPhonemeInventory)
+import           LanguageSpecific.CreeSpecific (plainsCreePhonemeInventory)
 
 import GraphemeGrammar(splitIntoPhonemes, isDescender)
 
@@ -45,6 +46,10 @@ englishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA englishPhonetI
 
 arabicPhonetInventoryReport :: Text
 arabicPhonetInventoryReport = ipaTextToPhonetListReport (showIPA arabicPhonemeInventory)
+
+plainsCreePhonetInventoryReport :: Text
+plainsCreePhonetInventoryReport = ipaTextToPhonetListReport (showIPA plainsCreePhonemeInventory)
+
 
 analyzeIPAToSPE :: Text -> Text
 analyzeIPAToSPE ipaText =
@@ -119,6 +124,10 @@ ipaPhonemeMapList =
   , (pack "ʎ", (Consonant Voiced Palatal LateralApproximant PulmonicEgressive Normal))
   , (pack "ʟ", (Consonant Voiced Velar LateralApproximant PulmonicEgressive Normal))
     -- Affricates
+  , (pack "t͡s", (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
+  , (pack "t͜s", (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
+  , (pack "d͡z", (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
+  , (pack "d͜z", (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
   , (pack "t͡ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
   , (pack "t͜ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
   , (pack "d͡ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
@@ -126,6 +135,7 @@ ipaPhonemeMapList =
     -- We should probably enforce use of the tie-bar underneath, otherwise
     -- it would not be deterministic to determine whether two graphemes here
     -- represent affricates or a plosive followed by a fricative.
+    -- TODO: remove previous comment, we already did that.
 
     -- Under the Other Symbols part of the IPA chart:
   , (pack "w", (Consonant Voiced LabialVelar Approximant PulmonicEgressive Normal))
