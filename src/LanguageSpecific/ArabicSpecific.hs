@@ -26,7 +26,7 @@ arabicPhonemeInventory =
         , Consonant Voiceless Alveolar     Plosive            PulmonicEgressive Normal
         , Consonant Voiced    Alveolar     Plosive            PulmonicEgressive Normal
         , Consonant Voiceless Velar        Plosive            PulmonicEgressive Normal
-        , Consonant Voiceless Uvular       Plosive            PulmonicEgressive Normal
+        , Consonant Voiceless Glottal      Plosive            PulmonicEgressive Normal
         , Consonant Voiced    Bilabial     Nasal              PulmonicEgressive Normal
         , Consonant Voiced    Alveolar     Nasal              PulmonicEgressive Normal
         , Consonant Voiced    Alveolar     Trill              PulmonicEgressive Normal
