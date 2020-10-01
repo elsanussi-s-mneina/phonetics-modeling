@@ -126,10 +126,10 @@ ipaPhonemeMapList =
   , (pack "ʎ", (Consonant Voiced Palatal LateralApproximant PulmonicEgressive Normal))
   , (pack "ʟ", (Consonant Voiced Velar LateralApproximant PulmonicEgressive Normal))
     -- Affricates
-  , (pack "t͡s", (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
   , (pack "t͜s", (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
-  , (pack "d͡z", (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
+  , (pack "t͡s", (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
   , (pack "d͜z", (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
+  , (pack "d͡z", (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
   , (pack "t͡ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
   , (pack "t͜ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
   , (pack "d͡ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))

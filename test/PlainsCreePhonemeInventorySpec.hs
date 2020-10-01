@@ -17,9 +17,8 @@ plainsCreePhonetInventoryReportSpec = do
       ((pack "/k/") `isInfixOf` plainsCreePhonetInventoryReport) `shouldBe` True
     it "should contain /ʔ/" $
       ((pack "/ʔ/") `isInfixOf` plainsCreePhonetInventoryReport) `shouldBe` True
-    it "should contain /t͡s/ or /t͜s/" $
-      (((pack "/t͡s/") `isInfixOf` plainsCreePhonetInventoryReport) ||
-       ((pack "/t͜s/") `isInfixOf` plainsCreePhonetInventoryReport))  `shouldBe` True
+    it "should contain /t͜s/" $
+       (pack "/t͜s/") `isInfixOf` plainsCreePhonetInventoryReport  `shouldBe` True
     it "should contain /m/" $
       ((pack "/m/") `isInfixOf` plainsCreePhonetInventoryReport) `shouldBe` True
     it "should contain /n/" $
