@@ -34,7 +34,8 @@ convertTextParserToStringParser parser x =
        Nothing -> Nothing
        Just (t1, t2) -> Just (unpack t1, unpack t2)
 
-graphemeGrammarSpec = do
+runGraphemeGrammarSpecs :: IO ()
+runGraphemeGrammarSpecs = do
   hspec secondaryArticulationDiacriticParserSpec
   hspec phonemeParserSpec
   hspec tieBarParserSpec

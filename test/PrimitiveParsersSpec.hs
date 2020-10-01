@@ -11,7 +11,8 @@ import           PrimitiveParsers  ( singleCharParser
                                    )
 
 
-primitiveParsersSpec = do
+runPrimitiveParsersSpecs :: IO ()
+runPrimitiveParsersSpecs = do
   hspec singleCharParserSpec
   hspec thenParserSpec
   hspec manyParserSpec

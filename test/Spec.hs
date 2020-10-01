@@ -5,8 +5,8 @@ import           Data.Maybe    (fromJust)
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import           IPA (analyzeIPA, constructIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
 import           PhoneticFeatures (isGlide)
-import           GraphemeGrammarSpec (graphemeGrammarSpec)
-import           PrimitiveParsersSpec (primitiveParsersSpec)
+import           GraphemeGrammarSpec (runGraphemeGrammarSpecs)
+import           PrimitiveParsersSpec (runPrimitiveParsersSpecs)
 import           IPATextToDescriptionSpec (pulmonicEgressiveConsonantSpec)
 import           PlainsCreePhonemeInventorySpec (plainsCreePhonetInventoryReportSpec)
 import           IrishPhonemeInventorySpec (irishPhonetInventoryReportSpec)
@@ -34,8 +34,8 @@ main = do
   hspec secondaryArticulationSpec
   hspec vowelLengthSpec
   hspec pulmonicEgressiveConsonantSpec
-  graphemeGrammarSpec
-  primitiveParsersSpec
+  runGraphemeGrammarSpecs
+  runPrimitiveParsersSpecs
 
 constructIPASpec :: Spec
 constructIPASpec =
