@@ -19,6 +19,7 @@ menu =
   \ 6) divide IPA text into phonemes \n\
   \ 7) view the Arabic phoneme inventory (as IPA graphemes). \n\
   \ 8) view the Plains Cree phoneme inventory (as IPA graphemes). \n\
+  \ 9) view the Irish phoneme inventory (as IPA graphemes). \n\
   \  \n\
   \ Enter the number representing your selection below, \n\
   \ after the prompt, and press enter/return. \n\
@@ -33,7 +34,8 @@ userInputViewEnglishPhonemeInventory,
   userInputDescribeAPhonemeInSPE,
   userInputChunkIPAByPhoneme,
   userInputViewArabicPhonemeInventory,
-  userInputViewCreePhonemeInventory
+  userInputViewCreePhonemeInventory,
+  userInputViewIrishPhonemeInventory
   ::
     Text
 userInputViewEnglishPhonemeInventory = pack "1"
@@ -44,6 +46,7 @@ userInputDescribeAPhonemeInSPE = pack "5"
 userInputChunkIPAByPhoneme = pack "6"
 userInputViewArabicPhonemeInventory = pack "7"
 userInputViewCreePhonemeInventory = pack "8"
+userInputViewIrishPhonemeInventory = pack "9"
 
 
 prompt :: Text

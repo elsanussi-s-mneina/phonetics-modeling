@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 775bb82df7621b034d3e6e1e1e63a2603376020290e362f25c6a87b0549f63a0
+-- hash: 62348190794526a08f4a8d7e4a0f79c9573ed68787979722f7ec46f4cafe17e7
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -33,6 +33,7 @@ library
       LanguageSpecific.ArabicSpecific
       LanguageSpecific.CreeSpecific
       LanguageSpecific.EnglishSpecific
+      LanguageSpecific.IrishSpecific
       Lib
       Lib_Functions
       Lib_PseudoLens
@@ -70,6 +71,7 @@ test-suite phonetics-modeling-test
   other-modules:
       GraphemeGrammarSpec
       IPATextToDescriptionSpec
+      IrishPhonemeInventorySpec
       PlainsCreePhonemeInventorySpec
       PrimitiveParsersSpec
       SpecGenerator

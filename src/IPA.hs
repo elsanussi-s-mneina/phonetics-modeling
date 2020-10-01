@@ -26,7 +26,7 @@ import Lib_Types
 import Lib_PseudoLens (toExtraShort, toHalfLong, toLabialized, toLong,
                        toNoSecondaryArticulation,
                        toPalatalized, toPharyngealized, toVelarized,
-                       toVoiced, toVoiceless)
+                       toVoiced, toVoiceless, withPlace)
 import Lib_Functions (aspirate,
   spirantizedPhonet, devoicedPhonet,
   voicedPhonet, decreak, deaspirate,
@@ -37,7 +37,7 @@ import PhoneticFeatures(showFeatures, analyzeFeatures)
 import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
 import           LanguageSpecific.ArabicSpecific (arabicPhonemeInventory)
 import           LanguageSpecific.CreeSpecific (plainsCreePhonemeInventory)
-
+import           LanguageSpecific.IrishSpecific (irishPhonemeInventory)
 import GraphemeGrammar(splitIntoPhonemes, isDescender)
 
 
@@ -50,6 +50,8 @@ arabicPhonetInventoryReport = ipaTextToPhonetListReport (showIPA arabicPhonemeIn
 plainsCreePhonetInventoryReport :: Text
 plainsCreePhonetInventoryReport = ipaTextToPhonetListReport (showIPA plainsCreePhonemeInventory)
 
+irishPhonetInventoryReport :: Text
+irishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA irishPhonemeInventory)
 
 analyzeIPAToSPE :: Text -> Text
 analyzeIPAToSPE ipaText =
@@ -259,6 +261,11 @@ analyzeIPA p =
        -- Handle Diacritics:
        ipaText ->
          case [last ipaText] of
+           "̪" ->
+             let fullGrapheme = analyzeIPA (init ipaText)
+              in case fullGrapheme of
+                   Just x -> Just (withPlace Dental x)
+                   Nothing -> Nothing
            "̥" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
@@ -353,6 +360,9 @@ vowelLengthIPA vowelLength =
 
 addRetractedDiacritic :: Text -> Text
 addRetractedDiacritic = (<> pack "̠")
+
+addDentalDiacritic :: Text -> Text
+addDentalDiacritic = (<> pack "̪")
 
 addVoicedDiacritic :: Text -> Text
 addVoicedDiacritic = (<> pack "̬")
@@ -450,6 +460,14 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
             Just regularIPA -> Just (addLabializedDiacritic regularIPA)
             Nothing         -> Nothing
 
+  (Consonant x Dental y z sa)
+    | recursionLevel < recursionLimit ->
+      case constructIPARecursive
+        recursionLimit
+        (1 + recursionLevel)
+        (Consonant x Alveolar y z sa) of
+        Nothing         -> Nothing
+        Just regularIPA -> Just (addDentalDiacritic regularIPA)
 
   -- Add the diacritic for "retracted"
   -- If there isn't a symbol, and the consonant we want is voiceless,

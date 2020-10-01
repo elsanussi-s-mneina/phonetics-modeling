@@ -1,7 +1,8 @@
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
 import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListReport, analyzeIPAToSPE,
-                      arabicPhonetInventoryReport, plainsCreePhonetInventoryReport, englishPhonetInventoryReport, analyzeIPA, constructIPA)
+                      arabicPhonetInventoryReport, plainsCreePhonetInventoryReport, englishPhonetInventoryReport,
+                      irishPhonetInventoryReport, analyzeIPA, constructIPA)
 
 
 
@@ -117,6 +118,7 @@ respondToSelection selection
   | selection == userInputViewEnglishPhonemeInventory = putStrLn englishPhonetInventoryReport
   | selection == userInputViewArabicPhonemeInventory  = putStrLn arabicPhonetInventoryReport
   | selection == userInputViewCreePhonemeInventory    = putStrLn plainsCreePhonetInventoryReport
+  | selection == userInputViewIrishPhonemeInventory   = putStrLn irishPhonetInventoryReport
   | selection == userInputMakeAPhonemeVoiced          = promptForPhonemeToVoice
   | selection == userInputMakeAPhonemeUnvoiced        = promptForPhonemeToDevoice
   | selection == userInputDescribeAPhonemeInEnglish   = promptForPhonemeToDescribe
