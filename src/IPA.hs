@@ -34,10 +34,10 @@ import Lib_Functions (aspirate,
 import ShowFunctions (showPhonet)
 
 import PhoneticFeatures(showFeatures, analyzeFeatures)
-import           LanguageSpecific.EnglishSpecific (englishPhonetInventory)
-import           LanguageSpecific.ArabicSpecific (arabicPhonemeInventory)
-import           LanguageSpecific.CreeSpecific (plainsCreePhonemeInventory)
-import           LanguageSpecific.IrishSpecific (irishPhonemeInventory)
+import LanguageSpecific.EnglishSpecific (englishPhonetInventory)
+import LanguageSpecific.ArabicSpecific (arabicPhonemeInventory)
+import LanguageSpecific.CreeSpecific (plainsCreePhonemeInventory)
+import LanguageSpecific.IrishSpecific (irishPhonemeInventory)
 import GraphemeGrammar(splitIntoPhonemes, isDescender)
 
 
@@ -147,8 +147,7 @@ ipaPhonemeMapList =
   , (pack "ʑ", (Consonant Voiced AlveoloPalatal Fricative PulmonicEgressive Normal))
   , (pack "ɺ", (Consonant Voiced Alveolar LateralFlap PulmonicEgressive Normal))
   , (pack "ɧ",
-
-        ( Consonant
+          ( Consonant
             Voiceless
             (Places [PostAlveolar, Velar])
             Fricative
@@ -228,7 +227,7 @@ lookupInListFromValue givenKey aList =
 ipaTextToPhonetListReport :: Text -> Text
 ipaTextToPhonetListReport text =
   let listA = ipaTextToPhonetList text
-   in unlines (map ipaAndPhonetFormat listA)
+  in unlines (map ipaAndPhonetFormat listA)
 
 ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
 ipaAndPhonetFormat (ipaText, phonet) =
