@@ -238,6 +238,9 @@ ipaTextToPhonetListReport text =
   let listA = ipaTextToPhonetList text
   in unlines (map ipaAndPhonetFormat listA)
 
+encloseInSlashes :: Text -> Text
+encloseInSlashes ipaText = pack "/" <> ipaText <> pack "/"
+
 ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
 ipaAndPhonetFormat (ipaText, phonet) =
   pack "/" <> ipaText <> pack "/" <> pack " " <> phonetSummary
