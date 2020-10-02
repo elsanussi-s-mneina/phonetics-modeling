@@ -157,11 +157,10 @@ ipaPhonemeMapList =
 
   -- The following two lines are commented out, because I am unsure
   -- about their place of articulation:
-  -- constructIPARecursive _ _ (Consonant  Voiceless LabialVelar? Affricate
-  --     PulmonicEgressive Normal) = "k͡p"
-  -- constructIPARecursive _ _ (Consonant  Voiceless Palatal (or AlveoloPalatal?)
-  --     Affricate PulmonicEgressive Normal) = "c͡ɕ"
-
+  -- , (pack "k͡p",  (Consonant  Voiceless LabialVelar? Affricate
+  --     PulmonicEgressive Normal))
+  -- , (pack "c͡ɕ", (Consonant  Voiceless Palatal (or AlveoloPalatal?)
+  --     Affricate PulmonicEgressive Normal))
 
     -- Other Consonants:
   , (pack "ʘ", (Consonant Voiceless Bilabial Plosive Click Normal))
