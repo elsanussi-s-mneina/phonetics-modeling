@@ -2,14 +2,14 @@
 module PrimitiveParsersSpec where
 
 import Prelude (IO, ($), (++), (.), String, Bool(True, False), Maybe(Just, Nothing))
-import           Data.Maybe    (fromJust)
-import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           PrimitiveParsers  ( singleCharParser
-                                   , thenParser
-                                   , manyParser
-                                   , orParser
-                                   , optionalParser
-                                   )
+import Data.Maybe    (fromJust)
+import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
+import PrimitiveParsers  ( singleCharParser
+                         , thenParser
+                         , manyParser
+                         , orParser
+                         , optionalParser
+                         )
 
 
 runPrimitiveParsersSpecs :: IO ()

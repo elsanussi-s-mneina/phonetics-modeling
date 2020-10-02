@@ -1,6 +1,6 @@
 module IPATextToDescriptionSpec where
 
-import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
+import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import qualified IPA 
 import Data.Text (pack, unpack)
 describeIPA = unpack . IPA.describeIPA . pack

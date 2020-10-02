@@ -1,14 +1,14 @@
 module GraphemeGrammarSpec where
 
 import Prelude (IO, ($), (++), (.), String, Bool(True, False), Maybe(Just, Nothing), map)
-import           Data.Maybe    (fromJust)
-import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           GraphemeGrammar  ( secondaryArticulationDiacriticParser
-                                  , phonemeParser
-                                  , tieBarParser
-                                  , digraphParser
-                                  , splitIntoPhonemes
-                                  )
+import Data.Maybe    (fromJust)
+import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
+import GraphemeGrammar  ( secondaryArticulationDiacriticParser
+                        , phonemeParser
+                        , tieBarParser
+                        , digraphParser
+                        , splitIntoPhonemes
+                        )
 import Data.Text (Text, pack, unpack)
 
 secondaryArticulationDiacriticParserString :: String -> Maybe (String, String)
