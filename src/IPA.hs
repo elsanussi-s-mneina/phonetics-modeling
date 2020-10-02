@@ -243,7 +243,7 @@ encloseInSlashes ipaText = pack "/" <> ipaText <> pack "/"
 
 ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
 ipaAndPhonetFormat (ipaText, phonet) =
-  pack "/" <> ipaText <> pack "/" <> pack " " <> phonetSummary
+  encloseInSlashes ipaText <> pack " " <> phonetSummary
   where
     phonetSummary =
       maybe (pack "(n/a)") showPhonet phonet
