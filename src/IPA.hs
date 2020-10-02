@@ -134,10 +134,6 @@ ipaPhonemeMapList =
   , (pack "t͜ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
   , (pack "d͡ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
   , (pack "d͜ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
-    -- We should probably enforce use of the tie-bar underneath, otherwise
-    -- it would not be deterministic to determine whether two graphemes here
-    -- represent affricates or a plosive followed by a fricative.
-    -- TODO: remove previous comment, we already did that.
 
     -- Under the Other Symbols part of the IPA chart:
   , (pack "w", (Consonant Voiced LabialVelar Approximant PulmonicEgressive Normal))
