@@ -237,6 +237,12 @@ ipaTextToPhonetListReport text =
   let listA = ipaTextToPhonetList text
   in unlines (map ipaAndPhonetFormat listA)
 
+-- | put a forward slash before some text  and
+--   after it.
+--   For example, "s" becomes "/s/"
+--   Linguists use these forward slashes
+--   to indicate a phonemic transcription,
+--   instead of a phonetic transcription.
 encloseInSlashes :: Text -> Text
 encloseInSlashes ipaText = pack "/" <> ipaText <> pack "/"
 
