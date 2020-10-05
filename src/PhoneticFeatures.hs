@@ -290,11 +290,6 @@ constrictedGlottis p = case p of
 -- Palatals are [-anterior].
 --
 -- (Source: page 265)
---
--- TODO: answer the question:
--- Question: Are Alveolo-palatals [+anterior], or [-anterior]?
--- Alveolo-palatals are [-anterior].
--- (SOURCE: not found)
 anterior :: Phonet -> Maybe PhonemeFeature
 anterior p = case p of
   (Consonant _ Dental _ _ _)         -> Just (AnteriorFeature Plus)
