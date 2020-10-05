@@ -7,7 +7,7 @@ import Numeric.Natural (Natural)
 import Data.Text (Text, concat, init, last, null, pack, unlines)
 
 import DefaultLanguageText
-    ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage )
+    ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage, notApplicableUIText )
 
 import Lib_Types
   ( Airstream(..)
@@ -251,7 +251,7 @@ ipaAndPhonetFormat (ipaText, phonet) =
   encloseInSlashes ipaText <> pack " " <> phonetSummary
   where
     phonetSummary =
-      maybe (pack "(n/a)") showPhonet phonet
+      maybe notApplicableUIText showPhonet phonet
 
 ipaTextToPhonetList :: Text -> [(Text, Maybe Phonet)]
 ipaTextToPhonetList text =

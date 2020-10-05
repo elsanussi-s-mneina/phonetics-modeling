@@ -100,6 +100,9 @@ noAnalysisFoundMessage = pack "No analysis found!"
 noEnglishDescriptionFoundMessage :: Text
 noEnglishDescriptionFoundMessage = pack "(no English description found.)"
 
+notApplicableUIText :: Text
+notApplicableUIText = pack "(n/a)"
+
 consonantUIText,
   vowelUIText,
   frontBacknessUIText,
