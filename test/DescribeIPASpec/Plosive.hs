@@ -1,12 +1,12 @@
-module NormalPlosiveIPATextToDescriptionSpec where
+module DescribeIPASpec.Plosive where
 
 import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import qualified IPA 
 import Data.Text (pack, unpack)
 describeIPA = unpack . IPA.describeIPA . pack
 
-plosivePulmonicEgressiveConsonantSpec :: Spec
-plosivePulmonicEgressiveConsonantSpec = do
+plosiveConsonantSpec :: Spec
+plosiveConsonantSpec = do
   describe "voiceless bilabial plosive pulmonic egressive consonant" $
     do
     it "should be that: [p] \

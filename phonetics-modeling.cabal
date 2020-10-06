@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e951be979adb654b944ba6e6fa10a8ec37ad92e8078b7d9f50c5b1b9ef827b35
+-- hash: 60e8ac3420aaedeed6c04e10a9870e40ff5e70bef5dc541a397d4f3a02673b06
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -69,10 +69,16 @@ test-suite phonetics-modeling-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      DescribeIPASpec.Approximant
+      DescribeIPASpec.Fricative
+      DescribeIPASpec.LateralApproximant
+      DescribeIPASpec.Nasal
+      DescribeIPASpec.Plosive
+      DescribeIPASpec.TapOrFlap
+      DescribeIPASpec.Trill
       GraphemeGrammarSpec
       IPATextToDescriptionSpec
       IrishPhonemeInventorySpec
-      NormalPlosiveIPATextToDescriptionSpec
       PlainsCreePhonemeInventorySpec
       PrimitiveParsersSpec
       SpecGenerator

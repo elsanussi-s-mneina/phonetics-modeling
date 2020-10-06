@@ -8,7 +8,6 @@ import PhoneticFeatures (isGlide)
 import GraphemeGrammarSpec (runGraphemeGrammarSpecs)
 import PrimitiveParsersSpec (runPrimitiveParsersSpecs)
 import IPATextToDescriptionSpec (pulmonicEgressiveConsonantSpec)
-import NormalPlosiveIPATextToDescriptionSpec (plosivePulmonicEgressiveConsonantSpec)
 
 import PlainsCreePhonemeInventorySpec (plainsCreePhonetInventoryReportSpec)
 import IrishPhonemeInventorySpec (irishPhonetInventoryReportSpec)
@@ -35,7 +34,6 @@ main = do
   hspec analyzeIPAToSPESpec
   hspec secondaryArticulationSpec
   hspec vowelLengthSpec
-  hspec plosivePulmonicEgressiveConsonantSpec
   hspec pulmonicEgressiveConsonantSpec
   runGraphemeGrammarSpecs
   runPrimitiveParsersSpecs
