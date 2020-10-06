@@ -174,10 +174,15 @@ consonantUIText,
   stridentPhonemeFeatureUIText,
   highPhonemeFeatureUIText,
   lowPhonemeFeatureUIText,
-  backPhonemeFeatureUIText ::
+  backPhonemeFeatureUIText,
+  nasalNasalizationUIText,
+  oralNasalizationUIText ::
     Text
 consonantUIText = pack "consonant"
 vowelUIText = pack "vowel"
+
+nasalNasalizationUIText = pack "nasal"
+oralNasalizationUIText = pack "oral"
 
 frontBacknessUIText = pack "front"
 centralBacknessUIText = pack "central"

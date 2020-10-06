@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c21cdbe6dd9638eb489c586498cd5e3339de3af1b92f50084fea3a08e72b6df5
+-- hash: fe9af84a13f19634d1d56a0f8bc3c81e3153071a4a566d3139daee1853b897f4
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -47,6 +47,7 @@ library
       Types.Backness
       Types.Height
       Types.Manner
+      Types.Nasalization
       Types.Phonet
       Types.PhonetInventory
       Types.Place
@@ -90,6 +91,7 @@ test-suite phonetics-modeling-test
       DescribeIPASpec.Plosive
       DescribeIPASpec.TapOrFlap
       DescribeIPASpec.Trill
+      DescribeIPASpec.VowelNasalization
       GraphemeGrammarSpec
       IPATextToDescriptionSpec
       IrishPhonemeInventorySpec

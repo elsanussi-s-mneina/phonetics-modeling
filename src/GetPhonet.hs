@@ -7,6 +7,7 @@ module GetPhonet where
 
 import Types.Airstream ( Airstream(..))
 import Types.Manner ( Manner(..) )
+import Types.Nasalization (Nasalization())
 import Types.Phonet ( Phonet(..) )
 import Types.Place ( Place(..) )
 import Types.SecondaryArticulation ( SecondaryArticulation(..) )
@@ -33,7 +34,7 @@ vocalFolds :: Phonet -> VocalFolds
 vocalFolds p = 
   case p of 
     Consonant vf _ _ _ _ -> vf
-    Vowel _ _ _ vf _     -> vf
+    Vowel _ _ _ vf _ _   -> vf
 
 place :: Phonet -> Maybe Place
 place p = 
@@ -56,3 +57,9 @@ airstream p =
 secondaryArticulation :: Phonet -> Maybe SecondaryArticulation
 secondaryArticulation (Consonant _ _ _ _ sa) = Just sa
 secondaryArticulation _ = Nothing
+
+nasalization :: Phonet -> Maybe Nasalization
+nasalization p =
+  case p of
+    Consonant {}        -> Nothing -- for now until we implement nasal consonants
+    Vowel _ _ _ _ _ n   -> Just n

@@ -4,6 +4,7 @@ import Types.Airstream ( Airstream(..))
 import Types.Backness ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
+import Types.Nasalization ( Nasalization(Oral) )
 import Types.Phonet ( Phonet(..) )
 import Types.PhonetInventory ( PhonetInventory(..) )
 import Types.Place ( Place(..) )
@@ -51,17 +52,17 @@ englishPhonetInventory =
         , Consonant Voiced    Palatal      Approximant        PulmonicEgressive Normal
         , Consonant Voiced    Alveolar     LateralApproximant PulmonicEgressive Normal
         , Consonant Voiced    LabialVelar  Approximant        PulmonicEgressive Normal
-        , Vowel     Close     Front   Unrounded Voiced NormalLength
-        , Vowel     NearClose Front   Unrounded Voiced NormalLength
-        , Vowel     CloseMid  Front   Unrounded Voiced NormalLength
-        , Vowel     OpenMid   Front   Unrounded Voiced NormalLength
-        , Vowel     NearOpen  Front   Unrounded Voiced NormalLength
-        , Vowel     Mid       Central Unrounded Voiced NormalLength
-        , Vowel     Close     Back    Rounded   Voiced NormalLength
-        , Vowel     NearClose Back    Rounded   Voiced NormalLength
-        , Vowel     CloseMid  Back    Rounded   Voiced NormalLength
-        , Vowel     OpenMid   Back    Unrounded Voiced NormalLength
-        , Vowel     OpenMid   Back    Rounded   Voiced NormalLength
-        , Vowel     Open      Back    Unrounded Voiced NormalLength
+        , Vowel     Close     Front   Unrounded Voiced NormalLength Oral
+        , Vowel     NearClose Front   Unrounded Voiced NormalLength Oral
+        , Vowel     CloseMid  Front   Unrounded Voiced NormalLength Oral
+        , Vowel     OpenMid   Front   Unrounded Voiced NormalLength Oral
+        , Vowel     NearOpen  Front   Unrounded Voiced NormalLength Oral
+        , Vowel     Mid       Central Unrounded Voiced NormalLength Oral
+        , Vowel     Close     Back    Rounded   Voiced NormalLength Oral
+        , Vowel     NearClose Back    Rounded   Voiced NormalLength Oral
+        , Vowel     CloseMid  Back    Rounded   Voiced NormalLength Oral
+        , Vowel     OpenMid   Back    Unrounded Voiced NormalLength Oral
+        , Vowel     OpenMid   Back    Rounded   Voiced NormalLength Oral
+        , Vowel     Open      Back    Unrounded Voiced NormalLength Oral
         ]
 

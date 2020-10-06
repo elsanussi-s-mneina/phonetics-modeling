@@ -4,6 +4,7 @@ import Types.Airstream ( Airstream(..))
 import Types.Backness ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
+import Types.Nasalization ( Nasalization(Oral) )
 import Types.Phonet ( Phonet(..) )
 import Types.PhonetInventory ( PhonetInventory(..) )
 import Types.Place ( Place(..) )
@@ -69,18 +70,18 @@ irishPhonemeInventory =
         , Consonant Voiceless Glottal      Fricative          PulmonicEgressive Normal      -- h
 
         -- Short vowels:
-        , Vowel     NearClose Front       Unrounded Voiced NormalLength -- ɪ
-        , Vowel     NearClose Back        Rounded   Voiced NormalLength -- ʊ
-        , Vowel     OpenMid   Front       Unrounded Voiced NormalLength -- ɛ
-        , Vowel     Mid       Central     Unrounded Voiced NormalLength -- ə
-        , Vowel     OpenMid   Back        Rounded   Voiced NormalLength -- ɔ
-        , Vowel     Open      Front       Unrounded Voiced NormalLength -- a
+        , Vowel     NearClose Front       Unrounded Voiced NormalLength Oral -- ɪ
+        , Vowel     NearClose Back        Rounded   Voiced NormalLength Oral -- ʊ
+        , Vowel     OpenMid   Front       Unrounded Voiced NormalLength Oral -- ɛ
+        , Vowel     Mid       Central     Unrounded Voiced NormalLength Oral -- ə
+        , Vowel     OpenMid   Back        Rounded   Voiced NormalLength Oral -- ɔ
+        , Vowel     Open      Front       Unrounded Voiced NormalLength Oral -- a
 
         -- Long vowels:
-        , Vowel     Close     Front   Unrounded Voiced Long -- iː
-        , Vowel     Close     Back    Rounded   Voiced Long -- uː
-        , Vowel     CloseMid  Front   Unrounded Voiced Long -- eː
-        , Vowel     CloseMid  Back    Rounded   Voiced Long -- oː
-        , Vowel     Open      Back    Unrounded Voiced Long -- ɑː
+        , Vowel     Close     Front   Unrounded Voiced Long Oral -- iː
+        , Vowel     Close     Back    Rounded   Voiced Long Oral -- uː
+        , Vowel     CloseMid  Front   Unrounded Voiced Long Oral -- eː
+        , Vowel     CloseMid  Back    Rounded   Voiced Long Oral -- oː
+        , Vowel     Open      Back    Unrounded Voiced Long Oral -- ɑː
         ]
 

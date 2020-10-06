@@ -15,8 +15,9 @@ import Data.Text (Text)
 import ShowFunctions (showPhonet)
 
 import qualified GetPhonet (place, vocalFolds)
-import qualified SetPhonet (toVoiced, toVoiceless, toVoicedAspirated, toVoicelessAspirated, withManner,
-                       withPlace, withVocalFolds)
+import qualified SetPhonet (toNasalized, toVoiced,
+  toVoiceless, toVoicedAspirated, toVoicelessAspirated, withManner,
+  withPlace, withVocalFolds)
 
 
 equivalentInPlace :: Place -> Place -> Bool
@@ -136,9 +137,9 @@ impossible p = case p of
   Vowel {} ->
     False
 
-retractPhonet :: Maybe Phonet -> Maybe Phonet
-retractPhonet (Just (Consonant v p m a sa)) = Just (Consonant v (retractedPlace p) m a sa)
-retractPhonet _                             = Nothing
+retractPhonet :: Phonet -> Maybe Phonet
+retractPhonet (Consonant v p m a sa) = Just (Consonant v (retractedPlace p) m a sa)
+retractPhonet _                      = Nothing
 
 deaspirate :: Phonet -> Phonet
 deaspirate p =
@@ -166,4 +167,7 @@ decreak p =
     then SetPhonet.toVoiced p
     else p
 
+
+nasalizePhonet :: Phonet -> Maybe Phonet
+nasalizePhonet = SetPhonet.toNasalized
 

@@ -4,6 +4,7 @@ import Types.Airstream ( Airstream(..))
 import Types.Backness ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
+import Types.Nasalization ( Nasalization(Oral))
 import Types.Phonet ( Phonet(..) )
 import Types.PhonetInventory ( PhonetInventory(..) )
 import Types.Place ( Place(..) )
@@ -35,14 +36,14 @@ plainsCreePhonemeInventory =
         , Consonant Voiced    Palatal      Approximant        PulmonicEgressive Normal -- /j/
 
         -- Short vowels:
-        , Vowel     Close     Front   Unrounded Voiced NormalLength -- /i/
-        , Vowel     Open      Front   Unrounded Voiced NormalLength -- /a/
-        , Vowel     Close     Back    Rounded   Voiced NormalLength -- /u/
+        , Vowel     Close     Front   Unrounded Voiced NormalLength Oral -- /i/
+        , Vowel     Open      Front   Unrounded Voiced NormalLength Oral -- /a/
+        , Vowel     Close     Back    Rounded   Voiced NormalLength Oral -- /u/
 
         -- Long vowels:
-        , Vowel     Close     Front   Unrounded Voiced Long -- /iː/
-        , Vowel     CloseMid  Front   Unrounded Voiced Long -- /eː/
-        , Vowel     Open      Front   Unrounded Voiced Long -- /aː/
-        , Vowel     CloseMid  Back    Rounded   Voiced Long -- /oː/
+        , Vowel     Close     Front   Unrounded Voiced Long Oral -- /iː/
+        , Vowel     CloseMid  Front   Unrounded Voiced Long Oral -- /eː/
+        , Vowel     Open      Front   Unrounded Voiced Long Oral -- /aː/
+        , Vowel     CloseMid  Back    Rounded   Voiced Long Oral -- /oː/
         ]
 

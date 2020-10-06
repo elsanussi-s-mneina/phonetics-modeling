@@ -5,6 +5,7 @@ import Types.Airstream ( Airstream(..))
 import Types.Backness ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
+import Types.Nasalization ( Nasalization(Oral) )
 import Types.Phonet ( Phonet(..) )
 import Types.PhonetInventory ( PhonetInventory(..) )
 import Types.Place ( Place(..) )
@@ -54,13 +55,13 @@ arabicPhonemeInventory =
 
 
         -- Short vowels:
-        , Vowel     Close     Front   Unrounded Voiced NormalLength
-        , Vowel     Open      Front   Unrounded Voiced NormalLength
-        , Vowel     Close     Back    Rounded   Voiced NormalLength
+        , Vowel     Close     Front   Unrounded Voiced NormalLength Oral
+        , Vowel     Open      Front   Unrounded Voiced NormalLength Oral
+        , Vowel     Close     Back    Rounded   Voiced NormalLength Oral
 
         -- Long vowels:
-        , Vowel     Close     Front   Unrounded Voiced Long
-        , Vowel     Open      Front   Unrounded Voiced Long
-        , Vowel     Close     Back    Rounded   Voiced Long
+        , Vowel     Close     Front   Unrounded Voiced Long Oral
+        , Vowel     Open      Front   Unrounded Voiced Long Oral
+        , Vowel     Close     Back    Rounded   Voiced Long Oral
         ]
 

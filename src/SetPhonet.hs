@@ -7,6 +7,8 @@ module SetPhonet where
 
 import Types.Airstream ( Airstream(..))
 import Types.Manner ( Manner(..) )
+import Types.Nasalization (Nasalization())
+import Types.Nasalization (Nasalization(Nasalized))
 import Types.Phonet ( Phonet(..) )
 import Types.Place ( Place(..) )
 import Types.SecondaryArticulation ( SecondaryArticulation(..) )
@@ -22,7 +24,7 @@ withVocalFolds :: VocalFolds -> Phonet -> Phonet
 withVocalFolds vf p =
   case p of
     Consonant _ w x y z -> Consonant vf w x y z
-    Vowel x y z _ vl    -> Vowel x y z vf vl
+    Vowel x y z _ vl n  -> Vowel x y z vf vl n
 
 withPlace :: Place -> Phonet -> Phonet
 withPlace x p =  
@@ -45,8 +47,8 @@ withAirstream x p =
 withVowelLength :: VowelLength -> Phonet -> Phonet
 withVowelLength vl p =
   case p of 
-    Vowel height backness rounding voicing _ 
-      -> Vowel height backness rounding voicing vl
+    Vowel height backness rounding voicing _ nasalization
+      -> Vowel height backness rounding voicing vl nasalization
     Consonant {} 
       -> p -- Ignore phonetes that are not vowels.
 
@@ -105,3 +107,12 @@ toPharyngealized = withSecondaryArticulation Pharyngealized
 
 toNoSecondaryArticulation :: Phonet -> Phonet
 toNoSecondaryArticulation = withSecondaryArticulation Normal
+
+toNasalization :: Nasalization -> Phonet -> Maybe Phonet
+toNasalization nasalization p =
+  case p of
+    Consonant {} -> Nothing -- We don't support nasalized consonants yet.
+    Vowel x y z vf vl _  -> Just (Vowel x y z vf vl nasalization)
+
+toNasalized :: Phonet -> Maybe Phonet
+toNasalized = toNasalization Nasalized

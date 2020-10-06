@@ -13,6 +13,7 @@ import IPATextToDescriptionSpec (pulmonicEgressiveConsonantSpec)
 import PlainsCreePhonemeInventorySpec (plainsCreePhonetInventoryReportSpec)
 import IrishPhonemeInventorySpec (irishPhonetInventoryReportSpec)
 import Types.All
+import Types.Nasalization (Nasalization(..))
 import Prelude (($), (++), (.), String, Bool(True, False))
 import Data.Text (Text)
 import Data.Semigroup (Semigroup((<>)))
@@ -43,9 +44,14 @@ constructIPASpec :: Spec
 constructIPASpec =
   describe "constructing vowel's IPA" $ do
     it "should be that: the IPA representation of the close back rounded voiced vowel is \"u\"." $
-      constructIPA (Vowel Close Back Rounded Voiced NormalLength) `shouldBe` "u"
+      constructIPA (Vowel Close Back Rounded Voiced NormalLength Oral) `shouldBe` "u"
     it "should be that: the IPA representation of the close back rounded voiced vowel is \"u̥\"." $
-      constructIPA (Vowel Close Back Rounded Voiceless NormalLength) `shouldBe` "u̥"
+      constructIPA (Vowel Close Back Rounded Voiceless NormalLength Oral) `shouldBe` "u̥"
+    it "should be that: the IPA representation of the close back rounded voiced nasal vowel is \"ũ\"." $
+      constructIPA (Vowel Close Back Rounded Voiced NormalLength Nasalized) `shouldBe` "ũ"
+    it "should be that: the IPA representation of the close back rounded voiced long nasal vowel is \"ũː\"." $
+      constructIPA (Vowel Close Back Rounded Voiced Long Nasalized) `shouldBe` "ũː"
+
 
 
 isDescribedAs
@@ -424,16 +430,16 @@ vowelLengthSpec :: Spec
 vowelLengthSpec = do
   describe "vowel length" $ do
     it "test_normal_a_vowel case: [a]" $
-      describeIPA "a" `shouldBe` "voiced unrounded open front vowel"
+      describeIPA "a" `shouldBe` "voiced unrounded open front oral vowel"
     it "test_long_a_vowel case: [aː]" $
-      describeIPA "aː" `shouldBe` "voiced unrounded open front long vowel"
+      describeIPA "aː" `shouldBe` "voiced unrounded open front long oral vowel"
     it "test_half_long_a_vowel case: [aˑ]" $
-      describeIPA "aˑ" `shouldBe` "voiced unrounded open front half-long vowel"
+      describeIPA "aˑ" `shouldBe` "voiced unrounded open front half-long oral vowel"
     it "test_extra_short_a_vowel case: [ă]" $
-      describeIPA "ă" `shouldBe` "voiced unrounded open front extra-short vowel"
+      describeIPA "ă" `shouldBe` "voiced unrounded open front extra-short oral vowel"
     it "test_voiceless_long_i_vowel case [i̥ː]" $
-       describeIPA "i̥ː" `shouldBe` "voiceless unrounded close front long vowel"
+       describeIPA "i̥ː" `shouldBe` "voiceless unrounded close front long oral vowel"
     it "test_voiceless_half_long_i_vowel case [i̥ˑ]" $
-       describeIPA "i̥ˑ" `shouldBe` "voiceless unrounded close front half-long vowel"
+       describeIPA "i̥ˑ" `shouldBe` "voiceless unrounded close front half-long oral vowel"
     it "test_voiceless_half_long_i_vowel case [ĭ̥]" $
-      describeIPA "ĭ̥" `shouldBe` "voiceless unrounded close front extra-short vowel"
+      describeIPA "ĭ̥" `shouldBe` "voiceless unrounded close front extra-short oral vowel"

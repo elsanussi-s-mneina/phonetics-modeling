@@ -8,6 +8,7 @@ import Types.Airstream ( Airstream(..))
 import Types.Backness ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
+import qualified Types.Nasalization as Nasalization ( Nasalization(..) )
 import Types.Phonet ( Phonet(..) )
 import Types.PhonetInventory ( PhonetInventory(..) )
 import Types.Place ( Place(..) )
@@ -34,7 +35,7 @@ showPhonet phonet =
             consonantUIText
           ]
         )
-    Vowel h b r v l ->
+    Vowel h b r v l n ->
       removeExtraTwoSpaces (
         unwords
           [ showVocalFolds v,
@@ -42,6 +43,7 @@ showPhonet phonet =
             showHeight h,
             showBackness b,
             showVowelLength l,
+            showNasalization n,
             vowelUIText
           ]
         )
@@ -84,6 +86,11 @@ showVowelLength NormalLength = empty
 showVowelLength ExtraShort = extraShortUIText
 showVowelLength HalfLong = halfLongUIText
 showVowelLength Long = longUIText
+
+showNasalization :: Nasalization.Nasalization -> Text
+showNasalization Nasalization.Oral  = oralNasalizationUIText
+showNasalization Nasalization.Nasalized = nasalNasalizationUIText
+
 
 -- | Provide user readable text for representing
 --   the place of articulation.

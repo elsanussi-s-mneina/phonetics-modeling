@@ -12,6 +12,7 @@ import Types.Airstream ( Airstream(..))
 import Types.Backness ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
+import Types.Nasalization ( Nasalization(Oral, Nasalized) )
 import Types.Phonet ( Phonet(..) )
 import Types.Place ( Place(..) )
 import Types.Rounding ( Rounding(..) )
@@ -27,7 +28,7 @@ import qualified SetPhonet (toExtraShort, toHalfLong, toLabialized, toLong,
 import Lib_Functions (aspirate,
   spirantizedPhonet, devoicedPhonet,
   voicedPhonet, decreak, deaspirate,
-  retractPhonet)
+  retractPhonet, nasalizePhonet)
 import ShowFunctions (showPhonet)
 
 import PhoneticFeatures(showFeatures, analyzeFeatures)
@@ -157,40 +158,40 @@ ipaPhonemeMapList =
   , (pack "ɠ", (Consonant Voiced Velar Plosive Implosive Normal))
   , (pack "ʛ", (Consonant Voiced Uvular Plosive Implosive Normal))
     -- Close Vowels:
-  , (pack "i", (Vowel Close Front Unrounded Voiced NormalLength))
-  , (pack "y", (Vowel Close Front Rounded Voiced NormalLength))
-  , (pack "ɨ", (Vowel Close Central Unrounded Voiced NormalLength))
-  , (pack "ʉ", (Vowel Close Central Rounded Voiced NormalLength))
-  , (pack "ɯ", (Vowel Close Back Unrounded Voiced NormalLength))
-  , (pack "u", (Vowel Close Back Rounded Voiced NormalLength))
+  , (pack "i", (Vowel Close Front Unrounded Voiced NormalLength Oral))
+  , (pack "y", (Vowel Close Front Rounded Voiced NormalLength Oral))
+  , (pack "ɨ", (Vowel Close Central Unrounded Voiced NormalLength Oral))
+  , (pack "ʉ", (Vowel Close Central Rounded Voiced NormalLength Oral))
+  , (pack "ɯ", (Vowel Close Back Unrounded Voiced NormalLength Oral))
+  , (pack "u", (Vowel Close Back Rounded Voiced NormalLength Oral))
     -- Near-close Vowels:
-  , (pack "ɪ", (Vowel NearClose Front Unrounded Voiced NormalLength))
-  , (pack "ʏ", (Vowel NearClose Front Rounded Voiced NormalLength))
-  , (pack "ʊ", (Vowel NearClose Back Rounded Voiced NormalLength))
+  , (pack "ɪ", (Vowel NearClose Front Unrounded Voiced NormalLength Oral))
+  , (pack "ʏ", (Vowel NearClose Front Rounded Voiced NormalLength Oral))
+  , (pack "ʊ", (Vowel NearClose Back Rounded Voiced NormalLength Oral))
     -- Close-mid Vowels:
-  , (pack "e", (Vowel CloseMid Front Unrounded Voiced NormalLength))
-  , (pack "ø", (Vowel CloseMid Front Rounded Voiced NormalLength))
-  , (pack "ɘ", (Vowel CloseMid Central Unrounded Voiced NormalLength))
-  , (pack "ɵ", (Vowel CloseMid Central Rounded Voiced NormalLength))
-  , (pack "ɤ", (Vowel CloseMid Back Unrounded Voiced NormalLength))
-  , (pack "o", (Vowel CloseMid Back Rounded Voiced NormalLength))
+  , (pack "e", (Vowel CloseMid Front Unrounded Voiced NormalLength Oral))
+  , (pack "ø", (Vowel CloseMid Front Rounded Voiced NormalLength Oral))
+  , (pack "ɘ", (Vowel CloseMid Central Unrounded Voiced NormalLength Oral))
+  , (pack "ɵ", (Vowel CloseMid Central Rounded Voiced NormalLength Oral))
+  , (pack "ɤ", (Vowel CloseMid Back Unrounded Voiced NormalLength Oral))
+  , (pack "o", (Vowel CloseMid Back Rounded Voiced NormalLength Oral))
     -- Mid Vowels:
-  , (pack "ə", (Vowel Mid Central Unrounded Voiced NormalLength))
+  , (pack "ə", (Vowel Mid Central Unrounded Voiced NormalLength Oral))
     -- Open-mid Vowels:
-  , (pack "ɛ", (Vowel OpenMid Front Unrounded Voiced NormalLength))
-  , (pack "œ", (Vowel OpenMid Front Rounded Voiced NormalLength))
-  , (pack "ɜ", (Vowel OpenMid Central Unrounded Voiced NormalLength))
-  , (pack "ɞ", (Vowel OpenMid Central Rounded Voiced NormalLength))
-  , (pack "ʌ", (Vowel OpenMid Back Unrounded Voiced NormalLength))
-  , (pack "ɔ", (Vowel OpenMid Back Rounded Voiced NormalLength))
+  , (pack "ɛ", (Vowel OpenMid Front Unrounded Voiced NormalLength Oral))
+  , (pack "œ", (Vowel OpenMid Front Rounded Voiced NormalLength Oral))
+  , (pack "ɜ", (Vowel OpenMid Central Unrounded Voiced NormalLength Oral))
+  , (pack "ɞ", (Vowel OpenMid Central Rounded Voiced NormalLength Oral))
+  , (pack "ʌ", (Vowel OpenMid Back Unrounded Voiced NormalLength Oral))
+  , (pack "ɔ", (Vowel OpenMid Back Rounded Voiced NormalLength Oral))
     -- Near-open
-  , (pack "æ", (Vowel NearOpen Front Unrounded Voiced NormalLength))
-  , (pack "ɐ", (Vowel NearOpen Central Unrounded Voiced NormalLength))
+  , (pack "æ", (Vowel NearOpen Front Unrounded Voiced NormalLength Oral))
+  , (pack "ɐ", (Vowel NearOpen Central Unrounded Voiced NormalLength Oral))
     -- Open Vowels:
-  , (pack "a", (Vowel Open Front Unrounded Voiced NormalLength))
-  , (pack "ɶ", (Vowel Open Front Rounded Voiced NormalLength))
-  , (pack "ɑ", (Vowel Open Back Unrounded Voiced NormalLength))
-  , (pack "ɒ", (Vowel Open Back Rounded Voiced NormalLength))
+  , (pack "a", (Vowel Open Front Unrounded Voiced NormalLength Oral))
+  , (pack "ɶ", (Vowel Open Front Rounded Voiced NormalLength Oral))
+  , (pack "ɑ", (Vowel Open Back Unrounded Voiced NormalLength Oral))
+  , (pack "ɒ", (Vowel Open Back Rounded Voiced NormalLength Oral))
   ]
 
 lookupInList :: Eq a => a -> [(a, b)] -> Maybe b
@@ -294,7 +295,15 @@ analyzeIPA p =
            -- if the idea of an aspirated vowel makes sense
            "̠" ->
              let fullGrapheme = analyzeIPA (init ipaText)
-              in retractPhonet fullGrapheme
+               in case fullGrapheme of
+                  Just x -> retractPhonet x
+                  Nothing -> Nothing
+           "̃" ->
+             let fullGrapheme = analyzeIPA (init ipaText)
+              in case fullGrapheme of
+                 Just x -> nasalizePhonet x
+                 Nothing -> Nothing
+
            _ -> Nothing -- not recognized.
 
 constructIPA :: Phonet -> Text
@@ -318,6 +327,12 @@ vowelLengthIPA vowelLength =
     ExtraShort -> pack "̆"
     HalfLong -> pack "ˑ"
     Long -> pack "ː"
+
+nasalizationIPA :: Nasalization -> Text
+nasalizationIPA nasalization =
+  case nasalization of
+    Oral -> pack ""
+    Nasalized -> pack "̃"
 
 addRetractedDiacritic :: Text -> Text
 addRetractedDiacritic = (<> pack "̠")
@@ -352,6 +367,9 @@ addPalatalizedDiacritic = (<> (secondaryArticulationIPA Palatalized))
 
 addLabializedDiacritic :: Text -> Text
 addLabializedDiacritic = (<> (secondaryArticulationIPA Labialized))
+
+addNasalizedDiacritic :: Text -> Text
+addNasalizedDiacritic = (<> (nasalizationIPA Nasalized))
 
 
 constructIPARecursive :: Natural -> Natural -> Phonet -> Maybe Text
@@ -489,38 +507,49 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
             Just regularIPA -> Just (addCreakyVoicedDiacritic regularIPA)
             Nothing         -> Nothing
 
-
-  (Vowel w x y z vowelLength)
+  (Vowel w x y z vowelLength nasalization)
     | vowelLength /= NormalLength
     && recursionLevel < recursionLimit ->
       case constructIPARecursive
              recursionLimit
              (1 + recursionLevel)
-             (Vowel w x y z NormalLength) of
+             (Vowel w x y z NormalLength nasalization) of
         Nothing         -> Nothing
         Just regularIPA -> Just (regularIPA <> vowelLengthIPA vowelLength)
 
-
-  -- Add the small circle diacritic to vowels to make them voiceless.
-  (Vowel x y z Voiceless vowelLength)
+  -- add the nasal diacritic:
+  (Vowel x y z v vowelLength Nasalized)
     | recursionLevel < recursionLimit ->
       case constructIPARecursive
         recursionLimit
         (1 + recursionLevel)
-        (Vowel x y z Voiced vowelLength) of
+        (Vowel x y z v vowelLength Oral) of
+        Nothing         -> Nothing
+        Just regularIPA -> Just (addNasalizedDiacritic regularIPA)
+
+  -- Add the small circle diacritic to vowels to make them voiceless.
+  (Vowel x y z Voiceless vowelLength nasalization)
+    | recursionLevel < recursionLimit ->
+      case constructIPARecursive
+        recursionLimit
+        (1 + recursionLevel)
+        (Vowel x y z Voiced vowelLength nasalization) of
         Nothing         -> Nothing
         Just regularIPA -> Just (addVoicelessDiacritic regularIPA)
   -- If there is no way to express a voiced consonant in a single
   -- grapheme add a diacritic to the grapheme that represents
   -- the voiceless counterpart.
-  (Vowel x y z Voiced vowelLength)
+  (Vowel x y z Voiced vowelLength nasalization)
     | recursionLevel < recursionLimit ->
       case constructIPARecursive
         recursionLimit
         (1 + recursionLevel)
-        (Vowel x y z Voiceless vowelLength) of
+        (Vowel x y z Voiceless vowelLength nasalization) of
         Nothing         -> Nothing
         Just regularIPA -> Just (addVoicedDiacritic regularIPA)
+
+
+
   Consonant {} -> Nothing
   Vowel     {} -> Nothing
 

@@ -241,7 +241,7 @@ voice p = case p of
     Just (VoiceFeature Plus)
   (Consonant Voiced _ _ _ _) ->
     Just (VoiceFeature Plus)
-  (Vowel _ _ _ Voiced _) ->
+  (Vowel _ _ _ Voiced _ _) ->
     Just (VoiceFeature Plus)
   Consonant {} -> 
     Just (VoiceFeature Minus)
@@ -274,7 +274,7 @@ constrictedGlottis p = case p of
     if sonorant p == Just (SonorantFeature Plus)
       then Just ConstrictedGlottisFeature
       else Nothing
-  (Vowel _ _ _ CreakyVoiced _) ->
+  (Vowel _ _ _ CreakyVoiced _ _) ->
     if sonorant p == Just (SonorantFeature Plus)
       then Just ConstrictedGlottisFeature
       else Nothing
@@ -360,8 +360,8 @@ high p = case p of
   (Consonant _ Velar _ _ _)          -> Just (HighFeature Plus)
   (Consonant _ Uvular _ _ _)         -> Just (HighFeature Minus)
   Consonant {}                       -> Nothing
-  (Vowel Close _ _ _ _)              -> Just (HighFeature Plus)
-  (Vowel NearClose _ _ _ _)          -> Just (HighFeature Plus)
+  (Vowel Close _ _ _ _ _)            -> Just (HighFeature Plus)
+  (Vowel NearClose _ _ _ _ _)        -> Just (HighFeature Plus)
   Vowel {}                           -> Just (HighFeature Minus)
 
 -- |
@@ -378,8 +378,8 @@ low p = case p of
   (Consonant _ Pharyngeal _ _ _) -> Just (LowFeature Plus)
   (Consonant _ Glottal _ _ _)    -> Just (LowFeature Plus)
   Consonant {}                   -> Nothing
-  (Vowel Open _ _ _ _)           -> Just (LowFeature Plus)
-  (Vowel NearOpen _ _ _ _)       -> Just (LowFeature Plus)
+  (Vowel Open _ _ _ _ _)         -> Just (LowFeature Plus)
+  (Vowel NearOpen _ _ _ _ _)     -> Just (LowFeature Plus)
   Vowel {}                       -> Just (LowFeature Minus)
 
 -- |
@@ -389,9 +389,9 @@ low p = case p of
 -- All other segments are undefined for [+/-back].
 back :: Phonet -> Maybe PhonemeFeature
 back p = case p of
-  (Vowel _ Back _ _ _)            -> Just (BackFeature Plus)
-  (Vowel _ Central _ _ _)         -> Just (BackFeature Plus)
-  (Vowel _ Front _ _ _)           -> Just (BackFeature Minus)
+  (Vowel _ Back _ _ _ _)          -> Just (BackFeature Plus)
+  (Vowel _ Central _ _ _ _)       -> Just (BackFeature Plus)
+  (Vowel _ Front _ _ _ _)         -> Just (BackFeature Minus)
   (Consonant _ _ _ _ Palatalized) -> Just (BackFeature Minus) -- Palatalized consonants are [-back].
   -- For a source on palatalized consonants being [-back],
   -- see page 59 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
@@ -412,7 +412,7 @@ back p = case p of
 -- Further sources are on that page.
 lipRound :: Phonet -> Maybe PhonemeFeature
 lipRound p = case p of
-  (Vowel _ _ Rounded _ _)        -> Just (RoundFeature Plus)
+  (Vowel _ _ Rounded _ _ _)      -> Just (RoundFeature Plus)
   Vowel {}                       -> Just (RoundFeature Minus)
   (Consonant _ _ _ _ Labialized) -> Just (RoundFeature Plus)
   Consonant {}                   -> Just (RoundFeature Minus)
@@ -428,33 +428,33 @@ lipRound p = case p of
 -- Further sources are on that page.
 atr :: Phonet -> Maybe PhonemeFeature
 atr p = case p of
-  (Vowel Close Front Unrounded Voiced _) ->
+  (Vowel Close Front Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Front Unrounded Voiced _) ->
+  (Vowel CloseMid Front Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel Close Back Rounded Voiced _) ->
+  (Vowel Close Back Rounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Front Rounded Voiced _) ->
+  (Vowel CloseMid Front Rounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Back Rounded Voiced _) ->
+  (Vowel CloseMid Back Rounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel Close Front Rounded Voiced _) ->
+  (Vowel Close Front Rounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Plus)
-  (Vowel NearOpen Front Unrounded Voiced _) ->
+  (Vowel NearOpen Front Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel Open Back Unrounded Voiced _) ->
+  (Vowel Open Back Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel Close Central Unrounded Voiced _) ->
+  (Vowel Close Central Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Back Unrounded Voiced _) ->
+  (Vowel OpenMid Back Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel NearClose Front Unrounded Voiced _) ->
+  (Vowel NearClose Front Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel NearClose Back Rounded Voiced _) ->
+  (Vowel NearClose Back Rounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Front Unrounded Voiced _) ->
+  (Vowel OpenMid Front Unrounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Back Rounded Voiced _) ->
+  (Vowel OpenMid Back Rounded Voiced _ _) ->
     Just (AdvancedTongueRootFeature Minus)
   (Consonant _ _ _ _ Pharyngealized) ->
     Just (AdvancedTongueRootFeature Minus)

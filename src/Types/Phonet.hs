@@ -6,6 +6,7 @@ import Types.Airstream ( Airstream(..))
 import Types.Backness ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
+import Types.Nasalization ( Nasalization(..) )
 import Types.Place ( Place(..) )
 import Types.Rounding ( Rounding(..) )
 import Types.SecondaryArticulation ( SecondaryArticulation(..) )
@@ -36,4 +37,5 @@ data Phonet = Consonant !VocalFolds
                     !Rounding
                     !VocalFolds
                     !VowelLength
+                    !Nasalization
                     deriving Eq

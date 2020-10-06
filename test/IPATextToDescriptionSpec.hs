@@ -9,6 +9,7 @@ import DescribeIPASpec.Nasal
 import DescribeIPASpec.Plosive
 import DescribeIPASpec.TapOrFlap
 import DescribeIPASpec.Trill
+import DescribeIPASpec.VowelNasalization
 
 import qualified IPA 
 import Data.Text (pack, unpack)
@@ -22,3 +23,4 @@ pulmonicEgressiveConsonantSpec = do
   plosiveConsonantSpec
   tapOrFlapConsonantSpec
   trillConsonantSpec
+  nasalVowelSpec
