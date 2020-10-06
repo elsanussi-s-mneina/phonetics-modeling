@@ -1,6 +1,12 @@
 module Lib_Functions where
 
-import Lib_Types (Airstream(..), Manner(..), Phonet(..), Place(..), VocalFolds(..))
+import Types.Airstream ( Airstream(..))
+import Types.Manner ( Manner(..) )
+import Types.Phonet ( Phonet(..) )
+import Types.Place ( Place(..) )
+import Types.VocalFolds ( VocalFolds(..) )
+
+
 import Prelude (Bool (..),
                 Maybe (..),
                 elem,
@@ -8,8 +14,10 @@ import Prelude (Bool (..),
 import Data.Text (Text)
 import ShowFunctions (showPhonet)
 
-import Lib_PseudoLens (place, toVoiced, toVoiceless, toVoicedAspirated, toVoicelessAspirated, vocalFolds, withManner,
+import qualified GetPhonet (place, vocalFolds)
+import qualified SetPhonet (toVoiced, toVoiceless, toVoicedAspirated, toVoicelessAspirated, withManner,
                        withPlace, withVocalFolds)
+
 
 equivalentInPlace :: Place -> Place -> Bool
 Bilabial     `equivalentInPlace` Bilabial     = True
@@ -58,22 +66,22 @@ englishDescription = showPhonet
 voicedPhonet :: Phonet -> Phonet
 voicedPhonet p =
   if isAspirated p
-    then toVoicedAspirated p
-    else toVoiced p
+    then SetPhonet.toVoicedAspirated p
+    else SetPhonet.toVoiced p
 
 -- | A function that given an IPA symbol will convert it to the voiceless
 --   equivalent.
 devoicedPhonet :: Phonet -> Phonet
 devoicedPhonet p =
   if isAspirated p
-    then toVoicelessAspirated p
-    else toVoiceless p
+    then SetPhonet.toVoicelessAspirated p
+    else SetPhonet.toVoiceless p
 
 -- | whether a phoneme is aspirated,
 --   (regardless of whether or not it is voiced)
 isAspirated :: Phonet -> Bool
 isAspirated p =
-  let vf = vocalFolds p
+  let vf = GetPhonet.vocalFolds p
   in vf == VoicelessAspirated || vf == VoicedAspirated
 
 -- | Make a phoneme spirantized. That is,
@@ -86,9 +94,9 @@ spirantizedPhonet :: Phonet -> Phonet
 -- So the following line implements this
 -- change in place of articulation.
 spirantizedPhonet p =
-  if place p == Just Alveolar
-    then withManner Fricative (withPlace Dental p)
-    else withManner Fricative p
+  if GetPhonet.place p == Just Alveolar
+    then SetPhonet.withManner Fricative (SetPhonet.withPlace Dental p)
+    else SetPhonet.withManner Fricative p
 
 -- | The following function returns whether an articulation is
 --   considered impossible according to the IPA (pulmonic) consonants chart.
@@ -134,28 +142,28 @@ retractPhonet _                             = Nothing
 
 deaspirate :: Phonet -> Phonet
 deaspirate p =
-  let vf = vocalFolds p
+  let vf = GetPhonet.vocalFolds p
   in case vf of
-       VoicedAspirated    -> withVocalFolds Voiced p
-       VoicelessAspirated -> withVocalFolds Voiceless p
+       VoicedAspirated    -> SetPhonet.withVocalFolds Voiced p
+       VoicelessAspirated -> SetPhonet.withVocalFolds Voiceless p
        Voiced             -> p
        Voiceless          -> p
        CreakyVoiced       -> p
     
 aspirate :: Phonet -> Phonet
 aspirate p =
-  let vf = vocalFolds p
+  let vf = GetPhonet.vocalFolds p
   in case vf of
-       Voiced    -> withVocalFolds VoicedAspirated p
-       Voiceless -> withVocalFolds VoicelessAspirated p
+       Voiced    -> SetPhonet.withVocalFolds VoicedAspirated p
+       Voiceless -> SetPhonet.withVocalFolds VoicelessAspirated p
        VoicedAspirated    -> p
        VoicelessAspirated -> p
        CreakyVoiced       -> p
 
 decreak :: Phonet -> Phonet
 decreak p =
-  if vocalFolds p == CreakyVoiced
-    then toVoiced p
+  if GetPhonet.vocalFolds p == CreakyVoiced
+    then SetPhonet.toVoiced p
     else p
 
 

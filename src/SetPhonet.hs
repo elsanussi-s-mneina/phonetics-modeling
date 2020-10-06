@@ -1,41 +1,19 @@
 -- | A module for
 -- some helper functions for
 -- changing the values inside
--- a type or record.
+-- the Phonet type or record.
 
-module Lib_PseudoLens where
-import Lib_Types
-  ( Airstream(..)
-  , Manner(..)
-  , Phonet(..)
-  , Place(..)
-  , SecondaryArticulation(..)
-  , VocalFolds(..)
-  , VowelLength(..)
-  )
+module SetPhonet where
 
-import Prelude (Maybe(..), Bool(..))
+import Types.Airstream ( Airstream(..))
+import Types.Manner ( Manner(..) )
+import Types.Phonet ( Phonet(..) )
+import Types.Place ( Place(..) )
+import Types.SecondaryArticulation ( SecondaryArticulation(..) )
+import Types.VocalFolds ( VocalFolds(..) )
+import Types.VowelLength ( VowelLength(..) )
 
--- | whether a phonete is a consonant.
-isConsonant :: Phonet -> Bool
-isConsonant p =
-  case p of 
-    Consonant {} -> True
-    Vowel {}     -> False
-
--- | whether a phonete is a vowel.
-isVowel :: Phonet -> Bool
-isVowel p =
-    case p of
-      Vowel {} -> True
-      Consonant {} -> False
-
--- | The vocal fold configuration of a phoneme.
-vocalFolds :: Phonet -> VocalFolds
-vocalFolds p = 
-  case p of 
-    Consonant vf _ _ _ _ -> vf
-    Vowel _ _ _ vf _     -> vf
+import Prelude (Maybe(..))
 
 -- | A function for returning
 --   a phonete with a possibly different vocal fold configuration of a phonete,
@@ -46,35 +24,17 @@ withVocalFolds vf p =
     Consonant _ w x y z -> Consonant vf w x y z
     Vowel x y z _ vl    -> Vowel x y z vf vl
 
-place :: Phonet -> Maybe Place
-place p = 
-  case p of 
-    Consonant _ pl _ _ _ -> Just pl
-    Vowel {}             -> Nothing
-
 withPlace :: Place -> Phonet -> Phonet
 withPlace x p =  
   case p of 
     Consonant a _ b c d -> Consonant a x b c d
     Vowel {}            -> p
 
-manner :: Phonet -> Maybe Manner
-manner p =
-  case p of
-    Consonant _ _ m _ _ -> Just m
-    Vowel {}            -> Nothing
-
 withManner :: Manner -> Phonet -> Phonet
 withManner x p =
   case p of
     Consonant a b _ c d -> Consonant a b x c d
     Vowel {}            -> p
-
-airstream :: Phonet -> Maybe Airstream
-airstream p = 
-  case p of 
-    Consonant _ _ _ a _ -> Just a
-    Vowel {}            -> Nothing
 
 withAirstream :: Airstream -> Phonet -> Maybe Phonet
 withAirstream x p = 
@@ -98,10 +58,6 @@ toHalfLong = withVowelLength HalfLong
 
 toExtraShort :: Phonet -> Phonet
 toExtraShort = withVowelLength ExtraShort
-
-secondaryArticulation :: Phonet -> Maybe SecondaryArticulation
-secondaryArticulation (Consonant _ _ _ _ sa) = Just sa
-secondaryArticulation _ = Nothing
 
 -- | Changes the secondary articulation value
 --   for a phonete.

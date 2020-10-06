@@ -24,7 +24,8 @@ module SpecGeneratorForPython where
 
 import           Data.Maybe    (fromJust, Maybe(Just, Nothing))
 import           Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import           IPA (analyzeIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
+import           IPA (analyzeIPA, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
+import PhonetInventory (ipaTextToPhonetListReport)
 import           PhoneticFeatures (isGlide)
 import Prelude ((.))
 import Data.Semigroup (Semigroup((<>)))

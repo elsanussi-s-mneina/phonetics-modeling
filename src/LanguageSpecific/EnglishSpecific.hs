@@ -1,18 +1,17 @@
 module LanguageSpecific.EnglishSpecific where
 import Prelude ()
-import Lib_Types
-  ( Airstream(..)
-  , Backness(..)
-  , Height(..)
-  , Manner(..)
-  , Phonet(..)
-  , PhonetInventory(..)
-  , Place(..)
-  , Rounding(..)
-  , SecondaryArticulation(..)
-  , VocalFolds(..)
-  , VowelLength(..)
-  )
+import Types.Airstream ( Airstream(..))
+import Types.Backness ( Backness(..) )
+import Types.Height ( Height(..) )
+import Types.Manner ( Manner(..) )
+import Types.Phonet ( Phonet(..) )
+import Types.PhonetInventory ( PhonetInventory(..) )
+import Types.Place ( Place(..) )
+import Types.Rounding ( Rounding(..) )
+import Types.SecondaryArticulation ( SecondaryArticulation(..) )
+import Types.VocalFolds ( VocalFolds(..) )
+import Types.VowelLength ( VowelLength(..) )
+
 
 
 -- These are the sounds found in most native English dialects.

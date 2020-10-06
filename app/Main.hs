@@ -1,9 +1,10 @@
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
-import  IPA          (devoicedIPA, describeIPA, voicedIPA, ipaTextToPhonetListReport, analyzeIPAToSPE,
-                      arabicPhonetInventoryReport, plainsCreePhonetInventoryReport, englishPhonetInventoryReport,
-                      irishPhonetInventoryReport, analyzeIPA, constructIPA)
-
+import  IPA          (devoicedIPA, describeIPA, voicedIPA, analyzeIPAToSPE,
+                      analyzeIPA, constructIPA)
+import PhonetInventory (ipaTextToPhonetListReport, arabicPhonetInventoryReport,
+  plainsCreePhonetInventoryReport,
+  englishPhonetInventoryReport, irishPhonetInventoryReport)
 
 
 import           Lib           (Phonet)

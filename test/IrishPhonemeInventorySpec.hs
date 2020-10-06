@@ -4,7 +4,7 @@ import Prelude (IO, ($), (++), (.), String, Bool(True, False), Maybe(Just, Nothi
 
 import Test.Hspec (Spec, describe, hspec, it, shouldBe)
 
-import IPA ( irishPhonetInventoryReport )
+import PhonetInventory ( irishPhonetInventoryReport )
 import Data.Text (Text, isInfixOf, pack, unpack)
 
 irishPhonetInventoryReportSpec :: Spec

@@ -1,29 +1,26 @@
 module IPA where
 
-import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), otherwise,
-  map, zip)
+import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), otherwise)
 import Data.Maybe (fromMaybe, maybe)
 import Numeric.Natural (Natural)
-import Data.Text (Text, concat, init, last, null, pack, unlines)
+import Data.Text (Text, init, last, null, pack)
 
 import DefaultLanguageText
-    ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage, notApplicableUIText )
+    ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage )
 
-import Lib_Types
-  ( Airstream(..)
-  , Backness(..)
-  , Height(..)
-  , Manner(..)
-  , Phonet(..)
-  , PhonetInventory(..)
-  , Place(..)
-  , Rounding(..)
-  , SecondaryArticulation(..)
-  , VocalFolds(..)
-  , VowelLength(..)
-  )
+import Types.Airstream ( Airstream(..))
+import Types.Backness ( Backness(..) )
+import Types.Height ( Height(..) )
+import Types.Manner ( Manner(..) )
+import Types.Phonet ( Phonet(..) )
+import Types.Place ( Place(..) )
+import Types.Rounding ( Rounding(..) )
+import Types.SecondaryArticulation ( SecondaryArticulation(..) )
+import Types.VocalFolds ( VocalFolds(..) )
+import Types.VowelLength ( VowelLength(..) )
 
-import Lib_PseudoLens (toExtraShort, toHalfLong, toLabialized, toLong,
+
+import qualified SetPhonet (toExtraShort, toHalfLong, toLabialized, toLong,
                        toNoSecondaryArticulation,
                        toPalatalized, toPharyngealized, toVelarized,
                        toVoiced, toVoiceless, withPlace)
@@ -34,24 +31,8 @@ import Lib_Functions (aspirate,
 import ShowFunctions (showPhonet)
 
 import PhoneticFeatures(showFeatures, analyzeFeatures)
-import LanguageSpecific.EnglishSpecific (englishPhonetInventory)
-import LanguageSpecific.ArabicSpecific (arabicPhonemeInventory)
-import LanguageSpecific.CreeSpecific (plainsCreePhonemeInventory)
-import LanguageSpecific.IrishSpecific (irishPhonemeInventory)
-import GraphemeGrammar(splitIntoPhonemes, isDescender)
+import GraphemeGrammar(isDescender)
 
-
-englishPhonetInventoryReport :: Text
-englishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA englishPhonetInventory)
-
-arabicPhonetInventoryReport :: Text
-arabicPhonetInventoryReport = ipaTextToPhonetListReport (showIPA arabicPhonemeInventory)
-
-plainsCreePhonetInventoryReport :: Text
-plainsCreePhonetInventoryReport = ipaTextToPhonetListReport (showIPA plainsCreePhonemeInventory)
-
-irishPhonetInventoryReport :: Text
-irishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA irishPhonemeInventory)
 
 analyzeIPAToSPE :: Text -> Text
 analyzeIPAToSPE ipaText =
@@ -227,38 +208,6 @@ lookupInListFromValue givenKey aList =
                                 | otherwise       -> lookupInListFromValue givenKey tailOfList
 
 
-
--- | Given text containing international phonetic alphabet symbols
---   returns text with every phonetic alphabet symbol or sequence
---   of symbols for a sound
---   followed by the description of the sound it represents.
-ipaTextToPhonetListReport :: Text -> Text
-ipaTextToPhonetListReport text =
-  let listA = ipaTextToPhonetList text
-  in unlines (map ipaAndPhonetFormat listA)
-
--- | put a forward slash before some text  and
---   after it.
---   For example, "s" becomes "/s/"
---   Linguists use these forward slashes
---   to indicate a phonemic transcription,
---   instead of a phonetic transcription.
-encloseInSlashes :: Text -> Text
-encloseInSlashes ipaText = pack "/" <> ipaText <> pack "/"
-
-ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
-ipaAndPhonetFormat (ipaText, phonet) =
-  encloseInSlashes ipaText <> pack " " <> phonetSummary
-  where
-    phonetSummary =
-      maybe notApplicableUIText showPhonet phonet
-
-ipaTextToPhonetList :: Text -> [(Text, Maybe Phonet)]
-ipaTextToPhonetList text =
-  let ipaChunks = splitIntoPhonemes text
-      phonetes = map analyzeIPA ipaChunks
-   in zip ipaChunks phonetes
-
 -- | This function will allow us to convert an IPA symbol
 --   to its analyzed form (its phonetic features)
 analyzeIPA :: Text -> Maybe Phonet
@@ -276,61 +225,61 @@ analyzeIPA p =
            "̪" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (withPlace Dental x)
+                   Just x -> Just (SetPhonet.withPlace Dental x)
                    Nothing -> Nothing
            "̥" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toVoiceless x)
+                   Just x -> Just (SetPhonet.toVoiceless x)
                    Nothing -> Nothing
            "̊" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toVoiceless x)
+                   Just x -> Just (SetPhonet.toVoiceless x)
                    Nothing -> Nothing
       
            "̬" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toVoiced x)
+                   Just x -> Just (SetPhonet.toVoiced x)
                    Nothing -> Nothing
            "ʷ" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toLabialized x)
+                   Just x -> Just (SetPhonet.toLabialized x)
                    Nothing -> Nothing
       
            "ʲ" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toPalatalized x)
+                   Just x -> Just (SetPhonet.toPalatalized x)
                    Nothing -> Nothing
       
            "ˠ" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toVelarized x)
+                   Just x -> Just (SetPhonet.toVelarized x)
                    Nothing -> Nothing
       
            "ˤ" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toPharyngealized x)
+                   Just x -> Just (SetPhonet.toPharyngealized x)
                    Nothing -> Nothing
            "ː" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toLong x)
+                   Just x -> Just (SetPhonet.toLong x)
                    Nothing -> Nothing
            "ˑ" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toHalfLong x)
+                   Just x -> Just (SetPhonet.toHalfLong x)
                    Nothing -> Nothing
            "̆" ->
              let fullGrapheme = analyzeIPA (init ipaText)
               in case fullGrapheme of
-                   Just x -> Just (toExtraShort x)
+                   Just x -> Just (SetPhonet.toExtraShort x)
                    Nothing -> Nothing
       
            "ʰ" ->
@@ -434,7 +383,7 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
             constructIPARecursive
               recursionLimit
               (1 + recursionLevel)
-              (toNoSecondaryArticulation p)
+              (SetPhonet.toNoSecondaryArticulation p)
        in case result of
             Just regularIPA -> Just (addPharynealizedDiacritic regularIPA)
             Nothing         -> Nothing
@@ -445,7 +394,7 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
             constructIPARecursive
               recursionLimit
               (1 + recursionLevel)
-              (toNoSecondaryArticulation p)
+              (SetPhonet.toNoSecondaryArticulation p)
        in case result of
             Just regularIPA -> Just (addVelarizedDiacritic regularIPA)
             Nothing         -> Nothing
@@ -456,7 +405,7 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
             constructIPARecursive
               recursionLimit
               (1 + recursionLevel)
-              (toNoSecondaryArticulation p)
+              (SetPhonet.toNoSecondaryArticulation p)
        in case result of
             Just regularIPA -> Just (addPalatalizedDiacritic regularIPA)
             Nothing         -> Nothing
@@ -467,7 +416,7 @@ constructIPAMultichar recursionLimit recursionLevel p = case p of
             constructIPARecursive
               recursionLimit
               (1 + recursionLevel)
-              (toNoSecondaryArticulation p)
+              (SetPhonet.toNoSecondaryArticulation p)
        in case result of
             Just regularIPA -> Just (addLabializedDiacritic regularIPA)
             Nothing         -> Nothing
@@ -598,12 +547,4 @@ spirantizedIPA = constructDeconstruct spirantizedPhonet
 describeIPA :: Text -> Text
 describeIPA x =
   maybe noEnglishDescriptionFoundMessage showPhonet (analyzeIPA x)
-
-
-showIPA :: PhonetInventory -> Text
-showIPA p = concat (showIPAAsList p)
-
-showIPAAsList :: PhonetInventory -> [Text]
-showIPAAsList (PhonetInventory phonetes) = map constructIPA phonetes
-
 

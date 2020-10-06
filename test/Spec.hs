@@ -3,7 +3,8 @@ module Spec(main) where
 
 import Data.Maybe    (fromJust)
 import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import IPA (analyzeIPA, constructIPA, ipaTextToPhonetListReport, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
+import IPA (analyzeIPA, constructIPA, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
+import PhonetInventory (ipaTextToPhonetListReport)
 import PhoneticFeatures (isGlide)
 import GraphemeGrammarSpec (runGraphemeGrammarSpecs)
 import PrimitiveParsersSpec (runPrimitiveParsersSpecs)
@@ -11,7 +12,7 @@ import IPATextToDescriptionSpec (pulmonicEgressiveConsonantSpec)
 
 import PlainsCreePhonemeInventorySpec (plainsCreePhonetInventoryReportSpec)
 import IrishPhonemeInventorySpec (irishPhonetInventoryReportSpec)
-import Lib_Types
+import Types.All
 import Prelude (($), (++), (.), String, Bool(True, False))
 import Data.Text (Text)
 import Data.Semigroup (Semigroup((<>)))

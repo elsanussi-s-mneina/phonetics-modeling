@@ -4,19 +4,18 @@ import Data.Maybe (catMaybes)
 import Data.Text (Text, intercalate, pack)
 
 
-import Lib_Types
-  ( Airstream(..)
-  , Backness(..)
-  , Height(..)
-  , Manner(..)
-  , Phonet(..)
-  , Place(..)
-  , Rounding(..)
-  , SecondaryArticulation(..)
-  , VocalFolds(..)
-  )
+import Types.Airstream ( Airstream(..))
+import Types.Backness ( Backness(..) )
+import Types.Height ( Height(..) )
+import Types.Manner ( Manner(..) )
+import Types.Phonet ( Phonet(..) )
+import Types.Place ( Place(..) )
+import Types.Rounding ( Rounding(..) )
+import Types.SecondaryArticulation ( SecondaryArticulation(..) )
+import Types.VocalFolds ( VocalFolds(..) )
 
-import PhoneticFeaturesTypes (Polarity(..), PhonemeFeature(..))
+import Types.SPE.Polarity ( Polarity(..) )
+import Types.SPE.PhonemeFeature ( PhonemeFeature(..) )
 
 import DefaultLanguageText
 

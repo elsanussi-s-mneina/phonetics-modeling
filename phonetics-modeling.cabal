@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d154e1f28419b37c54364ecf5f468f5cc968fddf9430b93ea2438fa558442deb
+-- hash: c21cdbe6dd9638eb489c586498cd5e3339de3af1b92f50084fea3a08e72b6df5
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -28,6 +28,7 @@ library
   exposed-modules:
       DefaultLanguageText
       EnglishUSText
+      GetPhonet
       GraphemeGrammar
       IPA
       LanguageSpecific.ArabicSpecific
@@ -36,12 +37,25 @@ library
       LanguageSpecific.IrishSpecific
       Lib
       Lib_Functions
-      Lib_PseudoLens
-      Lib_Types
       PhoneticFeatures
-      PhoneticFeaturesTypes
+      PhonetInventory
       PrimitiveParsers
+      SetPhonet
       ShowFunctions
+      Types.Airstream
+      Types.All
+      Types.Backness
+      Types.Height
+      Types.Manner
+      Types.Phonet
+      Types.PhonetInventory
+      Types.Place
+      Types.Rounding
+      Types.SecondaryArticulation
+      Types.SPE.PhonemeFeature
+      Types.SPE.Polarity
+      Types.VocalFolds
+      Types.VowelLength
   other-modules:
       Paths_phonetics_modeling
   hs-source-dirs:
