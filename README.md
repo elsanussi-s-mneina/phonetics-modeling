@@ -58,6 +58,13 @@ To run the executable type:
 ## How to run the unit tests.
 `stack test`
 
+### How to run a specific unit test
+
+#### Run all unit tests that have to do with trill
+`
+stack test --test-arguments='--match "trill"'
+`
+
 
 ## How to generate external documentation for source code:
 
