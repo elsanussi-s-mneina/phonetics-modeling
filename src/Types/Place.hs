@@ -19,7 +19,6 @@ data Place = Bilabial
            | LabialVelar
            | LabialPalatal
            | AlveoloPalatal
-           | PalatoAlveolar  -- To do: investigate what the difference
-           -- is between alveolopalatal, and palatoalveolar
+           | PalatoAlveolar
            | Places ![Place]
            deriving Eq
