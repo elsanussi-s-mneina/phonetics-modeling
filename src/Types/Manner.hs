@@ -11,6 +11,6 @@ data Manner = Plosive
             | Affricate
             | LateralFricative
             | LateralApproximant
-            | LateralFlap  -- ^ There are very few IPA symbols for lateral flaps
+            | LateralFlap
             | Lateral      -- ^ We need this one for the lateral click.
               deriving Eq
