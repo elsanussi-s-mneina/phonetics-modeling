@@ -16,11 +16,11 @@ import Data.Text (pack, unpack)
 describeIPA = unpack . IPA.describeIPA . pack
 
 pulmonicEgressiveConsonantSpec = do
-  approximantConsonantSpec
-  fricativeConsonantSpec
-  lateralApproximantConsonantSpec
-  nasalConsonantSpec
-  plosiveConsonantSpec
-  tapOrFlapConsonantSpec
-  trillConsonantSpec
-  nasalVowelSpec
+	approximantConsonantSpec
+	fricativeConsonantSpec
+	lateralApproximantConsonantSpec
+	nasalConsonantSpec
+	plosiveConsonantSpec
+	tapOrFlapConsonantSpec
+	trillConsonantSpec
+	nasalVowelSpec

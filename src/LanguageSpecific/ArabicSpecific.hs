@@ -2,7 +2,7 @@ module LanguageSpecific.ArabicSpecific where
 import Prelude ()
 
 import Types.Airstream ( Airstream(..))
-import Types.Backness ( Backness(..) )
+import Types.Backness  ( Backness(..) )
 import Types.Height ( Height(..) )
 import Types.Manner ( Manner(..) )
 import Types.Nasalization ( Nasalization(Oral) )

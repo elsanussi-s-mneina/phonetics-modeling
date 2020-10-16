@@ -26,16 +26,16 @@ singleCharParserSpec =
 		it "should be that: single character parser of the character 'a' does parse the character \"a\"" $
 			singleCharParser ['a'] "a" `shouldBe` Just("a", "")
 		it "should be that: single character parser of the character 'a' does parse the string containing two \"aa\"\
-		   \ characters and leaves one left" $
+			\ characters and leaves one left" $
 			singleCharParser ['a'] "aa" `shouldBe` Just("a", "a")
 		it "should be that: single character parser of the character 'a' does parse the string containing \"ab\"\
-		   \ characters and leaves \"b\"" $
+			\ characters and leaves \"b\"" $
 			singleCharParser ['a', 'b'] "ab" `shouldBe` Just("a", "b")
 		it "should be that: single character parser of the character 'a' does parse the string containing \"abc\"\
-		   \ characters and leaves \"bc\"" $
+			\ characters and leaves \"bc\"" $
 			singleCharParser ['a', 'b'] "abc" `shouldBe` Just("a", "bc")
 		it "should be that: single character parser of the character 'a' does parse the string containing \"abc\"\
-		   \ characters and leaves \"bc\"" $
+			\ characters and leaves \"bc\"" $
 			singleCharParser ['a', 'b'] "cba" `shouldBe` Nothing
 		it "should be that: single character parser of the non-ASCII character ʃ works" $
 			do

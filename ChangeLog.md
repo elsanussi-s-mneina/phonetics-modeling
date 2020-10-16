@@ -2,6 +2,9 @@
 
 ## Unreleased changes
 
+October 16, 2020
+Switched to tabs instead of 2 spaces for indentation.
+
 August 21, 2020
 Switched from Relude to Prelude.
 - Removed Server functionality
