@@ -1,15 +1,15 @@
 module IPATextToDescriptionSpec where
 
-import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 
-import DescribeIPASpec.Approximant
-import DescribeIPASpec.Fricative
+import DescribeIPASpec.Approximant ( approximantConsonantSpec )
+import DescribeIPASpec.Fricative ( fricativeConsonantSpec )
 import DescribeIPASpec.LateralApproximant
-import DescribeIPASpec.Nasal
-import DescribeIPASpec.Plosive
-import DescribeIPASpec.TapOrFlap
-import DescribeIPASpec.Trill
-import DescribeIPASpec.VowelNasalization
+    ( lateralApproximantConsonantSpec )
+import DescribeIPASpec.Nasal ( nasalConsonantSpec )
+import DescribeIPASpec.Plosive ( plosiveConsonantSpec )
+import DescribeIPASpec.TapOrFlap ( tapOrFlapConsonantSpec )
+import DescribeIPASpec.Trill ( trillConsonantSpec )
+import DescribeIPASpec.VowelNasalization ( nasalVowelSpec )
 
 import qualified IPA 
 import Data.Text (pack, unpack)

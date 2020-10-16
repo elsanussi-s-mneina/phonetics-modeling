@@ -1,11 +1,11 @@
 module IrishPhonemeInventorySpec where
 
-import Prelude (IO, ($), (++), (.), String, Bool(True, False), Maybe(Just, Nothing), map)
+import Prelude (($), Bool(True))
 
-import Test.Hspec (Spec, describe, hspec, it, shouldBe)
+import Test.Hspec (Spec, describe, it, shouldBe)
 
 import PhonetInventory ( irishPhonetInventoryReport )
-import Data.Text (Text, isInfixOf, pack, unpack)
+import Data.Text (isInfixOf, pack)
 
 irishPhonetInventoryReportSpec :: Spec
 irishPhonetInventoryReportSpec = do

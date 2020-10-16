@@ -1,10 +1,9 @@
 module PlainsCreePhonemeInventorySpec where
 
-import Prelude (IO, ($), (++), (.), (||), String, Bool(True, False), Maybe(Just, Nothing), map)
-import Data.Maybe    (fromJust)
-import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import PhonetInventory  ( plainsCreePhonetInventoryReport )
-import Data.Text (Text, pack, unpack, isInfixOf)
+import Prelude (($), Bool(True))
+import Test.Hspec (Spec, describe, it, shouldBe)
+import PhonetInventory ( plainsCreePhonetInventoryReport )
+import Data.Text (pack, isInfixOf)
 
 plainsCreePhonetInventoryReportSpec :: Spec
 plainsCreePhonetInventoryReportSpec = do

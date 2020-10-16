@@ -1,11 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module SpecGenerator where
 import Prelude  ()
-import Data.Maybe    (fromJust, Maybe(Just, Nothing))
-import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import IPA (analyzeIPA, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
-import PhonetInventory (ipaTextToPhonetListReport)
-import PhoneticFeatures (isGlide)
+import Data.Maybe (Maybe(Just, Nothing))
 import Data.Semigroup (Semigroup((<>)))
 import Data.Text (Text)
 import qualified Data.Text as T

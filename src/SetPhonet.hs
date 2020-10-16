@@ -7,7 +7,6 @@ module SetPhonet where
 
 import Types.Airstream ( Airstream(..))
 import Types.Manner ( Manner(..) )
-import Types.Nasalization (Nasalization())
 import Types.Nasalization (Nasalization(Nasalized))
 import Types.Phonet ( Phonet(..) )
 import Types.Place ( Place(..) )

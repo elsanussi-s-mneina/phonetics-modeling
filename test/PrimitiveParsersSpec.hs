@@ -1,15 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module PrimitiveParsersSpec where
 
-import Prelude (IO, ($), (++), (.), String, Bool(True, False), Maybe(Just, Nothing))
-import Data.Maybe    (fromJust)
-import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
-import PrimitiveParsers  ( singleCharParser
-                         , thenParser
-                         , manyParser
-                         , orParser
-                         , optionalParser
-                         )
+import Prelude (($), IO, Maybe(Just, Nothing))
+import Test.Hspec (Spec, describe, hspec, it, shouldBe)
+import PrimitiveParsers ( singleCharParser, thenParser, manyParser, orParser, optionalParser)
 
 
 runPrimitiveParsersSpecs :: IO ()

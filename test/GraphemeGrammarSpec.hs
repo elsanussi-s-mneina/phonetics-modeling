@@ -1,7 +1,6 @@
 module GraphemeGrammarSpec where
 
-import Prelude (IO, ($), (++), (.), String, Bool(True, False), Maybe(Just, Nothing), map)
-import Data.Maybe    (fromJust)
+import Prelude (IO, ($), (.), String, Maybe(Just, Nothing), map)
 import Test.Hspec    (Spec, describe, hspec, it, shouldBe)
 import GraphemeGrammar  ( secondaryArticulationDiacriticParser
                         , phonemeParser
