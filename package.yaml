@@ -73,6 +73,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     - -main-is Spec
+    - -Wno-tabs
     dependencies:
     - phonetics-modeling:library
     - hspec

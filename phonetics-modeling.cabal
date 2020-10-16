@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fa1cc718af9b5fcdd86b5acc73e23613cbf24f7a3a404dbe7f9367de4cd8c42e
+-- hash: 19ce714e6b598d73970de27d6edaa03d0270760babd47ab357957fce3d34427d
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -102,7 +102,7 @@ test-suite phonetics-modeling-test
       Paths_phonetics_modeling
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Spec
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Spec -Wno-tabs
   build-depends:
       base >=4.7 && <5
     , hspec
