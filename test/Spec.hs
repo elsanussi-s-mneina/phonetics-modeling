@@ -19,14 +19,10 @@ import Data.Text (Text)
 import Data.Semigroup (Semigroup((<>)))
 import qualified Data.Text as T
 
--- import SpecGeneratorForPython
--- import SpecGenerator (generatedTestCode) -- If we need to generate the test code
 toString :: Text -> String
 toString = T.unpack
 
 main = do
-	-- putTextLn generatedTestCode -- If we need to generate the test code
-	-- putTextLn SpecGeneratorForPython.generatedTestCode -- If we need to generate the test code
 	hspec irishPhonetInventoryReportSpec
 	hspec plainsCreePhonetInventoryReportSpec
 	hspec constructIPASpec
