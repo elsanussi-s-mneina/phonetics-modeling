@@ -38,6 +38,7 @@ executables:
     - -fwarn-incomplete-uni-patterns
     - -Wno-missing-export-lists
     - -Wno-missing-import-lists
+    - -Wno-tabs
     - -fwrite-ide-info
     - -hiedir=.hie
     dependencies:
@@ -57,6 +58,7 @@ library:
   - -fwarn-incomplete-uni-patterns
   - -Wno-missing-export-lists
   - -Wno-missing-import-lists
+  - -Wno-tabs
   - -fwrite-ide-info
   - -hiedir=.hie
   dependencies:

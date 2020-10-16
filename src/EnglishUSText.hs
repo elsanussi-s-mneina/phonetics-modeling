@@ -10,34 +10,33 @@ applicationTitle = pack "Phonetics Modeling Program"
 
 menu :: Text
 menu =
-  pack "What do you want to accomplish? \n\
-  \ 1) view the English phoneme inventory (as IPA graphemes). \n\
-  \ 2) make a phoneme voiced. \n\
-  \ 3) make a phoneme unvoiced. \n\
-  \ 4) describe a phoneme in English. \n\
-  \ 5) describe a phoneme in SPE Features. \n\
-  \ 6) divide IPA text into phonemes \n\
-  \ 7) view the Arabic phoneme inventory (as IPA graphemes). \n\
-  \ 8) view the Plains Cree phoneme inventory (as IPA graphemes). \n\
-  \ 9) view the Irish phoneme inventory (as IPA graphemes). \n\
-  \  \n\
-  \ Enter the number representing your selection below, \n\
-  \ after the prompt, and press enter/return. \n\
-  \ \n\
-  \ \n\
-  \ \n"
+	pack "What do you want to accomplish? \n\
+	\ 1) view the English phoneme inventory (as IPA graphemes). \n\
+	\ 2) make a phoneme voiced. \n\
+	\ 3) make a phoneme unvoiced. \n\
+	\ 4) describe a phoneme in English. \n\
+	\ 5) describe a phoneme in SPE Features. \n\
+	\ 6) divide IPA text into phonemes \n\
+	\ 7) view the Arabic phoneme inventory (as IPA graphemes). \n\
+	\ 8) view the Plains Cree phoneme inventory (as IPA graphemes). \n\
+	\ 9) view the Irish phoneme inventory (as IPA graphemes). \n\
+	\  \n\
+	\ Enter the number representing your selection below, \n\
+	\ after the prompt, and press enter/return. \n\
+	\ \n\
+	\ \n\
+	\ \n"
 
 userInputViewEnglishPhonemeInventory,
-  userInputMakeAPhonemeVoiced,
-  userInputMakeAPhonemeUnvoiced,
-  userInputDescribeAPhonemeInEnglish,
-  userInputDescribeAPhonemeInSPE,
-  userInputChunkIPAByPhoneme,
-  userInputViewArabicPhonemeInventory,
-  userInputViewCreePhonemeInventory,
-  userInputViewIrishPhonemeInventory
-  ::
-    Text
+	userInputMakeAPhonemeVoiced,
+	userInputMakeAPhonemeUnvoiced,
+	userInputDescribeAPhonemeInEnglish,
+	userInputDescribeAPhonemeInSPE,
+	userInputChunkIPAByPhoneme,
+	userInputViewArabicPhonemeInventory,
+	userInputViewCreePhonemeInventory,
+	userInputViewIrishPhonemeInventory
+	:: Text
 userInputViewEnglishPhonemeInventory = pack "1"
 userInputMakeAPhonemeVoiced = pack "2"
 userInputMakeAPhonemeUnvoiced = pack "3"
@@ -57,40 +56,40 @@ sorryUnableToCalculate = pack "Sorry, unable to calculate answer with that input
 
 typeAPhoneme :: Text
 typeAPhoneme =
-  pack "Type a phoneme using IPA symbols, and then press the enter key, \
-  \ and the computer will display"
+	pack "Type a phoneme using IPA symbols, and then press the enter key, \
+	\ and the computer will display"
 
 phonemeToDevoiceMessage,
-  phonemeToVoiceMessage,
-  phonemeToDescribeMessage,
-  phonemeToCalculateSPEMessage,
-  pleaseReadReadmeMessage,
-  programTerminatedNormallyMessage,
-  userSelectedMessage,
-  unrecognizedSelectionMessage,
-  noAnalysisFoundMessage,
-  ipaTextToDivideMessage ::
-    Text
+	phonemeToVoiceMessage,
+	phonemeToDescribeMessage,
+	phonemeToCalculateSPEMessage,
+	pleaseReadReadmeMessage,
+	programTerminatedNormallyMessage,
+	userSelectedMessage,
+	unrecognizedSelectionMessage,
+	noAnalysisFoundMessage,
+	ipaTextToDivideMessage
+	:: Text
 phonemeToDevoiceMessage =
-  pack "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the devoiced counterpart (on the subsequent line):"
+	pack "Type a phoneme using IPA symbols, and then press the enter key,\
+	\ and the computer will display\
+	\ the devoiced counterpart (on the subsequent line):"
 phonemeToVoiceMessage =
-  pack "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the voiced counterpart (on the subsequent line):"
+	pack "Type a phoneme using IPA symbols, and then press the enter key,\
+	\ and the computer will display\
+	\ the voiced counterpart (on the subsequent line):"
 phonemeToDescribeMessage =
-  pack "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ its English description (on the subsequent line):"
+	pack "Type a phoneme using IPA symbols, and then press the enter key,\
+	\ and the computer will display\
+	\ its English description (on the subsequent line):"
 phonemeToCalculateSPEMessage =
-  pack "Type a phoneme using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ its SPE features (on the subsequent line):"
+	pack "Type a phoneme using IPA symbols, and then press the enter key,\
+	\ and the computer will display\
+	\ its SPE features (on the subsequent line):"
 ipaTextToDivideMessage =
-  pack "Type text using IPA symbols, and then press the enter key,\
-  \ and the computer will display\
-  \ the text you entered with separate phonemes on separate lines:"
+	pack "Type text using IPA symbols, and then press the enter key,\
+	\ and the computer will display\
+	\ the text you entered with separate phonemes on separate lines:"
 pleaseReadReadmeMessage = pack "Please read README.md file for instructions on how to use."
 programTerminatedNormallyMessage = pack "Program terminated normally."
 userSelectedMessage = pack "The user selected:"
@@ -104,80 +103,80 @@ notApplicableUIText :: Text
 notApplicableUIText = pack "(n/a)"
 
 consonantUIText,
-  vowelUIText,
-  frontBacknessUIText,
-  centralBacknessUIText,
-  backBacknessUIText,
-  closeHeightUIText,
-  nearCloseHeightUIText,
-  closeMidHeightUIText,
-  midHeightUIText,
-  openMidHeightUIText,
-  nearOpenHeightUIText,
-  openHeightUIText,
-  roundedRoundingUIText,
-  unroundedRoundingUIText,
-  bilabialPlaceUIText,
-  labioDentalPlaceUIText,
-  dentalPlaceUIText,
-  alveolarPlaceUIText,
-  postAlveolarPlaceUIText,
-  retroflexPlaceUIText,
-  palatalPlaceUIText,
-  velarPlaceUIText,
-  uvularPlaceUIText,
-  pharyngealPlaceUIText,
-  glottalPlaceUIText,
-  epiglottalPlaceUIText,
-  labialVelarPlaceUIText,
-  labialPalatalPlaceUIText,
-  alveoloPalatalPlaceUIText,
-  palatoAlveolarPlaceUIText,
-  plosiveMannerUIText,
-  nasalMannerUIText,
-  trillMannerUIText,
-  tapOrFlapMannerUIText,
-  approximantMannerUIText,
-  fricativeMannerUIText,
-  affricateMannerUIText,
-  lateralFricativeMannerUIText,
-  lateralApproximantMannerUIText,
-  lateralFlapMannerUIText,
-  lateralMannerUIText,
-  pulmonicEgressiveAirstreamUIText,
-  clickAirstreamUIText,
-  implosiveAirstreamUIText,
-  voicedVocalFoldsUIText,
-  voicelessVocalFoldsUIText,
-  voicedAspiratedVocalFoldsUIText,
-  voicelessAspiratedVocalFoldsUIText,
-  creakyVoicedVocalFoldsUIText,
-  syllabicPhonemeFeatureUIText,
-  consonantalPhonemeFeatureUIText,
-  sonorantPhonemeFeatureUIText,
-  continuantPhonemeFeatureUIText,
-  voicePhonemeFeatureUIText,
-  atrPhonemeFeatureUIText,
-  nasalPhonemeFeatureUIText,
-  lateralPhonemeFeatureUIText,
-  delayedReleasePhonemeFeatureUIText,
-  spreadGlottisPhonemeFeatureUIText,
-  constrictedGlottisPhonemeFeatureUIText,
-  labialPhonemeFeatureUIText,
-  coronalPhonemeFeatureUIText,
-  dorsalPhonemeFeatureUIText,
-  pharyngealPhonemeFeatureUIText,
-  laryngealPhonemeFeatureUIText,
-  roundPhonemeFeatureUIText,
-  anteriorPhonemeFeatureUIText,
-  distributedPhonemeFeatureUIText,
-  stridentPhonemeFeatureUIText,
-  highPhonemeFeatureUIText,
-  lowPhonemeFeatureUIText,
-  backPhonemeFeatureUIText,
-  nasalNasalizationUIText,
-  oralNasalizationUIText ::
-    Text
+	vowelUIText,
+	frontBacknessUIText,
+	centralBacknessUIText,
+	backBacknessUIText,
+	closeHeightUIText,
+	nearCloseHeightUIText,
+	closeMidHeightUIText,
+	midHeightUIText,
+	openMidHeightUIText,
+	nearOpenHeightUIText,
+	openHeightUIText,
+	roundedRoundingUIText,
+	unroundedRoundingUIText,
+	bilabialPlaceUIText,
+	labioDentalPlaceUIText,
+	dentalPlaceUIText,
+	alveolarPlaceUIText,
+	postAlveolarPlaceUIText,
+	retroflexPlaceUIText,
+	palatalPlaceUIText,
+	velarPlaceUIText,
+	uvularPlaceUIText,
+	pharyngealPlaceUIText,
+	glottalPlaceUIText,
+	epiglottalPlaceUIText,
+	labialVelarPlaceUIText,
+	labialPalatalPlaceUIText,
+	alveoloPalatalPlaceUIText,
+	palatoAlveolarPlaceUIText,
+	plosiveMannerUIText,
+	nasalMannerUIText,
+	trillMannerUIText,
+	tapOrFlapMannerUIText,
+	approximantMannerUIText,
+	fricativeMannerUIText,
+	affricateMannerUIText,
+	lateralFricativeMannerUIText,
+	lateralApproximantMannerUIText,
+	lateralFlapMannerUIText,
+	lateralMannerUIText,
+	pulmonicEgressiveAirstreamUIText,
+	clickAirstreamUIText,
+	implosiveAirstreamUIText,
+	voicedVocalFoldsUIText,
+	voicelessVocalFoldsUIText,
+	voicedAspiratedVocalFoldsUIText,
+	voicelessAspiratedVocalFoldsUIText,
+	creakyVoicedVocalFoldsUIText,
+	syllabicPhonemeFeatureUIText,
+	consonantalPhonemeFeatureUIText,
+	sonorantPhonemeFeatureUIText,
+	continuantPhonemeFeatureUIText,
+	voicePhonemeFeatureUIText,
+	atrPhonemeFeatureUIText,
+	nasalPhonemeFeatureUIText,
+	lateralPhonemeFeatureUIText,
+	delayedReleasePhonemeFeatureUIText,
+	spreadGlottisPhonemeFeatureUIText,
+	constrictedGlottisPhonemeFeatureUIText,
+	labialPhonemeFeatureUIText,
+	coronalPhonemeFeatureUIText,
+	dorsalPhonemeFeatureUIText,
+	pharyngealPhonemeFeatureUIText,
+	laryngealPhonemeFeatureUIText,
+	roundPhonemeFeatureUIText,
+	anteriorPhonemeFeatureUIText,
+	distributedPhonemeFeatureUIText,
+	stridentPhonemeFeatureUIText,
+	highPhonemeFeatureUIText,
+	lowPhonemeFeatureUIText,
+	backPhonemeFeatureUIText,
+	nasalNasalizationUIText,
+	oralNasalizationUIText ::
+	Text
 consonantUIText = pack "consonant"
 vowelUIText = pack "vowel"
 
@@ -296,13 +295,13 @@ quitUIText = pack "Quit"
 makeAPhonemeUnvoicedUIText = pack "Make a phoneme unvoiced…"
 describePhonemeUIText = pack "Describe a phoneme…"
 getFeaturesOfPhonemeUIText =
-    pack "Get sound patterns of English features of IPA transcription…"
+	pack "Get sound patterns of English features of IPA transcription…"
 splitTranscriptionUIText = pack "Split IPA transcription text…"
 
 -- Headers:
 resultHeader, voicedPhonemeHeader, unvoicedPhonemeHeader,
-  phonemeDescriptionHeader, featuresHeader, phonemesSplitHeader,
-  englishPhonemeInventoryHeader, inputHeader :: Text
+	phonemeDescriptionHeader, featuresHeader, phonemesSplitHeader,
+	englishPhonemeInventoryHeader, inputHeader :: Text
 resultHeader = pack "Result:"
 voicedPhonemeHeader = pack "Voiced Phoneme"
 unvoicedPhonemeHeader = pack "Unvoiced Phoneme"
@@ -314,11 +313,11 @@ inputHeader = pack "Input:"
 
 beforeServerStartMessage :: Text
 beforeServerStartMessage =
-  pack "Starting server...\n\
-  \Server running... at port 8080 locally.\n\
-  \Browse to http://localhost:8080/voice_phoneme/s\n\
-  \to get the voiced phoneme alternative of [s].\n\
-  \Browse to http://localhost:8080/devoice_phoneme/z\n\
-  \to get the voiceless phoneme alternative of [z].\n\
-  \Browse to http://localhost:8080/describe_phoneme/s\n\
-  \to get the English language description of [s]."
+	pack "Starting server...\n\
+	\Server running... at port 8080 locally.\n\
+	\Browse to http://localhost:8080/voice_phoneme/s\n\
+	\to get the voiced phoneme alternative of [s].\n\
+	\Browse to http://localhost:8080/devoice_phoneme/z\n\
+	\to get the voiceless phoneme alternative of [z].\n\
+	\Browse to http://localhost:8080/describe_phoneme/s\n\
+	\to get the English language description of [s]."

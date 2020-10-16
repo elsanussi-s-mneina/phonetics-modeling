@@ -21,47 +21,47 @@ import Types.VowelLength ( VowelLength(..) )
 -- Note: These are just phonemes, the allophones are not included for simplicity.
 arabicPhonemeInventory :: PhonetInventory
 arabicPhonemeInventory =
-  PhonetInventory
-        [ Consonant Voiced    Bilabial     Plosive            PulmonicEgressive Normal
-        , Consonant Voiceless Alveolar     Plosive            PulmonicEgressive Normal
-        , Consonant Voiced    Alveolar     Plosive            PulmonicEgressive Normal
-        , Consonant Voiceless Velar        Plosive            PulmonicEgressive Normal
-        , Consonant Voiceless Uvular       Plosive            PulmonicEgressive Normal
-        , Consonant Voiceless Glottal      Plosive            PulmonicEgressive Normal
-        , Consonant Voiced    Bilabial     Nasal              PulmonicEgressive Normal
-        , Consonant Voiced    Alveolar     Nasal              PulmonicEgressive Normal
-        , Consonant Voiced    Alveolar     Trill              PulmonicEgressive Normal
-        , Consonant Voiceless LabioDental  Fricative          PulmonicEgressive Normal
-        , Consonant Voiceless Dental       Fricative          PulmonicEgressive Normal
-        , Consonant Voiced    Dental       Fricative          PulmonicEgressive Normal
-        , Consonant Voiceless Alveolar     Fricative          PulmonicEgressive Normal
-        , Consonant Voiced    Alveolar     Fricative          PulmonicEgressive Normal
-        , Consonant Voiceless PostAlveolar Fricative          PulmonicEgressive Normal
-        , Consonant Voiced    Uvular       Fricative          PulmonicEgressive Normal
-        , Consonant Voiceless Uvular       Fricative          PulmonicEgressive Normal
-        , Consonant Voiced    Pharyngeal   Fricative          PulmonicEgressive Normal
-        , Consonant Voiceless Pharyngeal   Fricative          PulmonicEgressive Normal
-        , Consonant Voiceless Glottal      Fricative          PulmonicEgressive Normal
-        , Consonant Voiced    PostAlveolar Affricate          PulmonicEgressive Normal
-        , Consonant Voiced    Palatal      Approximant        PulmonicEgressive Normal
-        , Consonant Voiced    Alveolar     LateralApproximant PulmonicEgressive Normal
-        , Consonant Voiced    LabialVelar  Approximant        PulmonicEgressive Normal
+	PhonetInventory
+		[ Consonant Voiced Bilabial Plosive PulmonicEgressive Normal
+		, Consonant Voiceless Alveolar Plosive PulmonicEgressive Normal
+		, Consonant Voiced Alveolar Plosive PulmonicEgressive Normal
+		, Consonant Voiceless Velar Plosive PulmonicEgressive Normal
+		, Consonant Voiceless Uvular Plosive PulmonicEgressive Normal
+		, Consonant Voiceless Glottal Plosive PulmonicEgressive Normal
+		, Consonant Voiced Bilabial Nasal PulmonicEgressive Normal
+		, Consonant Voiced Alveolar Nasal PulmonicEgressive Normal
+		, Consonant Voiced Alveolar Trill PulmonicEgressive Normal
+		, Consonant Voiceless LabioDental Fricative PulmonicEgressive Normal
+		, Consonant Voiceless Dental Fricative PulmonicEgressive Normal
+		, Consonant Voiced Dental Fricative PulmonicEgressive Normal
+		, Consonant Voiceless Alveolar Fricative PulmonicEgressive Normal
+		, Consonant Voiced Alveolar Fricative PulmonicEgressive Normal
+		, Consonant Voiceless PostAlveolar Fricative PulmonicEgressive Normal
+		, Consonant Voiced Uvular Fricative PulmonicEgressive Normal
+		, Consonant Voiceless Uvular Fricative PulmonicEgressive Normal
+		, Consonant Voiced Pharyngeal Fricative PulmonicEgressive Normal
+		, Consonant Voiceless Pharyngeal Fricative PulmonicEgressive Normal
+		, Consonant Voiceless Glottal Fricative PulmonicEgressive Normal
+		, Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal
+		, Consonant Voiced Palatal Approximant PulmonicEgressive Normal
+		, Consonant Voiced Alveolar LateralApproximant PulmonicEgressive Normal
+		, Consonant Voiced LabialVelar Approximant PulmonicEgressive Normal
 
-        -- Consonants with phonemic secondary articulation
-        , Consonant Voiceless Alveolar     Plosive            PulmonicEgressive Pharyngealized
-        , Consonant Voiced    Alveolar     Plosive            PulmonicEgressive Pharyngealized
-        , Consonant Voiced    Dental       Fricative          PulmonicEgressive Pharyngealized
-        , Consonant Voiceless Alveolar     Fricative          PulmonicEgressive Pharyngealized
+		-- Consonants with phonemic secondary articulation
+		, Consonant Voiceless Alveolar Plosive PulmonicEgressive Pharyngealized
+		, Consonant Voiced Alveolar Plosive PulmonicEgressive Pharyngealized
+		, Consonant Voiced Dental Fricative PulmonicEgressive Pharyngealized
+		, Consonant Voiceless Alveolar Fricative PulmonicEgressive Pharyngealized
 
 
-        -- Short vowels:
-        , Vowel     Close     Front   Unrounded Voiced NormalLength Oral
-        , Vowel     Open      Front   Unrounded Voiced NormalLength Oral
-        , Vowel     Close     Back    Rounded   Voiced NormalLength Oral
+		-- Short vowels:
+		, Vowel Close Front Unrounded Voiced NormalLength Oral
+		, Vowel Open Front Unrounded Voiced NormalLength Oral
+		, Vowel Close Back Rounded Voiced NormalLength Oral
 
-        -- Long vowels:
-        , Vowel     Close     Front   Unrounded Voiced Long Oral
-        , Vowel     Open      Front   Unrounded Voiced Long Oral
-        , Vowel     Close     Back    Rounded   Voiced Long Oral
-        ]
+		-- Long vowels:
+		, Vowel Close Front Unrounded Voiced Long Oral
+		, Vowel Open Front Unrounded Voiced Long Oral
+		, Vowel Close Back Rounded Voiced Long Oral
+		]
 

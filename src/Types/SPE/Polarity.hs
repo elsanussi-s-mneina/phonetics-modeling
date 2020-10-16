@@ -7,5 +7,6 @@ import           Prelude  (Eq)
  of a binary feature. e.g. [+sonorant],
  [-sonorant]
 -}
-data Polarity = Plus | Minus
-                deriving Eq
+data Polarity 
+	= Plus | Minus
+	deriving Eq

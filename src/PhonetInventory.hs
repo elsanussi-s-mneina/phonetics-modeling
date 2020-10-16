@@ -1,11 +1,10 @@
 module PhonetInventory where
 
-import Prelude(Maybe(..), (<>),
-  map, zip)
+import Prelude(Maybe(..), (<>), map, zip)
 import Data.Maybe (maybe)
 import Data.Text (Text, concat, pack, unlines)
 import DefaultLanguageText
-    ( notApplicableUIText )
+	( notApplicableUIText )
 import IPA (constructIPA, analyzeIPA)
 import GraphemeGrammar(splitIntoPhonemes)
 import ShowFunctions (showPhonet)
@@ -20,26 +19,29 @@ import Types.PhonetInventory ( PhonetInventory(..) )
 
 
 -- | put a forward slash before some text  and
---   after it.
---   For example, "s" becomes "/s/"
---   Linguists use these forward slashes
---   to indicate a phonemic transcription,
---   instead of a phonetic transcription.
+-- after it.
+-- For example, "s" becomes "/s/"
+-- Linguists use these forward slashes
+-- to indicate a phonemic transcription,
+-- instead of a phonetic transcription.
 encloseInSlashes :: Text -> Text
 encloseInSlashes ipaText = pack "/" <> ipaText <> pack "/"
 
 ipaAndPhonetFormat :: (Text, Maybe Phonet) -> Text
 ipaAndPhonetFormat (ipaText, phonet) =
-  encloseInSlashes ipaText <> pack " " <> phonetSummary
-  where
-    phonetSummary =
-      maybe notApplicableUIText showPhonet phonet
+	encloseInSlashes ipaText <> pack " " <> phonetSummary
+	where
+	phonetSummary =
+		maybe notApplicableUIText showPhonet phonet
 
 ipaTextToPhonetList :: Text -> [(Text, Maybe Phonet)]
 ipaTextToPhonetList text =
-  let ipaChunks = splitIntoPhonemes text
-      phonetes = map analyzeIPA ipaChunks
-   in zip ipaChunks phonetes
+	let 
+	{
+		ipaChunks = splitIntoPhonemes text;
+		phonetes = map analyzeIPA ipaChunks;
+	}
+	in zip ipaChunks phonetes
 
 
 -- | Given text containing international phonetic alphabet symbols
@@ -48,8 +50,8 @@ ipaTextToPhonetList text =
 --   followed by the description of the sound it represents.
 ipaTextToPhonetListReport :: Text -> Text
 ipaTextToPhonetListReport text =
-  let listA = ipaTextToPhonetList text
-  in unlines (map ipaAndPhonetFormat listA)
+	let listA = ipaTextToPhonetList text
+	in unlines (map ipaAndPhonetFormat listA)
 
 
 showIPA :: PhonetInventory -> Text

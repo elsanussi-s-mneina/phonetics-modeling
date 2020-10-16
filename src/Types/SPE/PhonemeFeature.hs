@@ -51,27 +51,28 @@ the usual case) whether it has feature X (say 'coronal')
 depends on the language (theoretical example: e.g. Swahili,
 vs French). This is not implemented here.
 -}
-data PhonemeFeature = SyllabicFeature !Polarity
-                    | ConsonantalFeature !Polarity
-                    | SonorantFeature !Polarity
-                    | ContinuantFeature !Polarity
-                    | VoiceFeature !Polarity
-                    | AdvancedTongueRootFeature !Polarity
-                    | NasalFeature
-                    | LateralFeature
-                    | DelayedReleaseFeature
-                    | SpreadGlottisFeature
-                    | ConstrictedGlottisFeature
-                    | LabialFeature
-                    | CoronalFeature
-                    | DorsalFeature
-                    | PharyngealFeature
-                    | LaryngealFeature
-                    | RoundFeature !Polarity
-                    | AnteriorFeature !Polarity
-                    | DistributedFeature !Polarity
-                    | StridentFeature !Polarity
-                    | HighFeature !Polarity
-                    | LowFeature !Polarity
-                    | BackFeature !Polarity
-                    deriving Eq
+data PhonemeFeature 
+	= SyllabicFeature !Polarity
+	| ConsonantalFeature !Polarity
+	| SonorantFeature !Polarity
+	| ContinuantFeature !Polarity
+	| VoiceFeature !Polarity
+	| AdvancedTongueRootFeature !Polarity
+	| NasalFeature
+	| LateralFeature
+	| DelayedReleaseFeature
+	| SpreadGlottisFeature
+	| ConstrictedGlottisFeature
+	| LabialFeature
+	| CoronalFeature
+	| DorsalFeature
+	| PharyngealFeature
+	| LaryngealFeature
+	| RoundFeature !Polarity
+	| AnteriorFeature !Polarity
+	| DistributedFeature !Polarity
+	| StridentFeature !Polarity
+	| HighFeature !Polarity
+	| LowFeature !Polarity
+	| BackFeature !Polarity
+	deriving Eq

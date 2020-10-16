@@ -25,30 +25,30 @@ showPolarity Minus = pack "-"
 
 showPhonemeFeature :: PhonemeFeature -> Text
 showPhonemeFeature pf =
-  case pf of
-    (SyllabicFeature p) -> showPolarity p <> syllabicPhonemeFeatureUIText
-    (ConsonantalFeature p) -> showPolarity p <> consonantalPhonemeFeatureUIText
-    (SonorantFeature p) -> showPolarity p <> sonorantPhonemeFeatureUIText
-    (ContinuantFeature p) -> showPolarity p <> continuantPhonemeFeatureUIText
-    (VoiceFeature p) -> showPolarity p <> voicePhonemeFeatureUIText
-    (AdvancedTongueRootFeature p) -> showPolarity p <> atrPhonemeFeatureUIText
-    NasalFeature -> nasalPhonemeFeatureUIText
-    LateralFeature -> lateralPhonemeFeatureUIText
-    DelayedReleaseFeature -> delayedReleasePhonemeFeatureUIText
-    SpreadGlottisFeature -> spreadGlottisPhonemeFeatureUIText
-    ConstrictedGlottisFeature -> constrictedGlottisPhonemeFeatureUIText
-    LabialFeature -> labialPhonemeFeatureUIText
-    CoronalFeature -> coronalPhonemeFeatureUIText
-    DorsalFeature -> dorsalPhonemeFeatureUIText
-    PharyngealFeature -> pharyngealPhonemeFeatureUIText
-    LaryngealFeature -> laryngealPhonemeFeatureUIText
-    (RoundFeature p) -> showPolarity p <> roundPhonemeFeatureUIText
-    (AnteriorFeature p) -> showPolarity p <> anteriorPhonemeFeatureUIText
-    (DistributedFeature p) -> showPolarity p <> distributedPhonemeFeatureUIText
-    (StridentFeature p) -> showPolarity p <> stridentPhonemeFeatureUIText
-    (HighFeature p) -> showPolarity p <> highPhonemeFeatureUIText
-    (LowFeature p) -> showPolarity p <> lowPhonemeFeatureUIText
-    (BackFeature p) -> showPolarity p <> backPhonemeFeatureUIText
+	case pf of
+		(SyllabicFeature p) -> showPolarity p <> syllabicPhonemeFeatureUIText
+		(ConsonantalFeature p) -> showPolarity p <> consonantalPhonemeFeatureUIText
+		(SonorantFeature p) -> showPolarity p <> sonorantPhonemeFeatureUIText
+		(ContinuantFeature p) -> showPolarity p <> continuantPhonemeFeatureUIText
+		(VoiceFeature p) -> showPolarity p <> voicePhonemeFeatureUIText
+		(AdvancedTongueRootFeature p) -> showPolarity p <> atrPhonemeFeatureUIText
+		NasalFeature -> nasalPhonemeFeatureUIText
+		LateralFeature -> lateralPhonemeFeatureUIText
+		DelayedReleaseFeature -> delayedReleasePhonemeFeatureUIText
+		SpreadGlottisFeature -> spreadGlottisPhonemeFeatureUIText
+		ConstrictedGlottisFeature -> constrictedGlottisPhonemeFeatureUIText
+		LabialFeature -> labialPhonemeFeatureUIText
+		CoronalFeature -> coronalPhonemeFeatureUIText
+		DorsalFeature -> dorsalPhonemeFeatureUIText
+		PharyngealFeature -> pharyngealPhonemeFeatureUIText
+		LaryngealFeature -> laryngealPhonemeFeatureUIText
+		(RoundFeature p) -> showPolarity p <> roundPhonemeFeatureUIText
+		(AnteriorFeature p) -> showPolarity p <> anteriorPhonemeFeatureUIText
+		(DistributedFeature p) -> showPolarity p <> distributedPhonemeFeatureUIText
+		(StridentFeature p) -> showPolarity p <> stridentPhonemeFeatureUIText
+		(HighFeature p) -> showPolarity p <> highPhonemeFeatureUIText
+		(LowFeature p) -> showPolarity p <> lowPhonemeFeatureUIText
+		(BackFeature p) -> showPolarity p <> backPhonemeFeatureUIText
 
 
 -- |
@@ -59,10 +59,10 @@ showPhonemeFeature pf =
 -- (Source: page 258)
 consonantal :: Phonet -> Maybe PhonemeFeature
 consonantal p = case p of
-  Vowel {} -> Just (ConsonantalFeature Minus)
-  Consonant {}
-    | isGlide p -> Just (ConsonantalFeature Minus)
-    | otherwise -> Just (ConsonantalFeature Plus)
+	Vowel {} -> Just (ConsonantalFeature Minus)
+	Consonant {}
+		| isGlide p -> Just (ConsonantalFeature Minus)
+		| otherwise -> Just (ConsonantalFeature Plus)
 
 -- |
 -- Oral stops are [-sonorant].
@@ -77,16 +77,16 @@ consonantal p = case p of
 -- (Source: page 258)
 sonorant :: Phonet -> Maybe PhonemeFeature
 sonorant p = case p of
-  (Consonant _ _ Plosive _ _) -> Just (SonorantFeature Minus)
-  (Consonant _ _ Affricate _ _) -> Just (SonorantFeature Minus)
-  (Consonant _ _ Fricative _ _) -> Just (SonorantFeature Minus)
-  (Consonant _ _ Nasal _ _) -> Just (SonorantFeature Plus)
-  (Consonant _ _ Approximant _ _) -> Just (SonorantFeature Plus)
-  (Consonant _ _ Lateral _ _) -> Just (SonorantFeature Plus)
-  Vowel {} -> Just (SonorantFeature Plus)
-  Consonant {}
-    | isGlide p -> Just (SonorantFeature Plus)
-    | otherwise -> Just (SonorantFeature Minus)
+	(Consonant _ _ Plosive _ _) -> Just (SonorantFeature Minus)
+	(Consonant _ _ Affricate _ _) -> Just (SonorantFeature Minus)
+	(Consonant _ _ Fricative _ _) -> Just (SonorantFeature Minus)
+	(Consonant _ _ Nasal _ _) -> Just (SonorantFeature Plus)
+	(Consonant _ _ Approximant _ _) -> Just (SonorantFeature Plus)
+	(Consonant _ _ Lateral _ _) -> Just (SonorantFeature Plus)
+	Vowel {} -> Just (SonorantFeature Plus)
+	Consonant {}
+		| isGlide p -> Just (SonorantFeature Plus)
+		| otherwise -> Just (SonorantFeature Minus)
 
 -- |
 -- Oral stops are [-continuant].
@@ -108,14 +108,14 @@ sonorant p = case p of
 --
 continuant :: Phonet -> Maybe PhonemeFeature
 continuant p = case p of
-  (Consonant _ _ Plosive _ _) -> Just (ContinuantFeature Minus)
-  (Consonant _ _ Nasal _ _) -> Just (ContinuantFeature Minus)
-  (Consonant _ _ Affricate _ _) -> Just (ContinuantFeature Minus)
-  (Consonant _ _ Approximant _ _) -> Just (ContinuantFeature Plus)
-  Vowel {} -> Just (ContinuantFeature Plus)
-  Consonant {}
-    | isGlide p -> Just (ContinuantFeature Plus)
-    | otherwise -> Nothing
+	(Consonant _ _ Plosive _ _) -> Just (ContinuantFeature Minus)
+	(Consonant _ _ Nasal _ _) -> Just (ContinuantFeature Minus)
+	(Consonant _ _ Affricate _ _) -> Just (ContinuantFeature Minus)
+	(Consonant _ _ Approximant _ _) -> Just (ContinuantFeature Plus)
+	Vowel {} -> Just (ContinuantFeature Plus)
+	Consonant {}
+		| isGlide p -> Just (ContinuantFeature Plus)
+		| otherwise -> Nothing
 
 -- |
 -- Nasal consonants are [nasal].
@@ -123,7 +123,7 @@ continuant p = case p of
 -- All other segments are not defined for [nasal].
 nasal :: Phonet -> Maybe PhonemeFeature
 nasal (Consonant _ _ Nasal _ _) = Just NasalFeature
-nasal _                       = Nothing
+nasal _ = Nothing
 
 -- |
 -- Lateral consonants are [lateral].
@@ -133,12 +133,12 @@ nasal _                       = Nothing
 -- All other segments are not defined for [lateral].
 lateral :: Phonet -> Maybe PhonemeFeature
 lateral p = case p of
-  (Consonant _ _ Lateral _ _)            -> Just LateralFeature
-  (Consonant _ _ LateralApproximant _ _) -> Just LateralFeature
-  (Consonant _ _ LateralFricative _ _)   -> Just LateralFeature
-  (Consonant _ _ LateralFlap _ _)        -> Just LateralFeature
-  Consonant {}                           -> Nothing
-  Vowel     {}                           -> Nothing
+	(Consonant _ _ Lateral _ _) -> Just LateralFeature
+	(Consonant _ _ LateralApproximant _ _) -> Just LateralFeature
+	(Consonant _ _ LateralFricative _ _) -> Just LateralFeature
+	(Consonant _ _ LateralFlap _ _) -> Just LateralFeature
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Affricates are [+delayed release].
@@ -147,10 +147,10 @@ lateral p = case p of
 -- (Source: page 260)
 delayedRelease :: Phonet -> Maybe PhonemeFeature
 delayedRelease p =
-  case p of
-    (Consonant _ _ Affricate _ _) -> Just DelayedReleaseFeature
-    Consonant {}                  -> Nothing
-    Vowel {}                      -> Nothing
+	case p of
+		(Consonant _ _ Affricate _ _) -> Just DelayedReleaseFeature
+		Consonant {}                  -> Nothing
+		Vowel {}                      -> Nothing
 
 -- |
 -- Bilabial consonants are [labial].
@@ -160,10 +160,10 @@ delayedRelease p =
 -- (Source: page 264)
 labial :: Phonet -> Maybe PhonemeFeature
 labial p = case p of
-  (Consonant _ Bilabial _ _ _)    -> Just LabialFeature
-  (Consonant _ LabioDental _ _ _) -> Just LabialFeature
-  Consonant {}                    -> Nothing
-  Vowel     {}                    -> Nothing
+	(Consonant _ Bilabial _ _ _) -> Just LabialFeature
+	(Consonant _ LabioDental _ _ _) -> Just LabialFeature
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Dentals are [coronal].
@@ -181,14 +181,14 @@ labial p = case p of
 --  Table 12. on page 265.)
 coronal :: Phonet -> Maybe PhonemeFeature
 coronal p = case p of
-  (Consonant _ Dental _ _ _)         -> Just CoronalFeature
-  (Consonant _ Alveolar _ _ _)       -> Just CoronalFeature
-  (Consonant _ AlveoloPalatal _ _ _) -> Just CoronalFeature
-  (Consonant _ Retroflex _ _ _)      -> Just CoronalFeature
-  (Consonant _ Palatal _ _ _)        -> Just CoronalFeature
-  (Consonant _ PostAlveolar _ _ _)   -> Just CoronalFeature
-  Consonant {}                       -> Nothing
-  Vowel     {}                       -> Nothing
+	(Consonant _ Dental _ _ _) -> Just CoronalFeature
+	(Consonant _ Alveolar _ _ _) -> Just CoronalFeature
+	(Consonant _ AlveoloPalatal _ _ _) -> Just CoronalFeature
+	(Consonant _ Retroflex _ _ _) -> Just CoronalFeature
+	(Consonant _ Palatal _ _ _) -> Just CoronalFeature
+	(Consonant _ PostAlveolar _ _ _) -> Just CoronalFeature
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Palatals are [dorsal].
@@ -202,11 +202,11 @@ coronal p = case p of
 -- All other segments are undefined for [dorsal].
 dorsal :: Phonet -> Maybe PhonemeFeature
 dorsal p = case p of
-  (Consonant _ Palatal _ _ _) -> Just DorsalFeature
-  (Consonant _ Velar _ _ _)   -> Just DorsalFeature
-  (Consonant _ Uvular _ _ _)  -> Just DorsalFeature
-  Consonant {}                -> Nothing
-  Vowel     {}                -> Nothing
+	(Consonant _ Palatal _ _ _) -> Just DorsalFeature
+	(Consonant _ Velar _ _ _) -> Just DorsalFeature
+	(Consonant _ Uvular _ _ _) -> Just DorsalFeature
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Pharyngeal fricatives are [pharyngeal].
@@ -215,8 +215,8 @@ dorsal p = case p of
 -- (Source: page 264)
 pharyngeal :: Phonet -> Maybe PhonemeFeature
 pharyngeal p = case p of
-  (Consonant _ Pharyngeal Fricative _ _) -> Just PharyngealFeature
-  _                                      -> Nothing
+	(Consonant _ Pharyngeal Fricative _ _) -> Just PharyngealFeature
+	_ -> Nothing
 
 -- |
 -- Glottal consonants are [laryngeal].
@@ -225,8 +225,8 @@ pharyngeal p = case p of
 -- (Source: page 265)
 laryngeal :: Phonet -> Maybe PhonemeFeature
 laryngeal p = case p of
-  (Consonant _ Glottal _ _ _) -> Just LaryngealFeature
-  _                           -> Nothing
+	(Consonant _ Glottal _ _ _) -> Just LaryngealFeature
+	_ -> Nothing
 
 -- |
 -- Voiced Aspirated consonants are [+voice].
@@ -235,18 +235,18 @@ laryngeal p = case p of
 -- All other segments are [-voice].
 voice :: Phonet -> Maybe PhonemeFeature
 voice p = case p of
-  (Consonant Voiceless Glottal Plosive PulmonicEgressive _) ->
-    Just (VoiceFeature Minus) -- The voiceless glottal plosive is [-voice]
-  (Consonant VoicedAspirated _ _ _ _) ->
-    Just (VoiceFeature Plus)
-  (Consonant Voiced _ _ _ _) ->
-    Just (VoiceFeature Plus)
-  (Vowel _ _ _ Voiced _ _) ->
-    Just (VoiceFeature Plus)
-  Consonant {} -> 
-    Just (VoiceFeature Minus)
-  Vowel     {} -> 
-    Just (VoiceFeature Minus)
+	(Consonant Voiceless Glottal Plosive PulmonicEgressive _) ->
+		Just (VoiceFeature Minus) -- The voiceless glottal plosive is [-voice]
+	(Consonant VoicedAspirated _ _ _ _) ->
+		Just (VoiceFeature Plus)
+	(Consonant Voiced _ _ _ _) ->
+		Just (VoiceFeature Plus)
+	(Vowel _ _ _ Voiced _ _) ->
+		Just (VoiceFeature Plus)
+	Consonant {} -> 
+		Just (VoiceFeature Minus)
+	Vowel     {} -> 
+		Just (VoiceFeature Minus)
 
 -- |
 -- Voiceless aspirated plosives are [spread glottis].
@@ -255,10 +255,10 @@ voice p = case p of
 -- (Source: page 262)
 spreadGlottis :: Phonet -> Maybe PhonemeFeature
 spreadGlottis p = case p of
-  (Consonant VoicelessAspirated _ Plosive _ _) -> Just SpreadGlottisFeature
-  (Consonant VoicedAspirated _ Plosive _ _)    -> Just SpreadGlottisFeature
-  Consonant {}                       -> Nothing
-  Vowel     {}                       -> Nothing
+	(Consonant VoicelessAspirated _ Plosive _ _) -> Just SpreadGlottisFeature
+	(Consonant VoicedAspirated _ Plosive _ _) -> Just SpreadGlottisFeature
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Ejectives have the feature [constricted glottis].
@@ -268,18 +268,18 @@ spreadGlottis p = case p of
 -- (Source: page 262)
 constrictedGlottis :: Phonet -> Maybe PhonemeFeature
 constrictedGlottis p = case p of
-  (Consonant _ Glottal Plosive _ _) ->
-    Just ConstrictedGlottisFeature
-  (Consonant CreakyVoiced _ _ _ _) ->
-    if sonorant p == Just (SonorantFeature Plus)
-      then Just ConstrictedGlottisFeature
-      else Nothing
-  (Vowel _ _ _ CreakyVoiced _ _) ->
-    if sonorant p == Just (SonorantFeature Plus)
-      then Just ConstrictedGlottisFeature
-      else Nothing
-  Consonant {}   -> Nothing
-  Vowel     {}   -> Nothing
+	(Consonant _ Glottal Plosive _ _) ->
+		Just ConstrictedGlottisFeature
+	(Consonant CreakyVoiced _ _ _ _) ->
+		if sonorant p == Just (SonorantFeature Plus)
+			then Just ConstrictedGlottisFeature
+			else Nothing
+	(Vowel _ _ _ CreakyVoiced _ _) ->
+		if sonorant p == Just (SonorantFeature Plus)
+			then Just ConstrictedGlottisFeature
+			else Nothing
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Dentals are [+anterior].
@@ -291,25 +291,25 @@ constrictedGlottis p = case p of
 -- (Source: page 265)
 anterior :: Phonet -> Maybe PhonemeFeature
 anterior p = case p of
-  (Consonant _ Dental _ _ _)         -> Just (AnteriorFeature Plus)
-  (Consonant _ Alveolar _ _ _)       -> Just (AnteriorFeature Plus)
-  (Consonant _ PostAlveolar _ _ _)   -> Just (AnteriorFeature Minus)
-  (Consonant _ Retroflex _ _ _)      -> Just (AnteriorFeature Minus)
-  (Consonant _ Palatal _ _ _)        -> Just (AnteriorFeature Minus)
-  (Consonant _ AlveoloPalatal _ _ _) -> Just (AnteriorFeature Minus)
-  Consonant {}                       -> Nothing
-  Vowel     {}                       -> Nothing
+	(Consonant _ Dental _ _ _) -> Just (AnteriorFeature Plus)
+	(Consonant _ Alveolar _ _ _) -> Just (AnteriorFeature Plus)
+	(Consonant _ PostAlveolar _ _ _) -> Just (AnteriorFeature Minus)
+	(Consonant _ Retroflex _ _ _) -> Just (AnteriorFeature Minus)
+	(Consonant _ Palatal _ _ _) -> Just (AnteriorFeature Minus)
+	(Consonant _ AlveoloPalatal _ _ _) -> Just (AnteriorFeature Minus)
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 distributed :: Phonet -> Maybe PhonemeFeature
 distributed p = case p of
-  (Consonant _ Dental _ _ _)         -> Just (DistributedFeature Plus)
-  (Consonant _ Alveolar _ _ _)       -> Just (DistributedFeature Minus)
-  (Consonant _ PostAlveolar _ _ _)   -> Just (DistributedFeature Plus)
-  (Consonant _ Retroflex _ _ _)      -> Just (DistributedFeature Minus)
-  (Consonant _ Palatal _ _ _)        -> Just (DistributedFeature Plus)
-  (Consonant _ AlveoloPalatal _ _ _) -> Just (DistributedFeature Plus)
-  Consonant {}                       -> Nothing
-  Vowel     {}                       -> Nothing
+	(Consonant _ Dental _ _ _) -> Just (DistributedFeature Plus)
+	(Consonant _ Alveolar _ _ _) -> Just (DistributedFeature Minus)
+	(Consonant _ PostAlveolar _ _ _) -> Just (DistributedFeature Plus)
+	(Consonant _ Retroflex _ _ _) -> Just (DistributedFeature Minus)
+	(Consonant _ Palatal _ _ _) -> Just (DistributedFeature Plus)
+	(Consonant _ AlveoloPalatal _ _ _) -> Just (DistributedFeature Plus)
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Alveolar fricatives are [+strident].
@@ -330,18 +330,18 @@ distributed p = case p of
 -- "Natural classes".)
 strident :: Phonet -> Maybe PhonemeFeature
 strident p = case p of
-  (Consonant _ Alveolar Fricative _ _)     -> Just (StridentFeature Plus)
-  (Consonant _ Alveolar Affricate _ _)     -> Just (StridentFeature Plus)
-  (Consonant _ PostAlveolar Fricative _ _) -> Just (StridentFeature Plus)
-  (Consonant _ PostAlveolar Affricate _ _) -> Just (StridentFeature Plus)
-  (Consonant _ LabioDental Fricative _ _)  -> Just (StridentFeature Plus)
-  (Consonant _ LabioDental Affricate _ _)  -> Just (StridentFeature Plus)
-  (Consonant _ Uvular Fricative _ _)       -> Just (StridentFeature Plus)
-  (Consonant _ Uvular Affricate _ _)       -> Just (StridentFeature Plus)
-  (Consonant _ _ Fricative _ _)            -> Just (StridentFeature Minus)
-  (Consonant _ _ Affricate _ _)            -> Just (StridentFeature Minus)
-  Consonant {}                             -> Nothing
-  Vowel     {}                             -> Nothing
+	(Consonant _ Alveolar Fricative _ _) -> Just (StridentFeature Plus)
+	(Consonant _ Alveolar Affricate _ _) -> Just (StridentFeature Plus)
+	(Consonant _ PostAlveolar Fricative _ _) -> Just (StridentFeature Plus)
+	(Consonant _ PostAlveolar Affricate _ _) -> Just (StridentFeature Plus)
+	(Consonant _ LabioDental Fricative _ _) -> Just (StridentFeature Plus)
+	(Consonant _ LabioDental Affricate _ _) -> Just (StridentFeature Plus)
+	(Consonant _ Uvular Fricative _ _) -> Just (StridentFeature Plus)
+	(Consonant _ Uvular Affricate _ _) -> Just (StridentFeature Plus)
+	(Consonant _ _ Fricative _ _) -> Just (StridentFeature Minus)
+	(Consonant _ _ Affricate _ _) -> Just (StridentFeature Minus)
+	Consonant {} -> Nothing
+	Vowel {} -> Nothing
 
 -- |
 -- Palatal consonants are [+high].
@@ -355,14 +355,14 @@ strident p = case p of
 -- All other vowels are [-high].
 high :: Phonet -> Maybe PhonemeFeature
 high p = case p of
-  (Consonant _ Palatal _ _ _)        -> Just (HighFeature Plus)
-  (Consonant _ AlveoloPalatal _ _ _) -> Just (HighFeature Plus)
-  (Consonant _ Velar _ _ _)          -> Just (HighFeature Plus)
-  (Consonant _ Uvular _ _ _)         -> Just (HighFeature Minus)
-  Consonant {}                       -> Nothing
-  (Vowel Close _ _ _ _ _)            -> Just (HighFeature Plus)
-  (Vowel NearClose _ _ _ _ _)        -> Just (HighFeature Plus)
-  Vowel {}                           -> Just (HighFeature Minus)
+	(Consonant _ Palatal _ _ _) -> Just (HighFeature Plus)
+	(Consonant _ AlveoloPalatal _ _ _) -> Just (HighFeature Plus)
+	(Consonant _ Velar _ _ _) -> Just (HighFeature Plus)
+	(Consonant _ Uvular _ _ _) -> Just (HighFeature Minus)
+	Consonant {} -> Nothing
+	(Vowel Close _ _ _ _ _) -> Just (HighFeature Plus)
+	(Vowel NearClose _ _ _ _ _) -> Just (HighFeature Plus)
+	Vowel {} -> Just (HighFeature Minus)
 
 -- |
 -- Uvular consonants are [+low].
@@ -374,13 +374,13 @@ high p = case p of
 -- All other vowels are [-low].
 low :: Phonet -> Maybe PhonemeFeature
 low p = case p of
-  (Consonant _ Uvular _ _ _)     -> Just (LowFeature Plus)
-  (Consonant _ Pharyngeal _ _ _) -> Just (LowFeature Plus)
-  (Consonant _ Glottal _ _ _)    -> Just (LowFeature Plus)
-  Consonant {}                   -> Nothing
-  (Vowel Open _ _ _ _ _)         -> Just (LowFeature Plus)
-  (Vowel NearOpen _ _ _ _ _)     -> Just (LowFeature Plus)
-  Vowel {}                       -> Just (LowFeature Minus)
+	(Consonant _ Uvular _ _ _) -> Just (LowFeature Plus)
+	(Consonant _ Pharyngeal _ _ _) -> Just (LowFeature Plus)
+	(Consonant _ Glottal _ _ _) -> Just (LowFeature Plus)
+	Consonant {} -> Nothing
+	(Vowel Open _ _ _ _ _) -> Just (LowFeature Plus)
+	(Vowel NearOpen _ _ _ _ _) -> Just (LowFeature Plus)
+	Vowel {} -> Just (LowFeature Minus)
 
 -- |
 -- Back vowels are [+back].
@@ -389,15 +389,15 @@ low p = case p of
 -- All other segments are undefined for [+/-back].
 back :: Phonet -> Maybe PhonemeFeature
 back p = case p of
-  (Vowel _ Back _ _ _ _)          -> Just (BackFeature Plus)
-  (Vowel _ Central _ _ _ _)       -> Just (BackFeature Plus)
-  (Vowel _ Front _ _ _ _)         -> Just (BackFeature Minus)
-  (Consonant _ _ _ _ Palatalized) -> Just (BackFeature Minus) -- Palatalized consonants are [-back].
-  -- For a source on palatalized consonants being [-back],
-  -- see page 59 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
-  -- A document titled "Segmental Phonology" by Darin Howe.
-  -- Further sources are on that page.                      .
-  Consonant {}                    -> Nothing
+ (Vowel _ Back _ _ _ _) -> Just (BackFeature Plus)
+ (Vowel _ Central _ _ _ _) -> Just (BackFeature Plus)
+ (Vowel _ Front _ _ _ _) -> Just (BackFeature Minus)
+ (Consonant _ _ _ _ Palatalized) -> Just (BackFeature Minus) -- Palatalized consonants are [-back].
+ -- For a source on palatalized consonants being [-back],
+ -- see page 59 of http://www.ai.mit.edu/projects/dm/featgeom/howe-segphon-book.pdf
+ -- A document titled "Segmental Phonology" by Darin Howe.
+ -- Further sources are on that page.
+ Consonant {} -> Nothing
 
 
 -- |
@@ -412,10 +412,10 @@ back p = case p of
 -- Further sources are on that page.
 lipRound :: Phonet -> Maybe PhonemeFeature
 lipRound p = case p of
-  (Vowel _ _ Rounded _ _ _)      -> Just (RoundFeature Plus)
-  Vowel {}                       -> Just (RoundFeature Minus)
-  (Consonant _ _ _ _ Labialized) -> Just (RoundFeature Plus)
-  Consonant {}                   -> Just (RoundFeature Minus)
+	(Vowel _ _ Rounded _ _ _) -> Just (RoundFeature Plus)
+	Vowel {} -> Just (RoundFeature Minus)
+	(Consonant _ _ _ _ Labialized) -> Just (RoundFeature Plus)
+	Consonant {} -> Just (RoundFeature Minus)
 
 -- |
 -- Advanced tongue root
@@ -428,40 +428,40 @@ lipRound p = case p of
 -- Further sources are on that page.
 atr :: Phonet -> Maybe PhonemeFeature
 atr p = case p of
-  (Vowel Close Front Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Front Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Plus)
-  (Vowel Close Back Rounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Front Rounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Plus)
-  (Vowel CloseMid Back Rounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Plus)
-  (Vowel Close Front Rounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Plus)
-  (Vowel NearOpen Front Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Vowel Open Back Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Vowel Close Central Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Back Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Vowel NearClose Front Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Vowel NearClose Back Rounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Front Unrounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Vowel OpenMid Back Rounded Voiced _ _) ->
-    Just (AdvancedTongueRootFeature Minus)
-  (Consonant _ _ _ _ Pharyngealized) ->
-    Just (AdvancedTongueRootFeature Minus)
-  Consonant {} ->
-    Nothing
-  Vowel {} ->
-    Nothing
+	(Vowel Close Front Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Plus)
+	(Vowel CloseMid Front Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Plus)
+	(Vowel Close Back Rounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Plus)
+	(Vowel CloseMid Front Rounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Plus)
+	(Vowel CloseMid Back Rounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Plus)
+	(Vowel Close Front Rounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Plus)
+	(Vowel NearOpen Front Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Vowel Open Back Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Vowel Close Central Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Vowel OpenMid Back Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Vowel NearClose Front Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Vowel NearClose Back Rounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Vowel OpenMid Front Unrounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Vowel OpenMid Back Rounded Voiced _ _) ->
+		Just (AdvancedTongueRootFeature Minus)
+	(Consonant _ _ _ _ Pharyngealized) ->
+		Just (AdvancedTongueRootFeature Minus)
+	Consonant {} ->
+		Nothing
+	Vowel {} ->
+		Nothing
 
 
 -- |
@@ -476,50 +476,52 @@ atr p = case p of
 -- /p/
 featureMatrix :: Phonet -> [Maybe PhonemeFeature]
 featureMatrix phonete =
-  [ consonantal phonete,
-    syllabic phonete,
-    continuant phonete,
-    sonorant phonete,
-    delayedRelease phonete,
-    anterior phonete,
-    distributed phonete,
-    strident phonete,
-    high phonete,
-    low phonete,
-    nasal phonete,
-    lateral phonete,
-    labial phonete,
-    coronal phonete,
-    dorsal phonete,
-    pharyngeal phonete,
-    laryngeal phonete,
-    back phonete,
-    lipRound phonete,
-    voice phonete,
-    atr phonete,
-    spreadGlottis phonete,
-    constrictedGlottis phonete
-  ]
+	[ consonantal phonete,
+		syllabic phonete,
+		continuant phonete,
+		sonorant phonete,
+		delayedRelease phonete,
+		anterior phonete,
+		distributed phonete,
+		strident phonete,
+		high phonete,
+		low phonete,
+		nasal phonete,
+		lateral phonete,
+		labial phonete,
+		coronal phonete,
+		dorsal phonete,
+		pharyngeal phonete,
+		laryngeal phonete,
+		back phonete,
+		lipRound phonete,
+		voice phonete,
+		atr phonete,
+		spreadGlottis phonete,
+		constrictedGlottis phonete
+	]
 
 -- | A function that takes data representing
 -- how a phoneme is pronounced, and returns
 -- a list of phonemic features.
 analyzeFeatures :: Phonet -> [PhonemeFeature]
 analyzeFeatures phonete =
-  catMaybes (featureMatrix phonete)
+	catMaybes (featureMatrix phonete)
 
 showFeatures :: [PhonemeFeature] -> Text
 showFeatures features =
-  let featuresStrings :: [Text]
-      featuresStrings = map showPhonemeFeature features
-      bracket text = pack "[" <> text <> pack "]"
-      partInside = intercalate (pack "; ") featuresStrings
-   in bracket partInside
+	let 
+	{
+		featuresStrings :: [Text];
+		featuresStrings = map showPhonemeFeature features;
+		bracket text = pack "[" <> text <> pack "]";
+		partInside = intercalate (pack "; ") featuresStrings;
+	} in bracket partInside
 
 toTextFeatures :: Phonet -> Text
 toTextFeatures phonete =
-  let features = analyzeFeatures phonete
-   in showFeatures features
+	let features = analyzeFeatures phonete
+	in showFeatures features
 
 
 
@@ -529,21 +531,22 @@ toTextFeatures phonete =
 --
 -- (Source: page 258)
 --
-syllabic :: Phonet
-         -> Maybe PhonemeFeature
-syllabic Vowel {}     = Just (SyllabicFeature Plus)
+syllabic
+	:: Phonet
+	-> Maybe PhonemeFeature
+syllabic Vowel {} = Just (SyllabicFeature Plus)
 syllabic Consonant {} = Just (SyllabicFeature Minus)
 
 -- |
 -- Whether a segment is a glide.
 isGlide :: Phonet -> Bool
 isGlide p = case p of
-  (Consonant _ Palatal Approximant PulmonicEgressive _)       -> True
-  (Consonant _ LabialVelar Approximant PulmonicEgressive _)   -> True
-  (Consonant _ LabialPalatal Approximant PulmonicEgressive _) -> True
-  (Consonant _ Velar Approximant PulmonicEgressive _)         -> True
-  Consonant {}                                                -> False
-  Vowel {}                                                    -> False
+	(Consonant _ Palatal Approximant PulmonicEgressive _) -> True
+	(Consonant _ LabialVelar Approximant PulmonicEgressive _) -> True
+	(Consonant _ LabialPalatal Approximant PulmonicEgressive _) -> True
+	(Consonant _ Velar Approximant PulmonicEgressive _) -> True
+	Consonant {} -> False
+	Vowel {} -> False
 
 
 -- Go to Section 12.2 of the textbook to understand
@@ -558,30 +561,32 @@ isGlide p = case p of
 -- "voice" and "sonorant" are different.
 relevantBinary :: (Polarity -> PhonemeFeature) -> PhonemeFeature -> Bool
 relevantBinary feature otherFeature =
-  otherFeature == feature Plus || otherFeature == feature Minus
+	otherFeature == feature Plus || otherFeature == feature Minus
 
-binaryDifference :: (Polarity -> PhonemeFeature)
-                 -> [PhonemeFeature]
-                 -> [PhonemeFeature]
-                 -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+binaryDifference
+	:: (Polarity -> PhonemeFeature)
+	-> [PhonemeFeature]
+	-> [PhonemeFeature]
+	-> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 binaryDifference feature list_1 list_2
-  | relevantList_1 == relevantList_2 =
-    (Nothing, Nothing)
-  | otherwise =
-    (if null relevantList_1 then Nothing else Just (head relevantList_1),
-     if null relevantList_2 then Nothing else Just (head relevantList_2))
-  where
-    relevantList_1 = filter (relevantBinary feature) list_1
-    relevantList_2 = filter (relevantBinary feature) list_2
+	| relevantList_1 == relevantList_2 =
+		(Nothing, Nothing)
+	| otherwise =
+		(if null relevantList_1 then Nothing else Just (head relevantList_1),
+		if null relevantList_2 then Nothing else Just (head relevantList_2))
+	where
+		relevantList_1 = filter (relevantBinary feature) list_1
+		relevantList_2 = filter (relevantBinary feature) list_2
 
-unaryDifference :: PhonemeFeature
-                -> [PhonemeFeature]
-                -> [PhonemeFeature]
-                -> (Maybe PhonemeFeature, Maybe PhonemeFeature)
+unaryDifference
+	:: PhonemeFeature
+	-> [PhonemeFeature]
+	-> [PhonemeFeature]
+	-> (Maybe PhonemeFeature, Maybe PhonemeFeature)
 unaryDifference feature list_1 list_2
-  | (feature `elem` list_1) == (feature `elem` list_2) = (Nothing, Nothing)
-  | feature `elem` list_1 && feature `notElem` list_2 = (Just feature, Nothing)
-  | otherwise = (Nothing, Just feature)
+	| (feature `elem` list_1) == (feature `elem` list_2) = (Nothing, Nothing)
+	| feature `elem` list_1 && feature `notElem` list_2 = (Just feature, Nothing)
+	| otherwise = (Nothing, Just feature)
 
 -- | This function takes two lists of phoneme features
 -- and returns how they differ. Any phonemic
@@ -589,31 +594,32 @@ unaryDifference feature list_1 list_2
 -- will be represented; and any phonemic
 -- feature that is positive in one list but absent
 -- in the other will be represented.
-difference :: [PhonemeFeature]
-           -> [PhonemeFeature]
-           -> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
+difference
+	:: [PhonemeFeature]
+	-> [PhonemeFeature]
+	-> [(Maybe PhonemeFeature, Maybe PhonemeFeature)]
 difference list_1 list_2 =
-  [ binaryDifference SyllabicFeature list_1 list_2
-  , binaryDifference ConsonantalFeature list_1 list_2
-  , binaryDifference SonorantFeature list_1 list_2
-  , binaryDifference ContinuantFeature list_1 list_2
-  , binaryDifference VoiceFeature list_1 list_2
-  , binaryDifference AdvancedTongueRootFeature list_1 list_2
-  , unaryDifference  NasalFeature list_1 list_2
-  , unaryDifference  LateralFeature list_1 list_2
-  , unaryDifference  DelayedReleaseFeature list_1 list_2
-  , unaryDifference  SpreadGlottisFeature list_1 list_2
-  , unaryDifference  ConstrictedGlottisFeature list_1 list_2
-  , unaryDifference  LabialFeature list_1 list_2
-  , unaryDifference  CoronalFeature list_1 list_2
-  , unaryDifference  DorsalFeature list_1 list_2
-  , unaryDifference  PharyngealFeature list_1 list_2
-  , unaryDifference  LaryngealFeature list_1 list_2
-  , binaryDifference RoundFeature list_1 list_2
-  , binaryDifference AnteriorFeature list_1 list_2
-  , binaryDifference DistributedFeature list_1 list_2
-  , binaryDifference StridentFeature list_1 list_2
-  , binaryDifference HighFeature list_1 list_2
-  , binaryDifference LowFeature list_1 list_2
-  , binaryDifference BackFeature list_1 list_2
-  ]
+	[ binaryDifference SyllabicFeature list_1 list_2
+	, binaryDifference ConsonantalFeature list_1 list_2
+	, binaryDifference SonorantFeature list_1 list_2
+	, binaryDifference ContinuantFeature list_1 list_2
+	, binaryDifference VoiceFeature list_1 list_2
+	, binaryDifference AdvancedTongueRootFeature list_1 list_2
+	, unaryDifference NasalFeature list_1 list_2
+	, unaryDifference LateralFeature list_1 list_2
+	, unaryDifference DelayedReleaseFeature list_1 list_2
+	, unaryDifference SpreadGlottisFeature list_1 list_2
+	, unaryDifference ConstrictedGlottisFeature list_1 list_2
+	, unaryDifference LabialFeature list_1 list_2
+	, unaryDifference CoronalFeature list_1 list_2
+	, unaryDifference DorsalFeature list_1 list_2
+	, unaryDifference PharyngealFeature list_1 list_2
+	, unaryDifference LaryngealFeature list_1 list_2
+	, binaryDifference RoundFeature list_1 list_2
+	, binaryDifference AnteriorFeature list_1 list_2
+	, binaryDifference DistributedFeature list_1 list_2
+	, binaryDifference StridentFeature list_1 list_2
+	, binaryDifference HighFeature list_1 list_2
+	, binaryDifference LowFeature list_1 list_2
+	, binaryDifference BackFeature list_1 list_2
+	]

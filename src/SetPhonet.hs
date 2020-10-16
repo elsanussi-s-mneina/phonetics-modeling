@@ -22,35 +22,35 @@ import Prelude (Maybe(..))
 --   but no other difference.
 withVocalFolds :: VocalFolds -> Phonet -> Phonet
 withVocalFolds vf p =
-  case p of
-    Consonant _ w x y z -> Consonant vf w x y z
-    Vowel x y z _ vl n  -> Vowel x y z vf vl n
+	case p of
+		Consonant _ w x y z -> Consonant vf w x y z
+		Vowel x y z _ vl n -> Vowel x y z vf vl n
 
 withPlace :: Place -> Phonet -> Phonet
 withPlace x p =  
-  case p of 
-    Consonant a _ b c d -> Consonant a x b c d
-    Vowel {}            -> p
+	case p of 
+		Consonant a _ b c d -> Consonant a x b c d
+		Vowel {} -> p
 
 withManner :: Manner -> Phonet -> Phonet
 withManner x p =
-  case p of
-    Consonant a b _ c d -> Consonant a b x c d
-    Vowel {}            -> p
+	case p of
+		Consonant a b _ c d -> Consonant a b x c d
+		Vowel {} -> p
 
 withAirstream :: Airstream -> Phonet -> Maybe Phonet
 withAirstream x p = 
-  case p of 
-    Consonant a b c _ d -> Just (Consonant a b c x d)
-    Vowel {}            -> Nothing
+	case p of 
+		Consonant a b c _ d -> Just (Consonant a b c x d)
+		Vowel {} -> Nothing
 
 withVowelLength :: VowelLength -> Phonet -> Phonet
 withVowelLength vl p =
-  case p of 
-    Vowel height backness rounding voicing _ nasalization
-      -> Vowel height backness rounding voicing vl nasalization
-    Consonant {} 
-      -> p -- Ignore phonetes that are not vowels.
+	case p of 
+		Vowel height backness rounding voicing _ nasalization
+			-> Vowel height backness rounding voicing vl nasalization
+		Consonant {} 
+			-> p -- Ignore phonetes that are not vowels.
 
 toLong :: Phonet -> Phonet
 toLong = withVowelLength Long
@@ -66,9 +66,9 @@ toExtraShort = withVowelLength ExtraShort
 --   Ignore vowels, we don't add any secondary articulation for them
 withSecondaryArticulation :: SecondaryArticulation -> Phonet -> Phonet
 withSecondaryArticulation x p = 
-  case p of 
-    Consonant a b c d _ -> Consonant a b c d x
-    Vowel {}            -> p
+	case p of 
+		Consonant a b c d _ -> Consonant a b c d x
+		Vowel {} -> p
 
 
 -- | Given a phonete returns,
@@ -110,9 +110,9 @@ toNoSecondaryArticulation = withSecondaryArticulation Normal
 
 toNasalization :: Nasalization -> Phonet -> Maybe Phonet
 toNasalization nasalization p =
-  case p of
-    Consonant {} -> Nothing -- We don't support nasalized consonants yet.
-    Vowel x y z vf vl _  -> Just (Vowel x y z vf vl nasalization)
+	case p of
+		Consonant {} -> Nothing -- We don't support nasalized consonants yet.
+		Vowel x y z vf vl _ -> Just (Vowel x y z vf vl nasalization)
 
 toNasalized :: Phonet -> Maybe Phonet
 toNasalized = toNasalization Nasalized

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fe9af84a13f19634d1d56a0f8bc3c81e3153071a4a566d3139daee1853b897f4
+-- hash: fa1cc718af9b5fcdd86b5acc73e23613cbf24f7a3a404dbe7f9367de4cd8c42e
 
 name:           phonetics-modeling
 version:        0.1.0.0
@@ -61,7 +61,7 @@ library
       Paths_phonetics_modeling
   hs-source-dirs:
       src
-  ghc-options: -Weverything -Werror -Wno-safe -Wno-unsafe -Wno-missing-deriving-strategies -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists -fwrite-ide-info -hiedir=.hie
+  ghc-options: -Weverything -Werror -Wno-safe -Wno-unsafe -Wno-missing-deriving-strategies -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists -Wno-tabs -fwrite-ide-info -hiedir=.hie
   build-depends:
       base >=4.7 && <5
     , text
@@ -73,7 +73,7 @@ executable phonetics-modeling-console-exe
       Paths_phonetics_modeling
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Wno-unsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists -fwrite-ide-info -hiedir=.hie
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Weverything -Wno-unsafe -Wno-safe -fwarn-incomplete-patterns -fwarn-incomplete-uni-patterns -Wno-missing-export-lists -Wno-missing-import-lists -Wno-tabs -fwrite-ide-info -hiedir=.hie
   build-depends:
       base >=4.7 && <5
     , phonetics-modeling

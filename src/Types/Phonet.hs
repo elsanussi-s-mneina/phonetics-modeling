@@ -27,15 +27,18 @@ import Types.VowelLength ( VowelLength(..) )
 --    the backness (how far back in the mouth),
 --    the rounding (rounding of lips), and
 --    the configuration of the vocal folds.
-data Phonet = Consonant !VocalFolds
-                        !Place   -- ^ Place of articulation
-                        !Manner  -- ^ Manner of articulation
-                        !Airstream
-                        !SecondaryArticulation
-            | Vowel !Height
-                    !Backness
-                    !Rounding
-                    !VocalFolds
-                    !VowelLength
-                    !Nasalization
-                    deriving Eq
+data Phonet 
+	= Consonant 
+		!VocalFolds
+		!Place   -- ^ Place of articulation
+		!Manner  -- ^ Manner of articulation
+		!Airstream
+		!SecondaryArticulation
+	| Vowel 
+		!Height
+		!Backness
+		!Rounding
+		!VocalFolds
+		!VowelLength
+		!Nasalization
+	deriving Eq
