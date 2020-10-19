@@ -3,6 +3,8 @@ module DescribeIPASpec.LateralApproximant where
 import Test.Hspec (Spec, describe, it, shouldBe)
 import qualified IPA 
 import Data.Text (pack, unpack)
+
+describeIPA :: String -> String
 describeIPA = unpack . IPA.describeIPA . pack
 
 lateralApproximantConsonantSpec :: Spec

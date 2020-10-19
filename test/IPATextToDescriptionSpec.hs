@@ -13,8 +13,11 @@ import DescribeIPASpec.VowelNasalization ( nasalVowelSpec )
 
 import qualified IPA 
 import Data.Text (pack, unpack)
+
+describeIPA :: String -> String
 describeIPA = unpack . IPA.describeIPA . pack
 
+pulmonicEgressiveConsonantSpec :: SpecM () ()
 pulmonicEgressiveConsonantSpec = do
 	approximantConsonantSpec
 	fricativeConsonantSpec
