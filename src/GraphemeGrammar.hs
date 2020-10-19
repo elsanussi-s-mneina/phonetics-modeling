@@ -3,8 +3,8 @@
 --
 module GraphemeGrammar where
 import Prelude((+), (>=), (<>), (==), Bool(..),
-              Char, Int, Maybe(..),
-              elem, otherwise)
+	Char, Int, Maybe(..),
+	elem, otherwise)
 import Data.Text (Text, index, length)
 import PrimitiveParsers (manyParser, optionalParser, orParser, singleCharParser, thenParser)
 
@@ -41,7 +41,7 @@ digraphParser
 	:: Text
 	-> Maybe (Text, Text)
 digraphParser =
-  baseCharacterParser `thenParser` tieBarParser `thenParser` baseCharacterParser
+	baseCharacterParser `thenParser` tieBarParser `thenParser` baseCharacterParser
 
 tieBarParser
 	:: Text
@@ -60,8 +60,8 @@ voicingDiacriticParser = singleCharParser voicingDiacritics
 -- that comes after a base character
 -- (for example p, t, c, g).
 superscriptAfterParser
-  :: Text
-  -> Maybe (Text, Text)
+	:: Text
+	-> Maybe (Text, Text)
 superscriptAfterParser = singleCharParser superscriptsAfter
 
 -- | A parser that consumes the first
@@ -128,7 +128,7 @@ toListParser parser text =
 -- | Whether the character in the string at a certain place,
 -- represents a consonant.
 isConsonantAt
-	:: Int  -- ^ an index within the range of 0, and the length of the string argument
+	:: Int -- ^ an index within the range of 0, and the length of the string argument
 	-> Text -- ^ a text string
 	-> Bool -- ^ true if it is a consonant
 isConsonantAt = isSuchAt isConsonant
@@ -156,7 +156,7 @@ isSegmental c = elem c strictSegmentals
 -- | Whether a character is a diacritic that can go after
 -- the main character.
 isSuperscriptAfterAt
-	:: Int  -- ^ a number indicating where the character is in the text
+	:: Int -- ^ a number indicating where the character is in the text
 	-> Text -- ^ the text that contains the character
 	-> Bool -- ^ true if the character can be a diacritic after the main character
 isSuperscriptAfterAt = isSuchAt isSuperscriptAfter
@@ -164,7 +164,7 @@ isSuperscriptAfterAt = isSuchAt isSuperscriptAfter
 -- | Whether a character at a certain place in a string,
 --   is the tie-bar diacritic.
 isTieBarAt
-	:: Int  -- ^ a number telling which character in the string
+	:: Int -- ^ a number telling which character in the string
 	-> Text -- ^ the string (some text)
 	-> Bool -- ^ true if it is a tie-bar
 isTieBarAt = isSuchAt isTieBar
@@ -172,11 +172,11 @@ isTieBarAt = isSuchAt isTieBar
 -- | Whether a character at a string is of a certain class.
 isSuchAt
 	:: (Char -> Bool) -- ^ a function
-	-> Int  -- ^ a number indicating which character in the text
+	-> Int -- ^ a number indicating which character in the text
 	-> Text -- ^ a string
 	-> Bool -- ^ whether it is true
 isSuchAt function indexValue text
-	| indexValue >= length text = False  -- index is out of range
+	| indexValue >= length text = False -- index is out of range
 	| otherwise = function (index text indexValue)
 
 -- | Whether a character is a superscript character, that
@@ -341,7 +341,7 @@ superscriptsBefore :: [Char]
 superscriptsBefore = ['ⁿ']
 
 superscriptsAfter :: [Char]
-superscriptsAfter = diacriticsAndSuprasegmentals <>  ['ː', 'ˑ', '̆']
+superscriptsAfter = diacriticsAndSuprasegmentals <> ['ː', 'ˑ', '̆']
 
 -- |
 -- Whether a character (but not a diacritic)

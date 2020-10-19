@@ -1,17 +1,17 @@
 module Types.All
-  ( module Types.Airstream
-  , module Types.Backness
-  , module Types.Height
-  , module Types.Manner
-  , module Types.Phonet
-  , module Types.PhonetInventory
-  , module Types.Place
-  , module Types.Rounding
-  , module Types.SecondaryArticulation
-  , module Types.VocalFolds
-  , module Types.VowelLength
-  )
-  where
+	( module Types.Airstream
+	, module Types.Backness
+	, module Types.Height
+	, module Types.Manner
+	, module Types.Phonet
+	, module Types.PhonetInventory
+	, module Types.Place
+	, module Types.Rounding
+	, module Types.SecondaryArticulation
+	, module Types.VocalFolds
+	, module Types.VowelLength
+	)
+	where
 
 import Prelude ()
 

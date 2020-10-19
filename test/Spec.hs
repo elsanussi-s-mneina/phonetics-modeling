@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Spec(main) where
 
-import Data.Maybe		(fromJust)
-import Test.Hspec		(Spec, describe, hspec, it, shouldBe)
+import Data.Maybe (fromJust)
+import Test.Hspec (Spec, describe, hspec, it, shouldBe)
 import IPA (analyzeIPA, constructIPA, voicedIPA, devoicedIPA, analyzeIPAToSPE, describeIPA)
 import PhonetInventory (ipaTextToPhonetListReport)
 import PhoneticFeatures (isGlide)

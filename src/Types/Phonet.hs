@@ -30,8 +30,8 @@ import Types.VowelLength ( VowelLength(..) )
 data Phonet 
 	= Consonant 
 		!VocalFolds
-		!Place   -- ^ Place of articulation
-		!Manner  -- ^ Manner of articulation
+		!Place -- ^ Place of articulation
+		!Manner -- ^ Manner of articulation
 		!Airstream
 		!SecondaryArticulation
 	| Vowel 

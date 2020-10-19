@@ -1,5 +1,5 @@
 module Types.SPE.Polarity where
-import           Prelude  (Eq)
+import Prelude  (Eq)
 
 
 {-|

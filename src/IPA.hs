@@ -22,13 +22,13 @@ import Types.VowelLength ( VowelLength(..) )
 
 
 import qualified SetPhonet (toExtraShort, toHalfLong, toLabialized, toLong,
-                       toNoSecondaryArticulation,
-                       toPalatalized, toPharyngealized, toVelarized,
-                       toVoiced, toVoiceless, withPlace)
+	toNoSecondaryArticulation,
+	toPalatalized, toPharyngealized, toVelarized,
+	toVoiced, toVoiceless, withPlace)
 import Lib_Functions (aspirate,
-  spirantizedPhonet, devoicedPhonet,
-  voicedPhonet, decreak, deaspirate,
-  retractPhonet, nasalizePhonet)
+	spirantizedPhonet, devoicedPhonet,
+	voicedPhonet, decreak, deaspirate,
+	retractPhonet, nasalizePhonet)
 import ShowFunctions (showPhonet)
 
 import PhoneticFeatures(showFeatures, analyzeFeatures)

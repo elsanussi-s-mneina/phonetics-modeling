@@ -13,5 +13,5 @@ data Manner
 	| LateralFricative
 	| LateralApproximant
 	| LateralFlap
-	| Lateral      -- ^ We need this one for the lateral click.
+	| Lateral -- ^ We need this one for the lateral click.
 	deriving Eq

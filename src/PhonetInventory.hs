@@ -3,8 +3,7 @@ module PhonetInventory where
 import Prelude(Maybe(..), (<>), map, zip)
 import Data.Maybe (maybe)
 import Data.Text (Text, concat, pack, unlines)
-import DefaultLanguageText
-	( notApplicableUIText )
+import DefaultLanguageText ( notApplicableUIText )
 import IPA (constructIPA, analyzeIPA)
 import GraphemeGrammar(splitIntoPhonemes)
 import ShowFunctions (showPhonet)
@@ -18,12 +17,9 @@ import Types.Phonet ( Phonet(..) )
 import Types.PhonetInventory ( PhonetInventory(..) )
 
 
--- | put a forward slash before some text  and
--- after it.
--- For example, "s" becomes "/s/"
--- Linguists use these forward slashes
--- to indicate a phonemic transcription,
--- instead of a phonetic transcription.
+{-| 
+put a forward slash before some text  and after it. For example, "s" becomes "/s/". Linguists use these forward slashes to indicate a phonemic transcription, instead of a phonetic transcription.
+-}
 encloseInSlashes :: Text -> Text
 encloseInSlashes ipaText = pack "/" <> ipaText <> pack "/"
 
@@ -44,10 +40,9 @@ ipaTextToPhonetList text =
 	in zip ipaChunks phonetes
 
 
--- | Given text containing international phonetic alphabet symbols
---   returns text with every phonetic alphabet symbol or sequence
---   of symbols for a sound
---   followed by the description of the sound it represents.
+{-| 
+Given text containing international phonetic alphabet symbols returns text with every phonetic alphabet symbol or sequence of symbols for a sound followed by the description of the sound it represents.
+-}
 ipaTextToPhonetListReport :: Text -> Text
 ipaTextToPhonetListReport text =
 	let listA = ipaTextToPhonetList text
@@ -72,5 +67,4 @@ plainsCreePhonetInventoryReport = ipaTextToPhonetListReport (showIPA plainsCreeP
 
 irishPhonetInventoryReport :: Text
 irishPhonetInventoryReport = ipaTextToPhonetListReport (showIPA irishPhonemeInventory)
-
 

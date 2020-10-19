@@ -1,5 +1,5 @@
 module Types.SPE.PhonemeFeature where
-import           Prelude  (Eq)
+import Prelude  (Eq)
 
 import Types.SPE.Polarity ( Polarity(..) )
 
