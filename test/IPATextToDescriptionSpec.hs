@@ -1,6 +1,6 @@
 module IPATextToDescriptionSpec where
 
-
+import Test.Hspec (Spec)
 import DescribeIPASpec.Approximant ( approximantConsonantSpec )
 import DescribeIPASpec.Fricative ( fricativeConsonantSpec )
 import DescribeIPASpec.LateralApproximant
@@ -17,7 +17,7 @@ import Data.Text (pack, unpack)
 describeIPA :: String -> String
 describeIPA = unpack . IPA.describeIPA . pack
 
-pulmonicEgressiveConsonantSpec :: SpecM () ()
+pulmonicEgressiveConsonantSpec :: Spec
 pulmonicEgressiveConsonantSpec = do
 	approximantConsonantSpec
 	fricativeConsonantSpec
