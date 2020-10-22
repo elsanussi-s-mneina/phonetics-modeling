@@ -5,6 +5,7 @@ module GraphemeGrammar where
 import Prelude((+), (>=), (<>), (==), Bool(..),
 	Char, Int, Maybe(..),
 	elem, otherwise)
+import IPAConstants.IPAUnicodeConstants
 import Data.Text (Text, index, length)
 import PrimitiveParsers (manyParser, optionalParser, orParser, singleCharParser, thenParser)
 
@@ -29,10 +30,10 @@ baseCharacters :: [Char]
 baseCharacters = strictSegmentals
 
 secondaryArticulationDiacritics :: [Char]
-secondaryArticulationDiacritics = ['ʷ', 'ʲ', 'ˤ', 'ˠ']
+secondaryArticulationDiacritics = [modifier_letter_small_w, modifier_letter_small_j, modifier_letter_small_reversed_glottal_stop, modifier_letter_small_gamma]
 
 voicingDiacritics :: [Char]
-voicingDiacritics = ['̥', '̊', '̬']
+voicingDiacritics = [combining_ring_below, combining_ring_above, combining_caron_below]
 
 -- | This implements the
 -- rule expressed in the grammar as:
@@ -46,7 +47,7 @@ digraphParser =
 tieBarParser
 	:: Text
 	-> Maybe (Text, Text)
-tieBarParser = singleCharParser ['͜', '͡']
+tieBarParser = singleCharParser tieBars
 
 voicingDiacriticParser
 	:: Text
@@ -197,12 +198,14 @@ isSuperscriptAfter c = elem c superscriptsAfter
 isSuperscriptBefore :: Char -> Bool
 isSuperscriptBefore c = elem c superscriptsBefore
 
+tieBars :: [Char]
+tieBars = [combining_double_breve_below, combining_double_inverted_breve]
 
 -- | Whether a character is used to tie two characters in the
 --   international phonetic alphabet together. The tie bar is
 --   usually used to indicate an affricate, or double-articulation.
 isTieBar :: Char -> Bool
-isTieBar x = elem x ['͜', '͡']
+isTieBar x = elem x tieBars
 
 
 -- | Count how many superscript characters occur one after another, at a
@@ -225,109 +228,109 @@ isSuperscript character = character `elem` superscripts
 
 plosivePulmonic :: [Char]
 plosivePulmonic =
-	[ 'p',
-	'b',
-	't',
-	'd',
-	'ʈ',
-	'ɖ',
-	'c',
-	'ɟ',
-	'k',
-	'g',
-	'q',
-	'ɢ',
-	'ʔ'
+	[ latin_small_letter_p,
+	latin_small_letter_b,
+	latin_small_letter_t,
+	latin_small_letter_d,
+	latin_small_letter_t_with_retroflex_hook,
+	latin_small_letter_d_with_tail,
+	latin_small_letter_c,
+	latin_small_letter_dotless_j_with_stroke,
+	latin_small_letter_k,
+	latin_small_letter_g,
+	latin_small_letter_q,
+	latin_letter_small_capital_g,
+	latin_letter_glottal_stop
 	]
 
 nasalPulmonic :: [Char]
-nasalPulmonic = ['m', 'ɱ', 'n', 'ɳ', 'ɲ', 'ŋ', 'ɴ']
+nasalPulmonic = [latin_small_letter_m, latin_small_letter_m_with_hook, latin_small_letter_n, latin_small_letter_n_with_retroflex_hook, latin_small_letter_n_with_left_hook, latin_small_letter_eng, latin_letter_small_capital_n]
 
 trillPulmonic :: [Char]
-trillPulmonic = ['ʙ', 'r', 'ʀ']
+trillPulmonic = [latin_letter_small_capital_b, latin_small_letter_r, latin_letter_small_capital_r]
 
 tapOrFlapPulmonic :: [Char]
-tapOrFlapPulmonic = ['ⱱ', 'ɾ', 'ɽ']
+tapOrFlapPulmonic = [latin_small_letter_v_with_right_hook, latin_small_letter_r_with_fishhook, latin_small_letter_r_with_tail]
 
 fricativePulmonic :: [Char]
 fricativePulmonic =
 	[
-		'ɸ',
-		'β',
-		'f',
-		'v',
-		'θ',
-		'ð',
-		's',
-		'z',
-		'ʃ',
-		'ʒ',
-		'ʂ',
-		'ʐ',
-		'ç',
-		'ʝ',
-		'x',
-		'ɣ',
-		'χ',
-		'ʁ',
-		'ħ',
-		'ʕ',
-		'h',
-		'ɦ'
+		latin_small_letter_phi,
+		greek_small_letter_beta,
+		latin_small_letter_f,
+		latin_small_letter_v,
+		greek_small_letter_theta,
+		latin_small_letter_eth,
+		latin_small_letter_s,
+		latin_small_letter_z,
+		latin_small_letter_esh,
+		latin_small_letter_ezh,
+		latin_small_letter_s_with_hook,
+		latin_small_letter_z_with_retroflex_hook,
+		latin_small_letter_c_with_cedilla,
+		latin_small_letter_j_with_crossed_tail,
+		latin_small_letter_x,
+		latin_small_letter_gamma,
+		greek_small_letter_chi,
+		latin_letter_small_capital_inverted_r,
+		latin_small_letter_h_with_stroke,
+		latin_letter_pharyngeal_voiced_fricative,
+		latin_small_letter_h,
+		latin_small_letter_h_with_hook
 	]
 
 lateralFricativePulmonic :: [Char]
-lateralFricativePulmonic = ['ɬ', 'ɮ']
+lateralFricativePulmonic = [latin_small_letter_l_with_belt, latin_small_letter_lezh]
 
 approximantPulmonic :: [Char]
-approximantPulmonic = ['ʋ', 'ɹ', 'ɻ', 'j', 'ɰ']
+approximantPulmonic = [latin_small_letter_v_with_hook, latin_small_letter_turned_r, latin_small_letter_turned_r_with_hook, latin_small_letter_j, latin_small_letter_turned_m_with_long_leg]
 
 lateralApproximantPulmonic :: [Char]
-lateralApproximantPulmonic = ['l', 'ɭ', 'ʎ', 'ʟ']
+lateralApproximantPulmonic = [latin_small_letter_l, latin_small_letter_l_with_retroflex_hook, latin_small_letter_turned_y, latin_letter_small_capital_l]
 
 
 diacriticsAndSuprasegmentals :: [Char]
 diacriticsAndSuprasegmentals =
 	[
-		'̥', -- Voiceless
-		'̊', -- Voiceless (diacritic placed above symbol with descender)
-		'̤', -- Breathy voiced
+		combining_ring_below, -- Voiceless
+		combining_ring_above, -- Voiceless (diacritic placed above symbol with descender)
+		combining_diaeresis_below, -- Breathy voiced
 		-- End of first row.
-		'̬', -- Voiced
-		'̰', -- Creaky voiced
-		'̺', -- Apical
+		combining_caron_below, -- Voiced
+		combining_tilde_below, -- Creaky voiced
+		combining_inverted_bridge_below, -- Apical
 		-- End of second row.
-		'ʰ', -- Aspirated
-		'̼', -- Linguolabial
-		'̻', -- Laminal
+		modifier_letter_small_h, -- Aspirated
+		combining_seagul_below, -- Linguolabial
+		combining_square_below, -- Laminal
 		-- End of third row.
-		'̹', -- More rounded
-		'ʷ', -- Labialised
-		'̃', -- Nasalised
+		combining_right_half_ring_below, -- More rounded
+		modifier_letter_small_w, -- Labialised
+		combining_tilde, -- Nasalised
 		-- End of fourth row.
-		'̜', -- Less rounded
-		'ʲ', -- Palatalised
-		'ⁿ', -- Pre/post nasalised
-		'̟', -- Advanced
-		'ˠ', -- Velarised
-		'ˡ', -- Lateral release
-		'̠', -- Retracted
-		'ˤ', -- Pharyngealised
-		'̚', -- No audible release
-		'̈', -- Centralised
-		'̽', -- Mid centralised
-		'̝', -- Raised
-		'̩', -- Syllabic
-		'̞', -- Lowered
-		'̯', -- Non-syllabic
-		'̘', -- Advanced tongue root
-		'˞', -- Rhoticity
-		'̙', -- Retracted tongue root
-		'ʼ', -- Ejective
-		'̍', -- Syllabic (diacritic placed above)
-		'̪', -- Dental
-		'̣', -- Closer variety/Fricative
-		'̇' -- Palatalization/Centralization
+		combining_left_half_ring_below, -- Less rounded
+		modifier_letter_small_j, -- Palatalised
+		superscript_latin_small_letter_n, -- Pre/post nasalised
+		combining_plus_sign_below, -- Advanced
+		modifier_letter_small_gamma, -- Velarised
+		modifier_letter_small_l, -- Lateral release
+		combining_minus_sign_below, -- Retracted
+		modifier_letter_small_reversed_glottal_stop, -- Pharyngealised
+		combining_left_angle_above, -- No audible release
+		combining_diaeresis, -- Centralised
+		combining_x_above, -- Mid centralised
+		combining_up_tack_below, -- Raised
+		combining_vertical_line_below, -- Syllabic
+		combining_down_tack_below, -- Lowered
+		combining_inverted_breve_below, -- Non-syllabic
+		combining_left_tack_below, -- Advanced tongue root
+		modifier_letter_rhotic_hook, -- Rhoticity
+		combining_right_tack_below, -- Retracted tongue root
+		modifier_letter_apostrophe, -- Ejective
+		combining_vertical_line_above, -- Syllabic (diacritic placed above)
+		combining_bridge_below, -- Dental
+		combining_dot_below, -- Closer variety/Fricative
+		combining_dot_above -- Palatalization/Centralization
 	]
 
 -- To do: find a more suitable name than superscripts.
@@ -338,10 +341,10 @@ superscripts :: [Char]
 superscripts = superscriptsBefore <> superscriptsAfter
 
 superscriptsBefore :: [Char]
-superscriptsBefore = ['ⁿ']
+superscriptsBefore = [superscript_latin_small_letter_n]
 
 superscriptsAfter :: [Char]
-superscriptsAfter = diacriticsAndSuprasegmentals <> ['ː', 'ˑ', '̆']
+superscriptsAfter = diacriticsAndSuprasegmentals <> [modifier_letter_triangular_colon, modifier_letter_half_triangular_colon, combining_breve]
 
 -- |
 -- Whether a character (but not a diacritic)
@@ -355,75 +358,75 @@ superscriptsAfter = diacriticsAndSuprasegmentals <> ['ː', 'ˑ', '̆']
 ascenders :: [Char]
 ascenders =
 	[
-		'b',
-		't',
-		'd',
-		'k',
-		'ʔ',
-		'f',
-		'θ',
-		'ð',
-		'ħ',
-		'ʕ',
-		'h',
-		'ɦ',
-		'ɬ',
-		'l',
-		'ʎ',
-		'ʘ',
-		'ɓ',
-		'ǀ',
-		'ɗ',
-		'ǃ',
-		'ǂ',
-		'ɠ',
-		'ʄ',
-		'ǁ',
-		'ʛ',
-		'ɺ',
-		'ʢ',
-		'ʡ',
-		'ɤ',
-		'ʈ',
-		'ɖ',
-		'ɸ',
-		'β',
-		'ʃ',
-		'ɮ',
-		'ɭ',
-		'ɧ'
+		latin_small_letter_b,
+		latin_small_letter_t,
+		latin_small_letter_d,
+		latin_small_letter_k,
+		latin_letter_glottal_stop,
+		latin_small_letter_f,
+		greek_small_letter_theta,
+		latin_small_letter_eth,
+		latin_small_letter_h_with_stroke,
+		latin_letter_pharyngeal_voiced_fricative,
+		latin_small_letter_h,
+		latin_small_letter_h_with_hook,
+		latin_small_letter_l_with_belt,
+		latin_small_letter_l,
+		latin_small_letter_turned_y,
+		latin_letter_bilabial_click,
+		latin_small_letter_b_with_hook,
+		latin_letter_dental_click,
+		latin_small_letter_d_with_hook,
+		latin_letter_retroflex_click,
+		latin_letter_alveolar_click,
+		latin_small_letter_g_with_hook,
+		latin_small_letter_dotless_j_with_stroke_and_hook,
+		latin_letter_lateral_click,
+		latin_letter_small_capital_g_with_hook,
+		latin_small_letter_turned_r_with_long_leg,
+		latin_letter_reversed_glottal_stop_with_stroke,
+		latin_letter_glottal_stop_with_stroke,
+		latin_small_letter_rams_horn,
+		latin_small_letter_t_with_retroflex_hook,
+		latin_small_letter_d_with_tail,
+		latin_small_letter_phi,
+		greek_small_letter_beta,
+		latin_small_letter_esh,
+		latin_small_letter_lezh,
+		latin_small_letter_l_with_retroflex_hook,
+		latin_small_letter_heng_with_hook
 	]
 
 descenders :: [Char]
 descenders =
-	[ 'p',
-	'ɟ',
-	'g',
-	'q',
-	'ɱ',
-	'ɽ',
-	'ʒ',
-	'ʂ',
-	'ʐ',
-	'ç',
-	'ʝ',
-	'ɣ',
-	'χ',
-	'ɻ',
-	'j',
-	'ɰ',
-	'ɥ',
-	'y',
-	'ɳ',
-	'ɲ',
-	'ŋ',
-	'ʈ',
-	'ɖ',
-	'ɸ',
-	'β',
-	'ʃ',
-	'ɮ',
-	'ɧ'
+	[ latin_small_letter_p,
+	latin_small_letter_dotless_j_with_stroke,
+	latin_small_letter_g,
+	latin_small_letter_q,
+	latin_small_letter_m_with_hook,
+	latin_small_letter_r_with_tail,
+	latin_small_letter_ezh,
+	latin_small_letter_s_with_hook,
+	latin_small_letter_z_with_retroflex_hook,
+	latin_small_letter_c_with_cedilla,
+	latin_small_letter_j_with_crossed_tail,
+	latin_small_letter_gamma,
+	greek_small_letter_chi,
+	latin_small_letter_turned_r_with_hook,
+	latin_small_letter_j,
+	latin_small_letter_turned_m_with_long_leg,
+	latin_small_letter_turned_h,
+	latin_small_letter_y,
+	latin_small_letter_n_with_retroflex_hook,
+	latin_small_letter_n_with_left_hook,
+	latin_small_letter_eng,
+	latin_small_letter_t_with_retroflex_hook,
+	latin_small_letter_d_with_tail,
+	latin_small_letter_phi,
+	greek_small_letter_beta,
+	latin_small_letter_esh,
+	latin_small_letter_lezh,
+	latin_small_letter_heng_with_hook
 	]
 	-- We don't include the retroflex l i.e <ɭ> because, even though it is a descender,
 	-- There is more free space under it than above
@@ -458,30 +461,30 @@ consonantsPulmonic =
 
 consonantsNonPulmonic :: [Char]
 consonantsNonPulmonic =
-	[ 'ʘ',
-	'ɓ', -- Bilabial
-	'ǀ' {- Dental -},
-	'ɗ', -- Dental/alveolar
-	'ǃ' {-  (Post)alveolar -},
-	'ʄ',
-	'ǂ',
-	'ɠ',
-	'ǁ',
-	'ʛ'
+	[ latin_letter_bilabial_click,
+	latin_small_letter_b_with_hook, -- Bilabial
+	latin_letter_dental_click {- Dental -},
+	latin_small_letter_d_with_hook, -- Dental/alveolar
+	latin_letter_retroflex_click {-  (Post)alveolar -},
+	latin_small_letter_dotless_j_with_stroke,
+	latin_letter_alveolar_click,
+	latin_small_letter_g_with_hook,
+	latin_letter_lateral_click,
+	latin_letter_small_capital_g_with_hook
 	]
 
 otherSymbols :: [Char]
 otherSymbols =
-	[ 'ʍ',
-	'ɕ',
-	'w',
-	'ʑ',
-	'ɥ',
-	'ɺ',
-	'ʜ',
-	'ɧ',
-	'ʢ',
-	'ʡ'
+	[ latin_small_letter_turned_w,
+	latin_small_letter_c_with_curl,
+	latin_small_letter_w,
+	latin_small_letter_z_with_curl,
+	latin_small_letter_turned_h,
+	latin_small_letter_turned_r_with_long_leg,
+	latin_letter_small_capital_h,
+	latin_small_letter_heng_with_hook,
+	latin_letter_reversed_glottal_stop_with_stroke,
+	latin_letter_glottal_stop_with_stroke
 	]
 
 consonants :: [Char]
@@ -489,34 +492,34 @@ consonants = consonantsPulmonic <> consonantsNonPulmonic <> otherSymbols
 
 vowels :: [Char]
 vowels =
-	[ 'i',
-	'y',
-	'ɨ',
-	'ʉ',
-	'ɯ',
-	'u', -- Close
-	'ɪ',
-	'ʏ',
-	'ʊ',
-	'e',
-	'ø',
-	'ɘ',
-	'ɵ',
-	'ɤ',
-	'o', -- Close-mid
-	'ə',
-	'ɛ',
-	'œ',
-	'ɜ',
-	'ɞ',
-	'ʌ',
-	'ɔ', -- Open-mid
-	'æ',
-	'ɐ',
-	'a',
-	'ɶ',
-	'ɑ',
-	'ɒ' -- Open
+	[ latin_small_letter_i,
+	latin_small_letter_y,
+	latin_small_letter_i_with_stroke,
+	latin_small_letter_u_bar,
+	latin_small_letter_turned_m,
+	latin_small_letter_u, -- Close
+	latin_letter_small_capital_i,
+	latin_letter_small_capital_y,
+	latin_small_letter_upsilon,
+	latin_small_letter_e,
+	latin_small_letter_o_with_stroke,
+	latin_small_letter_reversed_e,
+	latin_small_letter_barred_o,
+	latin_small_letter_rams_horn,
+	latin_small_letter_o, -- Close-mid
+	latin_small_letter_schwa,
+	latin_small_letter_open_e,
+	latin_small_ligature_oe,
+	latin_small_letter_reversed_open_e,
+	latin_small_letter_closed_reversed_open_e,
+	latin_small_letter_turned_v,
+	latin_small_letter_open_o, -- Open-mid
+	latin_small_letter_ae,
+	latin_small_letter_turned_a,
+	latin_small_letter_a,
+	latin_letter_small_capital_oe,
+	latin_small_letter_alpha,
+	latin_small_letter_turned_alpha -- Open
 	]
 
 
@@ -527,40 +530,40 @@ strictSegmentals = consonants <> vowels
 
 suprasegmentals :: [Char]
 suprasegmentals =
-	[ 'ˈ', -- Primary stress
-		'ˌ', -- Secondary stress
-		'ː', -- Long
-		'ˑ', -- Half long
-		'̆', -- Extra short
-		'|', -- Minor (foot) group
-		'‖', -- Major (intonation) group
-		'.', -- Syllable break
-		'‿' -- Linking (absence of a break)
+	[ modifier_letter_vertical_line, -- Primary stress
+		modifier_letter_low_vertical_line, -- Secondary stress
+		modifier_letter_triangular_colon, -- Long
+		modifier_letter_half_triangular_colon, -- Half long
+		combining_breve, -- Extra short
+		vertical_line, -- Minor (foot) group
+		double_vertical_line, -- Major (intonation) group
+		full_stop, -- Syllable break
+		undertie -- Linking (absence of a break)
 	]
 
 toneAndWordAccents :: [Char]
 toneAndWordAccents =
 	{- Level -}
-	[ '˥',
-	  '̋', -- Extra high
-	  '˦',
-	  '́', -- High
-	  '˧',
-	  '̄', -- Mid
-	  '˨',
-	  '̀', -- Low
-	  '˩',
-	  '̏', -- Extra low
-	  'ꜜ', -- Downstep
-	  'ꜛ', -- Upstep	
+	[ modifier_letter_extra_high_tone_bar,
+	  combining_double_acute_accent, -- Extra high
+	  modifier_letter_high_tone_bar,
+	  combining_acute_accent, -- High
+	  modifier_letter_mid_tone_bar,
+	  combining_macron, -- Mid
+	  modifier_letter_low_tone_bar,
+	  combining_grave_accent, -- Low
+	  modifier_letter_extra_low_tone_bar,
+	  combining_double_grave_accent, -- Extra low
+	  downwards_arrow, -- Downstep
+	  upwards_arrow, -- Upstep	
 	  {- Contour -}
-	  '̌', -- Rising
-	  '̂', -- Falling
-	  '᷄', -- High rising
-	  '᷅', -- Low rising
-	  '᷈', -- Rising-falling
-	  '↗', -- Global rise
-	  '↘' -- Global fall
+	  combining_caron, -- Rising
+	  combining_circumflex_accent, -- Falling
+	  combining_macron_acute, -- High rising
+	  combining_grave_macron, -- Low rising
+	  combining_grave_acute_grave, -- Rising-falling
+	  north_east_arrow, -- Global rise
+	  south_east_arrow -- Global fall
 	]
 
 isAscender :: Char -> Bool
@@ -582,13 +585,13 @@ isDescender character = character `elem` descenders
 -- Whether a diacritic goes above
 -- the character it is placed on.
 isDiacriticAbove :: Char -> Bool
-isDiacriticAbove c = c == '̊'
+isDiacriticAbove c = c == combining_ring_above
 
 -- |
 -- Whether a diacritic goes below
 -- the character which it is placed on.
 isDiacriticBelow :: Char -> Bool
-isDiacriticBelow c = c == '̥'
+isDiacriticBelow c = c == combining_ring_below
 
 
 -- |
@@ -599,7 +602,7 @@ isDiacriticBelow c = c == '̥'
 lowerDiacritic :: Char -> Char
 lowerDiacritic c =
 	case c of 
-		'̊' -> '̥'
+		_ | c == combining_ring_above -> combining_ring_below
 		other -> other
 
 
@@ -611,5 +614,5 @@ lowerDiacritic c =
 raiseDiacritic :: Char -> Char
 raiseDiacritic c =
 	case c of 
-		'̥'    -> '̊'
+		_ | c == combining_ring_below    -> combining_ring_above
 		other -> other

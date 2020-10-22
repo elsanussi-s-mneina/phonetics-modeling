@@ -5,6 +5,7 @@ import Data.Maybe (fromMaybe, maybe)
 import Numeric.Natural (Natural)
 import Data.Text (Text, init, last, null, pack)
 
+import IPAConstants.IPAUnicodeConstants
 import DefaultLanguageText
     ( sorryUnableToCalculate, noEnglishDescriptionFoundMessage )
 
@@ -41,94 +42,94 @@ analyzeIPAToSPE ipaText =
 
 ipaPhonemeMapList :: [(Text, Phonet)]
 ipaPhonemeMapList = 
-	[ (pack "p", (Consonant Voiceless Bilabial Plosive PulmonicEgressive Normal))
-	, (pack "b", (Consonant Voiced Bilabial Plosive PulmonicEgressive Normal))
-	, (pack "t", (Consonant Voiceless Alveolar Plosive PulmonicEgressive Normal))
-	, (pack "d", (Consonant Voiced Alveolar Plosive PulmonicEgressive Normal))
-	, (pack "ʈ", (Consonant Voiceless Retroflex Plosive PulmonicEgressive Normal))
-	, (pack "ɖ", (Consonant Voiced Retroflex Plosive PulmonicEgressive Normal))
-	, (pack "c", (Consonant Voiceless Palatal Plosive PulmonicEgressive Normal))
-	, (pack "ɟ", (Consonant Voiced Palatal Plosive PulmonicEgressive Normal))
-	, (pack "k", (Consonant Voiceless Velar Plosive PulmonicEgressive Normal))
-	, (pack "g", (Consonant Voiced Velar Plosive PulmonicEgressive Normal))
-	, (pack "q", (Consonant Voiceless Uvular Plosive PulmonicEgressive Normal))
-	, (pack "ɢ", (Consonant Voiced Uvular Plosive PulmonicEgressive Normal))
-	, (pack "ʔ", (Consonant Voiceless Glottal Plosive PulmonicEgressive Normal))
+	[ (pack [latin_small_letter_p], (Consonant Voiceless Bilabial Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_b], (Consonant Voiced Bilabial Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_t], (Consonant Voiceless Alveolar Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_d], (Consonant Voiced Alveolar Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_t_with_retroflex_hook], (Consonant Voiceless Retroflex Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_d_with_tail], (Consonant Voiced Retroflex Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_c], (Consonant Voiceless Palatal Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_dotless_j_with_stroke], (Consonant Voiced Palatal Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_k], (Consonant Voiceless Velar Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_g], (Consonant Voiced Velar Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_q], (Consonant Voiceless Uvular Plosive PulmonicEgressive Normal))
+	, (pack [latin_letter_small_capital_g], (Consonant Voiced Uvular Plosive PulmonicEgressive Normal))
+	, (pack [latin_letter_glottal_stop], (Consonant Voiceless Glottal Plosive PulmonicEgressive Normal))
 	-- Nasals:
-	, (pack "m", (Consonant Voiced Bilabial Nasal PulmonicEgressive Normal))
-	, (pack "ɱ", (Consonant Voiced LabioDental Nasal PulmonicEgressive Normal))
-	, (pack "n", (Consonant Voiced Alveolar Nasal PulmonicEgressive Normal))
-	, (pack "ɳ", (Consonant Voiced Retroflex Nasal PulmonicEgressive Normal))
-	, (pack "ɲ", (Consonant Voiced Palatal Nasal PulmonicEgressive Normal))
-	, (pack "ŋ", (Consonant Voiced Velar Nasal PulmonicEgressive Normal))
-	, (pack "ɴ", (Consonant Voiced Uvular Nasal PulmonicEgressive Normal))
+	, (pack [latin_small_letter_m], (Consonant Voiced Bilabial Nasal PulmonicEgressive Normal))
+	, (pack [latin_small_letter_m_with_hook], (Consonant Voiced LabioDental Nasal PulmonicEgressive Normal))
+	, (pack [latin_small_letter_n], (Consonant Voiced Alveolar Nasal PulmonicEgressive Normal))
+	, (pack [latin_small_letter_n_with_retroflex_hook], (Consonant Voiced Retroflex Nasal PulmonicEgressive Normal))
+	, (pack [latin_small_letter_n_with_left_hook], (Consonant Voiced Palatal Nasal PulmonicEgressive Normal))
+	, (pack [latin_small_letter_eng], (Consonant Voiced Velar Nasal PulmonicEgressive Normal))
+	, (pack [latin_letter_small_capital_n], (Consonant Voiced Uvular Nasal PulmonicEgressive Normal))
 	-- Trills:
-	, (pack "ʙ", (Consonant Voiced Bilabial Trill PulmonicEgressive Normal))
-	, (pack "r", (Consonant Voiced Alveolar Trill PulmonicEgressive Normal))
-	, (pack "ʀ", (Consonant Voiced Uvular Trill PulmonicEgressive Normal))
+	, (pack [latin_letter_small_capital_b], (Consonant Voiced Bilabial Trill PulmonicEgressive Normal))
+	, (pack [latin_small_letter_r], (Consonant Voiced Alveolar Trill PulmonicEgressive Normal))
+	, (pack [latin_letter_small_capital_r], (Consonant Voiced Uvular Trill PulmonicEgressive Normal))
 	-- Taps or flaps:
-	, (pack "ⱱ", (Consonant Voiced LabioDental TapOrFlap PulmonicEgressive Normal))
-	, (pack "ɾ", (Consonant Voiced Alveolar TapOrFlap PulmonicEgressive Normal))
-	, (pack "ɽ", (Consonant Voiced Retroflex TapOrFlap PulmonicEgressive Normal))
+	, (pack [latin_small_letter_v_with_right_hook], (Consonant Voiced LabioDental TapOrFlap PulmonicEgressive Normal))
+	, (pack [latin_small_letter_r_with_fishhook], (Consonant Voiced Alveolar TapOrFlap PulmonicEgressive Normal))
+	, (pack [latin_small_letter_r_with_tail], (Consonant Voiced Retroflex TapOrFlap PulmonicEgressive Normal))
 	-- Fricatives:
-	, (pack "ɸ", (Consonant Voiceless Bilabial Fricative PulmonicEgressive Normal))
-	, (pack "β", (Consonant Voiced Bilabial Fricative PulmonicEgressive Normal))
-	, (pack "f", (Consonant Voiceless LabioDental Fricative PulmonicEgressive Normal))
-	, (pack "v", (Consonant Voiced LabioDental Fricative PulmonicEgressive Normal))
-	, (pack "θ", (Consonant Voiceless Dental Fricative PulmonicEgressive Normal))
-	, (pack "ð", (Consonant Voiced Dental Fricative PulmonicEgressive Normal))
-	, (pack "s", (Consonant Voiceless Alveolar Fricative PulmonicEgressive Normal))
-	, (pack "z", (Consonant Voiced Alveolar Fricative PulmonicEgressive Normal))
-	, (pack "ʃ", (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive Normal))
-	, (pack "ʒ", (Consonant Voiced PostAlveolar Fricative PulmonicEgressive Normal))
-	, (pack "ʂ", (Consonant Voiceless Retroflex Fricative PulmonicEgressive Normal))
-	, (pack "ʐ", (Consonant Voiced Retroflex Fricative PulmonicEgressive Normal))
-	, (pack "ç", (Consonant Voiceless Palatal Fricative PulmonicEgressive Normal))
-	, (pack "ʝ", (Consonant Voiced Palatal Fricative PulmonicEgressive Normal))
-	, (pack "x", (Consonant Voiceless Velar Fricative PulmonicEgressive Normal))
-	, (pack "ɣ", (Consonant Voiced Velar Fricative PulmonicEgressive Normal))
-	, (pack "χ", (Consonant Voiceless Uvular Fricative PulmonicEgressive Normal))
-	, (pack "ʁ", (Consonant Voiced Uvular Fricative PulmonicEgressive Normal))
-	, (pack "ħ", (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive Normal))
-	, (pack "ʕ", (Consonant Voiced Pharyngeal Fricative PulmonicEgressive Normal))
-	, (pack "h", (Consonant Voiceless Glottal Fricative PulmonicEgressive Normal))
-	, (pack "ɦ", (Consonant Voiced Glottal Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_phi], (Consonant Voiceless Bilabial Fricative PulmonicEgressive Normal))
+	, (pack [greek_small_letter_beta], (Consonant Voiced Bilabial Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_f], (Consonant Voiceless LabioDental Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_v], (Consonant Voiced LabioDental Fricative PulmonicEgressive Normal))
+	, (pack [greek_small_letter_theta], (Consonant Voiceless Dental Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_eth], (Consonant Voiced Dental Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_s], (Consonant Voiceless Alveolar Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_z], (Consonant Voiced Alveolar Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_esh], (Consonant Voiceless PostAlveolar Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_ezh], (Consonant Voiced PostAlveolar Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_s_with_hook], (Consonant Voiceless Retroflex Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_z_with_retroflex_hook], (Consonant Voiced Retroflex Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_c_with_cedilla], (Consonant Voiceless Palatal Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_j_with_crossed_tail], (Consonant Voiced Palatal Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_x], (Consonant Voiceless Velar Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_gamma], (Consonant Voiced Velar Fricative PulmonicEgressive Normal))
+	, (pack [greek_small_letter_chi], (Consonant Voiceless Uvular Fricative PulmonicEgressive Normal))
+	, (pack [latin_letter_small_capital_inverted_r], (Consonant Voiced Uvular Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_h_with_stroke], (Consonant Voiceless Pharyngeal Fricative PulmonicEgressive Normal))
+	, (pack [latin_letter_pharyngeal_voiced_fricative], (Consonant Voiced Pharyngeal Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_h], (Consonant Voiceless Glottal Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_h_with_hook], (Consonant Voiced Glottal Fricative PulmonicEgressive Normal))
 	-- Lateral Fricatives:
-	, (pack "ɬ", (Consonant Voiceless Alveolar LateralFricative PulmonicEgressive Normal))
-	, (pack "ɮ", (Consonant Voiced Alveolar LateralFricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_l_with_belt], (Consonant Voiceless Alveolar LateralFricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_lezh], (Consonant Voiced Alveolar LateralFricative PulmonicEgressive Normal))
 	-- Approximants:
-	, (pack "ʋ", (Consonant Voiced LabioDental Approximant PulmonicEgressive Normal))
-	, (pack "ɹ", (Consonant Voiced Alveolar Approximant PulmonicEgressive Normal))
-	, (pack "ɻ", (Consonant Voiced Retroflex Approximant PulmonicEgressive Normal))
-	, (pack "j", (Consonant Voiced Palatal Approximant PulmonicEgressive Normal))
-	, (pack "ɰ", (Consonant Voiced Velar Approximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_v_with_hook], (Consonant Voiced LabioDental Approximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_turned_r], (Consonant Voiced Alveolar Approximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_turned_r_with_hook], (Consonant Voiced Retroflex Approximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_j], (Consonant Voiced Palatal Approximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_turned_m_with_long_leg], (Consonant Voiced Velar Approximant PulmonicEgressive Normal))
 	-- Lateral Approximants:
-	, (pack "l", (Consonant Voiced Alveolar LateralApproximant PulmonicEgressive Normal))
-	, (pack "ɭ", (Consonant Voiced Retroflex LateralApproximant PulmonicEgressive Normal))
-	, (pack "ʎ", (Consonant Voiced Palatal LateralApproximant PulmonicEgressive Normal))
-	, (pack "ʟ", (Consonant Voiced Velar LateralApproximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_l], (Consonant Voiced Alveolar LateralApproximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_l_with_retroflex_hook], (Consonant Voiced Retroflex LateralApproximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_turned_y], (Consonant Voiced Palatal LateralApproximant PulmonicEgressive Normal))
+	, (pack [latin_letter_small_capital_l], (Consonant Voiced Velar LateralApproximant PulmonicEgressive Normal))
 	-- Affricates
-	, (pack "t͜s", (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
-	, (pack "t͡s", (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
-	, (pack "d͜z", (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
-	, (pack "d͡z", (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
-	, (pack "t͡ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
-	, (pack "t͜ʃ", (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
-	, (pack "d͡ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
-	, (pack "d͜ʒ", (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_t, combining_double_breve_below, latin_small_letter_s], (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_t, combining_double_inverted_breve, latin_small_letter_s], (Consonant Voiceless Alveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_d, combining_double_breve_below, latin_small_letter_z], (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_d, combining_double_inverted_breve, latin_small_letter_z], (Consonant Voiced Alveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_t, combining_double_inverted_breve, latin_small_letter_esh], (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_t, combining_double_breve_below, latin_small_letter_esh], (Consonant Voiceless PostAlveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_d, combining_double_inverted_breve, latin_small_letter_ezh], (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
+	, (pack [latin_small_letter_d, combining_double_breve_below, latin_small_letter_ezh], (Consonant Voiced PostAlveolar Affricate PulmonicEgressive Normal))
 
 	-- Under the Other Symbols part of the IPA chart:
-	, (pack "w", (Consonant Voiced LabialVelar Approximant PulmonicEgressive Normal))
-	, (pack "ʍ", (Consonant Voiceless LabialVelar Fricative PulmonicEgressive Normal))
-	, (pack "ɥ", (Consonant Voiced LabialPalatal Approximant PulmonicEgressive Normal))
-	, (pack "ʜ", (Consonant Voiceless Epiglottal Fricative PulmonicEgressive Normal))
-	, (pack "ʢ", (Consonant Voiced Epiglottal Fricative PulmonicEgressive Normal))
-	, (pack "ʡ", (Consonant Voiceless Epiglottal Plosive PulmonicEgressive Normal))
+	, (pack [latin_small_letter_w], (Consonant Voiced LabialVelar Approximant PulmonicEgressive Normal))
+	, (pack [latin_small_letter_turned_w], (Consonant Voiceless LabialVelar Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_turned_h], (Consonant Voiced LabialPalatal Approximant PulmonicEgressive Normal))
+	, (pack [latin_letter_small_capital_h], (Consonant Voiceless Epiglottal Fricative PulmonicEgressive Normal))
+	, (pack [latin_letter_reversed_glottal_stop_with_stroke], (Consonant Voiced Epiglottal Fricative PulmonicEgressive Normal))
+	, (pack [latin_letter_glottal_stop_with_stroke], (Consonant Voiceless Epiglottal Plosive PulmonicEgressive Normal))
 	  -- Is the epiglottal plosive voiceless? The IPA chart does not specify.
-	, (pack "ɕ", (Consonant Voiceless AlveoloPalatal Fricative PulmonicEgressive Normal))
-	, (pack "ʑ", (Consonant Voiced AlveoloPalatal Fricative PulmonicEgressive Normal))
-	, (pack "ɺ", (Consonant Voiced Alveolar LateralFlap PulmonicEgressive Normal))
-	, (pack "ɧ",
+	, (pack [latin_small_letter_c_with_curl], (Consonant Voiceless AlveoloPalatal Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_z_with_curl], (Consonant Voiced AlveoloPalatal Fricative PulmonicEgressive Normal))
+	, (pack [latin_small_letter_turned_r_with_long_leg], (Consonant Voiced Alveolar LateralFlap PulmonicEgressive Normal))
+	, (pack [latin_small_letter_heng_with_hook],
 		( Consonant
 			Voiceless
 			(Places [PostAlveolar, Velar])
@@ -137,61 +138,54 @@ ipaPhonemeMapList =
 			Normal
 		))
 
-	-- The following two lines are commented out, because I am unsure
-	-- about their place of articulation:
-	-- , (pack "k͡p",  (Consonant  Voiceless LabialVelar? Affricate
-	--     PulmonicEgressive Normal))
-	-- , (pack "c͡ɕ", (Consonant  Voiceless Palatal (or AlveoloPalatal?)
-	--     Affricate PulmonicEgressive Normal))
-
 	-- Other Consonants:
-	, (pack "ʘ", (Consonant Voiceless Bilabial Plosive Click Normal))
-	, (pack "ǀ", (Consonant Voiceless Dental Plosive Click Normal))
-	, (pack "ǃ", (Consonant Voiceless Alveolar Plosive Click Normal))
+	, (pack [latin_letter_bilabial_click], (Consonant Voiceless Bilabial Plosive Click Normal))
+	, (pack [latin_letter_dental_click], (Consonant Voiceless Dental Plosive Click Normal))
+	, (pack [latin_letter_retroflex_click], (Consonant Voiceless Alveolar Plosive Click Normal))
 	-- "ǃ" could also be PostAlveolar.
-	, (pack "ǂ", (Consonant Voiceless PalatoAlveolar Plosive Click Normal))
-	, (pack "ǁ", (Consonant Voiceless Alveolar Lateral Click Normal))
-	, (pack "ɓ", (Consonant Voiced Bilabial Plosive Implosive Normal))
-	, (pack "ɗ", (Consonant Voiced Dental Plosive Implosive Normal))
+	, (pack [latin_letter_alveolar_click], (Consonant Voiceless PalatoAlveolar Plosive Click Normal))
+	, (pack [latin_letter_lateral_click], (Consonant Voiceless Alveolar Lateral Click Normal))
+	, (pack [latin_small_letter_b_with_hook], (Consonant Voiced Bilabial Plosive Implosive Normal))
+	, (pack [latin_small_letter_d_with_hook], (Consonant Voiced Dental Plosive Implosive Normal))
 	-- "ɗ" could also be Alveolar
-	, (pack "ʄ", (Consonant Voiced Palatal Plosive Implosive Normal))
-	, (pack "ɠ", (Consonant Voiced Velar Plosive Implosive Normal))
-	, (pack "ʛ", (Consonant Voiced Uvular Plosive Implosive Normal))
+	, (pack [latin_small_letter_dotless_j_with_stroke_and_hook], (Consonant Voiced Palatal Plosive Implosive Normal))
+	, (pack [latin_small_letter_g_with_hook], (Consonant Voiced Velar Plosive Implosive Normal))
+	, (pack [latin_letter_small_capital_g_with_hook], (Consonant Voiced Uvular Plosive Implosive Normal))
 	-- Close Vowels:
-	, (pack "i", (Vowel Close Front Unrounded Voiced NormalLength Oral))
-	, (pack "y", (Vowel Close Front Rounded Voiced NormalLength Oral))
-	, (pack "ɨ", (Vowel Close Central Unrounded Voiced NormalLength Oral))
-	, (pack "ʉ", (Vowel Close Central Rounded Voiced NormalLength Oral))
-	, (pack "ɯ", (Vowel Close Back Unrounded Voiced NormalLength Oral))
-	, (pack "u", (Vowel Close Back Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_i], (Vowel Close Front Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_y], (Vowel Close Front Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_i_with_stroke], (Vowel Close Central Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_u_bar], (Vowel Close Central Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_turned_m], (Vowel Close Back Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_u], (Vowel Close Back Rounded Voiced NormalLength Oral))
 	-- Near-close Vowels:
-	, (pack "ɪ", (Vowel NearClose Front Unrounded Voiced NormalLength Oral))
-	, (pack "ʏ", (Vowel NearClose Front Rounded Voiced NormalLength Oral))
-	, (pack "ʊ", (Vowel NearClose Back Rounded Voiced NormalLength Oral))
+	, (pack [latin_letter_small_capital_i], (Vowel NearClose Front Unrounded Voiced NormalLength Oral))
+	, (pack [latin_letter_small_capital_y], (Vowel NearClose Front Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_upsilon], (Vowel NearClose Back Rounded Voiced NormalLength Oral))
 	-- Close-mid Vowels:
-	, (pack "e", (Vowel CloseMid Front Unrounded Voiced NormalLength Oral))
-	, (pack "ø", (Vowel CloseMid Front Rounded Voiced NormalLength Oral))
-	, (pack "ɘ", (Vowel CloseMid Central Unrounded Voiced NormalLength Oral))
-	, (pack "ɵ", (Vowel CloseMid Central Rounded Voiced NormalLength Oral))
-	, (pack "ɤ", (Vowel CloseMid Back Unrounded Voiced NormalLength Oral))
-	, (pack "o", (Vowel CloseMid Back Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_e], (Vowel CloseMid Front Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_o_with_stroke], (Vowel CloseMid Front Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_reversed_e], (Vowel CloseMid Central Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_barred_o], (Vowel CloseMid Central Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_rams_horn], (Vowel CloseMid Back Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_o], (Vowel CloseMid Back Rounded Voiced NormalLength Oral))
 	-- Mid Vowels:
-	, (pack "ə", (Vowel Mid Central Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_schwa], (Vowel Mid Central Unrounded Voiced NormalLength Oral))
 	-- Open-mid Vowels:
-	, (pack "ɛ", (Vowel OpenMid Front Unrounded Voiced NormalLength Oral))
-	, (pack "œ", (Vowel OpenMid Front Rounded Voiced NormalLength Oral))
-	, (pack "ɜ", (Vowel OpenMid Central Unrounded Voiced NormalLength Oral))
-	, (pack "ɞ", (Vowel OpenMid Central Rounded Voiced NormalLength Oral))
-	, (pack "ʌ", (Vowel OpenMid Back Unrounded Voiced NormalLength Oral))
-	, (pack "ɔ", (Vowel OpenMid Back Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_open_e], (Vowel OpenMid Front Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_ligature_oe], (Vowel OpenMid Front Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_reversed_open_e], (Vowel OpenMid Central Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_closed_reversed_open_e], (Vowel OpenMid Central Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_turned_v], (Vowel OpenMid Back Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_open_o], (Vowel OpenMid Back Rounded Voiced NormalLength Oral))
 	-- Near-open
-	, (pack "æ", (Vowel NearOpen Front Unrounded Voiced NormalLength Oral))
-	, (pack "ɐ", (Vowel NearOpen Central Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_ae], (Vowel NearOpen Front Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_turned_a], (Vowel NearOpen Central Unrounded Voiced NormalLength Oral))
 	-- Open Vowels:
-	, (pack "a", (Vowel Open Front Unrounded Voiced NormalLength Oral))
-	, (pack "ɶ", (Vowel Open Front Rounded Voiced NormalLength Oral))
-	, (pack "ɑ", (Vowel Open Back Unrounded Voiced NormalLength Oral))
-	, (pack "ɒ", (Vowel Open Back Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_a], (Vowel Open Front Unrounded Voiced NormalLength Oral))
+	, (pack [latin_letter_small_capital_oe], (Vowel Open Front Rounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_alpha], (Vowel Open Back Unrounded Voiced NormalLength Oral))
+	, (pack [latin_small_letter_turned_alpha], (Vowel Open Back Rounded Voiced NormalLength Oral))
 	]
 
 lookupInList :: Eq a => a -> [(a, b)] -> Maybe b
@@ -225,66 +219,66 @@ analyzeIPA p =
 				-- Handle Diacritics:
 				ipaText ->
 					case [last ipaText] of
-						"̪" ->
+						_ | last ipaText == combining_bridge_below ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.withPlace Dental x)
 								Nothing -> Nothing
-						"̥" ->
+						_ | last ipaText == combining_ring_below ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toVoiceless x)
 								Nothing -> Nothing
-						"̊" ->
+						_ | last ipaText == combining_ring_above ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toVoiceless x)
 								Nothing -> Nothing
 
-						"̬" ->
+						_ | last ipaText == combining_caron_below ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toVoiced x)
 								Nothing -> Nothing
-						"ʷ" ->
+						_ | last ipaText == modifier_letter_small_w ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toLabialized x)
 								Nothing -> Nothing
 
-						"ʲ" ->
+						_ | last ipaText == modifier_letter_small_j ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toPalatalized x)
 								Nothing -> Nothing
 
-						"ˠ" ->
+						_ | last ipaText == modifier_letter_small_gamma ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toVelarized x)
 								Nothing -> Nothing
-						"ˤ" ->
+						_ | last ipaText == modifier_letter_small_reversed_glottal_stop ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toPharyngealized x)
 								Nothing -> Nothing
-						"ː" ->
+						_ | last ipaText == modifier_letter_triangular_colon ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toLong x)
 								Nothing -> Nothing
-						"ˑ" ->
+						_ | last ipaText == modifier_letter_half_triangular_colon ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toHalfLong x)
 								Nothing -> Nothing
-						"̆" ->
+						_ | last ipaText == combining_breve ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (SetPhonet.toExtraShort x)
 								Nothing -> Nothing
 
-						"ʰ" ->
+						_ | last ipaText == modifier_letter_small_h ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> Just (aspirate x)
@@ -294,12 +288,12 @@ analyzeIPA p =
 						-- since we have no way to represent it in the type system.
 						-- to do: determine
 						-- if the idea of an aspirated vowel makes sense
-						"̠" ->
+						_ | last ipaText == combining_minus_sign_below ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> retractPhonet x
 								Nothing -> Nothing
-						"̃" ->
+						_ | last ipaText == combining_tilde ->
 							let fullGrapheme = analyzeIPA (init ipaText)
 							in case fullGrapheme of
 								Just x -> nasalizePhonet x
@@ -315,46 +309,46 @@ constructIPA phoneme =
 secondaryArticulationIPA :: SecondaryArticulation -> Text
 secondaryArticulationIPA articulation =
 	case articulation of
-		Normal -> pack ""
-		Palatalized -> pack "ʲ"
-		Labialized -> pack "ʷ"
-		Velarized -> pack "ˠ"
-		Pharyngealized -> pack "ˤ"
+		Normal -> pack []
+		Palatalized -> pack [modifier_letter_small_j]
+		Labialized -> pack [modifier_letter_small_w]
+		Velarized -> pack [modifier_letter_small_gamma]
+		Pharyngealized -> pack [modifier_letter_small_reversed_glottal_stop]
 
 vowelLengthIPA :: VowelLength -> Text
 vowelLengthIPA vowelLength =
 	case vowelLength of
-		NormalLength -> pack ""
-		ExtraShort -> pack "̆"
-		HalfLong -> pack "ˑ"
-		Long -> pack "ː"
+		NormalLength -> pack []
+		ExtraShort -> pack [combining_breve]
+		HalfLong -> pack [modifier_letter_half_triangular_colon]
+		Long -> pack [modifier_letter_triangular_colon]
 
 nasalizationIPA :: Nasalization -> Text
 nasalizationIPA nasalization =
 	case nasalization of
-		Oral -> pack ""
-		Nasalized -> pack "̃"
+		Oral -> pack []
+		Nasalized -> pack [combining_tilde]
 
 addRetractedDiacritic :: Text -> Text
-addRetractedDiacritic = (<> pack "̠")
+addRetractedDiacritic = (<> pack [combining_minus_sign_below])
 
 addDentalDiacritic :: Text -> Text
-addDentalDiacritic = (<> pack "̪")
+addDentalDiacritic = (<> pack [combining_bridge_below])
 
 addVoicedDiacritic :: Text -> Text
-addVoicedDiacritic = (<> pack "̬")
+addVoicedDiacritic = (<> pack [combining_caron_below])
 
 addCreakyVoicedDiacritic :: Text -> Text
-addCreakyVoicedDiacritic = (<> pack "̰")
+addCreakyVoicedDiacritic = (<> pack [combining_tilde_below])
 
 addAspirationDiacritic :: Text -> Text
-addAspirationDiacritic = (<> pack "ʰ")
+addAspirationDiacritic = (<> pack [modifier_letter_small_h])
 
 addVoicelessDiacritic :: Text -> Text
 addVoicelessDiacritic x =
 	if isDescender (last x)
-		then x <> pack "̊"
-		else x <> pack "̥"
+		then x <> pack [combining_ring_above]
+		else x <> pack [combining_ring_below]
 
 -- here here
 addPharynealizedDiacritic :: Text -> Text

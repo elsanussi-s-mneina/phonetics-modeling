@@ -15,10 +15,8 @@ import Types.VocalFolds ( VocalFolds(..) )
 import Types.VowelLength ( VowelLength(..) )
 
 
--- | This is the phoneme inventory found in Modern Standard Arabic
--- that are considered the correct pronunciation by the Arabic tradition today.
--- This is what they will teach in school.
--- Note: These are just phonemes, the allophones are not included for simplicity.
+{-| This is the phoneme inventory found in Modern Standard Arabic that are considered the correct pronunciation by the Arabic tradition today. This is what they will teach in school. Note: These are just phonemes, the allophones are not included for simplicity.
+-}
 arabicPhonemeInventory :: PhonetInventory
 arabicPhonemeInventory =
 	PhonetInventory
@@ -46,20 +44,17 @@ arabicPhonemeInventory =
 		, Consonant Voiced Palatal Approximant PulmonicEgressive Normal
 		, Consonant Voiced Alveolar LateralApproximant PulmonicEgressive Normal
 		, Consonant Voiced LabialVelar Approximant PulmonicEgressive Normal
-
-		-- Consonants with phonemic secondary articulation
+		{- Consonants with phonemic secondary articulation: -}
 		, Consonant Voiceless Alveolar Plosive PulmonicEgressive Pharyngealized
 		, Consonant Voiced Alveolar Plosive PulmonicEgressive Pharyngealized
 		, Consonant Voiced Dental Fricative PulmonicEgressive Pharyngealized
 		, Consonant Voiceless Alveolar Fricative PulmonicEgressive Pharyngealized
-
-
-		-- Short vowels:
+		{- Short vowels: -}
 		, Vowel Close Front Unrounded Voiced NormalLength Oral
 		, Vowel Open Front Unrounded Voiced NormalLength Oral
 		, Vowel Close Back Rounded Voiced NormalLength Oral
 
-		-- Long vowels:
+		{- Long vowels: -}
 		, Vowel Close Front Unrounded Voiced Long Oral
 		, Vowel Open Front Unrounded Voiced Long Oral
 		, Vowel Close Back Rounded Voiced Long Oral

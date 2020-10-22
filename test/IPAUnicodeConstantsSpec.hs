@@ -46,6 +46,10 @@ ipaUnicodeSpec =
 					(latin_small_letter_k `shouldBe` 'k');
 				it "latin small letter k code point"
 					(latin_small_letter_k `shouldBe` '\x006B');
+				it "latin small letter g"
+					(latin_small_letter_g `shouldBe` 'g');
+				it "latin small letter g code point"
+					(latin_small_letter_g `shouldBe` '\x0067');
 				it "latin small letter script g"
 					(latin_small_letter_script_g `shouldBe` 'ɡ');
 				it "latin small letter script g code point"
@@ -490,6 +494,12 @@ ipaUnicodeSpec =
 					(combining_ring_below `shouldBe` '̥');
 				it "combining ring below code point"
 					(combining_ring_below `shouldBe` '\x0325');
+				it "combining ring above"
+					(combining_ring_above `shouldBe` '̊');
+				it "combining ring above code point"
+					(combining_ring_above `shouldBe` '\x030A');
+
+
 				it "combining caron below"
 					(combining_caron_below `shouldBe` '̬');
 				it "combining caron below code point"
@@ -522,10 +532,23 @@ ipaUnicodeSpec =
 					(combining_x_above `shouldBe` '̽');
 				it "combining x above code point"
 					(combining_x_above `shouldBe` '\x033D');
+
+				it "combining vertical line above"
+					(combining_vertical_line_above `shouldBe` '̍');
+				it "combining vertical line above code point"
+					(combining_vertical_line_above `shouldBe` '\x030D');
 				it "combining vertical line below"
 					(combining_vertical_line_below `shouldBe` '̩');
 				it "combining vertical line below code point"
 					(combining_vertical_line_below `shouldBe` '\x0329');
+				it "combining dot above"
+					(combining_dot_above `shouldBe` '̇');
+				it "combining dot above code point"
+					(combining_dot_above `shouldBe` '\x0307');
+				it "combining dot below"
+					(combining_dot_below `shouldBe` '̣');
+				it "combining dot below code point"
+					(combining_dot_below `shouldBe` '\x0323');
 				it "combining inverted breve below"
 					(combining_inverted_breve_below `shouldBe` '̯');
 				it "combining inverted breve below code point"

@@ -23,8 +23,11 @@ latin_small_letter_dotless_j_with_stroke :: Char
 latin_small_letter_dotless_j_with_stroke = '\x025F' -- ɟ
 latin_small_letter_k :: Char
 latin_small_letter_k = '\x006B' -- k
+latin_small_letter_g :: Char
+latin_small_letter_g = '\x0067'
+
 latin_small_letter_script_g :: Char
-latin_small_letter_script_g = '\x0261' -- ɡ 
+latin_small_letter_script_g = '\x0261'
 
 
 latin_small_letter_q :: Char
@@ -250,7 +253,8 @@ undertie :: Char
 undertie = '\x203F' -- ‿
 combining_ring_below :: Char
 combining_ring_below = '\x0325' -- ̥
-
+combining_ring_above :: Char
+combining_ring_above = '\x030A' -- ̊
 
 combining_caron_below :: Char
 combining_caron_below = '\x032C' --  ̬
@@ -268,8 +272,15 @@ combining_diaeresis :: Char
 combining_diaeresis = '\x0308' -- ̈
 combining_x_above :: Char
 combining_x_above = '\x033D' -- ̽
+combining_vertical_line_above :: Char
+combining_vertical_line_above = '\x030D' -- ̍ 
 combining_vertical_line_below :: Char
 combining_vertical_line_below = '\x0329' -- ̩
+combining_dot_above :: Char
+combining_dot_above = '\x0307' -- ̇
+combining_dot_below :: Char
+combining_dot_below = '\x0323' --̣
+
 combining_inverted_breve_below :: Char
 combining_inverted_breve_below = '\x032F' -- ̯
 modifier_letter_rhotic_hook :: Char
