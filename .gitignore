@@ -35,3 +35,6 @@ haskell/out
 
 # Place where files necessary for static code analyzer go.
 .hie/
+
+# Visual Studio Code (IDE) settings file
+.vscode/settings.json
