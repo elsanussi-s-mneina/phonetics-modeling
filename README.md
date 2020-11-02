@@ -5,6 +5,17 @@ language according to Linguistics. The source for our information
 will be Linguistics textbooks,
 and the International Phonetic Alphabet.
 
+
+## About the International Phonetic Alphabet
+
+IPA stands for international phonetic alphabet. Many parts of this program cannot be understood without reading the IPA chart. The IPA chart is available at  http://www.internationalphoneticassociation.org/content/ipa-chart
+
+and I use the information contained on the IPA chart (specifically the glyphs, and their meainings) under the following license:
+
+"IPA Chart, http://www.internationalphoneticassociation.org/content/ipa-chart, available under a Creative Commons Attribution-Sharealike 3.0 Unported License. Copyright © 2018 International Phonetic Association."
+
+## Textbooks
+
 I am using the textbook with ISBN: 978-1-4051-9103, The
 second chapter. It is titled The Sounds of Language.
 
@@ -91,3 +102,4 @@ You will need to go to an older version of the source code:
 
 ### Graphical User Interface
 - [most recent commit with graphical user interface](https://github.com/elsanussi-s-mneina/phonetics-modeling/tree/434b4b1902791192c059a0be3e077d42c7f6bb80)
+
