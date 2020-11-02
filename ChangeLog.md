@@ -1,6 +1,8 @@
 # Changelog for phonetics-modeling
 
 ## Unreleased changes
+November 2, 2020
+Remove use of last Haskell language extension in code base (1st party). It was the OverloadedStrings extension used in the test project.
 
 October 16, 2020
 Switched to tabs instead of 2 spaces for indentation.
