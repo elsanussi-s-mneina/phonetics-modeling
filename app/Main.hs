@@ -1,7 +1,7 @@
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
 import  IPA (devoicedIPA, describeIPA, voicedIPA, analyzeIPAToSPE,
-	analyzeIPA, constructIPA)
+	analyzeIPA, constructIPA, ipaNumbersToUnicodeText, unicodeTextToIPANumbers)
 import PhonetInventory (ipaTextToPhonetListReport, arabicPhonetInventoryReport,
 	plainsCreePhonetInventoryReport,
 	englishPhonetInventoryReport, irishPhonetInventoryReport)
@@ -93,6 +93,14 @@ promptForIPATextToSplit :: IO ()
 promptForIPATextToSplit =
 	promptForTextAndApply ipaTextToPhonetListReport ipaTextToDivideMessage
 
+promptForUnicodeToTextToConvertToIPANumbers :: IO ()
+promptForUnicodeToTextToConvertToIPANumbers =
+	promptForTextAndApply unicodeTextToIPANumbers unicodeTextToIPANumbersMessage
+
+promptForIPANumbersToConvertToUnicode :: IO ()
+promptForIPANumbersToConvertToUnicode =
+	promptForTextAndApply ipaNumbersToUnicodeText ipaNumbersToUnicodeTextMessage
+
 -- | This function is where the program starts running.
 main :: IO ()
 main =
@@ -129,6 +137,8 @@ respondToSelection selection
 	| selection == userInputDescribeAPhonemeInEnglish = promptForPhonemeToDescribe
 	| selection == userInputDescribeAPhonemeInSPE = promptForPhonemeToCalculateSPEFeaturesFrom
 	| selection == userInputChunkIPAByPhoneme = promptForIPATextToSplit
+	| selection == userInputConvertUnicodeToIPANumbers = promptForUnicodeToTextToConvertToIPANumbers
+	| selection == userInputConvertIPANumbersToUnicode = promptForIPANumbersToConvertToUnicode
 	| otherwise = putStrLn unrecognizedSelectionMessage
 
 

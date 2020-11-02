@@ -1,9 +1,9 @@
 module IPA where
 
-import Prelude(Eq, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), otherwise)
+import Prelude(Eq, Int, String, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), map, otherwise, read, show, unlines, words)
 import Data.Maybe (fromMaybe, maybe)
 import Numeric.Natural (Natural)
-import Data.Text (Text, init, last, null, pack)
+import Data.Text (Text, init, last, null, pack, unpack)
 
 import IPAConstants.IPAUnicodeConstants
 import DefaultLanguageText
@@ -35,6 +35,8 @@ import ShowFunctions (showPhonet)
 import PhoneticFeatures(showFeatures, analyzeFeatures)
 import GraphemeGrammar(isDescender)
 
+import UnicodeToIPANumber (unicodeToNumber)
+import IPANumberToUnicode (numberToUnicode)
 
 analyzeIPAToSPE :: Text -> Text
 analyzeIPAToSPE ipaText =
@@ -572,3 +574,9 @@ describeIPA :: Text -> Text
 describeIPA x =
 	maybe noEnglishDescriptionFoundMessage showPhonet (analyzeIPA x)
 
+
+unicodeTextToIPANumbers :: Text -> Text
+unicodeTextToIPANumbers text = pack (unlines (map (show . unicodeToNumber) (unpack text)))
+
+ipaNumbersToUnicodeText :: Text -> Text
+ipaNumbersToUnicodeText text = pack ((map (numberToUnicode . (read :: String -> Int)) (words (unpack text))))

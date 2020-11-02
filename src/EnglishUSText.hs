@@ -20,6 +20,8 @@ menu =
 	\ 7) view the Arabic phoneme inventory (as IPA graphemes). \n\
 	\ 8) view the Plains Cree phoneme inventory (as IPA graphemes). \n\
 	\ 9) view the Irish phoneme inventory (as IPA graphemes). \n\
+	\ 10) convert IPA unicode text to IPA Numbers. \n\
+	\ 11) convert IPA Numbers to IPA Unicode text. \n\
 	\  \n\
 	\ Enter the number representing your selection below, \n\
 	\ after the prompt, and press enter/return. \n\
@@ -35,7 +37,9 @@ userInputViewEnglishPhonemeInventory,
 	userInputChunkIPAByPhoneme,
 	userInputViewArabicPhonemeInventory,
 	userInputViewCreePhonemeInventory,
-	userInputViewIrishPhonemeInventory
+	userInputViewIrishPhonemeInventory,
+	userInputConvertUnicodeToIPANumbers,
+	userInputConvertIPANumbersToUnicode
 	:: Text
 userInputViewEnglishPhonemeInventory = pack "1"
 userInputMakeAPhonemeVoiced = pack "2"
@@ -46,7 +50,8 @@ userInputChunkIPAByPhoneme = pack "6"
 userInputViewArabicPhonemeInventory = pack "7"
 userInputViewCreePhonemeInventory = pack "8"
 userInputViewIrishPhonemeInventory = pack "9"
-
+userInputConvertUnicodeToIPANumbers = pack "10"
+userInputConvertIPANumbersToUnicode = pack "11"
 
 prompt :: Text
 prompt = pack "(PROMPT:) "
@@ -68,7 +73,9 @@ phonemeToDevoiceMessage,
 	userSelectedMessage,
 	unrecognizedSelectionMessage,
 	noAnalysisFoundMessage,
-	ipaTextToDivideMessage
+	ipaTextToDivideMessage,
+	unicodeTextToIPANumbersMessage,
+	ipaNumbersToUnicodeTextMessage
 	:: Text
 phonemeToDevoiceMessage =
 	pack "Type a phoneme using IPA symbols, and then press the enter key,\
@@ -90,6 +97,14 @@ ipaTextToDivideMessage =
 	pack "Type text using IPA symbols, and then press the enter key,\
 	\ and the computer will display\
 	\ the text you entered with separate phonemes on separate lines:"
+unicodeTextToIPANumbersMessage =
+	pack "Type text using IPA symbols, and then press the enter key,\
+	\ and the computer will display\
+	\ the IPA numbers instead of those IPA symbols on separate lines:"
+ipaNumbersToUnicodeTextMessage =
+	pack "Type IPA numbers, separated by spaces, and then press the enter key,\
+	\ and the computer will display\
+	\ the IPA symbols instead of those IPA numbers on separate lines:"
 pleaseReadReadmeMessage = pack "Please read README.md file for instructions on how to use."
 programTerminatedNormallyMessage = pack "Program terminated normally."
 userSelectedMessage = pack "The user selected:"
