@@ -275,8 +275,8 @@ ipaNumbersSpec =
 					(combining_vertical_line_above `shouldBe` 431);
 				it "combining inverted breve below should be IPA Number 432"
 					(combining_inverted_breve_below `shouldBe` 432);
-				it "modifier letter rhotic hook should be IPA Number 327"
-					(modifier_letter_rhotic_hook `shouldBe` 327);
+				it "modifier letter rhotic hook should be IPA Number 419"
+					(modifier_letter_rhotic_hook `shouldBe` 419);
 				it "combining diaeresis below should be IPA Number 405"
 					(combining_diaeresis_below `shouldBe` 405);
 				it "combining tilde below should be IPA Number 406"

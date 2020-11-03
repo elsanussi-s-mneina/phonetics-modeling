@@ -283,7 +283,7 @@ combining_vertical_line_below = 431 -- ̩
 combining_inverted_breve_below :: Int
 combining_inverted_breve_below = 432 -- ̯
 modifier_letter_rhotic_hook :: Int
-modifier_letter_rhotic_hook = 327 -- ˞
+modifier_letter_rhotic_hook = 419 -- ˞
 combining_diaeresis_below :: Int
 combining_diaeresis_below = 405 -- ̤
 combining_tilde_below :: Int
