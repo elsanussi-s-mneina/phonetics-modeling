@@ -21,6 +21,7 @@ unicodeToNumber number =
 		_ | number == IPAConstants.IPAUnicodeConstants.latin_small_letter_dotless_j_with_stroke -> IPAConstants.IPANumbers.latin_small_letter_dotless_j_with_stroke;
 		_ | number == IPAConstants.IPAUnicodeConstants.latin_small_letter_k -> IPAConstants.IPANumbers.latin_small_letter_k;
 		_ | number == IPAConstants.IPAUnicodeConstants.latin_small_letter_g -> IPAConstants.IPANumbers.latin_small_letter_g;
+		_ | number == IPAConstants.IPAUnicodeConstants.latin_small_letter_script_g -> IPAConstants.IPANumbers.latin_small_letter_script_g;
 		_ | number == IPAConstants.IPAUnicodeConstants.latin_small_letter_q -> IPAConstants.IPANumbers.latin_small_letter_q;
 		_ | number == IPAConstants.IPAUnicodeConstants.latin_letter_small_capital_g -> IPAConstants.IPANumbers.latin_letter_small_capital_g;
 		_ | number == IPAConstants.IPAUnicodeConstants.latin_letter_glottal_stop -> IPAConstants.IPANumbers.latin_letter_glottal_stop;

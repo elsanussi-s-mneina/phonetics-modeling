@@ -21,6 +21,7 @@ numberToUnicode number =
 		_ | number == IPAConstants.IPANumbers.latin_small_letter_dotless_j_with_stroke -> IPAConstants.IPAUnicodeConstants.latin_small_letter_dotless_j_with_stroke;
 		_ | number == IPAConstants.IPANumbers.latin_small_letter_k -> IPAConstants.IPAUnicodeConstants.latin_small_letter_k;
 		_ | number == IPAConstants.IPANumbers.latin_small_letter_g -> IPAConstants.IPAUnicodeConstants.latin_small_letter_g;
+		_ | number == IPAConstants.IPANumbers.latin_small_letter_script_g -> IPAConstants.IPAUnicodeConstants.latin_small_letter_script_g;
 		_ | number == IPAConstants.IPANumbers.latin_small_letter_q -> IPAConstants.IPAUnicodeConstants.latin_small_letter_q;
 		_ | number == IPAConstants.IPANumbers.latin_letter_small_capital_g -> IPAConstants.IPAUnicodeConstants.latin_letter_small_capital_g;
 		_ | number == IPAConstants.IPANumbers.latin_letter_glottal_stop -> IPAConstants.IPAUnicodeConstants.latin_letter_glottal_stop;
@@ -131,7 +132,6 @@ numberToUnicode number =
 		_ | number == IPAConstants.IPANumbers.full_stop -> IPAConstants.IPAUnicodeConstants.full_stop;
 		_ | number == IPAConstants.IPANumbers.undertie -> IPAConstants.IPAUnicodeConstants.undertie;
 		_ | number == IPAConstants.IPANumbers.combining_ring_below -> IPAConstants.IPAUnicodeConstants.combining_ring_below;
-		_ | number == IPAConstants.IPANumbers.combining_ring_above -> IPAConstants.IPAUnicodeConstants.combining_ring_above;
 		_ | number == IPAConstants.IPANumbers.combining_caron_below -> IPAConstants.IPAUnicodeConstants.combining_caron_below;
 		_ | number == IPAConstants.IPANumbers.modifier_letter_small_h -> IPAConstants.IPAUnicodeConstants.modifier_letter_small_h;
 		_ | number == IPAConstants.IPANumbers.combining_right_half_ring_below -> IPAConstants.IPAUnicodeConstants.combining_right_half_ring_below;
@@ -140,7 +140,6 @@ numberToUnicode number =
 		_ | number == IPAConstants.IPANumbers.combining_minus_sign_below -> IPAConstants.IPAUnicodeConstants.combining_minus_sign_below;
 		_ | number == IPAConstants.IPANumbers.combining_diaeresis -> IPAConstants.IPAUnicodeConstants.combining_diaeresis;
 		_ | number == IPAConstants.IPANumbers.combining_x_above -> IPAConstants.IPAUnicodeConstants.combining_x_above;
-		_ | number == IPAConstants.IPANumbers.combining_vertical_line_above -> IPAConstants.IPAUnicodeConstants.combining_vertical_line_above;
 		_ | number == IPAConstants.IPANumbers.combining_vertical_line_below -> IPAConstants.IPAUnicodeConstants.combining_vertical_line_below;
 		_ | number == IPAConstants.IPANumbers.combining_inverted_breve_below -> IPAConstants.IPAUnicodeConstants.combining_inverted_breve_below;
 		_ | number == IPAConstants.IPANumbers.modifier_letter_rhotic_hook -> IPAConstants.IPAUnicodeConstants.modifier_letter_rhotic_hook;

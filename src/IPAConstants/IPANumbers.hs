@@ -25,9 +25,8 @@ latin_small_letter_k :: Int
 latin_small_letter_k = 109 -- k
 latin_small_letter_g :: Int
 latin_small_letter_g = 110
-
-
-
+latin_small_letter_script_g :: Int
+latin_small_letter_script_g = 110
 latin_small_letter_q :: Int
 latin_small_letter_q = 111 -- q
 latin_letter_small_capital_g :: Int

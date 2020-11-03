@@ -10,6 +10,9 @@ import PrimitiveParsersSpec (runPrimitiveParsersSpecs)
 import IPATextToDescriptionSpec (pulmonicEgressiveConsonantSpec)
 import IPANumberConstantsSpec (ipaNumbersSpec)
 import IPAUnicodeConstantsSpec ( ipaUnicodeSpec )
+import UnicodeToIPANumberSpec (unicodeToIPANumberSpec)
+import IPANumberToUnicodeSpec (numberToUnicodeSpec)
+
 import PlainsCreePhonemeInventorySpec (plainsCreePhonetInventoryReportSpec)
 import IrishPhonemeInventorySpec (irishPhonetInventoryReportSpec)
 import Types.All
@@ -35,6 +38,8 @@ main = do
 	hspec pulmonicEgressiveConsonantSpec
 	hspec ipaUnicodeSpec
 	hspec ipaNumbersSpec
+	hspec unicodeToIPANumberSpec
+	hspec numberToUnicodeSpec
 	runGraphemeGrammarSpecs
 	runPrimitiveParsersSpecs
 
