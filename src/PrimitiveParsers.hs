@@ -2,7 +2,7 @@ module PrimitiveParsers where
 
 import Prelude (Char, Maybe(..), (<>), elem, otherwise)
 
-import Data.Text (Text, empty, drop, index, null, take)
+import Data.Text (Text, empty, index, null, splitAt)
 
 -- | Given a list of characters,
 -- and given a piece of text:
@@ -16,7 +16,7 @@ singleCharParser
 	-> Maybe (Text, Text)
 singleCharParser charList text
 	| null text = Nothing
-	| (index text 0) `elem` charList = Just (take 1 text, drop 1 text)
+	| (index text 0) `elem` charList = Just (splitAt 1 text)
 	| otherwise = Nothing
 
 -- | Uses one parser on the text,
