@@ -1,9 +1,10 @@
 module IPA where
 
-import Prelude(Eq, Int, String, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), map, otherwise, read, show, unlines, words)
+import Prelude(Eq, Int, String, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), lookup, map, read, show, unlines, words)
 import Data.Maybe (fromMaybe, maybe)
 import Numeric.Natural (Natural)
 import Data.Text (Text, init, last, null, pack, unpack)
+import Data.Tuple (swap)
 
 import IPAConstants.IPAUnicodeConstants
 import DefaultLanguageText
@@ -190,21 +191,8 @@ ipaPhonemeMapList =
 	, (pack [latin_small_letter_turned_alpha], (Vowel Open Back Rounded Voiced NormalLength Oral))
 	]
 
-lookupInList :: Eq a => a -> [(a, b)] -> Maybe b
-lookupInList givenKey aList =
-	case aList of
-		[] -> Nothing
-		((key, value) : tailOfList) 
-			| key == givenKey -> Just value
-			| otherwise       -> lookupInList givenKey tailOfList
-
 lookupInListFromValue :: Eq b => b -> [(a, b)] -> Maybe a
-lookupInListFromValue givenKey aList =
-	case aList of
-		[] -> Nothing
-		((value, key) : tailOfList)
-			| key == givenKey -> Just value
-			| otherwise       -> lookupInListFromValue givenKey tailOfList
+lookupInListFromValue givenKey aList = lookup givenKey (map swap aList)
 
 
 -- | This function will allow us to convert an IPA symbol
@@ -212,7 +200,7 @@ lookupInListFromValue givenKey aList =
 analyzeIPA :: Text -> Maybe Phonet
 -- Plosives:
 analyzeIPA p =
-	let p' = lookupInList p ipaPhonemeMapList
+	let p' = lookup p ipaPhonemeMapList
 	in case p' of
 		Just x  -> Just x
 		Nothing ->
