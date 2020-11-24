@@ -94,12 +94,12 @@ functonality was last available.
 ### Web Server
 - Server functionality has been removed.
 You will need to go to an older version of the source code:
-- [most recent commit having web server](https://github.com/elsanussi-s-mneina/phonetics-modeling/tree/8ec55d24b800bc1da626082104499e354cbefc75)
+- [see the web_server_is_present branch](https://github.com/elsanussi-s-mneina/phonetics-modeling/tree/web_server_is_present)
 
 ### Internationalization
-- For internationalization functionality (support for multiple languages in the User interface):
-- [most recent commit with internationalization scaffolding](https://github.com/elsanussi-s-mneina/phonetics-modeling/tree/8ec55d24b800bc1da626082104499e354cbefc75)
+- For internationalization functionality (support for multiple languages in the User interface): 
+- [see the i18n_is_present branch ](https://github.com/elsanussi-s-mneina/phonetics-modeling/tree/i18n_is_present)
 
 ### Graphical User Interface
-- [most recent commit with graphical user interface](https://github.com/elsanussi-s-mneina/phonetics-modeling/tree/434b4b1902791192c059a0be3e077d42c7f6bb80)
+- [most recent commit with graphical user interface](https://github.com/elsanussi-s-mneina/phonetics-modeling/tree/gui_is_present)
 
