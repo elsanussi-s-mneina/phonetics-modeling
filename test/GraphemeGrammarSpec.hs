@@ -88,6 +88,8 @@ phonemeParserSpec =
 			phonemeParserString "t͜ʃ" `shouldBe` Just ("t͜ʃ", "")
 		it "does parse digraph \\t͡s\\" $ do
 			phonemeParserString "t͡s" `shouldBe` Just ("t͡s", "")
+		it "does parse digraph the palatalized digraph \\t͡sʲ\\ in \\t͡sʲa\\ with \\a\\ remaining" $ do
+			phonemeParserString "t͡sʲa" `shouldBe` Just ("t͡sʲ", "a")
 		it "does parse half of two phonemes \\t\\ \\s\\" $ do
 			phonemeParserString "ts" `shouldBe` Just ("t", "s")
 		it "does parse pharyngealized \\t\\ when given \\tˤs\\" $ do
