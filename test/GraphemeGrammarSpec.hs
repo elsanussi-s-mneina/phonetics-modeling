@@ -134,8 +134,26 @@ digraphParserSpec =
 			digraphParserString "t͜s" `shouldBe` Just ("t͜s", "")
 		it "parses t͡s successfully once" $ do
 			digraphParserString "t͡s" `shouldBe` Just ("t͡s", "")
-		it "fails to parse ts because it has no digraph" $ do
+		it "fails to parse ts because it has no tie-bar" $ do
 			digraphParserString "ts" `shouldBe` Nothing
+		it "parses d͜z successfully once" $ do
+			digraphParserString "d͜z" `shouldBe` Just ("d͜z", "")
+		it "parses d͡z successfully once" $ do
+			digraphParserString "d͡z" `shouldBe` Just ("d͡z", "")
+		it "fails to parse dz because it has no tie-bar" $ do
+			digraphParserString "dz" `shouldBe` Nothing
+		it "parses k͜p successfully once" $ do
+			digraphParserString "k͜p" `shouldBe` Just ("k͜p", "")
+		it "parses k͡p successfully once" $ do
+			digraphParserString "k͡p" `shouldBe` Just ("k͡p", "")
+		it "fails to parse kp because it has no tie-bar" $ do
+			digraphParserString "kp" `shouldBe` Nothing
+		it "parses g͜b successfully once" $ do
+			digraphParserString "g͜b" `shouldBe` Just ("g͜b", "")
+		it "parses g͡b successfully once" $ do
+			digraphParserString "g͡b" `shouldBe` Just ("g͡b", "")
+		it "fails to parse gb because it has no tie-bar" $ do
+			digraphParserString "gb" `shouldBe` Nothing
 
 splitIntoPhonemesSpec :: Spec
 splitIntoPhonemesSpec =
