@@ -160,9 +160,13 @@ splitIntoPhonemesSpec =
 	describe "split into phonemes" $ do
 		it "splits \"td\" it into two phonemes." $ do
 			splitIntoPhonemesString "td" `shouldBe` ["t", "d"]
-		it "splits \"tst͜s\" it into two phonemes." $ do
+		it "splits \"tst͜s\" it into three phonemes." $ do
 			splitIntoPhonemesString "tst͜s" `shouldBe` ["t", "s", "t͜s"]
 		it "splits \"ftst͜ss̬r̥dd͜ʒ\" into 8 phonemes." $ do
 			splitIntoPhonemesString "ftst͜ss̬r̥dd͜ʒ" `shouldBe` ["f", "t", "s", "t͜s", "s̬", "r̥", "d", "d͜ʒ"]
 		it "splits \"fʰpʰ\" into 2 phonemes" $ do
 			splitIntoPhonemesString "fʰpʰ" `shouldBe` ["fʰ", "pʰ"]
+		it "splits \"gʰʲpʰ\" into 2 phonemes" $ do
+			splitIntoPhonemesString "gʰʲpʰ" `shouldBe` ["gʰʲ", "pʰ"]
+		it "splits \"bʷtʷfʷ\" into 3 phonemes" $ do
+			splitIntoPhonemesString "bʷtʷfʷ" `shouldBe` ["bʷ", "tʷ", "fʷ"]
