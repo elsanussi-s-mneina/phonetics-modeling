@@ -1,3 +1,4 @@
+-- | This module defines the phonome inventory for English.
 module LanguageSpecific.EnglishSpecific where
 import Prelude ()
 import Types.Airstream ( Airstream(..))

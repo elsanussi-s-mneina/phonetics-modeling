@@ -1,3 +1,6 @@
+-- | This module is responsible for
+-- converting Unicode characters that are IPA sympbols
+-- into IPA numbers.
 module UnicodeToIPANumber where
 
 import Prelude (Int, Char, (==))

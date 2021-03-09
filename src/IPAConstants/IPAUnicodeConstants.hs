@@ -1,3 +1,10 @@
+-- | This module contains the definitions of the Unicode code points
+-- for IPA Characters.
+
+-- Note that the name of the identifiers is the name used
+-- in Unicode charts. This is the best way to have consistent names.
+-- Unicode charts may be found at http://unicode.org/charts/ .
+-- Note that all IPA Characters are encoded within the Latin charts.
 module IPAConstants.IPAUnicodeConstants where
 
 import Prelude (Char)

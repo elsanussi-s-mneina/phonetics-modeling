@@ -1,3 +1,8 @@
+-- | This module is responsible for converting
+-- internal representations inside the program
+-- into user readable text.
+-- In Haskell, the function that does this is
+-- called 'show'.
 module ShowFunctions where
 
 import Prelude (fmap)

@@ -1,3 +1,7 @@
+-- | This module is responsible for converting
+-- IPA numbers to Unicode characters.
+-- Unicode is a ubiquitous format for representing 
+-- nearly all the characters and writing systems on Earth.
 module IPANumberToUnicode where
 
 import Prelude (Int, Char, (==))

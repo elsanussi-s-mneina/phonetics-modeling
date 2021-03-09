@@ -1,3 +1,4 @@
+-- | This module defines the manner of articulation.
 module Types.Manner where
 
 import Prelude (Eq)

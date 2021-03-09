@@ -1,3 +1,6 @@
+-- | This module implements some basic parser combinators.
+-- Parser combinators are functions used together
+-- to implement a context free grammar in Haskell.
 module PrimitiveParsers where
 
 import Prelude (Char, Maybe(..), (<>), elem, otherwise)

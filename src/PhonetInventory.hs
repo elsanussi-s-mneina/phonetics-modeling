@@ -1,3 +1,6 @@
+-- | This module is responsible for 
+-- displaying the phoneme inventory for 
+-- various languages.
 module PhonetInventory where
 
 import Prelude(Maybe(..), (<>), map, zip)

@@ -1,3 +1,8 @@
+-- | This module defines SPE features.
+-- SPE stands for Sound Patterns of English, which
+-- is a book about phonology. This system
+-- of phonology was taught to undergraduates in Linguistics.
+
 module Types.SPE.PhonemeFeature where
 import Prelude  (Eq)
 

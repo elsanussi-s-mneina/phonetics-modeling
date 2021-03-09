@@ -1,3 +1,4 @@
+-- | This module defines airstream mechanisms.
 module Types.Airstream where
 
 import Prelude (Eq)

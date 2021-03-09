@@ -1,3 +1,10 @@
+-- | The IPA module
+-- converts IPA characters to a description of the phoneme.
+-- The description of the phoneme is an internal representation
+-- used by the program.
+--
+-- To programmers: this module is responsible for parsing
+-- text in the International Phonetic Alphabet.
 module IPA where
 
 import Prelude(Eq, Int, String, (+), (.), (==), (/=), (&&), Maybe(..), (<), (<>), lookup, map, read, show, unlines, words)

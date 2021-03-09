@@ -1,3 +1,9 @@
+-- | This module defines a type for representing phonemes or phonetes.
+-- A phonete is a unit of pronunciation.
+-- There are two types: vowels and consonants.
+-- A phoneme is simply a collection of phonetes but 
+-- that are treated as equivalent within the context of 
+-- a single language.
 module Types.Phonet where
 
 import Prelude (Eq)

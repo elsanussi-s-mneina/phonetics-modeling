@@ -1,3 +1,4 @@
+-- | This module defines the phoneme inventory for Arabic.
 module LanguageSpecific.ArabicSpecific where
 import Prelude ()
 

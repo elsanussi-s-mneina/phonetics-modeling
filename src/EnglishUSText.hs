@@ -1,3 +1,8 @@
+-- | This is the text for interacting with
+-- the user that the application uses.
+-- It is kept in a single module
+-- to facilitate
+-- translation of the program to other languages.
 module EnglishUSText where
 
 import Prelude ()

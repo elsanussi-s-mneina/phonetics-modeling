@@ -1,3 +1,5 @@
+-- | This module contains functions not
+-- categorized in any other module.
 module Lib_Functions where
 
 import Types.Airstream ( Airstream(..))
