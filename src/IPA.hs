@@ -340,7 +340,6 @@ addVoicelessDiacritic x =
 		then x <> pack [combining_ring_above]
 		else x <> pack [combining_ring_below]
 
--- here here
 addPharynealizedDiacritic :: Text -> Text
 addPharynealizedDiacritic = (<> (secondaryArticulationIPA Pharyngealized))
 
