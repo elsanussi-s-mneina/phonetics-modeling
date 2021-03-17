@@ -1,4 +1,4 @@
--- | Handle splitting of IPA graphemes into chunks, so that
+-- | Handle splitting of sequences of IPA characters into chunks, so that
 --   diacritics go with the non-diacritic characters they modify.
 --
 module GraphemeGrammar where

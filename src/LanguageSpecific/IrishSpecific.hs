@@ -1,3 +1,4 @@
+-- | This module defines the phoneme inventory for Irish.
 module LanguageSpecific.IrishSpecific where
 import Prelude ()
 import Types.Airstream ( Airstream(..))

@@ -1,3 +1,7 @@
+-- | This is the module where the program starts running.
+-- It is currently a terminal program: so
+-- the user interacts with it by typing text, and
+-- by reading text.
 module Main (main, doAnalyzeIPA, doConstructIPA) where
 
 import  IPA (devoicedIPA, describeIPA, voicedIPA, analyzeIPAToSPE,

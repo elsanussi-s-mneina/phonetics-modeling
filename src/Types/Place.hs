@@ -1,3 +1,4 @@
+-- | This module defines the place of articulation.
 module Types.Place where
 
 import Prelude (Eq)

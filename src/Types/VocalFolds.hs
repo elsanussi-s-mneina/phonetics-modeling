@@ -1,3 +1,4 @@
+-- | This module defines the type of vocal fold vibration.
 module Types.VocalFolds where
 
 import Prelude (Eq)

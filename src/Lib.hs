@@ -1,3 +1,5 @@
+-- | This module exists to make it easier
+-- to import many modules at once.
 module Lib
 	( module Types.All -- Export all of the Lib_Types module
 	, module Lib_Functions -- Export all of the Lib_Functions module

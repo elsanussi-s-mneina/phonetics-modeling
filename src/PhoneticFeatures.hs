@@ -1,3 +1,5 @@
+-- | This module is responsible
+-- for calculating the SPE features of a phoneme.
 module PhoneticFeatures where
 import Prelude (Bool(..), Maybe(..), elem, filter, head, map, notElem, null, otherwise, (||), (==), (<>), (&&))
 import Data.Maybe (catMaybes)

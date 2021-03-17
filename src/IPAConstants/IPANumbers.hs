@@ -1,3 +1,17 @@
+-- | The IPA Numbers module contains definitions for IPA Numbers.
+-- For every symbol of the, International Phonetic Alphabet,
+-- the international Phonetic Association has
+-- associated a positive integer for use by computers.
+-- The value of the integers has been taken from
+-- the website of the International Phonetic Association
+-- at https://www.internationalphoneticassociation.org .
+-- Specifically, the values are taken from the following file called the "IPA Number Chart (revised to 2005)"
+-- https://www.internationalphoneticassociation.org/sites/default/files/IPA_Number_chart_(C)2005.pdf
+
+-- Note that the name of the identifiers is the name used
+-- in Unicode charts. This is the best way to have consistent names.
+-- Unicode charts may be found at http://unicode.org/charts/ .
+-- Note that all IPA Characters are encoded within the Latin charts.
 module IPAConstants.IPANumbers where
 
 import Prelude (Int)

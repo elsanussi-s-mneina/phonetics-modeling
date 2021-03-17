@@ -1,3 +1,10 @@
+-- | This module imports text used
+-- to interact with the user.
+-- It imports it for the language that will
+-- be shown if the program was not configured
+-- to show any specific language.
+-- Currently, the user interface is displayed in
+-- English.
 module DefaultLanguageText(module EnglishUSText) where
 
 import Prelude ()

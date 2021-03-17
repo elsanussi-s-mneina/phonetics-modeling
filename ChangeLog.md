@@ -1,6 +1,9 @@
 # Changelog for phonetics-modeling
 
 ## Unreleased changes
+March 9, 2021
+Improve documentation by adding comments explaining the purpose of each module.
+
 November 2, 2020
 Remove use of last Haskell language extension in code base (1st party). It was the OverloadedStrings extension used in the test project.
 

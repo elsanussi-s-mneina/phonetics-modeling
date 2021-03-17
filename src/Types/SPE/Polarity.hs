@@ -1,3 +1,4 @@
+-- | This module defines the kinds of polarity in Sound Patterns of English features.
 module Types.SPE.Polarity where
 import Prelude  (Eq)
 

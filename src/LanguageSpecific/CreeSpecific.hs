@@ -1,3 +1,4 @@
+-- | This module defines the phoneme inventory for Cree.
 module LanguageSpecific.CreeSpecific where
 import Prelude ()
 import Types.Airstream ( Airstream(..))

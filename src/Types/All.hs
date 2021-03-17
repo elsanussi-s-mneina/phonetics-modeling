@@ -1,3 +1,5 @@
+-- | This is a convenience module for those who which to import
+-- many modules at once.
 module Types.All
 	( module Types.Airstream
 	, module Types.Backness

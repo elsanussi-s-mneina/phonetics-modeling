@@ -1,3 +1,4 @@
+-- | This module defines vowel lengths.
 module Types.VowelLength where
 
 import Prelude (Eq)

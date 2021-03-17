@@ -1,3 +1,4 @@
+-- | This module defines the types of secondary articulations.
 module Types.SecondaryArticulation where
 
 import Prelude (Eq)
