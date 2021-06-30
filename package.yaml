@@ -75,6 +75,6 @@ tests:
     - -main-is Spec
     - -Wno-tabs
     dependencies:
-    - phonetics-modeling:library
+    - phonetics-modeling
     - hspec
     - text
